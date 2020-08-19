@@ -32,6 +32,8 @@ enum CaptureImageScreenType {
     case imageEditing
 }
 
+/// Make sure you add functions withing the enum itself
+
 
 class ScreenManagementService: ObservableObject {
     
@@ -48,7 +50,7 @@ class ScreenManagementService: ObservableObject {
     
     private var defaultActiveMainScreen: MainScreenType = .mainArView
     private var defaultActiveCaptureImageScreen: CaptureImageScreenType = .cameraFeed
-    private var defaultActiveMainScreenOver
+//    private var defaultActiveMainScreenOver
 }
 
 extension ScreenManagementService {
@@ -68,5 +70,5 @@ extension ScreenManagementService {
         self.activeMainScreenOverlay = .login
     }
     
-    func validStateForActiveMainScreenOverlay
+//    func validStateForActiveMainScreenOverlay
 }
