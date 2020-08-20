@@ -13,13 +13,18 @@ struct ProfileView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     
     var name: String = "janmajayamall · 45" // you can call pictures at different places as anchors (but anchors dont sound nice)
-    var parentSize: CGSize
+    var parentSize:CGSize
     
-    var viewHeight:CGFloat {
-        self.parentSize.height * self.viewHeightRatio
+    var viewSize:CGSize{
+        return CGSize(width: self.parentSize.width * self.viewWidthRatio, height: self.parentSize.height * self.viewHeightRatio)
     }
-    var viewWidth:CGFloat {
-        self.parentSize.width * self.viewWidthRatio
+        
+    var offset:CGSize {
+        if (self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .profile){
+            return .zero
+        }else {
+            return CGSize(width: .zero, height: self.parentSize.height)
+        }
     }
     
     var body: some View {
@@ -32,8 +37,7 @@ struct ProfileView: View {
                     .cornerRadius(50)
                     .clipped()
                     .onTapGesture {
-//                        guard self.screenManagement.activeMainScreenOverlay == .profile && self.screenManagement.activeProfileScreenOverlay == .none else {return}
-//                        self.screenManagement.activeProfileScreenOverlay = .changeProfileImage
+                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editProfileImage)
                     }
                     .padding(.bottom, 10)
                 
@@ -42,8 +46,7 @@ struct ProfileView: View {
                     Text(self.name)
                         .font(Font.system(size: 18, weight: .semibold, design: .rounded))
                         .onTapGesture {
-//                            guard self.screenManagement.activeMainScreenOverlay == .profile && self.screenManagement.activeProfileScreenOverlay == .none else {return}
-//                            self.screenManagement.activeProfileScreenOverlay = .changeUsername
+                            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editUsername)
                     }
                     Spacer()
                 }
@@ -54,10 +57,7 @@ struct ProfileView: View {
                     Image(systemName: "xmark").font(Font.system(size: 15, weight: .bold))
                         .foregroundColor(Color.primaryColor)
                         .onTapGesture {
-                            //checking profileOverlay is none. If not none, then don't respond.
-//                            guard self.screenManagement.activeProfileScreenOverlay == .none else {return}
-//
-//                            self.screenManagement.activeMainScreenOverlay = .none
+                            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                         }
                         .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                     Spacer()
@@ -65,10 +65,10 @@ struct ProfileView: View {
                 Spacer()
             }.zIndex(1)
         }
-        .frame(width: self.viewWidth, height: self.viewHeight)
+        .frame(width: self.viewSize.width, height: self.viewSize.height)
         .background(Color.white)
         .cornerRadius(15)
-        .offset(CGSize(width: .zero, height: parentSize.height))
+        .offset(self.offset)
         .animation(.spring())
     }
     

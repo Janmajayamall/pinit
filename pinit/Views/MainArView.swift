@@ -17,7 +17,7 @@ struct MainArView: View {
     @ViewBuilder
     var body: some View {
         
-        if (self.settingsViewModel.screenManagementService.activeMainScreen == .captureImage ) {
+        if (self.settingsViewModel.screenManagementService.mainScreenService.activeType == .captureImageView) {
             return CaptureImageView()
         }else {
             GeometryReader { geometryProxy in
@@ -32,9 +32,9 @@ struct MainArView: View {
                             Spacer()
                             Button(action: {
                                 if self.settingsViewModel.isUserAuthenticated() {
-                                    self.settingsViewModel.screenManagementService.activeMainScreenOverlay = .profile
+                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
                                 }else {
-                                    self.settingsViewModel.screenManagementService.activeMainScreenOverlay = .login
+                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
                                     
                                 }
                             },label: {
@@ -44,7 +44,7 @@ struct MainArView: View {
                         Spacer()
                         HStack{
                             Button(action: {
-                                self.settingsViewModel.screenManagementService.activeMainScreen = .captureImage
+                                self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
                             }, label: {
                                 Image(systemName: "camera.circle.fill").font(Font.system(size: 20, weight: .bold)).foregroundColor(Color.primaryColor).padding(40)
                             })
@@ -63,7 +63,8 @@ struct MainArView: View {
                     
                     LoginView(parentSize: geometryProxy.size)
                 }
-            }
+            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).background(Color.black).edgesIgnoringSafeArea(.all)
+            
         }
         
         

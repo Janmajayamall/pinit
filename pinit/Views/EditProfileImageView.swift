@@ -18,6 +18,14 @@ struct EditProfileImageView: View {
     
     var parentSize: CGSize
     
+    var offset: CGSize {
+        if(self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType == .editProfileImage){
+            return .zero
+        }else {
+            return CGSize(width: .zero, height: self.parentSize.height)
+        }
+    }
+    
     var body: some View {
         
         VStack{
@@ -26,7 +34,7 @@ struct EditProfileImageView: View {
                     .font(Font.system(size: 15, weight: .bold))
                     .foregroundColor(Color.primaryColor)
                     .onTapGesture {
-//                        self.screenManagement.activeProfileScreenOverlay = .none
+                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
                 }
                 .padding(EdgeInsets(top: 30, leading: 10, bottom: 0, trailing: 0))
                 
@@ -69,7 +77,7 @@ struct EditProfileImageView: View {
             UIKitImagePicker(sourceType: .photoLibrary, image: self.$image, isOpen: self.$isImagePickerOpen)
         })
             .background(Color.white)
-            .offset(CGSize(width: .zero, height: self.parentSize.height))
+            .offset(self.offset)
             .animation(.spring())
     }
 }

@@ -15,11 +15,15 @@ struct EditUsernameView: View {
     
     var parentSize: CGSize
     
-    var viewHeight: CGFloat {
-        self.parentSize.height * self.viewHeightRatio
+    var viewSize: CGSize {
+        return CGSize(width: self.viewWidthRatio * self.parentSize.width, height: self.viewHeightRatio * self.parentSize.height)
     }
-    var viewWidth: CGFloat {
-        self.parentSize.width * self.viewWidthRatio
+    
+    var offset: CGSize {
+        if(self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType == .editProfileImage){
+            return .zero
+        }
+        return CGSize(width: .zero, height: self.parentSize.height)
     }
     
     var body: some View {
@@ -55,7 +59,7 @@ struct EditUsernameView: View {
                     Image(systemName: "xmark").font(Font.system(size: 15, weight: .bold))
                         .foregroundColor(Color.primaryColor)
                         .onTapGesture {
-//                            self.screenManagement.activeProfileScreenOverlay = .none
+                            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
                     }
                     .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                     Spacer()
@@ -63,7 +67,7 @@ struct EditUsernameView: View {
                 Spacer()
             }.zIndex(1)
         }
-        .frame(width: self.viewWidth, height: self.viewHeight)
+        .frame(width: self.viewSize.width, height: self.viewSize.height)
         .background(Color.white)
         .cornerRadius(15)
         .offset(CGSize(width: .zero, height:self.parentSize.height))
