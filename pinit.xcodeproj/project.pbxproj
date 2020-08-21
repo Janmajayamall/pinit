@@ -52,6 +52,9 @@
 		5DC2859924ED029F00830887 /* AppArScnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859824ED029F00830887 /* AppArScnView.swift */; };
 		5DC2859B24ED06B800830887 /* UIKitMapBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859A24ED06B800830887 /* UIKitMapBox.swift */; };
 		5DC2859D24ED0F3400830887 /* EditingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859C24ED0F3400830887 /* EditingViewModel.swift */; };
+		5DC8527124EFC87B00E36DCE /* ViewRectViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527024EFC87B00E36DCE /* ViewRectViewModifier.swift */; };
+		5DC8527324EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527224EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift */; };
+		5DC8527524EFDDC500E36DCE /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527424EFDDC500E36DCE /* UIView+Extensions.swift */; };
 		C4BE49B981BA6C9E1F5E6C91 /* Pods_pinit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA819CC259AA9FBEDA20535D /* Pods_pinit.framework */; };
 		CF96279734D8A4D560886727 /* Pods_pinitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79E76096699AA6D6E4878737 /* Pods_pinitTests.framework */; };
 		FC51A90A4B53124BC05D4C26 /* Pods_pinit_pinitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36D47B13861832B4C02A20B /* Pods_pinit_pinitUITests.framework */; };
@@ -130,6 +133,9 @@
 		5DC2859824ED029F00830887 /* AppArScnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppArScnView.swift; sourceTree = "<group>"; };
 		5DC2859A24ED06B800830887 /* UIKitMapBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitMapBox.swift; sourceTree = "<group>"; };
 		5DC2859C24ED0F3400830887 /* EditingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingViewModel.swift; sourceTree = "<group>"; };
+		5DC8527024EFC87B00E36DCE /* ViewRectViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRectViewModifier.swift; sourceTree = "<group>"; };
+		5DC8527224EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
+		5DC8527424EFDDC500E36DCE /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		79E76096699AA6D6E4878737 /* Pods_pinitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8114B8F506D22426EA1C7CD0 /* Pods-pinit-pinitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit-pinitUITests.debug.xcconfig"; path = "Target Support Files/Pods-pinit-pinitUITests/Pods-pinit-pinitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A9A41EF8A44E6C6EBC61DCF7 /* Pods-pinit-pinitUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit-pinitUITests.release.xcconfig"; path = "Target Support Files/Pods-pinit-pinitUITests/Pods-pinit-pinitUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -193,6 +199,8 @@
 				5D52F7B424E9288200D9F27E /* Publishers+Extensions.swift */,
 				5D52F7BC24E951AD00D9F27E /* Color+Extensions.swift */,
 				5D52F7DE24E9952800D9F27E /* CLLocation+Extensions.swift */,
+				5DC8527224EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift */,
+				5DC8527424EFDDC500E36DCE /* UIView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -235,6 +243,7 @@
 		5D52F7A324E90D6500D9F27E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5DC8526F24EFC82B00E36DCE /* Modifiers */,
 				5D4DD0A024ED349A00E1FDF3 /* Components */,
 				5D52F7A624E917D400D9F27E /* MainArView.swift */,
 				5D52F7BA24E93CBE00D9F27E /* MapView.swift */,
@@ -338,6 +347,14 @@
 				5D67E81224E84E7000F5D240 /* Info.plist */,
 			);
 			path = pinitUITests;
+			sourceTree = "<group>";
+		};
+		5DC8526F24EFC82B00E36DCE /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				5DC8527024EFC87B00E36DCE /* ViewRectViewModifier.swift */,
+			);
+			path = Modifiers;
 			sourceTree = "<group>";
 		};
 		6163506BD753541FA968A04C /* Pods */ = {
@@ -593,6 +610,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DC8527524EFDDC500E36DCE /* UIView+Extensions.swift in Sources */,
 				5D52F7D224E98E0F00D9F27E /* GeohashingService.swift in Sources */,
 				5D4DD0A624ED3B7100E1FDF3 /* ColorPickerSlider.swift in Sources */,
 				5D52F7A724E917D400D9F27E /* MainArView.swift in Sources */,
@@ -609,6 +627,7 @@
 				5D52F7B324E9257E00D9F27E /* UserProfileService.swift in Sources */,
 				5D52F7B724E93A5200D9F27E /* ProfileModel.swift in Sources */,
 				5D52F7C124E9548D00D9F27E /* EditUsernameView.swift in Sources */,
+				5DC8527324EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift in Sources */,
 				5D52F7C824E95A9E00D9F27E /* ProfileImageEditorView.swift in Sources */,
 				5D52F7CF24E974D600D9F27E /* UIKItSignInWithApple.swift in Sources */,
 				5D4DD09F24ED2A1200E1FDF3 /* CaptureImageView.swift in Sources */,
@@ -621,6 +640,7 @@
 				5D52F7A924E91AE700D9F27E /* AuhtenticationService.swift in Sources */,
 				5D52F7E124E9A1B600D9F27E /* UIKitArSceneView.swift in Sources */,
 				5D52F7AD24E91EF200D9F27E /* SettingsViewModel.swift in Sources */,
+				5DC8527124EFC87B00E36DCE /* ViewRectViewModifier.swift in Sources */,
 				5DC2859B24ED06B800830887 /* UIKitMapBox.swift in Sources */,
 				5DC2859D24ED0F3400830887 /* EditingViewModel.swift in Sources */,
 				5D4DD0A424ED353B00E1FDF3 /* ImagePaintingModel.swift in Sources */,

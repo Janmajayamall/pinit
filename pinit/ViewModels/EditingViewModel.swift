@@ -14,7 +14,7 @@ import FirebaseFirestore
 class EditingViewModel: NSObject, ObservableObject {
 
     @Published var selectedImage: Image
-    @Published var imageCanvasRect: CGRect = .zero
+    @Published var imageRect: CGRect = .zero
     @Published var imagePainting: ImagePaintingModel = ImagePaintingModel()
    
     var isPostPublic: Bool?
@@ -26,12 +26,15 @@ class EditingViewModel: NSObject, ObservableObject {
         super.init()
     }
     
-    
-
-
-//    func setFinalImage(){
-//        self.finalImage = UIApplication.shared.windows.filter{$0.isKeyWindow}.first?.rootViewController?.view.toImage(rect: self.imageCanvasRect)
-//    }
+    /// Sets the final image as the core graphic of window's view
+    ///
+    /// Uses view's frame CGRect to convert the view in the rootController of
+    /// window to UIImage
+    /// - Parameters:
+    ///     - window: UIApplicaton window
+    func setFinalImage(withWindow window: UIWindow!){
+        self.finalImage = window.rootViewController?.view.toImage(rect: self.imageRect)
+    }
 }
 
 // functions of image painting
@@ -54,5 +57,11 @@ extension EditingViewModel {
     
     func undoLastDrawing(){
         self.imagePainting.undoPathDrawing()
+    }
+    
+    func uploadPost(){
+        guard let image = self.finalImage else {return}
+        
+        // publish request for upload the post with object post model
     }
 }

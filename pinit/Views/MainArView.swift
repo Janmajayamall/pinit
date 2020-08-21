@@ -17,8 +17,8 @@ struct MainArView: View {
     @ViewBuilder
     var body: some View {
         
-        if (self.settingsViewModel.screenManagementService.mainScreenService.activeType == .captureImageView) {
-            return CaptureImageView()
+        if (self.settingsViewModel.screenManagementService.mainScreenService.activeType == .captureImageView) {            
+            CaptureImageView()
         }else {
             GeometryReader { geometryProxy in
                 ZStack{
@@ -66,9 +66,7 @@ struct MainArView: View {
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).background(Color.black).edgesIgnoringSafeArea(.all)
             
         }
-        
-        
-        
+    
     }
     
     

@@ -37,7 +37,8 @@ struct StrokeWidthSlider: View {
             Circle()
                 .foregroundColor(self.editingViewModel.imagePainting.selectedColor)
                 .frame(width:self.editingViewModel.imagePainting.selectedStrokeWidth, height: self.editingViewModel.imagePainting.selectedStrokeWidth)
-                .offset(x:0, y:self.selectedYCoord)                
+                .offset(x:0, y:self.selectedYCoord)
+                .gesture(dragGesture)
         }
     }
     
@@ -52,7 +53,7 @@ struct StrokeWidthSlider: View {
     }
     
     // MARK: vars for StrokeWidthSlider
-    static private var strokeSliderHeight: CGFloat = 300
+    static var strokeSliderHeight: CGFloat = 300
     static var minimumStrokeWidth: CGFloat = 15
     static var strokeAmplification: CGFloat = 15
 }

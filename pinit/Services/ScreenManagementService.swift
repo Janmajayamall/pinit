@@ -169,7 +169,7 @@ struct MainScreenService: ScreenService {
     private mutating func switchToCaputureImageView() {
         // reset mainArView screen before the switch
         self.mainArViewScreenService.resetScreen()
-        
+        print("Switched to captureImageView")
         self.activeType = .captureImageView
     }
     

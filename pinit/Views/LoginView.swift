@@ -11,6 +11,9 @@ import SwiftUI
 struct LoginView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
+    
+    @Environment(\.window) var window: UIWindow?
+    
     var parentSize: CGSize
     
     var viewHeight: CGFloat {
@@ -23,8 +26,7 @@ struct LoginView: View {
         }
         return CGSize(width: .zero, height: self.parentSize.height)
     }
-    
-    var window: UIWindow? = UIApplication.shared.windows.first ?? nil
+        
     @State var signInWithAppleCoordinator: SignInWithAppleCoordinator?
     
     
@@ -48,7 +50,7 @@ struct LoginView: View {
             }.padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
             
             UIKitSignInWithApple().frame(width: 280, height: 45).onTapGesture {
-                self.signInWithAppleCoordinator = SignInWithAppleCoordinator(window: self.window! )
+                self.signInWithAppleCoordinator = SignInWithAppleCoordinator(window: self.window)
                 self.signInWithAppleCoordinator?.signIn(onSignedInHandler: {user in
                     print("Logged in with name \(String(describing: user.displayName)) & email \(String(describing: user.email))")
                     

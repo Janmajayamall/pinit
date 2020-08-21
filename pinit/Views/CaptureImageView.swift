@@ -10,50 +10,43 @@ import SwiftUI
 
 struct CaptureImageView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
-    
-    var parentSize: CGSize
-    
+
     @ViewBuilder
     var body: some View {
-        
-        VStack{
-            Spacer()
-            Text("daiwdjaiodjaodjaiowd")
-            Spacer()
+    
+        if self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.activeType == .editCaptureImage {
+            EditCaptureImageView().environmentObject(EditingViewModel(selectedImage: Image("ProfileImage")))
+        }else{
+            VStack{
+                HStack{
+                    Image(systemName: "xmark")
+                        .font(Font.system(size: 15, weight: .bold))
+                        .foregroundColor(Color.primaryColor)
+                        .onTapGesture {
+                            self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
+                    }
+                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                    Spacer()
+                }
+                Spacer()
+                HStack{
+                    Spacer()
+                    Circle()
+                        .foregroundColor(.purple)
+                        .frame(width: 60, height: 60)
+                        .onTapGesture {
+                            self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .editCaptureImage)
+                    }
+                    Spacer()
+                }
+            }
         }
-//
-//        if self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.activeType == .editCaptureImage {
-//            return EditCaptureImageView().environmentObject(EditingViewModel(selectedImage: Image("ProfileImage")))
-//        }else{
-//            VStack{
-//                HStack{
-//                    Image(systemName: "xmark")
-//                        .font(Font.system(size: 15, weight: .bold))
-//                        .foregroundColor(Color.primaryColor)
-//                        .onTapGesture {
-//                            self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
-//                    }
-//                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
-//                    Spacer()
-//                }
-//                Spacer()
-//                HStack{
-//                    Spacer()
-//                    Circle()
-//                        .foregroundColor(.purple)
-//                        .frame(width: 60, height: 60)
-//                        .onTapGesture {
-//                            self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .editCaptureImage)
-//                    }
-//                    Spacer()
-//                }
-//            }
-//        }
     }
 }
 
 struct CaptureImageView_Previews: PreviewProvider {
     static var previews: some View {
-        CaptureImageView(parentSize: CGSize(width: 300, height: 800))
+        CaptureImageView()
     }
 }
+//parentSize: CGSize(width: 300, height: 800)
