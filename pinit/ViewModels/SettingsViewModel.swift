@@ -24,35 +24,57 @@ class SettingsViewModel: ObservableObject {
     @Published var userProfileService = UserProfileService()
     @Published var screenManagementService = ScreenManagementService()
     private var locationService = LocationService()
+    private var uploadPostService = UploadPostService()
     
     private var cancellables: Set<AnyCancellable> = []
     
     init() {
+        // setup subscribers
+        self.setupSubscribers()
         
-        // for subscribing to objectWillChange publisher of userProfileService that publishes before any of its published property changes value. Calling objectWillChange of self object for notifying self's subscribers that object has changed
-        self.userProfileService.objectWillChange.sink { (_) in
-            self.objectWillChange.send()
-        }.store(in: &cancellables)
-        
-        // subscribing to publishers from userProfileService using assign.
-        // assign allows us to subscribe & assign the value received to property within object using keyPath syntax
-        self.userProfileService.$user.assign(to: \.user, on: self).store(in: &cancellables)
-        self.userProfileService.$userProfile.assign(to: \.userProfile, on: self).store(in: &cancellables)
-        self.userProfileService.$userProfileImage.assign(to: \.userProfileImage, on: self).store(in: &cancellables)
-        
-        // for susbscribing to objectWillChange publisher of screenManagement view modal
-        self.screenManagementService.objectWillChange.sink(receiveValue: { value in
-            print(value)
-            self.objectWillChange.send()
-        }).store(in: &cancellables)
-        
-        
-        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
-            self.currentLocation = location
-        }.store(in: &cancellables)
+        // setup services
+        self.userProfileService.setupService()
+        self.uploadPostService.setupService()
+        self.locationService.setupService()
+        self.authenticationService.setupService()
     }
     
     func isUserAuthenticated() -> Bool {
         return self.user != nil
     }
+    
 }
+
+// for subscriptions
+extension SettingsViewModel {
+    func subscribeToUserProfileServicePublishers() {
+        self.userProfileService.objectWillChange.sink { (_) in
+            self.objectWillChange.send()
+        }.store(in: &cancellables)
+        
+        self.userProfileService.$user.assign(to: \.user, on: self).store(in: &cancellables)
+        self.userProfileService.$userProfile.assign(to: \.userProfile, on: self).store(in: &cancellables)
+        self.userProfileService.$userProfileImage.assign(to: \.userProfileImage, on: self).store(in: &cancellables)
+    }
+    
+    func subscribeToScreenManagementServicePublishers() {
+        self.screenManagementService.objectWillChange.sink(receiveValue: { value in
+            print(value)
+            self.objectWillChange.send()
+        }).store(in: &cancellables)
+    }
+    
+    func subscribeToLocationServicePublishers() {
+        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
+            self.currentLocation = location
+        }.store(in: &cancellables)
+    }
+    
+    func setupSubscribers() {
+        self.subscribeToLocationServicePublishers()
+        self.subscribeToUserProfileServicePublishers()
+        self.subscribeToScreenManagementServicePublishers()
+    }
+}
+
+

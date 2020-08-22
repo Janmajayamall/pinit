@@ -19,9 +19,7 @@ class RetrievePostService: ObservableObject {
     
     @Published var retrievedPosts: Array<PostModel> = []
     
-    init() {
-        self.subscribeToGeohasingServicePublishers()
-    }
+    init() {}
     
     func listenToPostsForGeohashes(_ geohashes: Array<String>){
         
@@ -51,6 +49,14 @@ class RetrievePostService: ObservableObject {
         }
     }
     
+    func setupService(){
+        // setting up subscribers
+        self.subscribeToGeohasingServicePublishers()
+    }
+}
+
+// for subscribers
+extension RetrievePostService {
     func subscribeToGeohasingServicePublishers(){
         Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (geohashModel) in
             self.listenToPostsForGeohashes(geohashModel.currentAreaGeohashes)

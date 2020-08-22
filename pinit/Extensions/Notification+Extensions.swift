@@ -26,4 +26,7 @@ extension Notification.Name {
     
     // notifications for ImageSCNNodes
     static let imageSCNNodeDidLoadImage = Notification.Name("imageSCNNodeDidLoadImage")
+    
+    // notifications for upoadPostService
+    static let uploadPostServiceDidRequestCreatePost = Notification.Name("uploadPostServiceDidRequestCreatePost")
 }

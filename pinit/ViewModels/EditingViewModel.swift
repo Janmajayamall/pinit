@@ -10,14 +10,16 @@ import SwiftUI
 import Firebase
 import CoreLocation
 import FirebaseFirestore
+import Combine
 
 class EditingViewModel: NSObject, ObservableObject {
 
     @Published var selectedImage: Image
     @Published var imageRect: CGRect = .zero
     @Published var imagePainting: ImagePaintingModel = ImagePaintingModel()
-   
-    var isPostPublic: Bool?
+    
+    // FIXME: remove `true` declaration
+    var isPostPublic: Bool? = true
     var finalImage: UIImage?
     @Published var descriptionText: String = ""
 
@@ -61,7 +63,12 @@ extension EditingViewModel {
     
     func uploadPost(){
         guard let image = self.finalImage else {return}
+        guard let isPublic = self.isPostPublic else {return}
+        print(image, "image is here")
+        // requestCreatePost
+        let requestCreatePost = RequestCreatePostModel(image: image, description: self.descriptionText, isPublic: isPublic)
         
         // publish request for upload the post with object post model
+        NotificationCenter.default.post(name: .uploadPostServiceDidRequestCreatePost, object: requestCreatePost)
     }
 }

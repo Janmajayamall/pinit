@@ -33,19 +33,21 @@ class LocationService: NSObject {
         //take care of authorization
         // TODO: MAKE REQUEST AUTHRORIZATION PROPER
         self.manager.requestWhenInUseAuthorization()
-        
-        self.manager.startUpdatingLocation()
-        
     }
     
-    /**
-     For activating heading updates
-     */
     func activateHeadingUpdates(){
         self.manager.startUpdatingHeading()
     }
+    
+    func activateLocationUpdates(){
+        self.manager.startUpdatingLocation()
+    }
+    
+    func setupService(){
+        self.activateLocationUpdates()
+    }
+    
 }
-
 
 extension LocationService: CLLocationManagerDelegate {
     

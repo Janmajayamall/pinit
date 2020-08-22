@@ -1,5 +1,5 @@
 //
-//  AuhtenticationService.swift
+//  AuthenticationService.swift
 //  pinit
 //
 //  Created by Janmajaya Mall on 16/8/2020.
@@ -20,13 +20,13 @@ class AuthenticationService {
     init(){}
     
     func registerStateListener(){
-        
         if let handle = self.handle {
             Auth.auth().removeStateDidChangeListener(handle)
         }
         
         self.handle = Auth.auth().addStateDidChangeListener({(auth, user) in
             if let user = user {
+                print("User changed")
                 NotificationCenter.default.post(name: .authenticationServiceDidAuthStatusChange, object: user)
             }
         })
@@ -45,6 +45,10 @@ class AuthenticationService {
         if let handle = self.handle {
             Auth.auth().removeStateDidChangeListener(handle)
         }
+    }
+    
+    func setupService(){
+        self.registerStateListener()
     }
 }
 
@@ -183,6 +187,50 @@ private func sha256(_ input: String) -> String {
     }.joined()
     
     return hashString
+}
+
+class SignInWithEmailCoordinator {
+    var emailId: String
+    var password: String
+    var onSignedInHandler: ((User) -> Void)?
+    
+    init(emailId: String, password:String){
+        self.emailId = emailId
+        self.password = password
+    }
+    
+    func login(onSignedInHandler: @escaping (User) -> Void) {
+        
+        self.onSignedInHandler = onSignedInHandler
+        
+        Auth.auth().signIn(withEmail: self.emailId, password: self.password) { (result, error) in
+            if let error = error {
+                print("Sign In with email & password failed with error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let user = result?.user else {return}
+            if let onSignedInHandler = self.onSignedInHandler {
+                onSignedInHandler(user)
+            }
+        }
+    }
+    
+    func signUp(onSignedInHandler: @escaping (User) -> Void) {
+        self.onSignedInHandler = onSignedInHandler
+        
+        Auth.auth().createUser(withEmail: self.emailId, password: self.password) { (result, error) in
+            if let error = error {
+                print("Create user with email & password failed with error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let user = result?.user else {return}
+            if let onSignedInHandler = self.onSignedInHandler {
+                onSignedInHandler(user)
+            }
+        }
+    }
 }
 
 enum SignInState: String {

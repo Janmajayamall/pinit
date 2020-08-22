@@ -24,10 +24,9 @@ class UserProfileService: ObservableObject {
     
     var userProfileDocumentListener: ListenerRegistration?
     
-    init() {
-    }
+    init() {}
     
-    func registerServiceForUser(_ user: User){
+    func registerServiceForUser(_ user: User) {
         
         // stopping user profile service for current user, if any
         self.stopServiceForCurrentUser()
@@ -37,7 +36,7 @@ class UserProfileService: ObservableObject {
         self.listenToUserProfile()
     }
     
-    func stopServiceForCurrentUser(){
+    func stopServiceForCurrentUser() {
         self.user = nil
         self.userProfile = nil
         self.userProfileImage = nil
@@ -66,7 +65,7 @@ class UserProfileService: ObservableObject {
         }
     }
     
-    func subscribeToImageManager(){
+    func subscribeToImageManager() {
         
         // call self objectWillChange whenever profileImageManager publishes -- sink: subscribes to publishers with closures
         if let imageManagerCancellable = self.profileImageManager?.objectWillChange.sink(receiveValue: { (_) in
@@ -80,22 +79,33 @@ class UserProfileService: ObservableObject {
         self.profileImageManager?.$image.assign(to: \.userProfileImage, on: self).store(in: &cancellables)
     }
     
-    func stopListeningToUserProfile(){
+    func stopListeningToUserProfile() {
         if let listener = self.userProfileDocumentListener {
             listener.remove()
         }
     }
     
-    func changeUsername(){
+    func changeUsername() {
         
     }
     
-    func changeProfileImage(){
+    func changeProfileImage() {
         // first assing to profileImage publisher & then make the api call
     }
     
-    /// Subscribes using closure to the publisher of  didAuthStatusChange notification
-    func didAuthStatusChangeSubscribe(){
+    func setupService() {
+        // setting up subscribers
+        self.subscribeToAuthenticationSeriverPublishers()
+    }
+    
+
+    private let userCollectionRef: CollectionReference = Firestore.firestore().collection("users")
+    
+}
+
+// for subscribing to publishers
+extension UserProfileService {
+    func subscribeToAuthenticationSeriverPublishers() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
             guard let currentUser = self.user else {
                 self.registerServiceForUser(user)
@@ -108,8 +118,4 @@ class UserProfileService: ObservableObject {
             return
         }.store(in: &cancellables)
     }
-    
-    private let userCollectionRef: CollectionReference = Firestore.firestore().collection("users")
-    
-    
 }

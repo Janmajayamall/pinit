@@ -41,7 +41,7 @@ class ARSceneLocationService {
     }
             
     init() {
-        self.subscribeToLocationServicePublishers()
+        self.setupService()
     }
     
     func addLocationEstimate(location: CLLocation){
@@ -93,6 +93,10 @@ class ARSceneLocationService {
     func stop() {
         self.updateEstimatesTimer?.invalidate()
         self.updateEstimatesTimer = nil
+    }
+    
+    func setupService(){
+        self.subscribeToLocationServicePublishers()
     }
     
 }

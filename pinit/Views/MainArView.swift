@@ -24,6 +24,7 @@ struct MainArView: View {
                 ZStack{
                     
                     UIKitArSceneView(parentSize: geometryProxy.size)
+                        
                     
                     MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewyDragTranslation)
                     

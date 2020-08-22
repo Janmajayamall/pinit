@@ -30,6 +30,10 @@ struct EditCaptureImageView: View {
                 // draw current path
                 self.editingViewModel.imagePainting.currentDrawing
                 
+                if (self.screenState == .description){
+                    FadeKeyboard(parentSize: geometryProxy.size)
+                }
+                
                 if (self.screenState == .normal){
                     VStack{
                         HStack{
@@ -61,7 +65,9 @@ struct EditCaptureImageView: View {
                             
                         }
                         Spacer()
-                    }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    }
+                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    .safeTopEdgePadding()
                 }
                 
                 if (self.screenState == .painting && self.isUserDrawing == false){
@@ -73,7 +79,7 @@ struct EditCaptureImageView: View {
                                 .onTapGesture {
                                     guard self.screenState == .painting else {return}
                                     self.screenState = .normal
-                                }
+                            }
                             .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                             
                             
@@ -92,7 +98,9 @@ struct EditCaptureImageView: View {
                         }
                         
                         Spacer()
-                    }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    }
+                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    .safeTopEdgePadding()
                 }
                 
                 if (self.screenState == .painting && self.isUserDrawing == false){
@@ -104,7 +112,9 @@ struct EditCaptureImageView: View {
                                 .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 15))
                         }
                         Spacer()
-                    }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    }
+                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    .safeTopEdgePadding()
                 }
                 
                 if (self.screenState == .painting && self.isUserDrawing == false){
@@ -113,14 +123,14 @@ struct EditCaptureImageView: View {
                             StrokeWidthSlider(selectedYCoord: self.editingViewModel.imagePainting.selectedStrokeWidthYCoord)
                                 .frame(width: StrokeWidthSlider.minimumStrokeWidth + StrokeWidthSlider.strokeAmplification * 1.5)
                                 .padding(EdgeInsets(top: 30, leading: 15, bottom: 0, trailing: 0))
-                                
+                            
                             Spacer()
                         }
                         Spacer()
-                    }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    }
+                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    .safeTopEdgePadding()
                 }
-                
-                
             }
             .gesture(
                 DragGesture()
@@ -138,7 +148,17 @@ struct EditCaptureImageView: View {
                         }
                     })
             )
+                .onTapGesture {
+                    if self.screenState == .description {
+                        self.screenState = .normal
+                    }else if self.screenState == .normal {
+                        self.screenState = .description
+                    }
+            }
+            
         }
+        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+        .edgesIgnoringSafeArea(.all)
     }
     
     func finalisePostImage() {

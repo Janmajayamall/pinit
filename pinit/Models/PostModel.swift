@@ -14,7 +14,7 @@ struct PostModel: Codable {
     
     var imageName: String
     var description: String
-    var timestamp: Timestamp
+    var timestamp: Timestamp = Timestamp()
     var isActive: Bool
     var geolocation: GeoPoint
     var geohash: String

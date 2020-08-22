@@ -11,7 +11,6 @@ import SwiftUI
 struct LoginView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
-    
     @Environment(\.window) var window: UIWindow?
     
     var parentSize: CGSize
@@ -26,10 +25,11 @@ struct LoginView: View {
         }
         return CGSize(width: .zero, height: self.parentSize.height)
     }
-        
+    
     @State var signInWithAppleCoordinator: SignInWithAppleCoordinator?
     
-    
+    @State var isEmailAuthViewOpen = false
+    @State var emailAuthViewType: emailAuthenticationViewType = .signUp
     var body: some View {
         
         VStack{
@@ -45,9 +45,24 @@ struct LoginView: View {
             }
             HStack{
                 Spacer()
-                Text("Create an accout or Sign In to continue.").font(Font.custom("Avenir", size: 30))
+                Text("Create an account to continue").font(Font.custom("Avenir", size: 30))
                 Spacer()
-            }.padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
+            }.padding(EdgeInsets(top: 10, leading: 10, bottom: 30, trailing: 10))
+            
+            HStack{
+                Button(action: {
+                    self.emailAuthViewType = .signUp
+                    self.isEmailAuthViewOpen = true
+                }, label: {
+                    Spacer()
+                    Text("Sign up with Email").font(Font.custom("Avenir", size: 18)).bold().foregroundColor(Color.white)
+                    Spacer()
+                    
+                })
+            }
+            .frame(width: 280, height: 45)
+            .background(Color.primaryColor)
+            .cornerRadius(5)
             
             UIKitSignInWithApple().frame(width: 280, height: 45).onTapGesture {
                 self.signInWithAppleCoordinator = SignInWithAppleCoordinator(window: self.window)
@@ -58,6 +73,7 @@ struct LoginView: View {
                     self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                 })
             }
+            
             Spacer()
             HStack{
                 Spacer()
@@ -71,6 +87,9 @@ struct LoginView: View {
         .cornerRadius(12)
         .offset(self.offset)
         .animation(.spring())
+        .sheet(isPresented: self.$isEmailAuthViewOpen, content: {
+            EmailAuthenticationView(isOpen: self.$isEmailAuthViewOpen, viewType: self.emailAuthViewType)
+        })
     }
     
     private let viewHeightRatio: CGFloat = 0.7
@@ -81,3 +100,5 @@ struct LoginView_Previews: PreviewProvider {
         LoginView(parentSize: CGSize(width: 300, height: 800)).environmentObject(SettingsViewModel())
     }
 }
+
+

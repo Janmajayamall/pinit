@@ -86,4 +86,33 @@ extension Publishers {
         }
         .eraseToAnyPublisher()
     }
+    
+    // publishers for keyboard height
+    static var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
+        Publishers.Merge(
+            NotificationCenter
+                .default
+                .publisher(for:UIResponder.keyboardWillShowNotification)
+                .compactMap{
+                    $0.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+            }
+            .map({ $0.height }),
+            NotificationCenter
+                .default
+                .publisher(for: UIResponder.keyboardWillHideNotification)
+                .map({ _ in CGFloat(0)})
+        ).eraseToAnyPublisher()
+    }
+    
+    // publishers for uploadPostService
+    static var uploadPostServiceDidRequestCreatePostPublisher: AnyPublisher<RequestCreatePostModel, Never> {
+        NotificationCenter
+            .default
+            .publisher(for: .uploadPostServiceDidRequestCreatePost)
+            .compactMap { (notification) -> RequestCreatePostModel? in
+                guard let requestCreatePost = notification.object as? RequestCreatePostModel else {return nil}
+                return requestCreatePost
+        }
+        .eraseToAnyPublisher()
+    }
 }

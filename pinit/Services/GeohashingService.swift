@@ -24,7 +24,7 @@ class GeohashingService {
     private var cancellables: Set<AnyCancellable> = []
     
     init() {
-        self.subscribeToArLocationServicePublishers()
+        self.setupService()
     }
     
     /**
@@ -35,16 +35,21 @@ class GeohashingService {
         - location: new Location
      */
     func updateGeohashToLocation(_ location: CLLocation) {
-        let locationGeohash = self.getGeohash(forCoordinates: location.coordinate)
+        let locationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
         guard self.geohashModel == nil || self.geohashModel?.currentLocationGeohash != locationGeohash else {return}
-        let areaGeohashes = self.neighborsFor(geohash: locationGeohash)
+        let areaGeohashes = GeohashingService.neighborsFor(geohash: locationGeohash)
         let geohashModel = GeohashModel(currentLocationGeohash: locationGeohash, currentAreaGeohashes: areaGeohashes)
         self.geohashModel = geohashModel
         
         NotificationCenter.default.post(name: .geohasingServiceDidUpdateGeohash, object: geohashModel)
     }
     
-    func getGeohash(forCoordinates locationCoordinates: CLLocationCoordinate2D , precision: Int = 8) -> String {
+    func setupService(){
+        // setting up subscribers
+        self.subscribeToArLocationServicePublishers()
+    }
+    
+    static func getGeohash(forCoordinates locationCoordinates: CLLocationCoordinate2D , precision: Int = 8) -> String {
         
         let lat: Double = locationCoordinates.latitude
         let lon: Double = locationCoordinates.longitude
@@ -97,7 +102,7 @@ class GeohashingService {
         
     }
     
-    func adjacent(geohash: String, direction: Direction) -> String {
+    static func adjacent(geohash: String, direction: Direction) -> String {
         
         var geohashLowercase = geohash.lowercased()
         guard geohashLowercase.count > 0 else {return ""}
@@ -120,26 +125,26 @@ class GeohashingService {
         let typeV = geohashLowercase.count % 2
         
         if (border[direction]![typeV].contains(lastChar) && geohashLowercase.count > 0){
-            geohashLowercase = self.adjacent(geohash: geohashLowercase, direction: direction)
+            geohashLowercase = GeohashingService.adjacent(geohash: geohashLowercase, direction: direction)
         }
                 
         return geohashLowercase + "\(GeohashingService.base32[neighbour[direction]![typeV].firstIndex(of: lastChar)!])"
     }
     
-    func neighborsFor(geohash: String) -> Array<String> {
+    static func neighborsFor(geohash: String) -> Array<String> {
         
-        let north = self.adjacent(geohash: geohash, direction: .north)
-        let south = self.adjacent(geohash: geohash, direction: .south)
-        let east = self.adjacent(geohash: geohash, direction: .east)
-        let west = self.adjacent(geohash: geohash, direction: .west)
+        let north = GeohashingService.adjacent(geohash: geohash, direction: .north)
+        let south = GeohashingService.adjacent(geohash: geohash, direction: .south)
+        let east = GeohashingService.adjacent(geohash: geohash, direction: .east)
+        let west = GeohashingService.adjacent(geohash: geohash, direction: .west)
         
         return ([
             north,
-            self.adjacent(geohash: north, direction: .east), // north east
-            self.adjacent(geohash: north, direction: .west), // north west
+            GeohashingService.adjacent(geohash: north, direction: .east), // north east
+            GeohashingService.adjacent(geohash: north, direction: .west), // north west
             south,
-            self.adjacent(geohash: south, direction: .east), // south east
-            self.adjacent(geohash: south, direction: .west), // south west
+            GeohashingService.adjacent(geohash: south, direction: .east), // south east
+            GeohashingService.adjacent(geohash: south, direction: .west), // south west
             east,
             west
         ])
@@ -147,8 +152,6 @@ class GeohashingService {
     }
     
     static private let base32: Array<Character> = Array("0123456789bcdefghjkmnpqrstuvwxyz") // (geohash-specific) Base32
-    
-    
 }
 
 // extension for subscribing to publishers
