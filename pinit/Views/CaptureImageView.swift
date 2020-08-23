@@ -20,12 +20,12 @@ struct CaptureImageView: View {
             VStack{
                 HStack{
                     Image(systemName: "xmark")
-                        .font(Font.system(size: 15, weight: .bold))
-                        .foregroundColor(Color.primaryColor)
+                        .foregroundColor(Color.white)
+                    .applyDefaultIconTheme()
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
                     }
-                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                    .applyTopLeftPaddingToIcon()
                     Spacer()
                 }
                 Spacer()
@@ -39,7 +39,7 @@ struct CaptureImageView: View {
                     }
                     Spacer()
                 }
-            }
+            }.background(Color.black)
         }
     }
 }

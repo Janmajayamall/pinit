@@ -33,7 +33,6 @@ struct MapView: View {
                 self.yDragTranslation = value.translation.height
             })
             .onEnded({value in
-                
                 if (self.screenState == .up && value.translation.height > 0) {
                     self.screenState = .down
                 }else if (self.screenState == .down && value.translation.height < 0){
@@ -45,21 +44,33 @@ struct MapView: View {
         )
         
         return ZStack{
-            HStack{
-                Spacer()
-                Text("height")
-                Spacer()
-            }.frame(height: 100)
-                .background(Color.black.opacity(0.5))
-                .gesture(dragGesture)
-            
             UIKitMapBox(mapAnnotations: self.$locations)
+            
+            VStack{
+                HStack{
+                    Image(systemName: "xmark")
+                        .applyDefaultIconTheme()
+                        .onTapGesture {
+                            self.closeView()
+                    }
+                    .applyTopLeftPaddingToIcon()
+                    Spacer()
+                }.frame(width: parentGeometrySize.width, height: 50)
+                    .background(Color.white.opacity(0.7))
+                    .gesture(dragGesture)
+                Spacer()
+            }
         }
         .frame(width: parentGeometrySize.width, height: parentGeometrySize.height, alignment: .top)
         .cornerRadius(20)
         .offset(self.screeOffset)
         .animation(.spring())
         .gesture(DragGesture())
+    }
+    
+    func closeView(){
+        self.yDragTranslation = 0
+        self.screenState = .down
     }
     
     static let viewTopMargin: CGFloat = 100

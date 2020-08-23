@@ -12,49 +12,41 @@ struct MainArView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     @State var mapViewScreenState: SwipeScreenState = .down
-    @State var mapViewyDragTranslation: CGFloat = 0
+    @State var mapViewYDragTranslation: CGFloat = 0
     
     @ViewBuilder
     var body: some View {
         
-        if (self.settingsViewModel.screenManagementService.mainScreenService.activeType == .captureImageView) {            
+        if (self.settingsViewModel.screenManagementService.mainScreenService.activeType == .captureImageView) {           
             CaptureImageView()
         }else {
             GeometryReader { geometryProxy in
                 ZStack{
                     
                     UIKitArSceneView(parentSize: geometryProxy.size)
-                        
-                    
-                    MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewyDragTranslation)
+                                                            
+                    MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
                     
                     VStack{
                         HStack{
                             Spacer()
-                            Button(action: {
-                                if self.settingsViewModel.isUserAuthenticated() {
-                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
-                                }else {
-                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
-                                    
-                                }
-                            },label: {
-                                Image(systemName: "camera.circle.fill").font(Font.system(size: 20, weight: .bold)).foregroundColor(Color.primaryColor).padding(40)
-                            })
+                            SliderMenuView()
+                            .padding(EdgeInsets(top: 40, leading: 0, bottom: 0, trailing: 15))
                         }
                         Spacer()
                         HStack{
                             Button(action: {
                                 self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
                             }, label: {
-                                Image(systemName: "camera.circle.fill").font(Font.system(size: 20, weight: .bold)).foregroundColor(Color.primaryColor).padding(40)
+                                Image(systemName: "camera.circle.fill")
+                                    .applyDefaultIconTheme()
+                                    .padding(40)
                             })
                             
                             Spacer()
                         }
                         
                     }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
-                        .background(Color.black)
                     
                     ProfileView(parentSize: geometryProxy.size)
                     
@@ -64,13 +56,39 @@ struct MainArView: View {
                     
                     LoginView(parentSize: geometryProxy.size)
                 }
-            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity).background(Color.black).edgesIgnoringSafeArea(.all)
+            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
+                .gesture(DragGesture()
+                    .onChanged({value in
+                        
+                        guard self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .normal else {return}
+                        
+                        guard (self.mapViewScreenState == .up && value.translation.height > 0) || (self.mapViewScreenState == .down && value.translation.height < 0) else {return}
+                        
+                        self.mapViewYDragTranslation = value.translation.height
+                    })
+                    .onEnded({value in
+                        
+                        guard self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .normal else {return}
+                        
+                        if (self.mapViewScreenState == .up && value.translation.height > 0) {
+                            self.mapViewScreenState = .down
+                        }else if (self.mapViewScreenState == .down && value.translation.height < 0){
+                            self.mapViewScreenState = .up
+                        }
+                        
+                        self.mapViewYDragTranslation = 0
+                        }
+                ))
             
         }
-    
+        
     }
     
-    
+    func forceMapViewToDownState(){
+        self.mapViewYDragTranslation = 0
+        self.mapViewScreenState = .down
+    }
 }
 
 struct MainArView_Previews: PreviewProvider {
@@ -78,3 +96,18 @@ struct MainArView_Previews: PreviewProvider {
         MainArView()
     }
 }
+
+
+//Image(systemName: "chevron.down")
+//    .applyDefaultIconTheme()
+//    .onTapGesture {
+//        // making sure mapView screen state is down
+//        self.forceMapViewToDownState()
+//
+//        if self.settingsViewModel.isUserAuthenticated() {
+//            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
+//        }else {
+//            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+//        }
+//}
+//.applyTopLeftPaddingToIcon()

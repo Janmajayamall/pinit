@@ -21,12 +21,11 @@ struct EmailAuthenticationView: View {
         VStack{
             HStack{
                 Image(systemName: "xmark")
-                    .font(Font.system(size: 15, weight: .bold))
-                    .foregroundColor(Color.primaryColor)
+                .applyDefaultIconTheme()
                     .onTapGesture {
                         self.isOpen = false
                 }
-                .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                .applyTopLeftPaddingToIcon()
                 Spacer()
             }
             

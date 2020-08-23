@@ -31,23 +31,21 @@ struct EditProfileImageView: View {
         VStack{
             HStack{
                 Image(systemName: "xmark")
-                    .font(Font.system(size: 15, weight: .bold))
-                    .foregroundColor(Color.primaryColor)
+                .applyDefaultIconTheme()
                     .onTapGesture {
                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
                 }
-                .padding(EdgeInsets(top: 30, leading: 10, bottom: 0, trailing: 0))
+                .applyTopLeftPaddingToIcon()
                 
                 Spacer()
                 
                 if self.isDoneIconVisible == true {
                     Image(systemName: "checkmark")
-                        .font(Font.system(size: 15, weight: .bold))
-                        .foregroundColor(Color.primaryColor)
+                    .applyDefaultIconTheme()
                         .onTapGesture {
                             print("code")
                     }
-                    .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 10))
+                .applyTopRightPaddingToIcon()
                 }
             }
             Spacer()

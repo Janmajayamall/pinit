@@ -28,12 +28,11 @@ struct BottomSheetView <Content: View>: View {
             HStack{
                 Spacer()
                 Image(systemName: "xmark")
-                    .font(Font.system(size: 15, weight: .bold))
-                    .foregroundColor(Color.primaryColor)
-                    .padding(15)
+                .applyDefaultIconTheme()
                     .onTapGesture {
                         self.isOpen = false
                 }
+            .applyTopLeftPaddingToIcon()
             }
             self.content
         }.frame(width: self.parentSize.width, height: self.viewHeight, alignment: .top)

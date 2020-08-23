@@ -44,6 +44,8 @@
 		5D52F7DF24E9952800D9F27E /* CLLocation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7DE24E9952800D9F27E /* CLLocation+Extensions.swift */; };
 		5D52F7E124E9A1B600D9F27E /* UIKitArSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7E024E9A1B600D9F27E /* UIKitArSceneView.swift */; };
 		5D52F7E324EA755C00D9F27E /* GeohashModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7E224EA755C00D9F27E /* GeohashModel.swift */; };
+		5D564F4024F2829300962CEF /* IconViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D564F3F24F2829300962CEF /* IconViewModifiers.swift */; };
+		5D564F4224F2972400962CEF /* SliderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D564F4124F2972400962CEF /* SliderMenuView.swift */; };
 		5D576A3824F1A465004A004C /* EmailAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D576A3724F1A465004A004C /* EmailAuthenticationView.swift */; };
 		5D67E7EF24E84E6C00F5D240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E7EE24E84E6C00F5D240 /* AppDelegate.swift */; };
 		5D67E7F124E84E6C00F5D240 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E7F024E84E6C00F5D240 /* SceneDelegate.swift */; };
@@ -125,6 +127,8 @@
 		5D52F7DE24E9952800D9F27E /* CLLocation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Extensions.swift"; sourceTree = "<group>"; };
 		5D52F7E024E9A1B600D9F27E /* UIKitArSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitArSceneView.swift; sourceTree = "<group>"; };
 		5D52F7E224EA755C00D9F27E /* GeohashModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeohashModel.swift; sourceTree = "<group>"; };
+		5D564F3F24F2829300962CEF /* IconViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconViewModifiers.swift; sourceTree = "<group>"; };
+		5D564F4124F2972400962CEF /* SliderMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderMenuView.swift; sourceTree = "<group>"; };
 		5D576A3724F1A465004A004C /* EmailAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthenticationView.swift; sourceTree = "<group>"; };
 		5D67E7EB24E84E6C00F5D240 /* pinit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pinit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D67E7EE24E84E6C00F5D240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -201,6 +205,7 @@
 				5D4DD0A524ED3B7100E1FDF3 /* ColorPickerSlider.swift */,
 				5D4DD0A724ED3E4D00E1FDF3 /* StrokeWidthSlider.swift */,
 				5DC8527A24EFF83E00E36DCE /* FadeKeyboard.swift */,
+				5D564F4124F2972400962CEF /* SliderMenuView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -371,6 +376,7 @@
 				5DC8527024EFC87B00E36DCE /* ViewRectViewModifier.swift */,
 				5DC8527824EFED2300E36DCE /* KeyboardAwareViewModifiers.swift */,
 				5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */,
+				5D564F3F24F2829300962CEF /* IconViewModifiers.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -628,6 +634,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D564F4224F2972400962CEF /* SliderMenuView.swift in Sources */,
 				5DC8527524EFDDC500E36DCE /* UIView+Extensions.swift in Sources */,
 				5D52F7D224E98E0F00D9F27E /* GeohashingService.swift in Sources */,
 				5D4DD0A624ED3B7100E1FDF3 /* ColorPickerSlider.swift in Sources */,
@@ -653,6 +660,7 @@
 				5D4DD09F24ED2A1200E1FDF3 /* CaptureImageView.swift in Sources */,
 				5D4DD0A224ED34B300E1FDF3 /* PathDrawing.swift in Sources */,
 				5DC8527924EFED2300E36DCE /* KeyboardAwareViewModifiers.swift in Sources */,
+				5D564F4024F2829300962CEF /* IconViewModifiers.swift in Sources */,
 				5D52F7BD24E951AD00D9F27E /* Color+Extensions.swift in Sources */,
 				5DC8527B24EFF83E00E36DCE /* FadeKeyboard.swift in Sources */,
 				5D576A3824F1A465004A004C /* EmailAuthenticationView.swift in Sources */,

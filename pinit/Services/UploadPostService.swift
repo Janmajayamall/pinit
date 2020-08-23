@@ -125,7 +125,6 @@ class UploadPostService {
     func setupService() {
         // setting up the subscribers
         self.subscribeToLocationServicePublishers()
-        self.subscribeToGeohashingServicePublishers()
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToAuthenticationServicePublishers()
     }
@@ -149,12 +148,8 @@ extension UploadPostService {
     func subscribeToLocationServicePublishers() {
         Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
             self.currentLocation = location
+            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
         }.store(in: &cancellables)
     }
     
-    func subscribeToGeohashingServicePublishers() {
-        Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (geohashModel) in
-            self.currentLocationGeohash = geohashModel.currentLocationGeohash
-        }.store(in: &cancellables)
-    }
 }

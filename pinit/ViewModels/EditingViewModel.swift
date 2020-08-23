@@ -13,7 +13,7 @@ import FirebaseFirestore
 import Combine
 
 class EditingViewModel: NSObject, ObservableObject {
-
+    
     @Published var selectedImage: Image
     @Published var imageRect: CGRect = .zero
     @Published var imagePainting: ImagePaintingModel = ImagePaintingModel()
@@ -22,7 +22,7 @@ class EditingViewModel: NSObject, ObservableObject {
     var isPostPublic: Bool? = true
     var finalImage: UIImage?
     @Published var descriptionText: String = ""
-
+    
     init(selectedImage :Image) {
         self.selectedImage = selectedImage
         super.init()
@@ -36,6 +36,19 @@ class EditingViewModel: NSObject, ObservableObject {
     ///     - window: UIApplicaton window
     func setFinalImage(withWindow window: UIWindow!){
         self.finalImage = window.rootViewController?.view.toImage(rect: self.imageRect)
+        self.uploadPost()
+    }
+    
+    func uploadPost(){
+        guard let image = self.finalImage else {return}
+        guard let isPublic = self.isPostPublic else {return}
+        
+        // requestCreatePost
+        let requestCreatePost = RequestCreatePostModel(image: image, description: self.descriptionText, isPublic: isPublic)
+        
+        // publish request for upload the post with object post model
+        NotificationCenter.default.post(name: .uploadPostServiceDidRequestCreatePost, object: requestCreatePost)
+        
     }
 }
 
@@ -61,14 +74,4 @@ extension EditingViewModel {
         self.imagePainting.undoPathDrawing()
     }
     
-    func uploadPost(){
-        guard let image = self.finalImage else {return}
-        guard let isPublic = self.isPostPublic else {return}
-        print(image, "image is here")
-        // requestCreatePost
-        let requestCreatePost = RequestCreatePostModel(image: image, description: self.descriptionText, isPublic: isPublic)
-        
-        // publish request for upload the post with object post model
-        NotificationCenter.default.post(name: .uploadPostServiceDidRequestCreatePost, object: requestCreatePost)
-    }
 }

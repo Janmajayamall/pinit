@@ -54,8 +54,8 @@ struct ProfileView: View {
             }.zIndex(1)
             VStack{
                 HStack{
-                    Image(systemName: "xmark").font(Font.system(size: 15, weight: .bold))
-                        .foregroundColor(Color.primaryColor)
+                    Image(systemName: "xmark")
+                    .applyDefaultIconTheme()
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                         }

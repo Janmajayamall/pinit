@@ -17,7 +17,6 @@ protocol LocationServiceDelegate {
 class LocationService: NSObject {
     
     var manager: CLLocationManager = CLLocationManager()
-    var delegate: LocationServiceDelegate?
     var currentLocation: CLLocation?
     var currentHeading: CLHeading?
     
@@ -26,6 +25,7 @@ class LocationService: NSObject {
         
         super.init()
         
+        self.manager.delegate = self
         self.manager.desiredAccuracy = kCLLocationAccuracyBest
         self.manager.distanceFilter = kCLDistanceFilterNone
         self.manager.headingFilter = kCLHeadingFilterNone
@@ -55,18 +55,16 @@ extension LocationService: CLLocationManagerDelegate {
         locations.forEach { (location) in
             self.currentLocation = location
             NotificationCenter.default.post(name: .locationServiceDidUpdateLocation, object: location)
-//            delegate?.locationService(didUpdateLocation: location)
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-//        delegate?.locationService(didUpdateHeading: newHeading)
         self.currentHeading = newHeading
         NotificationCenter.default.post(name: .locationServiceDidUpdateHeading, object: newHeading)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        delegate?.locationService(didFailWithError: error)
+        print("Location Service manager failed with error: \(error.localizedDescription)")
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

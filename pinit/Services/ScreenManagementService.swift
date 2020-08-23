@@ -167,17 +167,18 @@ struct MainScreenService: ScreenService {
     }
     
     private mutating func switchToCaputureImageView() {
-        // reset mainArView screen before the switch
-        self.mainArViewScreenService.resetScreen()
-        print("Switched to captureImageView")
         self.activeType = .captureImageView
+        
+        // reset mainArView screen
+        self.mainArViewScreenService.resetScreen()
     }
     
     private mutating func switchToMainArView() {
-        // reset captureImageView Screen before switch
+        self.activeType = .mainArView
+        
+        // reset captureImageView Screen after switching screen, so it does not looks glitchy
         self.captureImageViewScreenService.resetScreen()
         
-        self.activeType = .mainArView
     }
     
     func resetScreen() {

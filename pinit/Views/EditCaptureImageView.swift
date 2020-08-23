@@ -38,30 +38,31 @@ struct EditCaptureImageView: View {
                     VStack{
                         HStack{
                             Image(systemName: "xmark")
-                                .font(Font.system(size: 15, weight: .bold))
-                                .foregroundColor(Color.primaryColor)
+                                .foregroundColor(Color.white)
+                                .applyDefaultIconTheme()
                                 .onTapGesture {
                                     self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
                             }
-                            .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                            .applyTopLeftPaddingToIcon()
                             Spacer()
                             
                             
                             Image(systemName: "scribble")
-                                .font(Font.system(size: 15, weight: .bold))
-                                .foregroundColor(Color.primaryColor)
+                                .foregroundColor(Color.white)
+                                .applyDefaultIconTheme()
                                 .onTapGesture {
                                     self.screenState = .painting
                             }
-                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 10))
+                            .applyTopRightPaddingToIcon()
+                            .padding(.trailing, 5)
                             
                             Image(systemName: "checkmark")
-                                .font(Font.system(size: 15, weight: .bold))
-                                .foregroundColor(Color.primaryColor)
+                                .foregroundColor(Color.white)
+                                .applyDefaultIconTheme()
                                 .onTapGesture {
                                     self.finalisePostImage()
                             }
-                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 10))
+                            .applyTopRightPaddingToIcon()
                             
                         }
                         Spacer()
@@ -74,26 +75,26 @@ struct EditCaptureImageView: View {
                     VStack{
                         HStack{
                             Image(systemName: "chevron.left")
-                                .font(Font.system(size: 15, weight: .bold))
-                                .foregroundColor(Color.primaryColor)
+                                .foregroundColor(Color.white)
+                                .applyDefaultIconTheme()
                                 .onTapGesture {
                                     guard self.screenState == .painting else {return}
                                     self.screenState = .normal
                             }
-                            .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                            .applyTopLeftPaddingToIcon()
                             
                             
                             Spacer()
                             
-                            Image(systemName: "arrow.uturn.left.circle")
-                                .font(Font.system(size: 15, weight: .bold))
-                                .foregroundColor(Color.primaryColor)
+                            Image(systemName: "arrow.counterclockwise")
+                                .foregroundColor(Color.white)
+                                .applyDefaultIconTheme()
                                 .onTapGesture {
                                     guard self.screenState == .painting else {return}
                                     
                                     self.editingViewModel.imagePainting.undoPathDrawing()
                             }
-                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 10))
+                            .applyTopRightPaddingToIcon()
                             
                         }
                         
@@ -109,7 +110,7 @@ struct EditCaptureImageView: View {
                             Spacer()
                             ColorPickerSlider(selectedYCoord: self.editingViewModel.imagePainting.selectedColorYCoord)
                                 .frame(width: ColorPickerSlider.colorPickerExpandedCircleDia * 1.5)
-                                .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 15))
+                                .padding(EdgeInsets(top: 100, leading: 0, bottom: 0, trailing: 15))
                         }
                         Spacer()
                     }
@@ -122,7 +123,7 @@ struct EditCaptureImageView: View {
                         HStack{
                             StrokeWidthSlider(selectedYCoord: self.editingViewModel.imagePainting.selectedStrokeWidthYCoord)
                                 .frame(width: StrokeWidthSlider.minimumStrokeWidth + StrokeWidthSlider.strokeAmplification * 1.5)
-                                .padding(EdgeInsets(top: 30, leading: 15, bottom: 0, trailing: 0))
+                                .padding(EdgeInsets(top: 100, leading: 15, bottom: 0, trailing: 0))
                             
                             Spacer()
                         }
@@ -168,6 +169,9 @@ struct EditCaptureImageView: View {
         // capture view on screen after 0.5s
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
             self.editingViewModel.setFinalImage(withWindow: self.window)
+            
+            // reset main screen to main ar view
+            self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
         })
     }
 }
