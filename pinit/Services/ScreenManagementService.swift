@@ -60,6 +60,7 @@ struct ProfileViewScreenService: ScreenService {
     }
     
     private mutating func switchToEditProfileImage() {
+        print("dhoka")
         self.activeType = .editProfileImage
     }
     

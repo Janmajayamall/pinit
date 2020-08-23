@@ -54,6 +54,7 @@
 		5D67E7FB24E84E7000F5D240 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D67E7F924E84E7000F5D240 /* LaunchScreen.storyboard */; };
 		5D67E80624E84E7000F5D240 /* pinitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E80524E84E7000F5D240 /* pinitTests.swift */; };
 		5D67E81124E84E7000F5D240 /* pinitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E81024E84E7000F5D240 /* pinitUITests.swift */; };
+		5DB2B1A624F2CA8700E4D86B /* ImageCropViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */; };
 		5DC2859924ED029F00830887 /* AppArScnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859824ED029F00830887 /* AppArScnView.swift */; };
 		5DC2859B24ED06B800830887 /* UIKitMapBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859A24ED06B800830887 /* UIKitMapBox.swift */; };
 		5DC2859D24ED0F3400830887 /* EditingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859C24ED0F3400830887 /* EditingViewModel.swift */; };
@@ -143,6 +144,7 @@
 		5D67E80C24E84E7000F5D240 /* pinitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pinitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D67E81024E84E7000F5D240 /* pinitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pinitUITests.swift; sourceTree = "<group>"; };
 		5D67E81224E84E7000F5D240 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropViewModel.swift; sourceTree = "<group>"; };
 		5DC2859824ED029F00830887 /* AppArScnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppArScnView.swift; sourceTree = "<group>"; };
 		5DC2859A24ED06B800830887 /* UIKitMapBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitMapBox.swift; sourceTree = "<group>"; };
 		5DC2859C24ED0F3400830887 /* EditingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingViewModel.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 			children = (
 				5D52F7AC24E91EF200D9F27E /* SettingsViewModel.swift */,
 				5DC2859C24ED0F3400830887 /* EditingViewModel.swift */,
+				5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -635,6 +638,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D564F4224F2972400962CEF /* SliderMenuView.swift in Sources */,
+				5DB2B1A624F2CA8700E4D86B /* ImageCropViewModel.swift in Sources */,
 				5DC8527524EFDDC500E36DCE /* UIView+Extensions.swift in Sources */,
 				5D52F7D224E98E0F00D9F27E /* GeohashingService.swift in Sources */,
 				5D4DD0A624ED3B7100E1FDF3 /* ColorPickerSlider.swift in Sources */,

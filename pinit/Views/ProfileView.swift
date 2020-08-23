@@ -31,7 +31,8 @@ struct ProfileView: View {
         ZStack{
             VStack{
                 Spacer()
-                Rectangle().foregroundColor(Color.black)
+                Image(uiImage: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage"))
+                    .resizable().scaledToFit()
                     .frame(width: 100, height: 100, alignment: .center)
                     .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: 100, height: 100))
                     .cornerRadius(50)
@@ -46,6 +47,7 @@ struct ProfileView: View {
                     Text(self.name)
                         .font(Font.system(size: 18, weight: .semibold, design: .rounded))
                         .onTapGesture {
+                            print("hereiam")
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editUsername)
                     }
                     Spacer()
@@ -55,6 +57,7 @@ struct ProfileView: View {
             VStack{
                 HStack{
                     Image(systemName: "xmark")
+                        .foregroundColor(Color.primaryColor)
                     .applyDefaultIconTheme()
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)

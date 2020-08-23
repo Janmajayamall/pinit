@@ -14,10 +14,10 @@ struct UIKitImagePicker: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, UIImagePickerControllerDelegate,  UINavigationControllerDelegate {
         
-        @Binding var image: UIImage?
+        @Binding var image: UIImage
         @Binding var isOpen: Bool
         
-        init(image: Binding<UIImage?>, isOpen: Binding<Bool>) {
+        init(image: Binding<UIImage>, isOpen: Binding<Bool>) {
             self._image = image
             self._isOpen = isOpen
         }
@@ -36,7 +36,7 @@ struct UIKitImagePicker: UIViewControllerRepresentable {
     }
     
     var sourceType: UIImagePickerController.SourceType
-    @Binding var image: UIImage?
+    @Binding var image: UIImage
     @Binding var isOpen: Bool
     
     func makeUIViewController(context: Context) -> UIImagePickerController {

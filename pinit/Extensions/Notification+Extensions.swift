@@ -29,4 +29,8 @@ extension Notification.Name {
     
     // notifications for upoadPostService
     static let uploadPostServiceDidRequestCreatePost = Notification.Name("uploadPostServiceDidRequestCreatePost")
+    
+    // notifications for userProfileService
+    static let userProfileServiceDidRequestUsernameChange = Notification.Name("userProfileServiceDidRequestUsernameChange")
+    static let userProfileServiceDidRequestProfileImageChange = Notification.Name("userProfileServiceDidRequestProfileImageChange")
 }

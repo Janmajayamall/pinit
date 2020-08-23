@@ -14,6 +14,9 @@ struct MainArView: View {
     @State var mapViewScreenState: SwipeScreenState = .down
     @State var mapViewYDragTranslation: CGFloat = 0
     
+    @State var showMenu: Bool = false
+    
+    
     @ViewBuilder
     var body: some View {
         
@@ -24,14 +27,15 @@ struct MainArView: View {
                 ZStack{
                     
                     UIKitArSceneView(parentSize: geometryProxy.size)
-                                                            
+                    
                     MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
+                    
                     
                     VStack{
                         HStack{
                             Spacer()
                             SliderMenuView()
-                            .padding(EdgeInsets(top: 40, leading: 0, bottom: 0, trailing: 15))
+                            .applyTopRightPaddingToIcon()
                         }
                         Spacer()
                         HStack{
@@ -50,13 +54,14 @@ struct MainArView: View {
                     
                     ProfileView(parentSize: geometryProxy.size)
                     
-                    EditProfileImageView(parentSize: geometryProxy.size)
+                    EditProfileImageView(imageCropViewModel: ImageCropViewModel(image: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage")), parentSize: geometryProxy.size)
                     
                     EditUsernameView(parentSize: geometryProxy.size)
                     
                     LoginView(parentSize: geometryProxy.size)
                 }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .background(Color.black)
                 .edgesIgnoringSafeArea(.all)
                 .gesture(DragGesture()
                     .onChanged({value in

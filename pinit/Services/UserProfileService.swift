@@ -85,20 +85,22 @@ class UserProfileService: ObservableObject {
         }
     }
     
-    func changeUsername() {
-        
+    func changeUsername(to username: String) {
+        print("username changed to: \(username)")
     }
     
-    func changeProfileImage() {
+    func changeProfileImage(to profileImage: UIImage) {
         // first assing to profileImage publisher & then make the api call
+        print("profileImage changed to: \(profileImage)")
+        self.userProfileImage = profileImage
     }
     
     func setupService() {
         // setting up subscribers
         self.subscribeToAuthenticationSeriverPublishers()
+        self.subscribeToUserProfileServicePublishers()
     }
     
-
     private let userCollectionRef: CollectionReference = Firestore.firestore().collection("users")
     
 }
@@ -116,6 +118,19 @@ extension UserProfileService {
             
             self.registerServiceForUser(user)
             return
+        }.store(in: &cancellables)
+    }
+    
+    func subscribeToUserProfileServicePublishers() {
+        
+        // subscribing to publisher for usernane change
+        Publishers.userProfileServiceDidRequestUsernameChangePublisher.sink { (username) in
+            self.changeUsername(to: username)
+        }.store(in: &cancellables)
+        
+        // subscribing to pubilsher for profile image change
+        Publishers.userProfileServiceDidRequestProfileImageChangePublisher.sink { (profileImage) in
+            self.changeProfileImage(to: profileImage)
         }.store(in: &cancellables)
     }
 }

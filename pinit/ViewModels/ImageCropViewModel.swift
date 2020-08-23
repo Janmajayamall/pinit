@@ -1,27 +1,48 @@
 //
-//  ProfileImageEditorView.swift
+//  ImageCropViewModel.swift
 //  pinit
 //
-//  Created by Janmajaya Mall on 16/8/2020.
+//  Created by Janmajaya Mall on 24/8/2020.
 //  Copyright © 2020 Janmajaya Mall. All rights reserved.
 //
 
 import SwiftUI
 
-struct ProfileImageEditorView: View {
-    var image: UIImage
+class ImageCropViewModel: ObservableObject {
     
-    var size: CGSize {
-        return CGSize(width: self.image.size.width * self.scale, height: self.image.size.height * self.scale)
+    @Published var originalImage: UIImage {
+        didSet{
+            print("now")
+            self.setupModel()
+        }
     }
     
-    @State var scale: CGFloat = 1
-    @State var offset: CGSize = CGSize(width: 0, height: 0)
+    @Published var image: UIImage?
+    @Published var scale: CGFloat = 1
+    
+    @Published var offset: CGSize = .zero
+    
+    init(image: UIImage) {
+        self.originalImage = image
+        self.image = self.resizeUIImageToDefaultSize(image)
+    }
+    
+    func setupModel(){
+        self.image = self.resizeUIImageToDefaultSize(self.originalImage)
+        self.scale = 1
+        self.offset = .zero
+    }
+    
+    
+    var size: CGSize {
+        guard let image = self.image else {return .zero}
+        return CGSize(width: image.size.width * self.scale, height: image.size.height * self.scale)
+    }
     
     // value by which image breaches upper boundary
     var upper: CGFloat {
         // upperValue can be -ve but upper can't. Hence, check & return if >= 0 else return 0 {goes same for lower, left, right}
-        let upperValue = (self.size.height - ProfileImageEditorView.defaultImageDim)/2 - self.offset.height
+        let upperValue = (self.size.height - self.defaultImageDim)/2 - self.offset.height
         if upperValue > 0 {
             return upperValue
         }else{
@@ -31,7 +52,7 @@ struct ProfileImageEditorView: View {
     
     // value by which image breaches the lower boundary
     var lower: CGFloat {
-        let lowerValue = (self.size.height - ProfileImageEditorView.defaultImageDim)/2 + self.offset.height
+        let lowerValue = (self.size.height - self.defaultImageDim)/2 + self.offset.height
         if lowerValue > 0 {
             return lowerValue
         }else {
@@ -42,7 +63,7 @@ struct ProfileImageEditorView: View {
     
     // value by which image breaches the right boundary
     var right: CGFloat {
-        let rightValue = (self.size.width - ProfileImageEditorView.defaultImageDim)/2 + self.offset.width
+        let rightValue = (self.size.width - self.defaultImageDim)/2 + self.offset.width
         if (rightValue > 0){
             return rightValue
         }else{
@@ -52,14 +73,13 @@ struct ProfileImageEditorView: View {
     
     // value by which image breaches the left boundary
     var left: CGFloat {
-        let leftValue = (self.size.width - ProfileImageEditorView.defaultImageDim)/2 - self.offset.width
+        let leftValue = (self.size.width - self.defaultImageDim)/2 - self.offset.width
         if (leftValue > 0){
             return leftValue
         }else{
             return 0
         }
     }
-    
     
     func translateImage(by translation: CGSize){
         
@@ -126,75 +146,20 @@ struct ProfileImageEditorView: View {
         
     }
     
-    var body: some View {
-        let magnificationGesture = MagnificationGesture()
-            .onChanged({ (magnitude) in
-                if magnitude > 1 {
-                    self.scale += 0.1
-                }else {
-                    self.scale -= 0.1
-                    // TODO: can improve the offset thing later
-                    self.offset = .zero
-                }
-                
-                if (self.scale < 1){
-                    self.scale = 1
-                }
-            })
-        
-        let dragGesture = DragGesture().onChanged({ (value) in
-            self.translateImage(by: value.translation)
-        })
-        
-        return
-            
-            VStack{
-                Spacer()
-                HStack{
-                    ZStack{
-                        Image(uiImage: self.image).resizable().scaledToFill().frame(width: self.size.width, height: self.size.height)
-                            .offset(self.offset)
-                            .animation(.easeIn)
-                    }
-                }
-                Spacer()
-            }.frame(width: ProfileImageEditorView.defaultImageDim, height: ProfileImageEditorView.defaultImageDim, alignment: .center)
-                .cornerRadius(ProfileImageEditorView.defaultImageDim/2)
-                .clipped()
-                .simultaneousGesture(magnificationGesture)
-                .simultaneousGesture(dragGesture)
-        
-    }
-    
-    /// crops the original chosen image to what is present in the defaultImageDim box
-    func getCroppedImage() -> UIImage? {
-        let image = self.image
-        let editScale = self.scale
-        
-        let cropRect = CGRect(x: self.left/editScale, y: self.upper/editScale , width: ProfileImageEditorView.defaultImageDim/editScale, height: ProfileImageEditorView.defaultImageDim/editScale)
-        
-        let cgImage = image.cgImage!
-        let croppedImage = cgImage.cropping(to: cropRect)
-        if let cropImage = croppedImage {
-            return UIImage(cgImage: cropImage)
-        }
-        return nil
-    }
-    
     /// Resizes the image so that the smaller of width or height is equivalent to defaultImageDim
     ///
     /// By setting figuring out the lesser from width & height, we can figure out the scale difference between the smaller & defaultImageDim.
     /// Then we can scale down the smaller dimension (from width & height) as well as the longer one.
-    static func resizeUIImageToDefaultSize (_ image: UIImage) -> UIImage? {
+    func resizeUIImageToDefaultSize (_ image: UIImage) -> UIImage? {
         
         let imageSize: CGSize = image.size
         
         //figuring out the scale difference between smaller of width & height and the defaultImageDim
         let scaleDiff: CGFloat
         if imageSize.width < imageSize.height {
-            scaleDiff = imageSize.width / self.defaultImageDim
+            scaleDiff = self.defaultImageDim / imageSize.width
         }else {
-            scaleDiff = imageSize.height / self.defaultImageDim
+            scaleDiff = self.defaultImageDim / imageSize.height
         }
         
         // convering UIImage to data
@@ -204,6 +169,44 @@ struct ProfileImageEditorView: View {
         
         return scaledImage
     }
+    
+    /// crops the original chosen image to what is present in the defaultImageDim box
+    func cropImage() {
+        guard let image = self.image else {return}
+        let editScale = self.scale
+        
+        print(editScale, self.left, self.upper)
+        
+        let cropRect = CGRect(x: self.left/editScale, y: self.upper/editScale , width: self.defaultImageDim/editScale, height: self.defaultImageDim/editScale)
+                        
+        guard let croppedCGImage = image.cgImage?.cropping(to: cropRect) else {
+            return
+        }
+        
+        let croppedUIImage = UIImage(cgImage: croppedCGImage)
+        self.image = croppedUIImage
+//        NotificationCenter.default.post(name: .userProfileServiceDidRequestProfileImageChange, object: croppedUIImage)
+    }
+    
+    func magnifyBy(magnitude: CGFloat) {
+        if magnitude > 1 {
+            self.scale += 0.1
+        }else {
+            self.scale -= 0.1
             
-    static let defaultImageDim: CGFloat = 300
+            // TODO: can improve the zoom out offset thing late
+            self.offset = .zero
+        }
+        
+        if (self.scale < 1){
+            self.scale = 1
+        }
+    }
+    
+    func dragBy(translation: CGSize) {
+        self.translateImage(by: translation)
+    }
+    
+    
+    let defaultImageDim: CGFloat = 300
 }

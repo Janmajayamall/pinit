@@ -115,4 +115,26 @@ extension Publishers {
         }
         .eraseToAnyPublisher()
     }
+    
+    // publishers for userProfileService
+    static var userProfileServiceDidRequestUsernameChangePublisher: AnyPublisher<String, Never> {
+        NotificationCenter
+            .default
+            .publisher(for: .userProfileServiceDidRequestUsernameChange)
+            .compactMap { (notification) -> String? in
+                guard let username = notification.object as? String else {return nil}
+                return username
+        }
+        .eraseToAnyPublisher()
+    }
+    static var userProfileServiceDidRequestProfileImageChangePublisher: AnyPublisher<UIImage, Never> {
+        NotificationCenter
+            .default
+            .publisher(for: .userProfileServiceDidRequestProfileImageChange)
+            .compactMap { (notification) -> UIImage? in
+                guard let profileImage = notification.object as? UIImage else {return nil}
+                return profileImage
+        }
+        .eraseToAnyPublisher()
+    }
 }

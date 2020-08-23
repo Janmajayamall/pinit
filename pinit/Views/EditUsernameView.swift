@@ -20,7 +20,7 @@ struct EditUsernameView: View {
     }
     
     var offset: CGSize {
-        if(self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType == .editProfileImage){
+        if(self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType == .editUsername){
             return .zero
         }
         return CGSize(width: .zero, height: self.parentSize.height)
@@ -29,17 +29,20 @@ struct EditUsernameView: View {
     var body: some View {
         ZStack{
             VStack{
-                Spacer()
                 HStack{
                     Spacer()
                     Text("Change your username").font(Font.custom("Avenir", size: 20)).bold().foregroundColor(Color.black)
                     Spacer()
-                }.padding(.bottom, 2)
+                }.padding(EdgeInsets(top: 35, leading: 0, bottom: 1, trailing: 0))
                 HStack{
-                    TextField("Username", text: self.$username).font(Font.custom("Avenir", size: 18)).padding(10).background(Color.textfieldColor).cornerRadius(5)
-                }.padding(EdgeInsets(top: 0, leading: 5, bottom: 5, trailing: 5))
+                    VStack{
+                        TextField("Username", text: self.$username)
+                            .font(Font.custom("Avenir", size: 18))
+                        Divider().background(Color.secondaryColor)
+                    }
+                }.padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 5))
                 Button(action: {
-                    print("dadada")
+                    self.changeUsername(to: self.username)
                 }, label: {
                     HStack{
                         Spacer()
@@ -57,7 +60,8 @@ struct EditUsernameView: View {
             VStack{
                 HStack{
                     Image(systemName: "xmark")
-                    .applyDefaultIconTheme()
+                        .foregroundColor(Color.primaryColor)
+                        .applyDefaultIconTheme()
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
                     }
@@ -69,9 +73,13 @@ struct EditUsernameView: View {
         }
         .frame(width: self.viewSize.width, height: self.viewSize.height)
         .background(Color.white)
+        .offset(self.offset)
         .cornerRadius(15)
-        .offset(CGSize(width: .zero, height:self.parentSize.height))
         .animation(.spring())
+    }
+    
+    func changeUsername(to username: String){        
+        NotificationCenter.default.post(name: .userProfileServiceDidRequestUsernameChange, object: username)
     }
     
     private let viewHeightRatio: CGFloat = 0.3
