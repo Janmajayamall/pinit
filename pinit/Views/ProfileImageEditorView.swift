@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ProfileImageEditorView: View {
-    var image: UIImage
+    @Binding var image: UIImage
     
     var size: CGSize {
         return CGSize(width: self.image.size.width * self.scale, height: self.image.size.height * self.scale)
@@ -150,6 +150,7 @@ struct ProfileImageEditorView: View {
             
             VStack{
                 Spacer()
+                
                 HStack{
                     ZStack{
                         Image(uiImage: self.image).resizable().scaledToFill().frame(width: self.size.width, height: self.size.height)
@@ -157,6 +158,14 @@ struct ProfileImageEditorView: View {
                             .animation(.easeIn)
                     }
                 }
+                
+                Spacer()
+                
+                Text("duadiawuda").onTapGesture {
+                    print("just got tapped")
+                    self.getCroppedImage()
+                }
+                
                 Spacer()
             }.frame(width: ProfileImageEditorView.defaultImageDim, height: ProfileImageEditorView.defaultImageDim, alignment: .center)
                 .cornerRadius(ProfileImageEditorView.defaultImageDim/2)
@@ -167,18 +176,31 @@ struct ProfileImageEditorView: View {
     }
     
     /// crops the original chosen image to what is present in the defaultImageDim box
-    func getCroppedImage() -> UIImage? {
+    func getCroppedImage() {
         let image = self.image
-        let editScale = self.scale
+        var editScale = self.scale
+        
+        let cgImage = image.cgImage!
+        
+        let scaleDiff: CGFloat
+        if (cgImage.width < cgImage.height) {
+            scaleDiff = CGFloat(cgImage.width) / ProfileImageEditorView.defaultImageDim
+        }else {
+            scaleDiff = CGFloat(cgImage.height) / ProfileImageEditorView.defaultImageDim
+        }
+        
+        editScale = editScale / scaleDiff
+        
+        print(image.size, image.cgImage?.height, image.cgImage?.width, "this is here")
         
         let cropRect = CGRect(x: self.left/editScale, y: self.upper/editScale , width: ProfileImageEditorView.defaultImageDim/editScale, height: ProfileImageEditorView.defaultImageDim/editScale)
         
-        let cgImage = image.cgImage!
+        
         let croppedImage = cgImage.cropping(to: cropRect)
         if let cropImage = croppedImage {
-            return UIImage(cgImage: cropImage)
+            self.image = UIImage(cgImage: cropImage)
         }
-        return nil
+        
     }
     
     /// Resizes the image so that the smaller of width or height is equivalent to defaultImageDim
@@ -199,8 +221,9 @@ struct ProfileImageEditorView: View {
         
         // convering UIImage to data
         guard let imageData = image.jpegData(compressionQuality: 1) else {return nil}
+        guard let cgImage = image.cgImage else {return nil}
         // resizing the UIImage using the scale value
-        guard let scaledImage = UIImage(data: imageData, scale: scaleDiff) else {return nil}
+        let scaledImage = UIImage(cgImage: cgImage, scale: scaleDiff, orientation: image.imageOrientation)
         
         return scaledImage
     }

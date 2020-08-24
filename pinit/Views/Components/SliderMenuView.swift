@@ -39,7 +39,6 @@ struct SliderMenuView: View {
                 .font(Font.system(size: 20, weight: .heavy))
                 .foregroundColor(Color.white)
                 .onTapGesture {
-                    
                     guard self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .normal else {return}
                     
                     withAnimation {

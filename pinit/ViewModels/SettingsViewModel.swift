@@ -33,8 +33,8 @@ class SettingsViewModel: ObservableObject {
         self.setupSubscribers()
         
         // setup services
-        self.userProfileService.setupService()
         self.uploadPostService.setupService()
+        self.userProfileService.setupService()
         self.locationService.setupService()
         self.authenticationService.setupService()
     }
@@ -53,7 +53,9 @@ extension SettingsViewModel {
         }.store(in: &cancellables)
         
         self.userProfileService.$user.assign(to: \.user, on: self).store(in: &cancellables)
+        
         self.userProfileService.$userProfile.assign(to: \.userProfile, on: self).store(in: &cancellables)
+        
         self.userProfileService.$userProfileImage.assign(to: \.userProfileImage, on: self).store(in: &cancellables)
     }
     

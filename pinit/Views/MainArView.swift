@@ -28,7 +28,7 @@ struct MainArView: View {
                     
                     UIKitArSceneView(parentSize: geometryProxy.size)
                     
-                    MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
+//                    MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
                     
                     
                     VStack{
@@ -54,18 +54,20 @@ struct MainArView: View {
                     
                     ProfileView(parentSize: geometryProxy.size)
                     
-                    EditProfileImageView(imageCropViewModel: ImageCropViewModel(image: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage")), parentSize: geometryProxy.size)
-                    
                     EditUsernameView(parentSize: geometryProxy.size)
                     
                     LoginView(parentSize: geometryProxy.size)
+                    
+                    SetupProfileView(parentSize: geometryProxy.size)
+                    
+                    EditProfileImageView(imageCropViewModel: ImageCropViewModel(image: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage")), parentSize: geometryProxy.size)
                 }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .background(Color.black)
                 .edgesIgnoringSafeArea(.all)
                 .gesture(DragGesture()
                     .onChanged({value in
-                        
+                        print("User Information \(self.settingsViewModel.user?.uid) - Profile: \(self.settingsViewModel.userProfile?.username ?? "No user profile" )")
                         guard self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .normal else {return}
                         
                         guard (self.mapViewScreenState == .up && value.translation.height > 0) || (self.mapViewScreenState == .down && value.translation.height < 0) else {return}

@@ -40,6 +40,7 @@ struct UIKitUITextView : UIViewRepresentable {
         let textView = UITextView()
         textView.backgroundColor = UIColor.clear
         textView.textColor = UIColor.white
+        textView.font = UIFont(name: "Avenir", size: 20)
         textView.isScrollEnabled = true
         textView.delegate = context.coordinator
         return textView

@@ -78,17 +78,52 @@ enum CaptureImageScreenType {
     }
 }
 
+enum SetupProfileViewScreenType {
+    case pickImage
+    case normal
+}
+
+struct SetupProfileViewScreenService: ScreenService {
+    var activeType: SetupProfileViewScreenType = .normal
+    
+    mutating func switchTo(screenType type: SetupProfileViewScreenType) {
+        switch type {
+        case .normal:
+            self.switchToNormal()
+        case .pickImage:
+            self.switchToPickImage()
+        }
+    }
+    
+    mutating private func switchToPickImage() {
+        self.activeType = .pickImage
+    }
+    
+    mutating private func switchToNormal() {
+        self.activeType = .normal
+    }
+    
+    mutating func resetScreen() {
+        self.activeType = .normal
+    }
+}
+
 enum MainArViewScreenType {
     case login
     case profile
+    case setupProfile
     case normal
 }
 
 struct MainArViewScreenService: ScreenService {
     var activeType: MainArViewScreenType = .normal
     var profileViewScreenService: ProfileViewScreenService = ProfileViewScreenService()
+    var setupProfileViewScreenService: SetupProfileViewScreenService = SetupProfileViewScreenService()
     
     mutating func switchTo(screenType type: MainArViewScreenType){
+        
+        self.resetScreenServices()
+        
         switch type {
         case .login:
             self.switchToLogin()
@@ -96,6 +131,8 @@ struct MainArViewScreenService: ScreenService {
             self.switchToProfile()
         case .normal:
             self.switchToNormal()
+        case .setupProfile:
+            self.switchToSetupProfile()
         }
     }
     
@@ -111,9 +148,22 @@ struct MainArViewScreenService: ScreenService {
         self.activeType = .normal
     }
     
+    private mutating func switchToSetupProfile() {
+        self.activeType = .setupProfile
+    }
+    
     mutating func resetScreen() {
-        //TODO: fix child as well
+        self.resetScreenServices()
+        
         self.activeType = .normal
+    }
+    
+    mutating func resetScreenServices() {
+        // resetting profile view screen, if it was active
+        self.profileViewScreenService.resetScreen()
+        
+        // resetting setup profile view screen, if it was active
+        self.setupProfileViewScreenService.resetScreen()
     }
 }
 
@@ -167,6 +217,11 @@ struct MainScreenService: ScreenService {
         }
     }
     
+    mutating func switchToSetupUserProfile(){
+        self.switchTo(screenType: .mainArView)
+        self.mainArViewScreenService.switchTo(screenType: .setupProfile)
+    }
+    
     private mutating func switchToCaputureImageView() {
         self.activeType = .captureImageView
         
@@ -182,6 +237,7 @@ struct MainScreenService: ScreenService {
         
     }
     
+    
     func resetScreen() {
         print("screen reset")
     }
@@ -189,6 +245,23 @@ struct MainScreenService: ScreenService {
 
 class ScreenManagementService: ObservableObject {
     @Published var mainScreenService: MainScreenService = MainScreenService()
+    
+    private var cancellables: Set<AnyCancellable> = []
+    
+    init(){
+        self.subscribeToUserProfileService()
+    }
+    
+    
+}
+
+// for subscribing to notifications
+extension ScreenManagementService {
+    func subscribeToUserProfileService(){
+        Publishers.userProfileServiceDidNotFindUserProfilePublisher.sink { (user) in
+            self.mainScreenService.switchToSetupUserProfile()
+        }.store(in: &cancellables)
+    }
 }
 
 

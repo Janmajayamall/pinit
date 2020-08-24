@@ -7,36 +7,36 @@
 //
 
 import SwiftUI
+import Combine
 
 class ImageCropViewModel: ObservableObject {
-    
-    @Published var originalImage: UIImage {
+
+    @Published var image: UIImage {
         didSet{
-            print("now")
             self.setupModel()
         }
     }
-    
-    @Published var image: UIImage?
-    @Published var scale: CGFloat = 1
-    
-    @Published var offset: CGSize = .zero
+    @Published var scale: CGFloat
+    @Published var offset: CGSize
+    @Published var isDoneIconVisible: Bool = false
     
     init(image: UIImage) {
-        self.originalImage = image
-        self.image = self.resizeUIImageToDefaultSize(image)
-    }
-    
-    func setupModel(){
-        self.image = self.resizeUIImageToDefaultSize(self.originalImage)
+        self.image = image
         self.scale = 1
         self.offset = .zero
     }
     
+    func setupModel(){
+        self.scale = 1
+        self.offset = .zero
+        self.isDoneIconVisible = true
+    }
+    
     
     var size: CGSize {
-        guard let image = self.image else {return .zero}
-        return CGSize(width: image.size.width * self.scale, height: image.size.height * self.scale)
+        let scaleDiff = self.calculateImageScaleDiff(for: self.image, against: self.defaultImageDim)
+        
+        return CGSize(width: self.image.size.width * self.scale * scaleDiff, height: self.image.size.height * self.scale * scaleDiff)
     }
     
     // value by which image breaches upper boundary
@@ -157,9 +157,9 @@ class ImageCropViewModel: ObservableObject {
         //figuring out the scale difference between smaller of width & height and the defaultImageDim
         let scaleDiff: CGFloat
         if imageSize.width < imageSize.height {
-            scaleDiff = self.defaultImageDim / imageSize.width
+            scaleDiff = imageSize.width / self.defaultImageDim
         }else {
-            scaleDiff = self.defaultImageDim / imageSize.height
+            scaleDiff = imageSize.height / self.defaultImageDim
         }
         
         // convering UIImage to data
@@ -171,24 +171,46 @@ class ImageCropViewModel: ObservableObject {
     }
     
     /// crops the original chosen image to what is present in the defaultImageDim box
-    func cropImage() {
-        guard let image = self.image else {return}
+    func getCropImage() -> UIImage? {
+        let image = self.image
         let editScale = self.scale
-        
-        print(editScale, self.left, self.upper)
-        
-        let cropRect = CGRect(x: self.left/editScale, y: self.upper/editScale , width: self.defaultImageDim/editScale, height: self.defaultImageDim/editScale)
-                        
+    
+        // getting scale difference between default size and image
+        let scaleDiff = self.calculateImageScaleDiff(for: image, against: self.defaultImageDim)
+       
+        let cropRect = CGRect(
+            x: (self.left/editScale)/scaleDiff,
+            y: (self.upper/editScale)/scaleDiff,
+            width: (self.defaultImageDim/editScale)/scaleDiff,
+            height: (self.defaultImageDim/editScale)/scaleDiff
+        )
+                
         guard let croppedCGImage = image.cgImage?.cropping(to: cropRect) else {
-            return
+            return nil
         }
         
         let croppedUIImage = UIImage(cgImage: croppedCGImage)
-        self.image = croppedUIImage
-//        NotificationCenter.default.post(name: .userProfileServiceDidRequestProfileImageChange, object: croppedUIImage)
+        
+        return croppedUIImage
+    }
+    
+    func calculateImageScaleDiff(for image: UIImage, against length: CGFloat) -> CGFloat {
+        
+        let imageSize = image.size
+        
+        let scaleDiff: CGFloat
+        if imageSize.width < imageSize.height {
+            scaleDiff = length / imageSize.width
+        }else{
+            scaleDiff = length / imageSize.height
+        }
+        return scaleDiff
     }
     
     func magnifyBy(magnitude: CGFloat) {
+        // make done icon visible
+        self.isDoneIconVisible = true
+        
         if magnitude > 1 {
             self.scale += 0.1
         }else {
@@ -204,9 +226,36 @@ class ImageCropViewModel: ObservableObject {
     }
     
     func dragBy(translation: CGSize) {
+        // make done icon visible
+        self.isDoneIconVisible = true
+        
         self.translateImage(by: translation)
+    }
+    
+    func finaliseImage(for service: ImageCropViewModelServiceType){
+        
+        // getting the final cropped image
+        guard let finalImage = self.getCropImage() else {return}
+        
+        switch service {
+        case .edit:
+            self.postNotification(for: .userProfileServiceDidRequestProfileImageChange, withObject: finalImage)
+        case .setup:
+            self.postNotification(for: .userProfileServiceDidSetupProfileImage, withObject: finalImage)
+        }
+        
+    }
+    
+    func postNotification(for notificationType: Notification.Name, withObject object: Any){
+        print(notificationType)
+        NotificationCenter.default.post(name: notificationType, object: object)
     }
     
     
     let defaultImageDim: CGFloat = 300
+}
+
+enum ImageCropViewModelServiceType {
+    case setup
+    case edit
 }

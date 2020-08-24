@@ -137,4 +137,33 @@ extension Publishers {
         }
         .eraseToAnyPublisher()
     }
+    static var userProfileServiceDidUpdateUserProfilePublisher: AnyPublisher<ProfileModel, Never>{
+        NotificationCenter
+            .default
+            .publisher(for: .userProfileServiceDidUpdateUserProfile)
+            .compactMap { (notification) -> ProfileModel? in
+                guard let userProfile = notification.object as? ProfileModel else {return nil}
+                return userProfile
+        }
+        .eraseToAnyPublisher()
+    }
+    static var userProfileServiceDidNotFindUserProfilePublisher: AnyPublisher<User, Never> {
+        NotificationCenter
+            .default
+            .publisher(for: .userProfileServiceDidNotFindUserProfile)
+            .compactMap { (notification) -> User? in
+                guard let user = notification.object as? User else {return nil}
+                return user
+        }.eraseToAnyPublisher()
+    }
+    
+    static var userProfileServiceDidSetupProfileImagePublisher: AnyPublisher<UIImage, Never>{
+        NotificationCenter
+            .default
+            .publisher(for: .userProfileServiceDidSetupProfileImage)
+            .compactMap { (notification) -> UIImage? in
+                guard let image = notification.object as? UIImage else {return nil}
+                return image
+        }.eraseToAnyPublisher()
+    }
 }

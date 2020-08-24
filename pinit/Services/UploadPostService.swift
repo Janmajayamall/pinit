@@ -14,8 +14,8 @@ import FirebaseAuth
 import CoreLocation
 
 class UploadPostService {
-    
-    var user: User?
+        
+    var userProfile: ProfileModel?
     var currentLocation: CLLocation?
     var currentLocationGeohash: String?
     var currentRequestCreatePost: RequestCreatePostModel?
@@ -29,7 +29,7 @@ class UploadPostService {
         
     func uploadPost(withRequestModel requestCreatePost: RequestCreatePostModel){
         print("requestCreatePost received")
-        guard self.user != nil && self.currentLocationGeohash != nil && self.currentLocation != nil && self.currentRequestCreatePost == nil else {return}
+        guard self.userProfile != nil && self.currentLocationGeohash != nil && self.currentLocation != nil && self.currentRequestCreatePost == nil else {return}
         self.currentRequestCreatePost = requestCreatePost
         
         // initiating upload image
@@ -38,7 +38,7 @@ class UploadPostService {
     
     func uploadPostImage() {
         
-        guard let user = self.user else {
+        guard let userProfile = self.userProfile else {
             self.resetCurrentRequestCreatePost()
             return
         }
@@ -54,7 +54,7 @@ class UploadPostService {
             return
         }
         // creating image upload ref
-        let imageUploadRef = self.storageRef.child("image/\(user.uid)-\(UUID().uuidString).jpeg")
+        let imageUploadRef = self.storageRef.child("image/\(userProfile.userId)-\(UUID().uuidString).jpeg")
         let imageUploadMeta = StorageMetadata()
         imageUploadMeta.contentType = "image/jpeg"
         
@@ -79,7 +79,7 @@ class UploadPostService {
     
     func uploadPostModel(withImageMetaData imageMetadata: StorageMetadata, withImageDownloadUrl imageDownloadUrl: URL) {
         
-        guard let user = self.user else {
+        guard let userProfile = self.userProfile else {
             self.resetCurrentRequestCreatePost()
             return
         }
@@ -91,7 +91,7 @@ class UploadPostService {
             self.resetCurrentRequestCreatePost()
             return
         }
-        guard let currentRequestCreatPost = self.currentRequestCreatePost else {
+        guard let currentRequestCreatePost = self.currentRequestCreatePost else {
             self.resetCurrentRequestCreatePost()
             return
         }
@@ -99,16 +99,17 @@ class UploadPostService {
         // creating Post Model
         let postModel = PostModel(
             imageName: imageMetadata.name ?? "",
-            description: currentRequestCreatPost.description,
+            imageUrl: imageDownloadUrl.absoluteString,
+            description: currentRequestCreatePost.description,
             isActive: true,
             geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
             geohash: currentLocationGeohash,
             altitude: currentLocation.altitude,
-            isPublic: currentRequestCreatPost.isPublic,
-            userId: user.uid,
-            imageUrl: imageDownloadUrl.absoluteString
-        )
-        
+            isPublic: currentRequestCreatePost.isPublic,
+            userId: userProfile.userId,
+            username: userProfile.username,
+            userProfilePicture: userProfile.profileImageUrl)
+                    
         do {
             _ = try self.postCollectionRef.addDocument(from: postModel)
         }catch {
@@ -126,18 +127,13 @@ class UploadPostService {
         // setting up the subscribers
         self.subscribeToLocationServicePublishers()
         self.subscribeToUploadPostServicePublishers()
-        self.subscribeToAuthenticationServicePublishers()
+        self.subscribeToUserProfileServicePublishers()
     }
     
 }
 
 // for subscribing to publishers of different services
 extension UploadPostService {
-    func subscribeToAuthenticationServicePublishers() {
-        Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
-            self.user = user
-        }.store(in: &cancellables)
-    }
     
     func subscribeToUploadPostServicePublishers() {
         Publishers.uploadPostServiceDidRequestCreatePostPublisher.sink { (requestCreatePost) in
@@ -152,4 +148,9 @@ extension UploadPostService {
         }.store(in: &cancellables)
     }
     
+    func subscribeToUserProfileServicePublishers() {
+        Publishers.userProfileServiceDidUpdateUserProfilePublisher.sink { (userProfile) in
+            self.userProfile = userProfile
+        }.store(in: &cancellables)
+    }
 }

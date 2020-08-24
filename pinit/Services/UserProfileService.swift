@@ -12,8 +12,7 @@ import Combine
 import SDWebImageSwiftUI
 
 class UserProfileService: ObservableObject {
-    
-    
+
     @Published var user: User?
     @Published var userProfile: ProfileModel?
     @Published var userProfileImage: UIImage?
@@ -54,6 +53,12 @@ class UserProfileService: ObservableObject {
             guard let documents = querySnapshot?.documents,
                 let firstDocument = documents.first,
                 let profile = try? firstDocument.data(as: ProfileModel.self) else {
+                    
+                    print("Profile does not exists")
+                    
+                    // notify that the profile for user does not exists
+                    self.postNotification(for: .userProfileServiceDidNotFindUserProfile, withObject: self.user!)
+                    
                     return
             }
             
@@ -62,18 +67,19 @@ class UserProfileService: ObservableObject {
             self.subscribeToImageManager()
             self.profileImageManager?.load()
             
+            // notify that user profile changed
+            self.postNotification(for: .userProfileServiceDidUpdateUserProfile, withObject: profile)
+            
         }
     }
     
     func subscribeToImageManager() {
         
         // call self objectWillChange whenever profileImageManager publishes -- sink: subscribes to publishers with closures
-        if let imageManagerCancellable = self.profileImageManager?.objectWillChange.sink(receiveValue: { (_) in
+        self.profileImageManager?.objectWillChange.sink(receiveValue: { (_) in
             print("this worked")
             self.objectWillChange.send()
-        }){
-            self.cancellables.insert(imageManagerCancellable)
-        }
+        }).store(in: &cancellables)
         
         // subscribing to profileImageManager's publishers for setting self properties
         self.profileImageManager?.$image.assign(to: \.userProfileImage, on: self).store(in: &cancellables)
@@ -99,6 +105,10 @@ class UserProfileService: ObservableObject {
         // setting up subscribers
         self.subscribeToAuthenticationSeriverPublishers()
         self.subscribeToUserProfileServicePublishers()
+    }
+    
+    func postNotification(for notificationType: Notification.Name, withObject object: Any){
+        NotificationCenter.default.post(name: notificationType, object: object)
     }
     
     private let userCollectionRef: CollectionReference = Firestore.firestore().collection("users")
@@ -133,4 +143,5 @@ extension UserProfileService {
             self.changeProfileImage(to: profileImage)
         }.store(in: &cancellables)
     }
+    
 }

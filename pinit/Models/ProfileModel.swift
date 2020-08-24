@@ -13,5 +13,6 @@ import FirebaseFirestoreSwift
 struct ProfileModel: Codable {
     var username: String
     var profileImageUrl: String
+    var userId: String
     @DocumentID var id: String? = UUID().uuidString
 }

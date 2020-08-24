@@ -33,4 +33,7 @@ extension Notification.Name {
     // notifications for userProfileService
     static let userProfileServiceDidRequestUsernameChange = Notification.Name("userProfileServiceDidRequestUsernameChange")
     static let userProfileServiceDidRequestProfileImageChange = Notification.Name("userProfileServiceDidRequestProfileImageChange")
+    static let userProfileServiceDidUpdateUserProfile = Notification.Name("userProfileServiceDidUpdateUserProfile")
+    static let userProfileServiceDidNotFindUserProfile = Notification.Name("userProfileServiceDidNotFindUserProfile")
+    static let userProfileServiceDidSetupProfileImage = Notification.Name("userProfileServiceDidSetupProfileImage")
 }

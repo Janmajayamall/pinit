@@ -27,7 +27,7 @@ struct FadeKeyboard: View {
         }
         .frame(width: self.parentSize.width, height: self.parentSize.height)
         .safeTopEdgePadding()
-        .background(Color.black.opacity(0.3))
+        .background(Color.black.opacity(0.5))
     }
 }
 

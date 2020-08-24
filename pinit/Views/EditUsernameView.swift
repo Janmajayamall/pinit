@@ -44,17 +44,11 @@ struct EditUsernameView: View {
                 Button(action: {
                     self.changeUsername(to: self.username)
                 }, label: {
-                    HStack{
-                        Spacer()
-                        Text("Done").font(Font.custom("Avenir", size: 20)).bold().foregroundColor(Color.white)
-                        Spacer()
-                    }
-                    .frame(width: 100, height: 50)
-                    .clipped()
-                    .background(Color.secondaryColor)
-                    .cornerRadius(25)
+                    Text("Done")
                     
                 })
+                    .buttonStyle(SecondaryColorButtonStyle())
+                
                 Spacer()
             }.zIndex(1)
             VStack{
