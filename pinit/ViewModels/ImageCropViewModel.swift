@@ -247,7 +247,6 @@ class ImageCropViewModel: ObservableObject {
     }
     
     func postNotification(for notificationType: Notification.Name, withObject object: Any){
-        print(notificationType)
         NotificationCenter.default.post(name: notificationType, object: object)
     }
     

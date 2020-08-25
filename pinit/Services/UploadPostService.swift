@@ -28,7 +28,7 @@ class UploadPostService {
     init() {}
         
     func uploadPost(withRequestModel requestCreatePost: RequestCreatePostModel){
-        print("requestCreatePost received")
+        
         guard self.userProfile != nil && self.currentLocationGeohash != nil && self.currentLocation != nil && self.currentRequestCreatePost == nil else {return}
         self.currentRequestCreatePost = requestCreatePost
         
@@ -54,7 +54,7 @@ class UploadPostService {
             return
         }
         // creating image upload ref
-        let imageUploadRef = self.storageRef.child("image/\(userProfile.userId)-\(UUID().uuidString).jpeg")
+        let imageUploadRef = self.storageRef.child("images/\(userProfile.userId)-\(UUID().uuidString).jpeg")
         let imageUploadMeta = StorageMetadata()
         imageUploadMeta.contentType = "image/jpeg"
         

@@ -19,12 +19,15 @@ class SettingsViewModel: ObservableObject {
     @Published var userProfileImage: UIImage?
     var currentLocation: CLLocation?
     
-    //services
+    // services
     private var authenticationService = AuthenticationService()
     @Published var userProfileService = UserProfileService()
     @Published var screenManagementService = ScreenManagementService()
     private var locationService = LocationService()
     private var uploadPostService = UploadPostService()
+    
+    // view models
+    @Published var setupProfileViewModel = SetupProfileViewModel()
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -42,7 +45,7 @@ class SettingsViewModel: ObservableObject {
     func isUserAuthenticated() -> Bool {
         return self.user != nil
     }
-    
+
 }
 
 // for subscriptions
@@ -69,6 +72,12 @@ extension SettingsViewModel {
     func subscribeToLocationServicePublishers() {
         Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
             self.currentLocation = location
+        }.store(in: &cancellables)
+    }
+    
+    func subscribeToSetupProfileViewModelPublishers(){
+        self.setupProfileViewModel.objectWillChange.sink { (_) in
+            self.objectWillChange.send()
         }.store(in: &cancellables)
     }
     

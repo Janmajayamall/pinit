@@ -16,6 +16,10 @@ struct MainArView: View {
     
     @State var showMenu: Bool = false
     
+    init() {
+        print("Initialised MainArView")
+    }
+    
     
     @ViewBuilder
     var body: some View {
@@ -67,7 +71,6 @@ struct MainArView: View {
                 .edgesIgnoringSafeArea(.all)
                 .gesture(DragGesture()
                     .onChanged({value in
-                        print("User Information \(self.settingsViewModel.user?.uid) - Profile: \(self.settingsViewModel.userProfile?.username ?? "No user profile" )")
                         guard self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .normal else {return}
                         
                         guard (self.mapViewScreenState == .up && value.translation.height > 0) || (self.mapViewScreenState == .down && value.translation.height < 0) else {return}

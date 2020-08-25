@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 import Combine
 import SDWebImageSwiftUI
+import FirebaseStorage
 
 class UserProfileService: ObservableObject {
 
@@ -107,12 +108,74 @@ class UserProfileService: ObservableObject {
         self.subscribeToUserProfileServicePublishers()
     }
     
+    func setupUserProfile(withModel model: RequestSetupUserProfileModel) {
+        // if user profile already exists then return
+        guard self.userProfile == nil else {
+            print("User Profile already exists; the request was not valid")
+            return
+        }
+        
+        // checking if the request is valid or not
+        guard let user = self.user else {
+            return
+        }
+        
+        // upload the profile image & then upload profile model in users collection
+        self.uploadImage(withImage: model.profileImage, withCallback: {urlString in
+            
+            // creating profile model
+           let profile = ProfileModel(username: model.username, profileImageUrl: urlString, userId: user.uid)
+            
+            // creating user profile
+            do {
+                // adding doc to users collection
+                _ = try self.userCollectionRef.addDocument(from: profile)
+            }catch {
+                print("Setup User Profile failed with error: \(error.localizedDescription)")
+            }
+        })
+        
+    }
+    
+    func uploadImage(withImage image: UIImage, withCallback callback: @escaping (String) -> Void){
+        guard let user = self.user else {return}
+        
+        // generating image data from uiImage
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            print("Generating JPEG data for profile image failed with error")
+            return
+        }
+        
+        // image upload ref
+        let imageUploadRef = self.storageRef.child("profileImages/\(user.uid)-\(UUID().uuidString).jpeg")
+        let imageUploadMeta = StorageMetadata()
+        imageUploadMeta.contentType = "image/jpeg"
+        
+        imageUploadRef.putData(imageData, metadata: imageUploadMeta) {(metadata, error) in
+            guard let metadata = metadata else {
+                print("User profile image upload failed withe error: \(String(describing: error?.localizedDescription))")
+                return
+            }
+            
+            imageUploadRef.downloadURL { (url, error) in
+                guard let url = url else {
+                    print("User profile image upload downloadUrl failed with error: \(String(describing: error?.localizedDescription))")
+                    return
+                }
+                
+                // calling the callback passed by the caller
+                callback(url.absoluteString)
+            }
+            
+        }
+    }
+    
     func postNotification(for notificationType: Notification.Name, withObject object: Any){
         NotificationCenter.default.post(name: notificationType, object: object)
     }
     
     private let userCollectionRef: CollectionReference = Firestore.firestore().collection("users")
-    
+    private let storageRef = Storage.storage().reference()
 }
 
 // for subscribing to publishers
@@ -141,6 +204,11 @@ extension UserProfileService {
         // subscribing to pubilsher for profile image change
         Publishers.userProfileServiceDidRequestProfileImageChangePublisher.sink { (profileImage) in
             self.changeProfileImage(to: profileImage)
+        }.store(in: &cancellables)
+        
+        // subscribing to publisher for setting up user profile
+        Publishers.userProfileServiceDidRequestSetupUserProfilePublisher.sink { (requestModel) in
+            self.setupUserProfile(withModel: requestModel)
         }.store(in: &cancellables)
     }
     

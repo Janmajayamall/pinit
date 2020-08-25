@@ -12,12 +12,12 @@ struct SetupProfileView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     var parentSize: CGSize
-    @ObservedObject var setupProfileViewModel: SetupProfileViewModel = SetupProfileViewModel()
-        
+
     var viewSize: CGSize {
         return CGSize(width: self.parentSize.width * self.viewWidthRatio, height: self.parentSize.height * self.viewHeightRatio)
     }
-    
+
+
     var offset: CGSize {
         if self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .setupProfile {
             return .zero
@@ -36,7 +36,7 @@ struct SetupProfileView: View {
                         .foregroundColor(Color.black)
                 }.padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                 
-                Image(uiImage: self.setupProfileViewModel.profileImage)
+                Image(uiImage: self.settingsViewModel.setupProfileViewModel.profileImage)
                     .resizable().scaledToFit()
                     .frame(width: self.profileImageDim, height: self.profileImageDim, alignment: .center)
                     .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: self.profileImageDim, height: self.profileImageDim))
@@ -50,7 +50,7 @@ struct SetupProfileView: View {
                 HStack{
                     Spacer()
                     VStack{
-                        TextField("Username", text: self.$setupProfileViewModel.username)
+                        TextField("Username", text: self.$settingsViewModel.setupProfileViewModel.username)
                             .font(Font.custom("Avenir", size: 18))
                         Divider().background(Color.secondaryColor)
                     }
@@ -58,7 +58,7 @@ struct SetupProfileView: View {
                 }
                 
                 Button(action: {
-                    self.setupProfileViewModel.setupProfile()
+                    self.settingsViewModel.setupProfileViewModel.setupProfile()
                 }, label: {
                     Text("Done")
                 })

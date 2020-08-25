@@ -156,7 +156,6 @@ extension Publishers {
                 return user
         }.eraseToAnyPublisher()
     }
-    
     static var userProfileServiceDidSetupProfileImagePublisher: AnyPublisher<UIImage, Never>{
         NotificationCenter
             .default
@@ -166,4 +165,15 @@ extension Publishers {
                 return image
         }.eraseToAnyPublisher()
     }
+    static var userProfileServiceDidRequestSetupUserProfilePublisher: AnyPublisher<RequestSetupUserProfileModel, Never>{
+        NotificationCenter
+            .default
+            .publisher(for: .userProfileServiceDidRequestSetupUserProfile)
+            .compactMap { (notification) -> RequestSetupUserProfileModel? in
+                guard let requestModel = notification.object as? RequestSetupUserProfileModel else {return nil}
+                return requestModel
+        }
+        .eraseToAnyPublisher()
+    }
+    
 }
