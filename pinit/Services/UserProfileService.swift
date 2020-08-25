@@ -13,7 +13,7 @@ import SDWebImageSwiftUI
 import FirebaseStorage
 
 class UserProfileService: ObservableObject {
-
+    
     @Published var user: User?
     @Published var userProfile: ProfileModel?
     @Published var userProfileImage: UIImage?
@@ -50,19 +50,22 @@ class UserProfileService: ObservableObject {
         
         guard let user = self.user else {return}
         
-        self.userCollectionRef.whereField("userId", isEqualTo: user.uid).addSnapshotListener { (querySnapshot, error) in
-            guard let documents = querySnapshot?.documents,
-                let firstDocument = documents.first,
-                let profile = try? firstDocument.data(as: ProfileModel.self) else {
-                    
-                    print("Profile does not exists")
-                    
-                    // notify that the profile for user does not exists
-                    self.postNotification(for: .userProfileServiceDidNotFindUserProfile, withObject: self.user!)
-                    
-                    return
+        self.userCollectionRef.document(user.uid).addSnapshotListener { (documentSnapshot, error) in
+            
+            guard let document = documentSnapshot else {
+                print("User doc listen failed with error: \(error!)")
+                return
             }
             
+            guard let profile = try? document.data(as: ProfileModel.self) else {
+                print("User Profile does not exists")
+                
+                // posting notification that user profile does not exits
+                self.postNotification(for: .userProfileServiceDidNotFindUserProfile, withObject: user)
+                
+                return
+            }
+            print("HUAA")
             self.userProfile = profile
             self.profileImageManager = ImageManager(url: URL(string: profile.profileImageUrl))
             self.subscribeToImageManager()
@@ -78,12 +81,14 @@ class UserProfileService: ObservableObject {
         
         // call self objectWillChange whenever profileImageManager publishes -- sink: subscribes to publishers with closures
         self.profileImageManager?.objectWillChange.sink(receiveValue: { (_) in
-            print("this worked")
             self.objectWillChange.send()
         }).store(in: &cancellables)
         
         // subscribing to profileImageManager's publishers for setting self properties
-        self.profileImageManager?.$image.assign(to: \.userProfileImage, on: self).store(in: &cancellables)
+        self.profileImageManager?.$image.sink(receiveValue: { (loadedImage) in
+            guard let image = loadedImage else {return}
+            self.userProfileImage = image
+        }).store(in: &cancellables)
     }
     
     func stopListeningToUserProfile() {
@@ -92,14 +97,49 @@ class UserProfileService: ObservableObject {
         }
     }
     
+    /// updates the username of the user in database
+    ///
+    /// Updates the username in db.
+    /// Note: No need to handle `latency compensation` because firestore
+    /// handles it for you. Any local changes updates snapshots listeners
+    /// before data is sent over network to database
+    /// - Parameters:
+    ///     - username: new username
     func changeUsername(to username: String) {
-        print("username changed to: \(username)")
+        guard let userProfile = self.userProfile, let userId = userProfile.id else {return}
+        
+        // getting reference to user's document in collection
+        let userDocRef = self.userCollectionRef.document(userId)
+        // updating username in document
+        userDocRef.updateData([
+            "username": username
+        ]){ error in
+            if let error = error {
+                print("Username update failed with error: \(error)")
+            }
+        }
     }
     
     func changeProfileImage(to profileImage: UIImage) {
-        // first assing to profileImage publisher & then make the api call
-        print("profileImage changed to: \(profileImage)")
+        guard let userProfile = self.userProfile, let userId = userProfile.id else {return}
+        
+        // updating the image within the app for `latency compensation`
         self.userProfileImage = profileImage
+        
+        // uploading the new image & then updating the document
+        self.uploadImage(withImage: profileImage, withCallback: { urlString in
+            // getting reference to user's document in collection
+            let userDocRef = self.userCollectionRef.document(userId)
+            // update profileImageUrl in document
+            userDocRef.updateData([
+                "profileImageUrl": urlString
+            ]){ error in
+                if let error = error {
+                    print("Profile Image update failed with error: \(error)")
+                }
+            }
+        })
+        
     }
     
     func setupService() {
@@ -124,12 +164,12 @@ class UserProfileService: ObservableObject {
         self.uploadImage(withImage: model.profileImage, withCallback: {urlString in
             
             // creating profile model
-           let profile = ProfileModel(username: model.username, profileImageUrl: urlString, userId: user.uid)
+            let profile = ProfileModel(username: model.username, profileImageUrl: urlString)
             
             // creating user profile
             do {
                 // adding doc to users collection
-                _ = try self.userCollectionRef.addDocument(from: profile)
+                _ = try self.userCollectionRef.document(user.uid).setData(from: profile)
             }catch {
                 print("Setup User Profile failed with error: \(error.localizedDescription)")
             }
@@ -152,7 +192,7 @@ class UserProfileService: ObservableObject {
         imageUploadMeta.contentType = "image/jpeg"
         
         imageUploadRef.putData(imageData, metadata: imageUploadMeta) {(metadata, error) in
-            guard let metadata = metadata else {
+            guard error == nil else {
                 print("User profile image upload failed withe error: \(String(describing: error?.localizedDescription))")
                 return
             }

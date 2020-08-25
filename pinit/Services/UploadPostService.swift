@@ -54,7 +54,7 @@ class UploadPostService {
             return
         }
         // creating image upload ref
-        let imageUploadRef = self.storageRef.child("images/\(userProfile.userId)-\(UUID().uuidString).jpeg")
+        let imageUploadRef = self.storageRef.child("images/\(userProfile.id!)-\(UUID().uuidString).jpeg")
         let imageUploadMeta = StorageMetadata()
         imageUploadMeta.contentType = "image/jpeg"
         
@@ -106,7 +106,7 @@ class UploadPostService {
             geohash: currentLocationGeohash,
             altitude: currentLocation.altitude,
             isPublic: currentRequestCreatePost.isPublic,
-            userId: userProfile.userId,
+            userId: userProfile.id!,
             username: userProfile.username,
             userProfilePicture: userProfile.profileImageUrl)
                     
@@ -128,6 +128,10 @@ class UploadPostService {
         self.subscribeToLocationServicePublishers()
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToUserProfileServicePublishers()
+    }
+    
+    func resetCurrentUserProfile() {
+        self.userProfile = nil
     }
     
 }

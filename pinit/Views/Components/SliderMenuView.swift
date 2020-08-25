@@ -28,7 +28,11 @@ struct SliderMenuView: View {
                     Image(systemName: "globe")
                         .applyDefaultIconTheme()
                         .onTapGesture {
-                            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
+                            if self.settingsViewModel.isUserAuthenticated() {
+                                self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
+                            }else {
+                                self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                            }
                             self.showMenu = false
                     }
                         .padding(.bottom, 15)

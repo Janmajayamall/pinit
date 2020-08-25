@@ -89,9 +89,7 @@ struct EditProfileImageView: View {
                                     self.imageCropViewModel.finaliseImage(for: .setup)
                                 }
                                                                 
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                                    self.closeEditProfileImageView()
-                                })
+                                self.closeEditProfileImageView()
                         }
                         .applyTopRightPaddingToIcon()
                     }

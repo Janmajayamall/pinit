@@ -31,8 +31,8 @@ struct SetupProfileView: View {
             VStack{
                 HStack{
                     Text("Set up your profile")
-                        .font(Font.custom("Avenir", size: 20)
-                            .bold())
+                        .font(Font.custom("Avenir", size: 25
+                        ))
                         .foregroundColor(Color.black)
                 }.padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                 
@@ -59,6 +59,12 @@ struct SetupProfileView: View {
                 
                 Button(action: {
                     self.settingsViewModel.setupProfileViewModel.setupProfile()
+                    
+                    // hiding the keyboard
+                    self.hideKeyboard()
+                    
+                    // switching the screen
+                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                 }, label: {
                     Text("Done")
                 })

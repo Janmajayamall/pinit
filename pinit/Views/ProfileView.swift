@@ -12,7 +12,6 @@ struct ProfileView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     
-    var name: String = "janmajayamall · 45" // you can call pictures at different places as anchors (but anchors dont sound nice)
     var parentSize:CGSize
     
     var viewSize:CGSize{
@@ -33,9 +32,9 @@ struct ProfileView: View {
                 Spacer()
                 Image(uiImage: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage"))
                     .resizable().scaledToFit()
-                    .frame(width: 100, height: 100, alignment: .center)
-                    .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: 100, height: 100))
-                    .cornerRadius(50)
+                    .frame(width: self.profileImageDim, height: self.profileImageDim, alignment: .center)
+                    .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: self.profileImageDim, height: self.profileImageDim))
+                    .cornerRadius(self.profileImageDim/2)
                     .clipped()
                     .onTapGesture {
                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editProfileImage)
@@ -44,7 +43,7 @@ struct ProfileView: View {
                 
                 HStack{
                     Spacer()
-                    Text(self.name)
+                    Text(self.settingsViewModel.userProfile?.username ?? "")
                         .font(Font.system(size: 18, weight: .semibold, design: .rounded))
                         .onTapGesture {
                             print("hereiam")
@@ -64,6 +63,13 @@ struct ProfileView: View {
                         }
                         .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                     Spacer()
+                    Image(systemName: "ellipsis.circle.fill")
+                        .foregroundColor(Color.primaryColor)
+                    .applyDefaultIconTheme()
+                        .onTapGesture {
+                            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .settings)
+                        }
+                        .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 10))
                 }
                 Spacer()
             }.zIndex(1)
@@ -75,8 +81,9 @@ struct ProfileView: View {
         .animation(.spring())
     }
     
-    private let viewHeightRatio: CGFloat = 0.3
+    private let viewHeightRatio: CGFloat = 0.35
     private let viewWidthRatio: CGFloat = 0.8
+    private let profileImageDim: CGFloat = 150
 }
 
 struct ProfileView_Previews: PreviewProvider {

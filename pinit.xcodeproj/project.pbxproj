@@ -70,6 +70,8 @@
 		5DC8527724EFE96500E36DCE /* UIKitUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527624EFE96500E36DCE /* UIKitUITextView.swift */; };
 		5DC8527924EFED2300E36DCE /* KeyboardAwareViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527824EFED2300E36DCE /* KeyboardAwareViewModifiers.swift */; };
 		5DC8527B24EFF83E00E36DCE /* FadeKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527A24EFF83E00E36DCE /* FadeKeyboard.swift */; };
+		5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9524F5B185005F0A04 /* View+Extensions.swift */; };
+		5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */; };
 		C4BE49B981BA6C9E1F5E6C91 /* Pods_pinit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA819CC259AA9FBEDA20535D /* Pods_pinit.framework */; };
 		CF96279734D8A4D560886727 /* Pods_pinitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79E76096699AA6D6E4878737 /* Pods_pinitTests.framework */; };
 		FC51A90A4B53124BC05D4C26 /* Pods_pinit_pinitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E36D47B13861832B4C02A20B /* Pods_pinit_pinitUITests.framework */; };
@@ -166,6 +168,8 @@
 		5DC8527624EFE96500E36DCE /* UIKitUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitUITextView.swift; sourceTree = "<group>"; };
 		5DC8527824EFED2300E36DCE /* KeyboardAwareViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAwareViewModifiers.swift; sourceTree = "<group>"; };
 		5DC8527A24EFF83E00E36DCE /* FadeKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeKeyboard.swift; sourceTree = "<group>"; };
+		5DE94F9524F5B185005F0A04 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
 		79E76096699AA6D6E4878737 /* Pods_pinitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8114B8F506D22426EA1C7CD0 /* Pods-pinit-pinitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit-pinitUITests.debug.xcconfig"; path = "Target Support Files/Pods-pinit-pinitUITests/Pods-pinit-pinitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A9A41EF8A44E6C6EBC61DCF7 /* Pods-pinit-pinitUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit-pinitUITests.release.xcconfig"; path = "Target Support Files/Pods-pinit-pinitUITests/Pods-pinit-pinitUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -234,6 +238,7 @@
 				5D52F7DE24E9952800D9F27E /* CLLocation+Extensions.swift */,
 				5DC8527224EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift */,
 				5DC8527424EFDDC500E36DCE /* UIView+Extensions.swift */,
+				5DE94F9524F5B185005F0A04 /* View+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -295,6 +300,7 @@
 				5D4DD0A924ED425700E1FDF3 /* EditCaptureImageView.swift */,
 				5D576A3724F1A465004A004C /* EmailAuthenticationView.swift */,
 				5D567CF624F428E400283E5B /* SetupProfileView.swift */,
+				5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -674,6 +680,7 @@
 				5D52F7DD24E994C300D9F27E /* ImageSCNNode.swift in Sources */,
 				5D52F7CD24E972AA00D9F27E /* BottomSheetView.swift in Sources */,
 				5D52F7D824E98F5900D9F27E /* RetrievePostService.swift in Sources */,
+				5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */,
 				5D52F7C624E9594F00D9F27E /* UIKitImagePicker.swift in Sources */,
 				5D52F7BB24E93CBE00D9F27E /* MapView.swift in Sources */,
 				5D52F7E324EA755C00D9F27E /* GeohashModel.swift in Sources */,
@@ -713,6 +720,7 @@
 				5D4DD0A424ED353B00E1FDF3 /* ImagePaintingModel.swift in Sources */,
 				5D52F7D424E98E2E00D9F27E /* ARSceneLocationService.swift in Sources */,
 				5D52F7B524E9288200D9F27E /* Publishers+Extensions.swift in Sources */,
+				5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */,
 				5D4DD0AA24ED425700E1FDF3 /* EditCaptureImageView.swift in Sources */,
 				5D567CF724F428E400283E5B /* SetupProfileView.swift in Sources */,
 				5D52F7DA24E9932600D9F27E /* LocationService.swift in Sources */,

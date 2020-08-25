@@ -34,11 +34,12 @@ struct LoginView: View {
         VStack{
             HStack{
                 Image(systemName: "xmark")
+                    .foregroundColor(Color.primaryColor)
                     .applyDefaultIconTheme()
                     .onTapGesture {
                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                     }
-                    .applyTopLeftPaddingToIcon()
+                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                 Spacer()
             }
             HStack{
@@ -71,13 +72,12 @@ struct LoginView: View {
                     self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                 })
             }
-            
-            Spacer()
+                    
             HStack{
                 Spacer()
                 Text("By signing in you agree with you Terms and Conditions.").font(Font.custom("Avenir", size: 15))
                 Spacer()
-            }.padding(EdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0))
+            }.padding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
             Spacer()
         }
         .frame(width: self.parentSize.width, height: self.viewHeight, alignment: .top)

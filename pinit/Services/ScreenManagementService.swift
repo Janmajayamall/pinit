@@ -33,6 +33,7 @@ import Combine
 enum ProfileViewScreenType{
     case editUsername
     case editProfileImage
+    case settings
     case normal
 }
 
@@ -48,6 +49,8 @@ struct ProfileViewScreenService: ScreenService {
             self.switchToEditProfileImage()
         case .editUsername:
             self.switchToEditUsername()
+        case .settings:
+            self.switchToSettings()
         }
     }
     
@@ -60,8 +63,11 @@ struct ProfileViewScreenService: ScreenService {
     }
     
     private mutating func switchToEditProfileImage() {
-        print("dhoka")
         self.activeType = .editProfileImage
+    }
+    
+    private mutating func switchToSettings() {
+        self.activeType = .settings
     }
     
     mutating func resetScreen() {
@@ -236,10 +242,15 @@ struct MainScreenService: ScreenService {
         self.captureImageViewScreenService.resetScreen()
         
     }
-    
-    
-    func resetScreen() {
-        print("screen reset")
+        
+    mutating func resetScreen() {
+        self.mainArViewScreenService.resetScreen()
+        self.captureImageViewScreenService.resetScreen()
+        
+        self.activeType = .mainArView
+        
+        
+        
     }
 }
 

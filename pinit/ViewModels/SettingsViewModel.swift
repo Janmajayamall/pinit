@@ -46,6 +46,19 @@ class SettingsViewModel: ObservableObject {
         return self.user != nil
     }
 
+    func signOut() {
+        // logging out from firebase auth
+        self.authenticationService.signOut()
+        
+        // stopping user profile service
+        self.userProfileService.stopServiceForCurrentUser()
+        
+        // resetting user profile in upload service
+        self.uploadPostService.resetCurrentUserProfile()
+        
+        // resetting the screens
+        self.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
+    }
 }
 
 // for subscriptions

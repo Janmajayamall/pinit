@@ -11,7 +11,7 @@ import SwiftUI
 struct EditUsernameView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
-    @State var username: String = "janmajayamall"
+    @State var username: String
     
     var parentSize: CGSize
     
@@ -31,7 +31,7 @@ struct EditUsernameView: View {
             VStack{
                 HStack{
                     Spacer()
-                    Text("Change your username").font(Font.custom("Avenir", size: 20)).bold().foregroundColor(Color.black)
+                    Text("Change your username").font(Font.custom("Avenir", size: 25)).foregroundColor(Color.black)
                     Spacer()
                 }.padding(EdgeInsets(top: 35, leading: 0, bottom: 1, trailing: 0))
                 HStack{
@@ -43,6 +43,9 @@ struct EditUsernameView: View {
                 }.padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 5))
                 Button(action: {
                     self.changeUsername(to: self.username)
+                    
+                    // hiding the keyboard
+                    self.hideKeyboard()
                 }, label: {
                     Text("Done")
                     
@@ -74,14 +77,15 @@ struct EditUsernameView: View {
     
     func changeUsername(to username: String){        
         NotificationCenter.default.post(name: .userProfileServiceDidRequestUsernameChange, object: username)
+        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType = .normal
     }
     
-    private let viewHeightRatio: CGFloat = 0.3
+    private let viewHeightRatio: CGFloat = 0.35
     private let viewWidthRatio: CGFloat = 0.8
 }
 
 struct EditUsernameView_Previews: PreviewProvider {
     static var previews: some View {
-        EditUsernameView(parentSize: CGSize(width: 300, height: 200))
+        EditUsernameView(username: "default name", parentSize: CGSize(width: 300, height: 200))
     }
 }

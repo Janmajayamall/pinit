@@ -44,7 +44,11 @@ struct MainArView: View {
                         Spacer()
                         HStack{
                             Button(action: {
-                                self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
+                                if self.settingsViewModel.isUserAuthenticated() {
+                                    self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
+                                }else {
+                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                }
                             }, label: {
                                 Image(systemName: "camera.circle.fill")
                                     .applyDefaultIconTheme()
@@ -58,13 +62,19 @@ struct MainArView: View {
                     
                     ProfileView(parentSize: geometryProxy.size)
                     
-                    EditUsernameView(parentSize: geometryProxy.size)
+                 
                     
                     LoginView(parentSize: geometryProxy.size)
                     
                     SetupProfileView(parentSize: geometryProxy.size)
                     
                     EditProfileImageView(imageCropViewModel: ImageCropViewModel(image: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage")), parentSize: geometryProxy.size)
+                    
+                    MoreSettingsViewModel(parentSize: geometryProxy.size)
+                    
+                    if self.settingsViewModel.userProfile?.username != nil {
+                        EditUsernameView(username: self.settingsViewModel.userProfile!.username, parentSize: geometryProxy.size)
+                    }
                 }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .background(Color.black)

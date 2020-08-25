@@ -24,6 +24,7 @@ class SetupProfileViewModel: ObservableObject {
         let requestModel = RequestSetupUserProfileModel(username: self.username, profileImage: self.profileImage)
         
         self.postNotification(for: .userProfileServiceDidRequestSetupUserProfile, withObject: requestModel)
+        
     }
     
     func postNotification(for notificationType: Notification.Name, withObject object: Any){
