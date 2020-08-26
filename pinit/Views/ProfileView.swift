@@ -44,9 +44,8 @@ struct ProfileView: View {
                 HStack{
                     Spacer()
                     Text(self.settingsViewModel.userProfile?.username ?? "")
-                        .font(Font.system(size: 18, weight: .semibold, design: .rounded))
+                        .font(Font.custom("Avenir", size: 20).bold())
                         .onTapGesture {
-                            print("hereiam")
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editUsername)
                     }
                     Spacer()
@@ -63,7 +62,7 @@ struct ProfileView: View {
                         }
                         .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                     Spacer()
-                    Image(systemName: "ellipsis.circle.fill")
+                    Image(systemName: "ellipsis")
                         .foregroundColor(Color.primaryColor)
                     .applyDefaultIconTheme()
                         .onTapGesture {
@@ -81,7 +80,7 @@ struct ProfileView: View {
         .animation(.spring())
     }
     
-    private let viewHeightRatio: CGFloat = 0.35
+    private let viewHeightRatio: CGFloat = 0.30
     private let viewWidthRatio: CGFloat = 0.8
     private let profileImageDim: CGFloat = 150
 }

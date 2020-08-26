@@ -29,18 +29,28 @@ struct EditUsernameView: View {
     var body: some View {
         ZStack{
             VStack{
+                Spacer()
+                
                 HStack{
                     Spacer()
-                    Text("Change your username").font(Font.custom("Avenir", size: 25)).foregroundColor(Color.black)
+                    Text("Change your username").font(Font.custom("Avenir", size: 25).bold()).foregroundColor(Color.black)
                     Spacer()
-                }.padding(EdgeInsets(top: 35, leading: 0, bottom: 1, trailing: 0))
+                }
+                .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+                
+                Spacer()
+                
                 HStack{
                     VStack{
                         TextField("Username", text: self.$username)
                             .font(Font.custom("Avenir", size: 18))
                         Divider().background(Color.secondaryColor)
                     }
-                }.padding(EdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 5))
+                }
+                .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+                
+                Spacer()
+                
                 Button(action: {
                     self.changeUsername(to: self.username)
                     
@@ -80,7 +90,7 @@ struct EditUsernameView: View {
         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType = .normal
     }
     
-    private let viewHeightRatio: CGFloat = 0.35
+    private let viewHeightRatio: CGFloat = 0.30
     private let viewWidthRatio: CGFloat = 0.8
 }
 

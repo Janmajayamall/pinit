@@ -49,11 +49,12 @@ struct MapView: View {
             VStack{
                 HStack{
                     Image(systemName: "xmark")
+                        .foregroundColor(Color.primaryColor)
                         .applyDefaultIconTheme()
                         .onTapGesture {
                             self.closeView()
                     }
-                    .applyTopLeftPaddingToIcon()
+                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                     Spacer()
                 }.frame(width: parentGeometrySize.width, height: 50)
                     .background(Color.white.opacity(0.7))

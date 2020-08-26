@@ -12,12 +12,12 @@ struct SetupProfileView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     var parentSize: CGSize
-
+    
     var viewSize: CGSize {
         return CGSize(width: self.parentSize.width * self.viewWidthRatio, height: self.parentSize.height * self.viewHeightRatio)
     }
-
-
+    
+    
     var offset: CGSize {
         if self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .setupProfile {
             return .zero
@@ -27,52 +27,58 @@ struct SetupProfileView: View {
     }
     
     var body: some View {
-        ZStack{
-            VStack{
-                HStack{
-                    Text("Set up your profile")
-                        .font(Font.custom("Avenir", size: 25
-                        ))
-                        .foregroundColor(Color.black)
-                }.padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                
-                Image(uiImage: self.settingsViewModel.setupProfileViewModel.profileImage)
-                    .resizable().scaledToFit()
-                    .frame(width: self.profileImageDim, height: self.profileImageDim, alignment: .center)
-                    .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: self.profileImageDim, height: self.profileImageDim))
-                    .cornerRadius(self.profileImageDim/2)
-                    .clipped()
-                    .onTapGesture {
-                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.setupProfileViewScreenService.switchTo(screenType: .pickImage)
-                }
-                .padding(.bottom, 10)
-                
-                HStack{
-                    Spacer()
-                    VStack{
-                        TextField("Username", text: self.$settingsViewModel.setupProfileViewModel.username)
-                            .font(Font.custom("Avenir", size: 18))
-                        Divider().background(Color.secondaryColor)
-                    }
-                    Spacer()
-                }
-                
-                Button(action: {
-                    self.settingsViewModel.setupProfileViewModel.setupProfile()
+        
+        VStack{
+            Spacer()
+            
+            HStack{
+              Text("Setup your profile").font(Font.custom("Avenir", size: 25).bold()).foregroundColor(Color.black)
                     
-                    // hiding the keyboard
-                    self.hideKeyboard()
-                    
-                    // switching the screen
-                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
-                }, label: {
-                    Text("Done")
-                })
-                    .buttonStyle(SecondaryColorButtonStyle())
-                
+            }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            
+            Spacer()
+            
+            Image(uiImage: self.settingsViewModel.setupProfileViewModel.profileImage)
+                .resizable().scaledToFit()
+                .frame(width: self.profileImageDim, height: self.profileImageDim, alignment: .center)
+                .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: self.profileImageDim, height: self.profileImageDim))
+                .cornerRadius(self.profileImageDim/2)
+                .clipped()
+                .onTapGesture {
+                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.setupProfileViewScreenService.switchTo(screenType: .pickImage)
+            }
+//            .padding(.bottom, 10)
+            
+             Spacer()
+            
+            HStack{
+                Spacer()
+                VStack{
+                    TextField("Username", text: self.$settingsViewModel.setupProfileViewModel.username)
+                        .font(Font.custom("Avenir", size: 18))
+                    Divider().background(Color.secondaryColor)
+                }
                 Spacer()
             }
+            
+             Spacer()
+            
+            Button(action: {
+                self.settingsViewModel.setupProfileViewModel.setupProfile()
+                
+                // hiding the keyboard
+                self.hideKeyboard()
+                
+                // switching the screen
+                self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
+            }, label: {
+                Text("Done")
+            })
+                .buttonStyle(SecondaryColorButtonStyle())
+            
+            Spacer()
         }
+            
         .frame(width: self.viewSize.width, height: self.viewSize.height)
         .background(Color.white)
         .cornerRadius(15)
@@ -80,7 +86,7 @@ struct SetupProfileView: View {
         .animation(.spring())
     }
     
-    let viewHeightRatio: CGFloat = 0.5
+    let viewHeightRatio: CGFloat = 0.4
     let viewWidthRatio: CGFloat = 0.8
     let profileImageDim: CGFloat = 100
 }

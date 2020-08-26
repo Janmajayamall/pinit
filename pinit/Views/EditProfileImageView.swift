@@ -33,10 +33,10 @@ struct EditProfileImageView: View {
             
             VStack{
                 Spacer()
-                Text("Choose your pic")
-                    .font(Font.custom("Acenir", size: 25))
-                    .padding(.bottom, 20)
                 
+                Text("Choose your pic").font(Font.custom("Avenir", size: 25).bold()).foregroundColor(Color.black)
+                
+                Spacer()
                 
                 VStack{
                     Spacer()
@@ -58,11 +58,26 @@ struct EditProfileImageView: View {
                     .simultaneousGesture(DragGesture().onChanged({ (value) in
                         self.imageCropViewModel.dragBy(translation: value.translation)
                     }))
+                
+                Spacer()
+                
+                HStack{
+                    Spacer()
+                    Image(systemName: "photo.fill")
+                        .font(Font.system(size: 35, weight: .bold))
+                        .foregroundColor(Color.secondaryColor)
+                        .onTapGesture {
+                            self.isImagePickerOpen = true
+                    }
+                    Spacer()
+                    Image(systemName: "camera")
+                        .font(Font.system(size: 35, weight: .bold))
+                        .foregroundColor(Color.secondaryColor)
+                    Spacer()
+                }
+                
                 Spacer()
             }
-            
-            
-            
             
             VStack{
                 HStack{
@@ -88,7 +103,7 @@ struct EditProfileImageView: View {
                                 }else if (self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.setupProfileViewScreenService.activeType == .pickImage){
                                     self.imageCropViewModel.finaliseImage(for: .setup)
                                 }
-                                                                
+                                
                                 self.closeEditProfileImageView()
                         }
                         .applyTopRightPaddingToIcon()
@@ -96,23 +111,6 @@ struct EditProfileImageView: View {
                 }.gesture(DragGesture())
                 
                 Spacer()
-                
-                HStack{
-                    Spacer()
-                    Image(systemName: "photo.fill")
-                        .font(Font.system(size: 35, weight: .bold))
-                        .foregroundColor(Color.secondaryColor)
-                        .onTapGesture {
-                            self.isImagePickerOpen = true
-                    }
-                    Spacer()
-                    Image(systemName: "camera")
-                        .font(Font.system(size: 35, weight: .bold))
-                        .foregroundColor(Color.secondaryColor)
-                    Spacer()
-                }
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 40, trailing: 0))
-                
             }
         }
         .sheet(isPresented: self.$isImagePickerOpen, content: {
@@ -125,8 +123,8 @@ struct EditProfileImageView: View {
     
     func closeEditProfileImageView(){
         // switching for all possible cases
-                                           self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
-                                           self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.setupProfileViewScreenService.switchTo(screenType: .normal)
+        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
+        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.setupProfileViewScreenService.switchTo(screenType: .normal)
     }
 }
 

@@ -68,7 +68,7 @@ struct MoreSettingsViewModel: View {
         .animation(.spring())
     }
     
-    let viewHeightRatio: CGFloat = 0.35
+    let viewHeightRatio: CGFloat = 0.30
     let viewWidthRatio: CGFloat = 0.8
 }
 

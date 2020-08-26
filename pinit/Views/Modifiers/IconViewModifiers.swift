@@ -20,14 +20,14 @@ struct IconDefaultThemeViewModifier: ViewModifier {
 struct TopLeftPaddingIconViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-        .padding(EdgeInsets(top: 35, leading: 20, bottom: 0, trailing: 0))
+        .padding(EdgeInsets(top: 45, leading: 20, bottom: 0, trailing: 0))
     }
 }
 
 struct TopRightPaddingIconViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-        .padding(EdgeInsets(top: 35, leading: 0, bottom: 0, trailing: 20))
+        .padding(EdgeInsets(top: 45, leading: 0, bottom: 0, trailing: 20))
     }
 }
 

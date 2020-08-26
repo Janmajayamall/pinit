@@ -32,7 +32,7 @@ struct MainArView: View {
                     
                     UIKitArSceneView(parentSize: geometryProxy.size)
                     
-//                    MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
+                    MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
                     
                     
                     VStack{
@@ -64,7 +64,7 @@ struct MainArView: View {
                     
                  
                     
-                    LoginView(parentSize: geometryProxy.size)
+                    LoginView(parentSize: geometryProxy.size).frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
                     
                     SetupProfileView(parentSize: geometryProxy.size)
                     

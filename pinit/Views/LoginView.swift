@@ -16,6 +16,7 @@ struct LoginView: View {
     var parentSize: CGSize
     
     var viewHeight: CGFloat {
+        print(self.parentSize.height, self.viewHeightRatio)
         return self.parentSize.height * self.viewHeightRatio
     }
     var offset: CGSize {
@@ -42,11 +43,10 @@ struct LoginView: View {
                     .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
                 Spacer()
             }
+            Spacer()
             HStack{
-                Spacer()
                 Text("Create an account to continue").font(Font.custom("Avenir", size: 30))
-                Spacer()
-            }.padding(EdgeInsets(top: 10, leading: 10, bottom: 30, trailing: 10))
+            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 30, trailing: 10))
             
             HStack{
                 Button(action: {
@@ -54,7 +54,7 @@ struct LoginView: View {
                     self.isEmailAuthViewOpen = true
                 }, label: {
                     Spacer()
-                    Text("Sign up with Email").font(Font.custom("Avenir", size: 18)).bold().foregroundColor(Color.white)
+                    Text("Sign up with Email").font(Font.custom("Avenir", size: 18).bold()).foregroundColor(Color.white)
                     Spacer()
                     
                 })
@@ -72,15 +72,31 @@ struct LoginView: View {
                     self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                 })
             }
-                    
+            
+            Spacer()
+            
+            HStack{
+                Text("Already have an account?").foregroundColor(Color.black)
+                Text("Log In with email").foregroundColor(Color.primaryColor)
+            }
+            .font(Font.custom("Avenir", size: 15).bold())
+            .onTapGesture {
+                self.emailAuthViewType = .login
+                self.isEmailAuthViewOpen = true
+            }
+            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            
+            Spacer()
+            
             HStack{
                 Spacer()
                 Text("By signing in you agree with you Terms and Conditions.").font(Font.custom("Avenir", size: 15))
                 Spacer()
-            }.padding(EdgeInsets(top: 10, leading: 0, bottom: 20, trailing: 0))
+            }.padding(.bottom, 20)
+            
             Spacer()
         }
-        .frame(width: self.parentSize.width, height: self.viewHeight, alignment: .top)
+        .frame(width: self.parentSize.width, height: self.viewHeight)
         .background(Color.white)
         .cornerRadius(12)
         .offset(self.offset)
@@ -90,7 +106,7 @@ struct LoginView: View {
         })
     }
     
-    private let viewHeightRatio: CGFloat = 0.7
+    private let viewHeightRatio: CGFloat = 0.6
 }
 
 struct LoginView_Previews: PreviewProvider {
