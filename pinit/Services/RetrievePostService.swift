@@ -25,22 +25,26 @@ class RetrievePostService: ObservableObject {
         
         self.stopListeningToPosts()
         
-        self.documentsListener = self.postCollectionRef.addSnapshotListener { (querySnapshot, error) in
-            guard let documents = querySnapshot?.documents else {return}
-            
-            var posts: Array<PostModel> = []
-            
-            documents.forEach { (queryDocumentSnapshot) in
-                guard let post = try? queryDocumentSnapshot.data(as: PostModel.self) else {
-                    print("something went wrong")
-                    return
-                }
-                posts.append(post)
-            }
-            
-            self.retrievedPosts = posts
-        }
+        self.documentsListener = self.postCollectionRef.whereField("geohash", in: geohashes).addSnapshotListener({ (querySnapshot, error) in
+            self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error)
+        })
         
+    }
+    
+    func handleReceivedPostDocuments(withQuerySnapshot querySnapshot: QuerySnapshot?, withError error: Error?){
+        guard let documents = querySnapshot?.documents else {return}
+
+        var posts: Array<PostModel> = []
+
+        documents.forEach { (queryDocumentSnapshot) in
+            guard let post = try? queryDocumentSnapshot.data(as: PostModel.self) else {
+                print("something went wrong")
+                return
+            }
+            posts.append(post)
+        }
+
+        self.retrievedPosts = posts
     }
     
     func stopListeningToPosts(){

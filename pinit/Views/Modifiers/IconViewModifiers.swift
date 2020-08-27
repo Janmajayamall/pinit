@@ -12,7 +12,7 @@ import SwiftUI
 struct IconDefaultThemeViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(Font.system(size: 20, weight: .heavy))
+            .font(Font.system(size: 25, weight: .heavy))
         .foregroundColor(Color.white)
     }
 }

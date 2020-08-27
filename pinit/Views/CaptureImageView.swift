@@ -33,7 +33,7 @@ struct CaptureImageView: View {
                     Spacer()
                     Circle()
                         .foregroundColor(.purple)
-                        .frame(width: 60, height: 60)
+                        .frame(width: 80, height: 80)
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .editCaptureImage)
                     }

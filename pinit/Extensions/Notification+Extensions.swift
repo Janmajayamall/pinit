@@ -37,4 +37,10 @@ extension Notification.Name {
     static let userProfileServiceDidNotFindUserProfile = Notification.Name("userProfileServiceDidNotFindUserProfile")
     static let userProfileServiceDidSetupProfileImage = Notification.Name("userProfileServiceDidSetupProfileImage")
     static let userProfileServiceDidRequestSetupUserProfile = Notification.Name("userProfileServiceDidRequestSetupUserProfile")
+    
+    // notifications for post display type service
+    static let postDisplayTypeServiceDidChangeType = Notification.Name("postDisplayTypeServiceDidChangeType ")
+    
+    // notifications for AR View
+    static let aRViewDidRequestResetMainView = Notification.Name("aRViewDidRequestResetMainView")
 }

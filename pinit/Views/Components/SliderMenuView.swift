@@ -19,13 +19,13 @@ struct SliderMenuView: View {
                 VStack{
                     Image(systemName: "person.fill")
                         .applyDefaultIconTheme()
-                        .padding(.bottom, 15)
+                        .padding(.bottom, 20)
                     
                     Image(systemName: "globe")
                         .applyDefaultIconTheme()
-                        .padding(.bottom, 15)
+                        .padding(.bottom, 20)
                     
-                    Image(systemName: "globe")
+                    Image(systemName: "gear")
                         .applyDefaultIconTheme()
                         .onTapGesture {
                             if self.settingsViewModel.isUserAuthenticated() {
@@ -35,12 +35,11 @@ struct SliderMenuView: View {
                             }
                             self.showMenu = false
                     }
-                        .padding(.bottom, 15)
                 }
             }
             
             Image(systemName: self.showMenu ? "chevron.up.circle.fill" : "chevron.down.circle.fill")
-                .font(Font.system(size: 20, weight: .heavy))
+                .font(Font.system(size: 25, weight: .heavy))
                 .foregroundColor(Color.white)
                 .onTapGesture {
                     guard self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .normal else {return}
@@ -49,9 +48,11 @@ struct SliderMenuView: View {
                         self.showMenu = !self.showMenu
                     }
             }
-            .offset(CGSize(width: .zero, height: self.showMenu ? 80 : 0))
+            .offset(CGSize(width: .zero, height: self.showMenu ? 90 : 0))
             .animation(.linear)
-        }.frame(width: 50, height: 80, alignment: .top)
+        }
+        .frame(width: 50, height: 80, alignment: .top)
+        .padding(.top, 20)
     }
 }
 

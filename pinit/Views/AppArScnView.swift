@@ -27,16 +27,19 @@ class AppArScnView: ARSCNView {
                 
                 self.mainSceneNode?.addChildNode(node)
             }
+            
         }
     }
+    
     var currentPosition: SCNVector3? {
         guard let pointOfView = self.pointOfView else {return nil}
         return self.scene.rootNode.convertPosition(pointOfView.position, to: mainSceneNode)
     }
     
     var aRSceneLocationService = ARSceneLocationService()
-    var retrievePostService = RetrievePostService()
     var geohashingService = GeohashingService()
+    var retrievePostService = RetrievePostService()
+
     
     var placedImageNodes: Dictionary<String , ImageSCNNode> = [:]
     var bufferImageNodes: Dictionary<String , ImageSCNNode> = [:]
@@ -121,12 +124,25 @@ class AppArScnView: ARSCNView {
     }
     
     func updateSceneNodes(){
-        
         self.placedImageNodes.forEach { (id, node) in
             node.updateSceneNodeWith(locationService: self.aRSceneLocationService, scenePostion: self.currentPosition, firstTime: false)
         }
     }
     
+    /// removes all placed child nodes from the main scene node &
+    /// empties placed & buffer list of nodes
+    func resetMainScene(){
+        // empty buffer nodes array
+        self.bufferImageNodes.removeAll()
+        
+        // empty places nodes array
+        self.placedImageNodes.removeAll()
+        
+        // remove all child nodes of main scene nodes
+        self.mainSceneNode?.childNodes.forEach({ (node) in
+            node.removeFromParentNode()
+        })
+    }
 }
 
 // extension for susbcribing to publishers
@@ -177,7 +193,6 @@ extension AppArScnView: ARSCNViewDelegate {
         }
     }
 }
-
 
 
 

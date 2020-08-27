@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D27ABFE24F7CACE005D8992 /* PostDisplayTypeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */; };
 		5D31948624F00ECF001182E4 /* SafeTopEdgeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */; };
 		5D31948824F0195F001182E4 /* RequestCreatePostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D31948724F0195F001182E4 /* RequestCreatePostModel.swift */; };
 		5D4DD09F24ED2A1200E1FDF3 /* CaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DD09E24ED2A1200E1FDF3 /* CaptureImageView.swift */; };
@@ -98,6 +99,7 @@
 		1385407D1D6A4E3CDF4F7C98 /* Pods-pinit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit.release.xcconfig"; path = "Target Support Files/Pods-pinit/Pods-pinit.release.xcconfig"; sourceTree = "<group>"; };
 		1AAF8B5ABCAE13383E9A8ABC /* Pods-pinitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinitTests.debug.xcconfig"; path = "Target Support Files/Pods-pinitTests/Pods-pinitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4569630AAFCC53BA63E993B9 /* Pods-pinit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit.debug.xcconfig"; path = "Target Support Files/Pods-pinit/Pods-pinit.debug.xcconfig"; sourceTree = "<group>"; };
+		5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayTypeService.swift; sourceTree = "<group>"; };
 		5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeTopEdgeViewModifier.swift; sourceTree = "<group>"; };
 		5D31948724F0195F001182E4 /* RequestCreatePostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCreatePostModel.swift; sourceTree = "<group>"; };
 		5D4DD09E24ED2A1200E1FDF3 /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 				5D52F7D724E98F5900D9F27E /* RetrievePostService.swift */,
 				5D52F7D924E9932600D9F27E /* LocationService.swift */,
 				5D5245FC24F4555E0000317D /* SetupProfileViewModel.swift */,
+				5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -722,6 +725,7 @@
 				5D52F7B524E9288200D9F27E /* Publishers+Extensions.swift in Sources */,
 				5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */,
 				5D4DD0AA24ED425700E1FDF3 /* EditCaptureImageView.swift in Sources */,
+				5D27ABFE24F7CACE005D8992 /* PostDisplayTypeService.swift in Sources */,
 				5D567CF724F428E400283E5B /* SetupProfileView.swift in Sources */,
 				5D52F7DA24E9932600D9F27E /* LocationService.swift in Sources */,
 				5D52F7CB24E96E8F00D9F27E /* LoginView.swift in Sources */,

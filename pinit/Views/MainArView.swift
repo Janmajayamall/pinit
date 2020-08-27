@@ -37,23 +37,33 @@ struct MainArView: View {
                     
                     VStack{
                         HStack{
+                            Image(systemName: "person.fill")
+                                .applyDefaultIconTheme()
+                                .onTapGesture {
+                                    if self.settingsViewModel.isUserAuthenticated() {
+                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
+                                    }else {
+                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                    }
+                                    self.showMenu = false
+                            }.applyTopLeftPaddingToIcon()
                             Spacer()
-                            SliderMenuView()
-                            .applyTopRightPaddingToIcon()
                         }
                         Spacer()
                         HStack{
-                            Button(action: {
-                                if self.settingsViewModel.isUserAuthenticated() {
-                                    self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
-                                }else {
-                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
-                                }
-                            }, label: {
-                                Image(systemName: "camera.circle.fill")
-                                    .applyDefaultIconTheme()
-                                    .padding(40)
-                            })
+                            Image(systemName: "camera.fill")
+                                .applyDefaultIconTheme()
+                                .padding(EdgeInsets(top: 0, leading: 45, bottom: 45, trailing: 0))
+                                .onTapGesture {
+                                    // closing the map view, if it is open
+                                    self.forceMapViewToDownState()
+                                    
+                                    if self.settingsViewModel.isUserAuthenticated() {
+                                        self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
+                                    }else {
+                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                    }
+                            }
                             
                             Spacer()
                         }
@@ -62,7 +72,7 @@ struct MainArView: View {
                     
                     ProfileView(parentSize: geometryProxy.size)
                     
-                 
+                    
                     
                     LoginView(parentSize: geometryProxy.size).frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
                     

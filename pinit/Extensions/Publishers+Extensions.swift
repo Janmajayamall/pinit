@@ -176,4 +176,27 @@ extension Publishers {
         .eraseToAnyPublisher()
     }
     
+    // publishers for postDisplayType service
+    static var postDisplayTypeServiceDidChangeTypePublisher: AnyPublisher<PostDisplayType, Never>{
+        NotificationCenter
+            .default
+            .publisher(for: .postDisplayTypeServiceDidChangeType)
+            .compactMap { (notification) -> PostDisplayType? in
+                guard let type = notification.object as? PostDisplayType else {return nil}
+                return type
+        }.eraseToAnyPublisher()
+    }
+    
+    // publishers for ar view
+    static var aRViewDidRequestResetMainView: AnyPublisher<Bool, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .aRViewDidRequestResetMainView)
+            .compactMap { (notificatoin) -> Bool? in
+                guard let value = notificatoin.object as? Bool else {return nil}
+                return value
+        }
+    .eraseToAnyPublisher()
+    }
+    
 }
