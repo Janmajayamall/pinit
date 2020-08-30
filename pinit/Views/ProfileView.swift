@@ -82,7 +82,7 @@ struct ProfileView: View {
     
     private let viewHeightRatio: CGFloat = 0.30
     private let viewWidthRatio: CGFloat = 0.8
-    private let profileImageDim: CGFloat = 150
+    private let profileImageDim: CGFloat = 100
 }
 
 struct ProfileView_Previews: PreviewProvider {
