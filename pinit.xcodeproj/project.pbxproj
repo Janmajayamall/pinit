@@ -71,6 +71,7 @@
 		5DC8527724EFE96500E36DCE /* UIKitUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527624EFE96500E36DCE /* UIKitUITextView.swift */; };
 		5DC8527924EFED2300E36DCE /* KeyboardAwareViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527824EFED2300E36DCE /* KeyboardAwareViewModifiers.swift */; };
 		5DC8527B24EFF83E00E36DCE /* FadeKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527A24EFF83E00E36DCE /* FadeKeyboard.swift */; };
+		5DE4A3CA24FC082A00262A95 /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = 5DE4A3C924FC082A00262A95 /* ReadMe.md */; };
 		5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9524F5B185005F0A04 /* View+Extensions.swift */; };
 		5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */; };
 		C4BE49B981BA6C9E1F5E6C91 /* Pods_pinit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA819CC259AA9FBEDA20535D /* Pods_pinit.framework */; };
@@ -170,6 +171,7 @@
 		5DC8527624EFE96500E36DCE /* UIKitUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitUITextView.swift; sourceTree = "<group>"; };
 		5DC8527824EFED2300E36DCE /* KeyboardAwareViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAwareViewModifiers.swift; sourceTree = "<group>"; };
 		5DC8527A24EFF83E00E36DCE /* FadeKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeKeyboard.swift; sourceTree = "<group>"; };
+		5DE4A3C924FC082A00262A95 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		5DE94F9524F5B185005F0A04 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
 		79E76096699AA6D6E4878737 /* Pods_pinitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,6 +379,7 @@
 				5D67E7F924E84E7000F5D240 /* LaunchScreen.storyboard */,
 				5D67E7FC24E84E7000F5D240 /* Info.plist */,
 				5D67E7F624E84E7000F5D240 /* Preview Content */,
+				5DE4A3C924FC082A00262A95 /* ReadMe.md */,
 			);
 			path = pinit;
 			sourceTree = "<group>";
@@ -543,6 +546,7 @@
 			files = (
 				5D67E7FB24E84E7000F5D240 /* LaunchScreen.storyboard in Resources */,
 				5D52F7A524E9117500D9F27E /* GoogleService-Info.plist in Resources */,
+				5DE4A3CA24FC082A00262A95 /* ReadMe.md in Resources */,
 				5D67E7F824E84E7000F5D240 /* Preview Assets.xcassets in Resources */,
 				5D67E7F524E84E7000F5D240 /* Assets.xcassets in Resources */,
 				5D567CF324F3E57300283E5B /* Avenir.ttc in Resources */,
