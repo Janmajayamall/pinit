@@ -34,7 +34,8 @@ struct EditProfileImageView: View {
             VStack{
                 Spacer()
                 
-                Text("Choose your pic").font(Font.custom("Avenir", size: 25).bold()).foregroundColor(Color.black)
+                Text("Choose your pic")
+                    .applyDefaultThemeToTextHeader(ofType: .h3)
                 
                 Spacer()
                 
@@ -83,8 +84,7 @@ struct EditProfileImageView: View {
                 HStack{
                     Image(systemName: "xmark")
                         .foregroundColor(Color.primaryColor)
-                        .applyDefaultIconTheme()
-                        .foregroundColor(Color.primaryColor)
+                        .applyDefaultIconTheme()                        
                         .onTapGesture {
                             self.closeEditProfileImageView()
                     }

@@ -13,21 +13,23 @@ struct IconDefaultThemeViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(Font.system(size: 25, weight: .heavy))
-        .foregroundColor(Color.white)
+            .foregroundColor(Color.white)
+            .frame(width: 40, height: 40, alignment: .center)
+            .background(Color.white.opacity(0.0001))
     }
 }
 
 struct TopLeftPaddingIconViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-        .padding(EdgeInsets(top: 45, leading: 20, bottom: 0, trailing: 0))
+            .padding(EdgeInsets(top: 30, leading: 10, bottom: 0, trailing: 0))
     }
 }
 
 struct TopRightPaddingIconViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-        .padding(EdgeInsets(top: 45, leading: 0, bottom: 0, trailing: 20))
+            .padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 10))
     }
 }
 

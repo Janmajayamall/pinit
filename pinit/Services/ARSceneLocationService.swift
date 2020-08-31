@@ -20,7 +20,7 @@ class ARSceneLocationService {
         
     var locationEstimates: Array<ARSceneLocationEstimate> = []
     weak var delegate: ARSceneLocationServiceDelegate?
-    var updateEstimatesTimer: Timer?
+//    var updateEstimatesTimer: Timer.TimerPublisher
     
     var cancellables: Set<AnyCancellable> = []
     
@@ -41,7 +41,6 @@ class ARSceneLocationService {
     }
             
     init() {
-        self.setupService()
     }
     
     func addLocationEstimate(location: CLLocation){
@@ -51,8 +50,9 @@ class ARSceneLocationService {
     
     func updateEstimates(){
         removeOldEstimations()
-        
+                
         if let currentLocation = self.currentLocation {
+            print("Current location \(currentLocation.coordinate)")
             NotificationCenter.default.post(name: .aRSceneLocationServiceDidUpdateLocationEstimates, object: currentLocation)
         }
     }
@@ -84,21 +84,20 @@ class ARSceneLocationService {
     }
     
     func start() {
-        self.stop()
-        self.updateEstimatesTimer = Timer(timeInterval: 0.5, repeats: true, block: { [weak self] _ in
-            self?.updateEstimates()
-        })
+        Timer.publish(every: 0.5, on: .main, in: .common).autoconnect().sink { (we) in
+            self.updateEstimates()
+        }.store(in: &cancellables)
     }
     
     func stop() {
-        self.updateEstimatesTimer?.invalidate()
-        self.updateEstimatesTimer = nil
+//        print("asked to stop")
+//        self.updateEstimatesTimer?.invalidate()
+//        self.updateEstimatesTimer = nil
     }
     
     func setupService(){
         self.subscribeToLocationServicePublishers()
     }
-    
 }
 
 
@@ -133,5 +132,6 @@ extension ARSceneLocationService {
         Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
             self.addLocationEstimate(location: location)
         }.store(in: &cancellables)
+        
     }
 }

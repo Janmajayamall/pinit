@@ -48,9 +48,19 @@ class ImageSCNNode: SCNNode {
         self.imageManager.load()
     }
     
+    func calculteRatio(image: UIImage) -> CGSize{
+        let width: CGFloat = 1
+        let height: CGFloat = (image.size.height * width)/image.size.width
+        
+        return CGSize(width: width, height: height)
+        
+    }
+    
     func addImageAsGeometry(_ image: UIImage) {
         //creating 2D plane for texturing it with image
-        let plane = SCNPlane(width: image.size.width, height: image.size.height)
+        let d = self.calculteRatio(image: image)
+        let plane = SCNPlane(width: d.width, height: d.height)
+        print("size \(image.size)")
         plane.firstMaterial?.diffuse.contents = image
         plane.firstMaterial?.lightingModel = .constant
         
@@ -82,7 +92,7 @@ class ImageSCNNode: SCNNode {
         
         let translateCurrentLocationBy = currentLocation.getTranslation(to: self.location)
         let distanceBetween = currentLocation.distance(from: self.location)
-        
+       
         //Start scene transaction
         SCNTransaction.begin()
         SCNTransaction.animationDuration = 0.1
@@ -98,8 +108,10 @@ class ImageSCNNode: SCNNode {
         }
         
         // scale the position (SCALE should always change depending on the current location of user)
-        // TODO: set the scale of by how distant the image is from the user
         
+        // TODO: set the scale of by how distant the image is from the user
+//        self.scale = SCNVector3(x: Float(1/distanceBetween), y: Float(1/distanceBetween), z: Float(1/distanceBetween))
+         self.scale = SCNVector3(x: 1, y: 1, z: 1)
         //update the rendering order of the node
         self.renderingOrder = self.setRenderOrder(forDistance: distanceBetween)
         
@@ -113,7 +125,9 @@ class ImageSCNNode: SCNNode {
     /// In our case, we want distant nodes to render before the near ones
     /// in order to avoid image flickering (if form the camera perspective one image overlays the other one)
     func setRenderOrder(forDistance distance: CLLocationDistance) -> Int{
-        return Int.max - (1000 - Int(distance * 1000))
+        print("distance: \(distance)")
+//        print("value: \(Int.max - (1000 - Int(distance)*1000))")
+        return 4
     }
     
 }

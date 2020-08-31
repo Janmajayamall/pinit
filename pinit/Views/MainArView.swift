@@ -16,11 +16,6 @@ struct MainArView: View {
     
     @State var showMenu: Bool = false
     
-    init() {
-        print("Initialised MainArView")
-    }
-    
-    
     @ViewBuilder
     var body: some View {
         
@@ -37,8 +32,10 @@ struct MainArView: View {
                     
                     VStack{
                         HStack{
+                            //                            HStack{
                             Image(systemName: "person.fill")
-                                .applyDefaultIconTheme()
+                            .applyDefaultIconTheme()
+                                .applyTopLeftPaddingToIcon()
                                 .onTapGesture {
                                     if self.settingsViewModel.isUserAuthenticated() {
                                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
@@ -46,7 +43,8 @@ struct MainArView: View {
                                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
                                     }
                                     self.showMenu = false
-                            }.applyTopLeftPaddingToIcon()
+                            }.zIndex(3)
+                                                 
                             Spacer()
                         }
                         Spacer()
@@ -89,7 +87,7 @@ struct MainArView: View {
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .background(Color.black)
                 .edgesIgnoringSafeArea(.all)
-                .gesture(DragGesture()
+                .gesture(DragGesture(minimumDistance: 10)
                     .onChanged({value in
                         guard self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .normal else {return}
                         
@@ -141,3 +139,5 @@ struct MainArView_Previews: PreviewProvider {
 //        }
 //}
 //.applyTopLeftPaddingToIcon()
+
+

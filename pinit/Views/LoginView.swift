@@ -39,13 +39,14 @@ struct LoginView: View {
                     .applyDefaultIconTheme()
                     .onTapGesture {
                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
-                    }
-                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 Spacer()
             }
             Spacer()
             HStack{
-                Text("Create an account to continue").font(Font.custom("Avenir", size: 30))
+                Text("Create an account to continue")
+                    .applyDefaultThemeToTextHeader(ofType: .h1)
             }.padding(EdgeInsets(top: 0, leading: 10, bottom: 30, trailing: 10))
             
             HStack{
@@ -54,7 +55,9 @@ struct LoginView: View {
                     self.isEmailAuthViewOpen = true
                 }, label: {
                     Spacer()
-                    Text("Sign up with Email").font(Font.custom("Avenir", size: 18).bold()).foregroundColor(Color.white)
+                    Text("Sign up with Email")
+                        .font(Font.custom("Avenir", size: 18).bold())
+                        .foregroundColor(Color.white)
                     Spacer()
                     
                 })
@@ -65,8 +68,7 @@ struct LoginView: View {
             
             UIKitSignInWithApple().frame(width: 280, height: 45).onTapGesture {
                 self.signInWithAppleCoordinator = SignInWithAppleCoordinator(window: self.window)
-                self.signInWithAppleCoordinator?.signIn(onSignedInHandler: {user in
-                    print("Logged in with name \(String(describing: user.displayName)) & email \(String(describing: user.email))")
+                self.signInWithAppleCoordinator?.signIn(onSignedInHandler: {user in                   
                     
                     // close the login view
                     self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
@@ -80,6 +82,7 @@ struct LoginView: View {
                 Text("Log In with email").foregroundColor(Color.primaryColor)
             }
             .font(Font.custom("Avenir", size: 15).bold())
+            .foregroundColor(Color.black)
             .onTapGesture {
                 self.emailAuthViewType = .login
                 self.isEmailAuthViewOpen = true
@@ -90,7 +93,9 @@ struct LoginView: View {
             
             HStack{
                 Spacer()
-                Text("By signing in you agree with you Terms and Conditions.").font(Font.custom("Avenir", size: 15))
+                Text("By signing in you agree with you Terms and Conditions.")
+                .font(Font.custom("Avenir", size: 15))
+                .foregroundColor(Color.black)
                 Spacer()
             }.padding(.bottom, 20)
             

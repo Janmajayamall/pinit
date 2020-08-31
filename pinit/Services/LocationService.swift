@@ -68,6 +68,6 @@ extension LocationService: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        print("Authorization status changed to: \(status.rawValue)")
+        
     }
 }

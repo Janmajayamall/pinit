@@ -33,7 +33,8 @@ struct EditUsernameView: View {
                 
                 HStack{
                     Spacer()
-                    Text("Change your username").font(Font.custom("Avenir", size: 25).bold()).foregroundColor(Color.black)
+                    Text("Change your username")
+                        .applyDefaultThemeToTextHeader(ofType: .h3)
                     Spacer()
                 }
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
@@ -42,8 +43,9 @@ struct EditUsernameView: View {
                 
                 HStack{
                     VStack{
-                        TextField("Username", text: self.$username)
+                        CustomTextFieldView(text: self.$username, placeholder: "Username")
                             .font(Font.custom("Avenir", size: 18))
+                            .foregroundColor(Color.black)
                         Divider().background(Color.secondaryColor)
                     }
                 }
@@ -72,7 +74,7 @@ struct EditUsernameView: View {
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
                     }
-                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     Spacer()
                 }
                 Spacer()

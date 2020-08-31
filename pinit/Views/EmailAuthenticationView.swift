@@ -31,22 +31,26 @@ struct EmailAuthenticationView: View {
             }
             
             HStack{
-                Text(self.viewType == .login ? "Login to your account" : "Sign up with email").font(Font.custom("Avenir", size: 20).bold())
+                Text(self.viewType == .login ? "Login to your account" : "Sign up with email")
+                    .font(Font.custom("Avenir", size: 20).bold())
+                    .foregroundColor(Color.black)
                 Spacer()
             }.padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 0))
             
             HStack{
                 VStack{
-                    TextField("Email", text: self.$emailId)
+                    CustomTextFieldView(text: self.$emailId, placeholder: "Email ID")
                         .font(Font.custom("Avenir", size: 15).bold())
+                        .foregroundColor(Color.black)
                     Divider().background(Color.secondaryColor)
                 }
             }.padding(EdgeInsets(top: 0, leading: 20, bottom: 5, trailing: 20))
             
             HStack{
                 VStack{
-                    TextField("Password", text: self.$password)
+                    CustomTextFieldView(text: self.$password, placeholder: "Password")
                         .font(Font.custom("Avenir", size: 15).bold())
+                        .foregroundColor(Color.black)
                     Divider().background(Color.secondaryColor)
                 }
             }.padding(EdgeInsets(top: 0, leading: 20, bottom: 15, trailing: 20))
@@ -67,6 +71,7 @@ struct EmailAuthenticationView: View {
             
             Spacer()
         }
+        .background(Color.white)
     }
     
     func authenticateUser() {

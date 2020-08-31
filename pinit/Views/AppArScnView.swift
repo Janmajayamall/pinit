@@ -60,10 +60,18 @@ class AppArScnView: ARSCNView {
         // TODO: Change delegate afterwards - when you need to have a delegate for this class
         self.delegate = self
         
+        // setting up self as delegate
+        self.aRSceneLocationService.delegate = self
+        
         // Setting up subscribers
         self.subscribeToRetrievePostServicePublishers()
         self.subscribeToArSceneLocationServicePublishers()
         self.subscribeToImageSCNNodePublishers()
+        
+        // setup services
+        self.retrievePostService.setupService()
+        self.geohashingService.setupService()
+        self.aRSceneLocationService.setupService()
         
         // adding UITapGestureRecogniser
         let gestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
@@ -88,6 +96,9 @@ class AppArScnView: ARSCNView {
     }
     
     func startSession(){
+        
+        print("AR scene session started")
+        
         //configure AR session
         let configuration = ARWorldTrackingConfiguration()
         configuration.isLightEstimationEnabled = false
@@ -101,6 +112,7 @@ class AppArScnView: ARSCNView {
     }
     
     func pauseSession(){
+        print("Pause ar session")
         self.session.pause()
         
         //stop other services as well
@@ -151,6 +163,7 @@ extension AppArScnView {
     // ARSceneLocationService
     func subscribeToArSceneLocationServicePublishers(){
         Publishers.aRSceneLocationServiceDidUpdateLocationEstimatesPublisher.sink { (location) in
+            
             self.updateSceneNodes()
         }.store(in: &cancellables)
     }

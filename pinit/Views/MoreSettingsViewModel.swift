@@ -55,7 +55,7 @@ struct MoreSettingsViewModel: View {
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
                     }
-                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     Spacer()
                 }
                 Spacer()

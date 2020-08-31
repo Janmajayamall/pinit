@@ -10,5 +10,13 @@ import Foundation
 
 struct GeohashModel {
     var currentLocationGeohash: String
-    var currentAreaGeohashes: Array<String>
+    var neighborGeohashes: Array<String>
+    var currentAreaGeohashes: Array<String> {
+        // generating geohashes array containing geohashes describing current location under watch
+        var geohashes = self.neighborGeohashes
+        geohashes.append(self.currentLocationGeohash)
+        
+        return geohashes
+    }
+    
 }

@@ -22,8 +22,8 @@ class RetrievePostService: ObservableObject {
     init() {}
     
     func listenToPostsForGeohashes(_ geohashes: Array<String>){
-        
         self.stopListeningToPosts()
+        print("geohashes, \(geohashes)")
         
         self.documentsListener = self.postCollectionRef.whereField("geohash", in: geohashes).addSnapshotListener({ (querySnapshot, error) in
             self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error)
@@ -43,7 +43,7 @@ class RetrievePostService: ObservableObject {
             }
             posts.append(post)
         }
-
+        print("final posts: \(posts)")
         self.retrievedPosts = posts
     }
     
@@ -63,6 +63,7 @@ class RetrievePostService: ObservableObject {
 extension RetrievePostService {
     func subscribeToGeohasingServicePublishers(){
         Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (geohashModel) in
+            print("Geohash did update to: \(geohashModel.currentLocationGeohash)")
             self.listenToPostsForGeohashes(geohashModel.currentAreaGeohashes)
         }.store(in: &cancellables)
     }

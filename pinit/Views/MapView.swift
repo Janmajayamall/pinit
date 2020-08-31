@@ -26,7 +26,7 @@ struct MapView: View {
     
     var body: some View {
         
-        let dragGesture = DragGesture()
+        let dragGesture = DragGesture(minimumDistance: 10)
             .onChanged({value in
                 guard (self.screenState == .up && value.translation.height > 0) || (self.screenState == .down && value.translation.height < 0) else {return}
                 
@@ -49,15 +49,14 @@ struct MapView: View {
             VStack{
                 HStack{
                     Image(systemName: "xmark")
-                        .foregroundColor(Color.primaryColor)
                         .applyDefaultIconTheme()
                         .onTapGesture {
                             self.closeView()
                     }
-                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     Spacer()
                 }.frame(width: parentGeometrySize.width, height: 50)
-                    .background(Color.white.opacity(0.7))
+                    .background(Color.black.opacity(0.5))
                     .gesture(dragGesture)
                 Spacer()
             }

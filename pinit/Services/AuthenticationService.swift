@@ -25,8 +25,7 @@ class AuthenticationService {
         }
         
         self.handle = Auth.auth().addStateDidChangeListener({(auth, user) in
-            if let user = user {
-                print("User changed \(user.uid)")
+            if let user = user {                
                 self.postNotification(for: .authenticationServiceDidAuthStatusChange, withObject: user)
             }
         })

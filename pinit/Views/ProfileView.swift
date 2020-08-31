@@ -44,7 +44,7 @@ struct ProfileView: View {
                 HStack{
                     Spacer()
                     Text(self.settingsViewModel.userProfile?.username ?? "")
-                        .font(Font.custom("Avenir", size: 20).bold())
+                        .applyDefaultThemeToTextHeader(ofType: .h3)
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editUsername)
                     }
@@ -60,7 +60,7 @@ struct ProfileView: View {
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                         }
-                        .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     Spacer()
                     Image(systemName: "ellipsis")
                         .foregroundColor(Color.primaryColor)
@@ -68,7 +68,7 @@ struct ProfileView: View {
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .settings)
                         }
-                        .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 10))
+                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 }
                 Spacer()
             }.zIndex(1)

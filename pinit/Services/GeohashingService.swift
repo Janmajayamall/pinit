@@ -23,8 +23,7 @@ class GeohashingService {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init() {
-        self.setupService()
+    init() {       
     }
     
     /**
@@ -37,10 +36,9 @@ class GeohashingService {
     func updateGeohashToLocation(_ location: CLLocation) {
         let locationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
         guard self.geohashModel == nil || self.geohashModel?.currentLocationGeohash != locationGeohash else {return}
-        let areaGeohashes = GeohashingService.neighborsFor(geohash: locationGeohash)
-        let geohashModel = GeohashModel(currentLocationGeohash: locationGeohash, currentAreaGeohashes: areaGeohashes)
-        self.geohashModel = geohashModel
-        
+        let neighborGeohashes = GeohashingService.neighborsFor(geohash: locationGeohash)
+        let geohashModel = GeohashModel(currentLocationGeohash: locationGeohash, neighborGeohashes: neighborGeohashes)
+        self.geohashModel = geohashModel        
         NotificationCenter.default.post(name: .geohasingServiceDidUpdateGeohash, object: geohashModel)
     }
     
@@ -156,7 +154,8 @@ class GeohashingService {
 
 // extension for subscribing to publishers
 extension GeohashingService {
-    func subscribeToArLocationServicePublishers(){
+    func subscribeToArLocationServicePublishers(){        
+        
         Publishers.aRSceneLocationServiceDidUpdateLocationEstimatesPublisher.sink { (location) in
             self.updateGeohashToLocation(location)
         }.store(in: &cancellables)

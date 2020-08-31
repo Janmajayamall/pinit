@@ -65,7 +65,7 @@ class UserProfileService: ObservableObject {
                 
                 return
             }
-            print("HUAA")
+            
             self.userProfile = profile
             self.profileImageManager = ImageManager(url: URL(string: profile.profileImageUrl))
             self.subscribeToImageManager()

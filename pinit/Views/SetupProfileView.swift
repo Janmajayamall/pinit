@@ -32,7 +32,8 @@ struct SetupProfileView: View {
             Spacer()
             
             HStack{
-              Text("Setup your profile").font(Font.custom("Avenir", size: 25).bold()).foregroundColor(Color.black)
+              Text("Setup your profile")
+                .applyDefaultThemeToTextHeader(ofType: .h3)
                     
             }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             
@@ -54,7 +55,7 @@ struct SetupProfileView: View {
             HStack{
                 Spacer()
                 VStack{
-                    TextField("Username", text: self.$settingsViewModel.setupProfileViewModel.username)
+                    CustomTextFieldView(text: self.$settingsViewModel.setupProfileViewModel.username, placeholder: "Username")
                         .font(Font.custom("Avenir", size: 18))
                     Divider().background(Color.secondaryColor)
                 }
