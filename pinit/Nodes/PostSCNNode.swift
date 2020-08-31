@@ -54,7 +54,10 @@ class PostSCNNode: SCNNode, Identifiable {
     }
     
     func addImageSCNNode(withImage image: UIImage){
-        let imageNode = ImageSCNNOde(image: image)
+        // return if imageSCNNode has already been added
+        guard self.isImageNodeLoaded == false else {return}
+        
+        let imageNode = ImageSCNNode(image: image)
         
         // define billboard constraint so that 2D plane always points towards the point of view
         let billboardConstraint = SCNBillboardConstraint()
@@ -118,7 +121,7 @@ class PostSCNNode: SCNNode, Identifiable {
     private var maximumDistanceFromUser: CLLocationDistance = 50
 }
 
-class ImageSCNNOde: SCNNode {
+class ImageSCNNode: SCNNode {
     var image: UIImage
     
     init(image: UIImage) {
@@ -135,7 +138,7 @@ class ImageSCNNOde: SCNNode {
         let imageOriginalDims = self.image.size
         
         let width = self.fixedImageWidth
-        let height = (imageOriginalDims.height * width)/imageOriginalDims.height
+        let height = (imageOriginalDims.height * width)/imageOriginalDims.width
         
         return CGSize(width: width, height: height)
     }

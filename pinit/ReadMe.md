@@ -17,3 +17,4 @@
 2. and remove everything related to ImageSCNNode
 3. bring the length of geohash stored with each post down to 5 - 6 characters
 4. change query such that it gets posts using geohash only, because the posts are filtered while being added as scene nodes on the basis of their distance (rn the maximum distance is 50m)
+5. take care of flickering as well
