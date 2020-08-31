@@ -7,13 +7,12 @@
 //
 
 import Foundation
-import Foundation
 import SceneKit
 import CoreLocation
 import SDWebImageSwiftUI
 import Combine
 
-class ImageSCNNode: SCNNode {
+class ImageCNNode: SCNNode {
     
     var location: CLLocation {
         let geoLocation = self.post.geolocation
@@ -44,7 +43,7 @@ class ImageSCNNode: SCNNode {
         
         super.init()
         
-        self.subscribeToSDWebImageSwiftPublishers()
+//        self.subscribeToSDWebImageSwiftPublishers()
         self.imageManager.load()
     }
     
@@ -126,27 +125,26 @@ class ImageSCNNode: SCNNode {
     /// in order to avoid image flickering (if form the camera perspective one image overlays the other one)
     func setRenderOrder(forDistance distance: CLLocationDistance) -> Int{
         print("distance: \(distance)")
-//        print("value: \(Int.max - (1000 - Int(distance)*1000))")
-        return 4
+        return Int.max - (1000 - Int(distance * 1000))
     }
     
 }
-
-extension ImageSCNNode {
-    // SDWebImageSwiftUI
-    func subscribeToSDWebImageSwiftPublishers(){
-        self.imageManager.$image.sink(receiveValue: { (image) in
-            
-            // return if geometry already exists
-            guard self.geometry == nil else {return}
-            
-            // return if image is nil
-            guard let image = image else {return}
-            
-            self.addImageAsGeometry(image)
-            guard let id = self.id else {return}
-            
-            NotificationCenter.default.post(name: .imageSCNNodeDidLoadImage, object: id)
-        }).store(in: &cancellables)
-    }
-}
+//
+//extension ImageSCNNode {
+//    // SDWebImageSwiftUI
+//    func subscribeToSDWebImageSwiftPublishers(){
+//        self.imageManager.$image.sink(receiveValue: { (image) in
+//
+//            // return if geometry already exists
+//            guard self.geometry == nil else {return}
+//
+//            // return if image is nil
+//            guard let image = image else {return}
+//
+//            self.addImageAsGeometry(image)
+//            guard let id = self.id else {return}
+//
+//            NotificationCenter.default.post(name: .imageSCNNodeDidLoadImage, object: id)
+//        }).store(in: &cancellables)
+//    }
+//}

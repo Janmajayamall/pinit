@@ -10,3 +10,10 @@
 1. https://github.com/chriswebb09/ARKitNavigationDemo
 2. https://github.com/ProjectDent/ARKit-CoreLocation --- important one
 3. https://github.com/peterfriese/MakeItSo ---- from firebase
+
+
+# Work to do
+1. change geohash to a single one that covers a huge area
+2. and remove everything related to ImageSCNNode
+3. bring the length of geohash stored with each post down to 5 - 6 characters
+4. change query such that it gets posts using geohash only, because the posts are filtered while being added as scene nodes on the basis of their distance (rn the maximum distance is 50m)

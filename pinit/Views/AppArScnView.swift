@@ -18,16 +18,21 @@ class AppArScnView: ARSCNView {
     /// Main root node and `mainSceneNode` have same position (i.e. the origin of 3d scene coordinate )
     var mainSceneNode: SCNNode? {
         didSet{
-            //return if mainSceneNode is still nil
+            // return if mainSceneNode is still nil
             guard self.mainSceneNode != nil else {return}
             
-            self.placedImageNodes.forEach { (id, node) in
+            // getting current location
+            guard let currentLocation = self.aRSceneLocationService.currentLocation else {return}
+            
+            self.postSceneNodes.forEach { (id, node) in
+                guard node.isImageNodeLoaded else {return}
                 
-                node.updateSceneNodeWith(locationService: self.aRSceneLocationService, scenePostion: self.currentPosition ,firstTime: true)
+                guard node.checkNodeRenderValidity(withCurrentLocation: currentLocation) else {return}
+                
+                node.updatePostNode(locationService: self.aRSceneLocationService, scenePosition: self.currentPosition, firstTime: true)
                 
                 self.mainSceneNode?.addChildNode(node)
             }
-            
         }
     }
     
@@ -40,9 +45,7 @@ class AppArScnView: ARSCNView {
     var geohashingService = GeohashingService()
     var retrievePostService = RetrievePostService()
 
-    
-    var placedImageNodes: Dictionary<String , ImageSCNNode> = [:]
-    var bufferImageNodes: Dictionary<String , ImageSCNNode> = [:]
+    var postSceneNodes: Dictionary<String, PostSCNNode> = [:]
     
     var debug: Bool = false
     
@@ -120,36 +123,36 @@ class AppArScnView: ARSCNView {
         self.aRSceneLocationService.stop()
     }
     
-    func addSceneNode(withId id: String){
-        
-        if self.bufferImageNodes[id] != nil {
-            
-            self.placedImageNodes[id] = self.bufferImageNodes[id]
-            self.bufferImageNodes.removeValue(forKey: id)
-            
-            self.placedImageNodes[id]?.updateSceneNodeWith(locationService: self.aRSceneLocationService, scenePostion: self.currentPosition, firstTime: true)
-                       
-            self.mainSceneNode?.addChildNode(self.placedImageNodes[id]!)
-        }
-    
-        
-    }
     
     func updateSceneNodes(){
-        self.placedImageNodes.forEach { (id, node) in
-            node.updateSceneNodeWith(locationService: self.aRSceneLocationService, scenePostion: self.currentPosition, firstTime: false)
+        guard let currentLocation = self.aRSceneLocationService.currentLocation else {return}
+        
+        self.postSceneNodes.forEach { (id, node) in
+            guard node.isImageNodeLoaded else {return}
+            
+            // checking whether the node is valid to be rendered
+            guard node.checkNodeRenderValidity(withCurrentLocation: currentLocation) else {
+                node.removeFromParentNode()
+                return
+            }
+            
+            // checking whether this node is being loaded first time (if the node was removed because it was declared not valid & is declared valid again its will act as firstTime)
+            let firstTime = !(self.mainSceneNode?.childNodes.contains(node) ?? false)
+            
+            node.updatePostNode(locationService: self.aRSceneLocationService, scenePosition: self.currentPosition, firstTime: firstTime)
+            
+            // add node to mainSceneNode if it is loaded for the first time
+            if (firstTime){
+                self.mainSceneNode?.addChildNode(node)
+            }
         }
+  
     }
     
     /// removes all placed child nodes from the main scene node &
     /// empties placed & buffer list of nodes
     func resetMainScene(){
-        // empty buffer nodes array
-        self.bufferImageNodes.removeAll()
-        
-        // empty places nodes array
-        self.placedImageNodes.removeAll()
-        
+
         // remove all child nodes of main scene nodes
         self.mainSceneNode?.childNodes.forEach({ (node) in
             node.removeFromParentNode()
@@ -172,9 +175,9 @@ extension AppArScnView {
     func subscribeToRetrievePostServicePublishers(){
         self.retrievePostService.$retrievedPosts.sink { (posts) in
             posts.forEach { (post) in
-                guard let id = post.id, self.bufferImageNodes[id] == nil && self.placedImageNodes[id] == nil else {return}
-                let postNode = ImageSCNNode(post: post)
-                self.bufferImageNodes[id] = postNode
+                guard let id = post.id, self.postSceneNodes[id] != nil else {return}
+                print("GOt it GOt it")
+                self.postSceneNodes[id] = PostSCNNode(post: post)
             }
         }.store(in: &cancellables)
     }
@@ -182,7 +185,7 @@ extension AppArScnView {
     // ImageSCNNode
     func subscribeToImageSCNNodePublishers(){
         Publishers.imageSCNNodeDidLoadImagePublisher.sink { (id) in
-            self.addSceneNode(withId: id)
+//            self.addSceneNode(withId: id)
         }.store(in: &cancellables)
     }
 }
@@ -206,6 +209,5 @@ extension AppArScnView: ARSCNViewDelegate {
         }
     }
 }
-
 
 
