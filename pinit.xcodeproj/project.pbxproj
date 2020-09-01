@@ -64,6 +64,8 @@
 		5D67E7FB24E84E7000F5D240 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D67E7F924E84E7000F5D240 /* LaunchScreen.storyboard */; };
 		5D67E80624E84E7000F5D240 /* pinitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E80524E84E7000F5D240 /* pinitTests.swift */; };
 		5D67E81124E84E7000F5D240 /* pinitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E81024E84E7000F5D240 /* pinitUITests.swift */; };
+		5D6B1F7F24FEE7B800DCC418 /* CameraFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B1F7E24FEE7B800DCC418 /* CameraFeedController.swift */; };
+		5D6B1F8124FEF85D00DCC418 /* CameraFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */; };
 		5D7143D624FD01E1008EF04C /* DragGestureViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */; };
 		5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */; };
 		5DB2B1A624F2CA8700E4D86B /* ImageCropViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */; };
@@ -165,6 +167,8 @@
 		5D67E80C24E84E7000F5D240 /* pinitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pinitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D67E81024E84E7000F5D240 /* pinitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pinitUITests.swift; sourceTree = "<group>"; };
 		5D67E81224E84E7000F5D240 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5D6B1F7E24FEE7B800DCC418 /* CameraFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedController.swift; sourceTree = "<group>"; };
+		5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedViewController.swift; sourceTree = "<group>"; };
 		5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureViewModifier.swift; sourceTree = "<group>"; };
 		5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSetupUserProfileModel.swift; sourceTree = "<group>"; };
 		5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropViewModel.swift; sourceTree = "<group>"; };
@@ -312,6 +316,7 @@
 		5D52F7C424E958BE00D9F27E /* UIKitComponents */ = {
 			isa = PBXGroup;
 			children = (
+				5D6B1F7D24FEE79400DCC418 /* Controllers */,
 				5D52F7C524E9594F00D9F27E /* UIKitImagePicker.swift */,
 				5D52F7CE24E974D600D9F27E /* UIKItSignInWithApple.swift */,
 				5D52F7E024E9A1B600D9F27E /* UIKitArSceneView.swift */,
@@ -408,6 +413,15 @@
 				5D67E81224E84E7000F5D240 /* Info.plist */,
 			);
 			path = pinitUITests;
+			sourceTree = "<group>";
+		};
+		5D6B1F7D24FEE79400DCC418 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				5D6B1F7E24FEE7B800DCC418 /* CameraFeedController.swift */,
+				5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		5DC8526F24EFC82B00E36DCE /* Modifiers */ = {
@@ -711,6 +725,7 @@
 				5D67E7EF24E84E6C00F5D240 /* AppDelegate.swift in Sources */,
 				5D52F7B324E9257E00D9F27E /* UserProfileService.swift in Sources */,
 				5D52F7B724E93A5200D9F27E /* ProfileModel.swift in Sources */,
+				5D6B1F7F24FEE7B800DCC418 /* CameraFeedController.swift in Sources */,
 				5D31948824F0195F001182E4 /* RequestCreatePostModel.swift in Sources */,
 				5D52F7C124E9548D00D9F27E /* EditUsernameView.swift in Sources */,
 				5DC8527324EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift in Sources */,
@@ -726,6 +741,7 @@
 				5D52F7BD24E951AD00D9F27E /* Color+Extensions.swift in Sources */,
 				5D5245FD24F4555E0000317D /* SetupProfileViewModel.swift in Sources */,
 				5DC8527B24EFF83E00E36DCE /* FadeKeyboard.swift in Sources */,
+				5D6B1F8124FEF85D00DCC418 /* CameraFeedViewController.swift in Sources */,
 				5D576A3824F1A465004A004C /* EmailAuthenticationView.swift in Sources */,
 				5D52F7D624E98F2F00D9F27E /* UploadPostService.swift in Sources */,
 				5D52F7DF24E9952800D9F27E /* CLLocation+Extensions.swift in Sources */,

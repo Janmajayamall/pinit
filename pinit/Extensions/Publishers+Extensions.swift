@@ -199,4 +199,15 @@ extension Publishers {
     .eraseToAnyPublisher()
     }
     
+    // publishers for camera feed
+    static var cameraFeedSwitchInUseCameraPublisher: AnyPublisher<Bool, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .cameraFeedSwitchInUseCamera)
+            .compactMap { (notification) -> Bool? in
+                guard let object = notification.object as? Bool else {return nil}
+                return object
+        }.eraseToAnyPublisher()
+    }
+    
 }

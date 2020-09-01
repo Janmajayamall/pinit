@@ -70,12 +70,14 @@ class PostSCNNode: SCNNode, Identifiable {
     
     func updatePostNode(locationService: ARSceneLocationService, scenePosition: SCNVector3?, firstTime: Bool) {
         
+        
+        
         // getting current location & scene position
         guard let currentLocation = locationService.currentLocation, let scenePosition = scenePosition else {return}
-        
+        print(self.location.distance(from: currentLocation), ":distance")
         //Start scene transaction
         SCNTransaction.begin()
-        SCNTransaction.animationDuration = 0.1
+        SCNTransaction.animationDuration = 0.0
         
         // position would be set only for the first time
         if (firstTime){
@@ -146,7 +148,7 @@ class ImageSCNNode: SCNNode {
     func addImageAsPlaneGeometry() {
         // getting scaled dims for the original image
         let scaledDims = self.getScaledDimensionsForImage()
-        
+        print("scaledDims: \(scaledDims)")
         // create plane for adding as geometry to the node
         let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
         

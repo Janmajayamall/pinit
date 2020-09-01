@@ -18,3 +18,9 @@
 3. bring the length of geohash stored with each post down to 5 - 6 characters
 4. change query such that it gets posts using geohash only, because the posts are filtered while being added as scene nodes on the basis of their distance (rn the maximum distance is 50m)
 5. take care of flickering as well
+
+# Reference for AV foundation
+1. https://medium.com/@gaspard.rosay/create-a-camera-app-with-swiftui-60876fcb9118
+2. https://www.appcoda.com/avfoundation-swift-guide/
+
+

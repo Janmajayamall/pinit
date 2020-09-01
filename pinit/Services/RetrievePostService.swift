@@ -63,7 +63,6 @@ class RetrievePostService: ObservableObject {
 extension RetrievePostService {
     func subscribeToGeohasingServicePublishers(){
         Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (geohashModel) in
-            print("Geohash did update to: \(geohashModel.currentLocationGeohash)")
             self.listenToPostsForGeohashes(geohashModel.currentAreaGeohashes)
         }.store(in: &cancellables)
     }

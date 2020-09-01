@@ -47,7 +47,7 @@ class GeohashingService {
         self.subscribeToArLocationServicePublishers()
     }
     
-    static func getGeohash(forCoordinates locationCoordinates: CLLocationCoordinate2D , precision: Int = 8) -> String {
+    static func getGeohash(forCoordinates locationCoordinates: CLLocationCoordinate2D) -> String {
         
         let lat: Double = locationCoordinates.latitude
         let lon: Double = locationCoordinates.longitude
@@ -61,7 +61,7 @@ class GeohashingService {
         var lonMin: Double = -180
         var lonMax: Double = 180
         
-        while geohash.count < precision {
+        while geohash.count < GeohashingService.geohashPrecision {
             
             if (evenBit == true){
                 let lonMid = (lonMin + lonMax)/2
@@ -150,6 +150,7 @@ class GeohashingService {
     }
     
     static private let base32: Array<Character> = Array("0123456789bcdefghjkmnpqrstuvwxyz") // (geohash-specific) Base32
+    static private let geohashPrecision: Int = 7 // the length of the geophash determines the area covered by geohash
 }
 
 // extension for subscribing to publishers

@@ -69,7 +69,6 @@ class AppArScnView: ARSCNView {
         // Setting up subscribers
         self.subscribeToRetrievePostServicePublishers()
         self.subscribeToArSceneLocationServicePublishers()
-        self.subscribeToImageSCNNodePublishers()
         
         // setup services
         self.retrievePostService.setupService()
@@ -143,6 +142,7 @@ class AppArScnView: ARSCNView {
             
             // add node to mainSceneNode if it is loaded for the first time
             if (firstTime){
+                print("node added")
                 self.mainSceneNode?.addChildNode(node)
             }
         }
@@ -166,7 +166,6 @@ extension AppArScnView {
     // ARSceneLocationService
     func subscribeToArSceneLocationServicePublishers(){
         Publishers.aRSceneLocationServiceDidUpdateLocationEstimatesPublisher.sink { (location) in
-            
             self.updateSceneNodes()
         }.store(in: &cancellables)
     }
@@ -175,17 +174,11 @@ extension AppArScnView {
     func subscribeToRetrievePostServicePublishers(){
         self.retrievePostService.$retrievedPosts.sink { (posts) in
             posts.forEach { (post) in
-                guard let id = post.id, self.postSceneNodes[id] != nil else {return}
-                print("GOt it GOt it")
+                guard let id = post.id, self.postSceneNodes[id] == nil else {
+                    return
+                }
                 self.postSceneNodes[id] = PostSCNNode(post: post)
             }
-        }.store(in: &cancellables)
-    }
-    
-    // ImageSCNNode
-    func subscribeToImageSCNNodePublishers(){
-        Publishers.imageSCNNodeDidLoadImagePublisher.sink { (id) in
-//            self.addSceneNode(withId: id)
         }.store(in: &cancellables)
     }
 }

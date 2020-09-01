@@ -17,30 +17,49 @@ struct CaptureImageView: View {
         if self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.activeType == .editCaptureImage {
             EditCaptureImageView().environmentObject(EditingViewModel(selectedImage: Image("ProfileImage")))
         }else{
-            VStack{
-                HStack{
-                    Image(systemName: "xmark")
-                        .foregroundColor(Color.white)
-                    .applyDefaultIconTheme()
-                        .onTapGesture {
-                            self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
-                    }
-                    .applyTopLeftPaddingToIcon()
-                    Spacer()
-                }
-                Spacer()
-                HStack{
-                    Spacer()
-                    Circle()
-                        .foregroundColor(.purple)
-                        .frame(width: 80, height: 80)
-                        .onTapGesture {
-                            self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .editCaptureImage)
+            GeometryReader{ geometryProxy in
+            
+                CameraFeedViewController()
+                
+                VStack{
+                    HStack{
+                        Image(systemName: "xmark")
+                            .foregroundColor(Color.white)
+                        .applyDefaultIconTheme()
+                            .onTapGesture {
+                                self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
+                        }
+                        .applyTopLeftPaddingToIcon()
+                        Spacer()
                     }
                     Spacer()
-                }
-            }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    HStack{
+                        Image(systemName: "xmark")
+                            .foregroundColor(Color.white)
+                        .applyDefaultIconTheme()
+                            .onTapGesture {
+                                NotificationCenter.default.post(name: .cameraFeedSwitchInUseCamera, object: true)
+                        }
+                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 0))
+                        Spacer()
+                    }
+                }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                
+                VStack{
+                    Spacer()
+                    HStack{
+                        Spacer()
+                        Circle()
+                            .foregroundColor(.purple)
+                            .frame(width: 80, height: 80)
+                            .onTapGesture {
+                                self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .editCaptureImage)
+                        }
+                        Spacer()
+                    }
+                }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                
+            }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .background(Color.black)
             .edgesIgnoringSafeArea(.all)
         }
