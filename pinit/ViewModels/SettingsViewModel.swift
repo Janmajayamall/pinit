@@ -30,6 +30,7 @@ class SettingsViewModel: ObservableObject {
     @Published var setupProfileViewModel = SetupProfileViewModel()
     @Published var editingViewModel: EditingViewModel?
     
+    
     private var cancellables: Set<AnyCancellable> = []
     
     init() {

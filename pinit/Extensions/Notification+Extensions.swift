@@ -43,6 +43,7 @@ extension Notification.Name {
     
     // notifications for AR View
     static let aRViewDidRequestResetMainView = Notification.Name("aRViewDidRequestResetMainView")
+    static let aRViewDidTouchImageSCNNode = Notification.Name("aRViewDidTouchImageSCNNode")
     
     // notifications for camera feed
     static let cameraFeedSwitchInUseCamera = Notification.Name("cameraFeedSwitchInUseCamera")

@@ -23,8 +23,9 @@ struct EditCaptureImageView: View {
             ZStack{
                 
                 Image(uiImage: self.editingViewModel.selectedImage)
-                    .getViewRect(to: self.$editingViewModel.imageRect)
+                    .resizable()
                     .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    .getViewRect(to: self.$editingViewModel.imageRect)
                 
                 // draw paths
                 ForEach(self.editingViewModel.imagePainting.pathDrawings, content: {return $0})

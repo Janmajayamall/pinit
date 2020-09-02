@@ -199,6 +199,15 @@ extension Publishers {
         }
     .eraseToAnyPublisher()
     }
+    static var aRViewDidTouchImageSCNNodePublisher: AnyPublisher<PostDisplayInfoModel, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .aRViewDidTouchImageSCNNode)
+            .compactMap { (notification) -> PostDisplayInfoModel? in
+                guard let model = notification.object as? PostDisplayInfoModel else {return nil}
+                return model
+        }.eraseToAnyPublisher()
+    }
     
     // publishers for camera feed
     static var cameraFeedSwitchInUseCameraPublisher: AnyPublisher<CameraFeedController.CameraInUsePosition, Never>{

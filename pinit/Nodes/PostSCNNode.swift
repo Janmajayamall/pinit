@@ -57,7 +57,7 @@ class PostSCNNode: SCNNode, Identifiable {
         // return if imageSCNNode has already been added
         guard self.isImageNodeLoaded == false else {return}
         
-        let imageNode = ImageSCNNode(image: image)
+        let imageNode = ImageSCNNode(image: image, description: self.post.description, username: self.post.username)
         
         // define billboard constraint so that 2D plane always points towards the point of view
         let billboardConstraint = SCNBillboardConstraint()
@@ -69,9 +69,6 @@ class PostSCNNode: SCNNode, Identifiable {
     }
     
     func updatePostNode(locationService: ARSceneLocationService, scenePosition: SCNVector3?, firstTime: Bool) {
-        
-        
-        
         // getting current location & scene position
         guard let currentLocation = locationService.currentLocation, let scenePosition = scenePosition else {return}
         print(self.location.distance(from: currentLocation), ":distance")
@@ -90,18 +87,21 @@ class PostSCNNode: SCNNode, Identifiable {
                 scenePosition.y + Float(translateCurrentLocationBy.altitudeTranslation),
                 scenePosition.z - Float(translateCurrentLocationBy.latitudeTranslation)
             )
+            
         }
         
-        // scale the child
-        let givenScale = self.scale
-        self.scale = SCNVector3(x: 1, y: 1, z: 1)
-        // apply the given scale to child
-        self.childNodes.forEach { (node) in
-            node.scale = givenScale
-            node.childNodes.forEach { (grandChildNode) in
-                grandChildNode.scale = scale
-            }
-        }
+        //        // scale the child
+        //        let givenScale = self.scale
+        //
+        //        // apply the given scale to child
+        //        self.childNodes.forEach { (node) in
+        //            node.scale = givenScale
+        //            node.childNodes.forEach { (grandChildNode) in
+        //                grandChildNode.scale = scale
+        //            }
+        //        }
+        
+        
         
         SCNTransaction.commit()
     }
@@ -125,9 +125,13 @@ class PostSCNNode: SCNNode, Identifiable {
 
 class ImageSCNNode: SCNNode {
     var image: UIImage
+    var descriptionText: String
+    var username: String
     
-    init(image: UIImage) {
+    init(image: UIImage, description: String, username: String) {
         self.image = image
+        self.descriptionText = description
+        self.username = username
         
         super.init()
         
@@ -164,5 +168,5 @@ class ImageSCNNode: SCNNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let fixedImageWidth: CGFloat = 5
+    private let fixedImageWidth: CGFloat = 1
 }

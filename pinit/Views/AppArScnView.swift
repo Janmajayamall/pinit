@@ -91,10 +91,14 @@ class AppArScnView: ARSCNView {
         // getting the touch location as 2 coordinates on screen
         let coordinates = sender.location(in: view)
         // getting the nodes with which the ray sent along the path of touchpoint would have interacted
-        guard let touchedNode = view.hitTest(coordinates).first else {return}
+        guard let touchedHitResult = view.hitTest(coordinates).first, let node = touchedHitResult.node as? ImageSCNNode else {return}
         
-        //TODO: notify the delegate of touched node.
-                
+        // creating PostDisplayInfoModel for displaying on screen
+        let model = PostDisplayInfoModel(username: node.username, description: node.descriptionText)
+        
+        // post notification for post display info
+        NotificationCenter.default.post(name: .aRViewDidTouchImageSCNNode, object: model)
+        
     }
     
     func startSession(){

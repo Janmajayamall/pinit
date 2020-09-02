@@ -15,6 +15,7 @@ struct MainArView: View {
     @State var mapViewYDragTranslation: CGFloat = 0
     
     @State var showMenu: Bool = false
+    @ObservedObject var postDisplayInfoViewModel: PostDisplayInfoViewModel = PostDisplayInfoViewModel()
     
     @ViewBuilder
     var body: some View {
@@ -32,10 +33,9 @@ struct MainArView: View {
                     
                     VStack{
                         HStack{
-                            //                            HStack{
                             Image(systemName: "person.fill")
-                            .applyDefaultIconTheme()
-                                .applyTopLeftPaddingToIcon()
+                                .applyDefaultIconTheme()
+                                .applyEdgePadding(for: .topLeft)
                                 .onTapGesture {
                                     if self.settingsViewModel.isUserAuthenticated() {
                                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
@@ -43,15 +43,15 @@ struct MainArView: View {
                                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
                                     }
                                     self.showMenu = false
-                            }.zIndex(3)
-                                                 
+                            }
+                            
                             Spacer()
                         }
                         Spacer()
                         HStack{
                             Image(systemName: "camera.fill")
                                 .applyDefaultIconTheme()
-                                .padding(EdgeInsets(top: 0, leading: 45, bottom: 45, trailing: 0))
+                                .applyEdgePadding(for: .bottomRight)
                                 .onTapGesture {
                                     // closing the map view, if it is open
                                     self.forceMapViewToDownState()
@@ -67,6 +67,36 @@ struct MainArView: View {
                         }
                         
                     }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
+                    
+                    if self.postDisplayInfoViewModel.displayPostInfo == true {
+                        VStack{
+                            Spacer()
+                            VStack{
+                                HStack{
+                                    Spacer()
+                                    Image(systemName: "xmark")
+                                        .font(Font.system(size:15, weight: .heavy))
+                                        .foregroundColor(Color.white)
+                                }.onTapGesture {
+                                    self.postDisplayInfoViewModel.closeDisplayedInfo()
+                                }
+                                HStack{
+                                    Text(self.postDisplayInfoViewModel.postDisplayInfo?.username ?? "")
+                                        .font(Font.custom("Avenir", size: 18).bold())
+                                    .foregroundColor(Color.white)
+                                    Spacer()
+                                }
+                                HStack{
+                                    Text(self.postDisplayInfoViewModel.postDisplayInfo?.description ?? "")
+                                    .font(Font.custom("Avenir", size: 18))
+                                    .foregroundColor(Color.white)
+                                }
+                            }
+                                .padding(EdgeInsets(top: 10, leading: 5, bottom: 70, trailing: 5))
+                            .frame(width: geometryProxy.size.width)
+                                .background(Color.black.opacity(0.4))
+                        }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
+                    }
                     
                     ProfileView(parentSize: geometryProxy.size)
                     
