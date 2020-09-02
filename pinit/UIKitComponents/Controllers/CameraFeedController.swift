@@ -24,8 +24,8 @@ class CameraFeedController: NSObject {
     var cameraPhotoOutput: AVCapturePhotoOutput?
     
     var previewLayer: AVCaptureVideoPreviewLayer?
-    
-    var cameraInUsePosition: CameraInUsePosition?
+       
+    var cameraFlashMode: AVCaptureDevice.FlashMode = .off
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -78,8 +78,7 @@ extension CameraFeedController {
                 if captureSession.canAddInput(self.rearCameraInput!) {
                     captureSession.addInput(self.rearCameraInput!)
                 }
-                
-                self.cameraInUsePosition = .rear
+                                
             }
             
             else if let frontCameraDevice = self.frontCameraDevice {
@@ -88,8 +87,7 @@ extension CameraFeedController {
                 if captureSession.canAddInput(self.frontCameraInput!){
                     captureSession.addInput(self.frontCameraInput!)
                 }
-                
-                self.cameraInUsePosition = .front
+                                
             }
             
             else {
@@ -140,14 +138,13 @@ extension CameraFeedController {
         self.previewLayer?.frame = view.frame
     }
     
-    func switchCameraInUsePosition() throws {
-        guard let cameraInUsePosition = self.cameraInUsePosition, let captureSession = self.captureSession, captureSession.isRunning else {throw CameraFeedControllerError.captureSessionIsMissing}
+    func switchCameraInUsePosition(to cameraPosition: CameraInUsePosition) throws {
+        guard let captureSession = self.captureSession, captureSession.isRunning else {throw CameraFeedControllerError.captureSessionIsMissing}
         
         captureSession.beginConfiguration()
         
         func switchToFrontCamera() throws {
-            guard let sessionInput = captureSession.inputs as? [AVCaptureInput], let rearCameraInput = self.rearCameraInput, sessionInput.contains(rearCameraInput), let frontCameraDevice = self.frontCameraDevice else {
-                print("ya")
+            guard let sessionInput = captureSession.inputs as? [AVCaptureInput], let rearCameraInput = self.rearCameraInput, sessionInput.contains(rearCameraInput), let frontCameraDevice = self.frontCameraDevice else {                
                 throw CameraFeedControllerError.invalidOperation}
             
             self.frontCameraInput = try AVCaptureDeviceInput(device: frontCameraDevice)
@@ -156,16 +153,12 @@ extension CameraFeedController {
             
             if captureSession.canAddInput(self.frontCameraInput!){
                 captureSession.addInput(self.frontCameraInput!)
-                
-                self.cameraInUsePosition = .front
             }else {
-                print("yaa")
                 throw CameraFeedControllerError.invalidOperation
             }
         }
         func switchToRearCamera() throws {
             guard let sessionInput = captureSession.inputs as? [AVCaptureInput], let frontCameraInput = self.frontCameraInput, sessionInput.contains(frontCameraInput), let rearCameraDevice = self.rearCameraDevice else {
-                print("ya")
                 throw CameraFeedControllerError.invalidOperation
                 
             }
@@ -176,36 +169,71 @@ extension CameraFeedController {
             
             if captureSession.canAddInput(self.rearCameraInput!){
                 captureSession.addInput(self.rearCameraInput!)
-                
-                self.cameraInUsePosition = .rear
             }else {
-                print("yaa")
                 throw CameraFeedControllerError.invalidOperation
             }
         }
         
         // toggling camera in use position
-        switch cameraInUsePosition {
+        switch cameraPosition {
         case .front:
-            try switchToRearCamera()
-        case .rear:
             try switchToFrontCamera()
+        case .rear:
+            try switchToRearCamera()
         }
         
         captureSession.commitConfiguration()
+    }
+    
+    func captureImage() throws {
+        guard let captureSession = self.captureSession, captureSession.isRunning else {throw CameraFeedControllerError.captureSessionIsMissing}
+        
+        let captureSettings = AVCapturePhotoSettings()
+        captureSettings.flashMode = self.cameraFlashMode
+        
+        self.cameraPhotoOutput?.capturePhoto(with: captureSettings, delegate: self)
+    }
+
+}
+
+extension CameraFeedController: AVCapturePhotoCaptureDelegate{
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let error = error{
+            print("Capture photo failed with errror: \(error.localizedDescription)")
+            return
+        }
+        
+        guard let imageData = photo.fileDataRepresentation(), let image = UIImage(data: imageData) else {
+            print("Unknown error while getting captured image file representation")
+            return
+        }
+        print("Captured Image: \(image)")
+        NotificationCenter.default.post(name: .cameraFeedDidCaptureImage, object: image)
     }
 }
 
 // extension for subscribing to publishers
 extension CameraFeedController {
     func subscribeToCameraFeedPublishers() {
-        Publishers.cameraFeedSwitchInUseCameraPublisher.sink { (bool) in
-            guard bool else {return}
-            print("received")
+        Publishers.cameraFeedSwitchInUseCameraPublisher.sink { (cameraPosition) in
             do {
-                try self.switchCameraInUsePosition()
+                try self.switchCameraInUsePosition(to: cameraPosition)
             }catch{
                 print(error)
+            }
+        }.store(in: &cancellables)
+        
+        Publishers.cameraFeedSwitchFlashModePublisher.sink { (flashMode) in
+            self.cameraFlashMode = flashMode
+        }.store(in: &cancellables)
+        
+        Publishers.cameraFeedDidRequestCaptureImagePublisher.sink { (value) in
+            guard value else {return}
+            
+            do{
+                try self.captureImage()
+            }catch{
+                print("Camera Feed capture image failed with error: \(error)")
             }
         }.store(in: &cancellables)
     }

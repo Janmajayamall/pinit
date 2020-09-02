@@ -28,6 +28,7 @@ class SettingsViewModel: ObservableObject {
     
     // view models
     @Published var setupProfileViewModel = SetupProfileViewModel()
+    @Published var editingViewModel: EditingViewModel?
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -45,7 +46,7 @@ class SettingsViewModel: ObservableObject {
     func isUserAuthenticated() -> Bool {
         return self.user != nil
     }
-
+    
     func signOut() {
         // logging out from firebase auth
         self.authenticationService.signOut()
@@ -58,6 +59,18 @@ class SettingsViewModel: ObservableObject {
         
         // resetting the screens
         self.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
+    }
+    
+    func setupEditingViewModel(withUIImage image: UIImage) {
+        // setting up editing view model
+        self.editingViewModel = EditingViewModel(selectedImage: image)
+        
+        // switching to editCaptureImage
+        self.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .editCaptureImage)
+    }
+    
+    func resetEditingViewModel() {
+        self.editingViewModel = nil
     }
 }
 
@@ -94,11 +107,19 @@ extension SettingsViewModel {
         }.store(in: &cancellables)
     }
     
+    func subscribeToCameraFeedPublishers(){
+        Publishers.cameraFeedDidCaptureImagePublisher.sink {(image) in
+            self.setupEditingViewModel(withUIImage: image)
+        }.store(in: &cancellables)
+    }
+    
     func setupSubscribers() {
         self.subscribeToLocationServicePublishers()
         self.subscribeToUserProfileServicePublishers()
         self.subscribeToScreenManagementServicePublishers()
+        self.subscribeToCameraFeedPublishers()
     }
+    
 }
 
 

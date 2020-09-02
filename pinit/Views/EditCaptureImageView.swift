@@ -22,8 +22,9 @@ struct EditCaptureImageView: View {
         GeometryReader { geometryProxy in
             ZStack{
                 
-                self.editingViewModel.selectedImage
+                Image(uiImage: self.editingViewModel.selectedImage)
                     .getViewRect(to: self.$editingViewModel.imageRect)
+                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
                 
                 // draw paths
                 ForEach(self.editingViewModel.imagePainting.pathDrawings, content: {return $0})
@@ -169,6 +170,9 @@ struct EditCaptureImageView: View {
         // capture view on screen after 0.5s
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
             self.editingViewModel.setFinalImage(withWindow: self.window)
+            
+            // reseting editing view model
+            self.settingsViewModel.resetEditingViewModel()
             
             // reset main screen to main ar view
             self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)

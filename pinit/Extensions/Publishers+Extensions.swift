@@ -10,6 +10,7 @@ import Foundation
 import Combine
 import FirebaseAuth
 import CoreLocation
+import AVFoundation
 
 extension Publishers {
     
@@ -200,13 +201,40 @@ extension Publishers {
     }
     
     // publishers for camera feed
-    static var cameraFeedSwitchInUseCameraPublisher: AnyPublisher<Bool, Never>{
+    static var cameraFeedSwitchInUseCameraPublisher: AnyPublisher<CameraFeedController.CameraInUsePosition, Never>{
         NotificationCenter
         .default
             .publisher(for: .cameraFeedSwitchInUseCamera)
+            .compactMap { (notification) -> CameraFeedController.CameraInUsePosition? in
+                guard let object = notification.object as? CameraFeedController.CameraInUsePosition else {return nil}
+                return object
+        }.eraseToAnyPublisher()
+    }
+    static var cameraFeedSwitchFlashModePublisher: AnyPublisher<AVCaptureDevice.FlashMode, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .cameraFeedSwitchFlashMode)
+            .compactMap { (notification) -> AVCaptureDevice.FlashMode? in
+                guard let object = notification.object as? AVCaptureDevice.FlashMode else {return nil}
+                return object
+        }.eraseToAnyPublisher()
+    }
+    static var cameraFeedDidRequestCaptureImagePublisher: AnyPublisher<Bool, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .cameraFeedDidRequestCaptureImage)
             .compactMap { (notification) -> Bool? in
                 guard let object = notification.object as? Bool else {return nil}
                 return object
+        }.eraseToAnyPublisher()
+    }
+    static var cameraFeedDidCaptureImagePublisher: AnyPublisher<UIImage, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .cameraFeedDidCaptureImage)
+            .compactMap { (notification) -> UIImage? in
+                guard let image = notification.object as? UIImage else {return nil}
+                return image
         }.eraseToAnyPublisher()
     }
     

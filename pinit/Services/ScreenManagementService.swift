@@ -260,7 +260,7 @@ class ScreenManagementService: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     
     init(){
-        self.subscribeToUserProfileService()
+        self.subscribeToUserProfileServicePublishers()
     }
     
     
@@ -268,7 +268,7 @@ class ScreenManagementService: ObservableObject {
 
 // for subscribing to notifications
 extension ScreenManagementService {
-    func subscribeToUserProfileService(){
+    func subscribeToUserProfileServicePublishers(){
         Publishers.userProfileServiceDidNotFindUserProfilePublisher.sink { (user) in
             self.mainScreenService.switchToSetupUserProfile()
         }.store(in: &cancellables)

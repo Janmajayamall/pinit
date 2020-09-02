@@ -46,4 +46,7 @@ extension Notification.Name {
     
     // notifications for camera feed
     static let cameraFeedSwitchInUseCamera = Notification.Name("cameraFeedSwitchInUseCamera")
+    static let cameraFeedSwitchFlashMode = Notification.Name("cameraFeedSwitchFlashMode")
+    static let cameraFeedDidRequestCaptureImage = Notification.Name("cameraFeedDidRequestCaptureImage")
+    static let cameraFeedDidCaptureImage = Notification.Name("cameraFeedDidCaptureImage")
 }

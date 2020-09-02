@@ -33,7 +33,7 @@ struct FadeKeyboard: View {
 
 struct FadeKeyboard_Previews: PreviewProvider {
     static var previews: some View {
-        FadeKeyboard(parentSize: CGSize(width: 375, height: 675)).environmentObject(EditingViewModel(selectedImage: Image("ProfileImage")))
+        FadeKeyboard(parentSize: CGSize(width: 375, height: 675)).environmentObject(EditingViewModel(selectedImage: UIImage(imageLiteralResourceName: "ProfileImage")))
         
     }
 }

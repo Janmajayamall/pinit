@@ -7,22 +7,29 @@
 //
 
 import SwiftUI
+import AVFoundation
+import Combine
 
 struct CaptureImageView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
+    
+    @State var cameraPosition: CameraFeedController.CameraInUsePosition = .rear
+    @State var cameraFlashMode: AVCaptureDevice.FlashMode = .off
 
+    var cancellables: Set<AnyCancellable> = []
+    
     @ViewBuilder
     var body: some View {
     
-        if self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.activeType == .editCaptureImage {
-            EditCaptureImageView().environmentObject(EditingViewModel(selectedImage: Image("ProfileImage")))
+        if self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.activeType == .editCaptureImage && self.settingsViewModel.editingViewModel != nil {
+            EditCaptureImageView().environmentObject(self.settingsViewModel.editingViewModel!)
         }else{
             GeometryReader{ geometryProxy in
             
                 CameraFeedViewController()
                 
                 VStack{
-                    HStack{
+                    HStack (alignment: .top){
                         Image(systemName: "xmark")
                             .foregroundColor(Color.white)
                         .applyDefaultIconTheme()
@@ -31,18 +38,39 @@ struct CaptureImageView: View {
                         }
                         .applyTopLeftPaddingToIcon()
                         Spacer()
+                        VStack{
+                            Image(systemName: self.cameraPosition == .rear ? "gobackward" : "goforward")
+                                .foregroundColor(Color.white)
+                            .applyDefaultIconTheme()
+                                .onTapGesture {
+                                    switch self.cameraPosition{
+                                    case .rear:
+                                        self.cameraPosition = .front
+                                    case .front:
+                                        self.cameraPosition = .rear
+                                    }
+                                    NotificationCenter.default.post(name: .cameraFeedSwitchInUseCamera, object: self.cameraPosition)
+                            }.padding(.bottom)
+                            
+                            Image(systemName: self.cameraFlashMode == .off ? "bolt.slash" : "bolt.fill")
+                                .foregroundColor(Color.white)
+                            .applyDefaultIconTheme()
+                                .onTapGesture {
+                                    switch self.cameraFlashMode{
+                                    case .off:
+                                        self.cameraFlashMode = .on
+                                    case .on:
+                                        self.cameraFlashMode = .off
+                                    default:
+                                        print("no possible error")
+                                    }
+                                    NotificationCenter.default.post(name: .cameraFeedSwitchFlashMode, object: self.cameraFlashMode)
+                                    
+                            }
+                            
+                        }.applyTopRightPaddingToIcon()
                     }
                     Spacer()
-                    HStack{
-                        Image(systemName: "xmark")
-                            .foregroundColor(Color.white)
-                        .applyDefaultIconTheme()
-                            .onTapGesture {
-                                NotificationCenter.default.post(name: .cameraFeedSwitchInUseCamera, object: true)
-                        }
-                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 0))
-                        Spacer()
-                    }
                 }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
                 
                 VStack{
@@ -50,11 +78,14 @@ struct CaptureImageView: View {
                     HStack{
                         Spacer()
                         Circle()
-                            .foregroundColor(.purple)
+                            .foregroundColor(Color.white.opacity(0.00001))
                             .frame(width: 80, height: 80)
+                            .overlay(Circle().stroke(Color.white, lineWidth: 8))
                             .onTapGesture {
-                                self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .editCaptureImage)
+
+                                NotificationCenter.default.post(name: .cameraFeedDidRequestCaptureImage, object: true)
                         }
+                        .padding(.bottom, 10)
                         Spacer()
                     }
                 }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
@@ -64,6 +95,7 @@ struct CaptureImageView: View {
             .edgesIgnoringSafeArea(.all)
         }
     }
+    
 }
 
 struct CaptureImageView_Previews: PreviewProvider {

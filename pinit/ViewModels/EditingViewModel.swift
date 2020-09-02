@@ -14,7 +14,7 @@ import Combine
 
 class EditingViewModel: NSObject, ObservableObject {
     
-    @Published var selectedImage: Image
+    @Published var selectedImage: UIImage
     @Published var imageRect: CGRect = .zero
     @Published var imagePainting: ImagePaintingModel = ImagePaintingModel()
     
@@ -23,7 +23,7 @@ class EditingViewModel: NSObject, ObservableObject {
     var finalImage: UIImage?
     @Published var descriptionText: String = ""
     
-    init(selectedImage :Image) {
+    init(selectedImage :UIImage) {
         self.selectedImage = selectedImage
         super.init()
     }
