@@ -12,30 +12,38 @@ import Combine
 
 class RetrievePostService: ObservableObject {
     
-    private var documentsListener: ListenerRegistration?
+    private var documentsForGeohashesListener: ListenerRegistration?
+    private var allDocumentsListener: ListenerRegistration?
+    
     private var postCollectionRef: CollectionReference = Firestore.firestore().collection("posts")
     
     private var cancellables: Set<AnyCancellable> = []
     
-    @Published var retrievedPosts: Array<PostModel> = []
-    
     init() {}
     
     func listenToPostsForGeohashes(_ geohashes: Array<String>){
-        self.stopListeningToPosts()
+        self.stopListeningToPostForGeohashes()
         print("geohashes, \(geohashes)")
         
-        self.documentsListener = self.postCollectionRef.whereField("geohash", in: geohashes).addSnapshotListener({ (querySnapshot, error) in
-            self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error)
+        self.documentsForGeohashesListener = self.postCollectionRef.whereField("geohash", in: geohashes).addSnapshotListener({ (querySnapshot, error) in
+            self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error, forNotificationName: .retrievePostServiceDidReceivePostsForGeohashes)
         })
         
     }
     
-    func handleReceivedPostDocuments(withQuerySnapshot querySnapshot: QuerySnapshot?, withError error: Error?){
+    func listenToAllPosts(){
+        self.stopListeningToAllPosts()
+        
+        self.allDocumentsListener = self.postCollectionRef.addSnapshotListener({ (querySnapshot, error) in
+            self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error, forNotificationName: .retrievePostServiceDidReceiveAllPosts)
+        })
+    }
+    
+    func handleReceivedPostDocuments(withQuerySnapshot querySnapshot: QuerySnapshot?, withError error: Error?, forNotificationName notificationName: Notification.Name){
         guard let documents = querySnapshot?.documents else {return}
-
+        
         var posts: Array<PostModel> = []
-
+        
         documents.forEach { (queryDocumentSnapshot) in
             guard let post = try? queryDocumentSnapshot.data(as: PostModel.self) else {
                 print("something went wrong")
@@ -43,20 +51,32 @@ class RetrievePostService: ObservableObject {
             }
             posts.append(post)
         }
-        print("final posts: \(posts)")
-        self.retrievedPosts = posts
+        
+        // notify according to the notification name
+        NotificationCenter.default.post(name: notificationName, object: posts)
+        
     }
     
-    func stopListeningToPosts(){
-        if let documentsListener = self.documentsListener {
-            documentsListener.remove()
+    func stopListeningToAllPosts(){
+        if let allDocumentsListener = self.allDocumentsListener {
+            allDocumentsListener.remove()
+        }
+    }
+    
+    func stopListeningToPostForGeohashes(){
+        if let documentsForGeohashesListener = self.documentsForGeohashesListener {
+            documentsForGeohashesListener.remove()
         }
     }
     
     func setupService(){
         // setting up subscribers
         self.subscribeToGeohasingServicePublishers()
+        
+        // start listening to all posts
+        self.listenToAllPosts()
     }
+    
 }
 
 // for subscribers

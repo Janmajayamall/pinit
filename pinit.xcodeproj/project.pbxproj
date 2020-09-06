@@ -69,6 +69,7 @@
 		5D6B1F7F24FEE7B800DCC418 /* CameraFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B1F7E24FEE7B800DCC418 /* CameraFeedController.swift */; };
 		5D6B1F8124FEF85D00DCC418 /* CameraFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */; };
 		5D7143D624FD01E1008EF04C /* DragGestureViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */; };
+		5D7E39C525059CA800C6E0AB /* OptimisticUIPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */; };
 		5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */; };
 		5DB2B1A624F2CA8700E4D86B /* ImageCropViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */; };
 		5DC2859924ED029F00830887 /* AppArScnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859824ED029F00830887 /* AppArScnView.swift */; };
@@ -174,6 +175,7 @@
 		5D6B1F7E24FEE7B800DCC418 /* CameraFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedController.swift; sourceTree = "<group>"; };
 		5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedViewController.swift; sourceTree = "<group>"; };
 		5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureViewModifier.swift; sourceTree = "<group>"; };
+		5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimisticUIPostModel.swift; sourceTree = "<group>"; };
 		5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSetupUserProfileModel.swift; sourceTree = "<group>"; };
 		5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropViewModel.swift; sourceTree = "<group>"; };
 		5DC2859824ED029F00830887 /* AppArScnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppArScnView.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 				5D31948724F0195F001182E4 /* RequestCreatePostModel.swift */,
 				5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */,
 				5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */,
+				5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -761,6 +764,7 @@
 				5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */,
 				5D52F7E124E9A1B600D9F27E /* UIKitArSceneView.swift in Sources */,
 				5D52F7AD24E91EF200D9F27E /* SettingsViewModel.swift in Sources */,
+				5D7E39C525059CA800C6E0AB /* OptimisticUIPostModel.swift in Sources */,
 				5DC8527124EFC87B00E36DCE /* ViewRectViewModifier.swift in Sources */,
 				5DC2859B24ED06B800830887 /* UIKitMapBox.swift in Sources */,
 				5DC2859D24ED0F3400830887 /* EditingViewModel.swift in Sources */,

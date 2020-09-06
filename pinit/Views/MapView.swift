@@ -15,6 +15,7 @@ struct MapView: View {
     @Binding var screenState: SwipeScreenState
     @Binding var yDragTranslation: CGFloat
     @State var locations: Array<CLLocationCoordinate2D> = []
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
     
     var screeOffset: CGSize {
         if(self.screenState == .up) {
@@ -44,7 +45,7 @@ struct MapView: View {
         )
         
         return ZStack{
-            UIKitMapBox(mapAnnotations: self.$locations)
+            UIKitMapBox(posts: self.$settingsViewModel.allPosts, user: self.$settingsViewModel.user)
             
             VStack{
                 HStack{

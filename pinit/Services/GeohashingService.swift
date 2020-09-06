@@ -155,8 +155,7 @@ class GeohashingService {
 
 // extension for subscribing to publishers
 extension GeohashingService {
-    func subscribeToArLocationServicePublishers(){        
-        
+    func subscribeToArLocationServicePublishers(){
         Publishers.aRSceneLocationServiceDidUpdateLocationEstimatesPublisher.sink { (location) in
             self.updateGeohashToLocation(location)
         }.store(in: &cancellables)

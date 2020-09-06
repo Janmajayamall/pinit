@@ -72,12 +72,12 @@ class UploadPostService {
                     return
                 }
                 
-                self.uploadPostModel(withImageMetaData: metadata, withImageDownloadUrl: url)
+                self.uploadPostModel(withImageMetaData: metadata, withImageDownloadUrl: url, withUIImage: UIImage(data: imageData))
             }
         }
     }
     
-    func uploadPostModel(withImageMetaData imageMetadata: StorageMetadata, withImageDownloadUrl imageDownloadUrl: URL) {
+    func uploadPostModel(withImageMetaData imageMetadata: StorageMetadata, withImageDownloadUrl imageDownloadUrl: URL, withUIImage uiImage: UIImage?) {
         
         guard let userProfile = self.userProfile else {
             self.resetCurrentRequestCreatePost()
@@ -111,7 +111,12 @@ class UploadPostService {
             userProfilePicture: userProfile.profileImageUrl)
                     
         do {
-            _ = try self.postCollectionRef.addDocument(from: postModel)
+            // notifiying that the post is being uploaded
+            if let uiImage = uiImage {
+                NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, postImage: uiImage))
+            }
+            
+            _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
         }catch {
             print("Post model upload failed with error: \(error.localizedDescription)")
         }
@@ -125,7 +130,7 @@ class UploadPostService {
     
     func setupService() {
         // setting up the subscribers
-        self.subscribeToLocationServicePublishers()
+        self.subscribeToArSceneLocationServices()
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToUserProfileServicePublishers()
     }
@@ -145,14 +150,9 @@ extension UploadPostService {
         }.store(in: &cancellables)
     }
     
-    func subscribeToLocationServicePublishers() {
-//        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
-//            self.currentLocation = location
-//            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
-//        }.store(in: &cancellables)
+    func subscribeToArSceneLocationServices() {
         Publishers.aRSceneLocationServiceDidUpdateLocationEstimatesPublisher.sink { (location) in
             self.currentLocation = location
-            print("xyz received: \(self.currentLocation)")
             self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
         }.store(in: &cancellables)
     }

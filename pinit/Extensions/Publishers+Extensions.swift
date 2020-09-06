@@ -116,6 +116,15 @@ extension Publishers {
         }
         .eraseToAnyPublisher()
     }
+    static var uploadPostServiceDidUploadPostPublisher: AnyPublisher<OptimisticUIPostModel, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .uploadPostServiceDidUploadPost)
+            .compactMap { (notification) -> OptimisticUIPostModel? in
+                guard let post = notification.object as? OptimisticUIPostModel else {return nil}
+                return post
+        }.eraseToAnyPublisher()
+    }
     
     // publishers for userProfileService
     static var userProfileServiceDidRequestUsernameChangePublisher: AnyPublisher<String, Never> {
@@ -244,6 +253,30 @@ extension Publishers {
             .compactMap { (notification) -> UIImage? in
                 guard let image = notification.object as? UIImage else {return nil}
                 return image
+        }.eraseToAnyPublisher()
+    }
+    
+    // publishers for retrieve post serice
+    static var retrievePostServiceDidReceivePostsForGeohashes: AnyPublisher<Array<PostModel>, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .retrievePostServiceDidReceivePostsForGeohashes)
+            .compactMap { (notification) -> Array<PostModel>? in
+                guard let models = notification.object as? Array<PostModel> else {
+                    return nil
+                }
+                return models
+        }.eraseToAnyPublisher()
+    }
+    static var retrievePostServiceDidReceiveAllPosts: AnyPublisher<Array<PostModel>, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .retrievePostServiceDidReceiveAllPosts)
+            .compactMap { (notification) -> Array<PostModel>? in
+                guard let models = notification.object as? Array<PostModel> else {
+                    return nil
+                }
+                return models
         }.eraseToAnyPublisher()
     }
     

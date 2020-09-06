@@ -15,7 +15,7 @@ import CoreLocation
 
 class PostSCNNode: SCNNode, Identifiable {
     var post: PostModel
-    var imageManager: ImageManager
+    var imageManager: ImageManager?
     var isImageNodeLoaded: Bool = false
     
     var location: CLLocation {
@@ -40,7 +40,7 @@ class PostSCNNode: SCNNode, Identifiable {
         
         // configure the class
         // subscribing to image manager's image propeorty
-        self.imageManager.$image.sink { (image) in
+        self.imageManager?.$image.sink { (image) in
             guard let image = image else {return}
             
             // create and add image scene node as a child node to self & make isImageNodeLoaded as true
@@ -50,7 +50,16 @@ class PostSCNNode: SCNNode, Identifiable {
         }.store(in: &cancellables)
         
         // loading the image
-        self.imageManager.load()
+        self.imageManager?.load()
+    }
+    
+    init(post: PostModel, postImage: UIImage, scenePosition: SCNVector3?){
+        self.post = post
+        super.init()
+        
+        self.addImageSCNNode(withImage: postImage)
+        self.isImageNodeLoaded = true
+        self.optimisticUIPlaceNode(scenePosition: scenePosition)
     }
     
     func addImageSCNNode(withImage image: UIImage){
@@ -66,6 +75,28 @@ class PostSCNNode: SCNNode, Identifiable {
         
         // addingage scene node to the post node
         self.addChildNode(imageNode)
+    }
+    
+    func optimisticUIPlaceNode(scenePosition: SCNVector3?){
+        
+        guard let scenePosition = scenePosition else {
+            return
+        }
+        
+        //Start scene transaction
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = 0.0
+        
+        //translate the image from current position
+        self.position = SCNVector3(
+            scenePosition.x + 0,
+            scenePosition.y + 0,
+            scenePosition.z + 0
+        )
+        
+        // FIXME: decide on the z axis to make it look in front
+        
+        SCNTransaction.commit()
     }
     
     func updatePostNode(locationService: ARSceneLocationService, scenePosition: SCNVector3?, firstTime: Bool) {
@@ -155,8 +186,6 @@ class ImageSCNNode: SCNNode {
         // create plane for adding as geometry to the node
         let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
         plane.cornerRadius = 0.1
-        
-        
         
         // texturing the plane with the image
         plane.firstMaterial?.diffuse.contents = image

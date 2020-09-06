@@ -25,6 +25,7 @@ class SettingsViewModel: ObservableObject {
     @Published var screenManagementService = ScreenManagementService()
     private var locationService = LocationService()
     private var uploadPostService = UploadPostService()
+    private var retrievePostService = RetrievePostService()
     
     // view models
     @Published var setupProfileViewModel = SetupProfileViewModel()
@@ -32,6 +33,9 @@ class SettingsViewModel: ObservableObject {
     
     // ar scn view
     var appArScnView = AppArScnView()
+    
+    // all posts
+    @Published var allPosts: Dictionary<String, PostModel> = [:]
     
     
     private var cancellables: Set<AnyCancellable> = []
@@ -43,6 +47,7 @@ class SettingsViewModel: ObservableObject {
         // setup services
         self.uploadPostService.setupService()
         self.userProfileService.setupService()
+        self.retrievePostService.setupService()
         self.locationService.setupService()
         self.authenticationService.setupService()
     }
@@ -117,11 +122,27 @@ extension SettingsViewModel {
         }.store(in: &cancellables)
     }
     
+    func subscribeToRetrievePostPublishers(){
+        Publishers.retrievePostServiceDidReceiveAllPosts.sink { (posts) in
+            posts.forEach { (post) in
+                guard let id = post.id else {
+                    return
+                }
+                
+                // checking whether post already exists in the dict or not
+                if self.allPosts[id] == nil {
+                    self.allPosts[id] = post
+                }
+            }
+        }.store(in: &cancellables)
+    }
+    
     func setupSubscribers() {
         self.subscribeToLocationServicePublishers()
         self.subscribeToUserProfileServicePublishers()
         self.subscribeToScreenManagementServicePublishers()
         self.subscribeToCameraFeedPublishers()
+        self.subscribeToRetrievePostPublishers()
     }
     
 }

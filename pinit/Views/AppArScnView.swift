@@ -23,7 +23,7 @@ class AppArScnView: ARSCNView {
             
             // getting current location
             guard let currentLocation = self.aRSceneLocationService.currentLocation else {return}
-            print(self.postSceneNodes.count, "this is the count")
+            
             self.postSceneNodes.forEach { (id, node) in
                 guard node.isImageNodeLoaded else {return}
                 
@@ -43,7 +43,6 @@ class AppArScnView: ARSCNView {
     
     var aRSceneLocationService = ARSceneLocationService()
     var geohashingService = GeohashingService()
-    var retrievePostService = RetrievePostService()
 
     var postSceneNodes: Dictionary<String, PostSCNNode> = [:]
     
@@ -69,9 +68,9 @@ class AppArScnView: ARSCNView {
         // Setting up subscribers
         self.subscribeToRetrievePostServicePublishers()
         self.subscribeToArSceneLocationServicePublishers()
+        self.subscribeToUploadPostServicePublishers()
         
         // setup services
-        self.retrievePostService.setupService()
         self.geohashingService.setupService()
         self.aRSceneLocationService.setupService()
         
@@ -107,7 +106,8 @@ class AppArScnView: ARSCNView {
         
         //configure AR session
         let configuration = ARWorldTrackingConfiguration()
-        configuration.isLightEstimationEnabled = false
+        configuration.isLightEstimationEnabled = true
+        
         configuration.worldAlignment = .gravityAndHeading
         
         //start other services
@@ -120,10 +120,6 @@ class AppArScnView: ARSCNView {
     func pauseSession(){
         print("Pause ar session")
         self.session.pause()
-        
-        //stop other services as well
-//        self.retrievePostService.stopListeningToPosts()
-//        self.aRSceneLocationService.stop()
     }
     
     
@@ -176,13 +172,28 @@ extension AppArScnView {
     
     // RetrievePostService
     func subscribeToRetrievePostServicePublishers(){
-        self.retrievePostService.$retrievedPosts.sink { (posts) in
+        
+        Publishers.retrievePostServiceDidReceivePostsForGeohashes.sink { (posts) in
             posts.forEach { (post) in
-                guard let id = post.id, self.postSceneNodes[id] == nil else {
+                guard let id = post.id else {return}
+                print("came in id--: \(id)")
+                guard self.postSceneNodes[id] == nil else {
+                    print("rejected Id--: \(id)")
                     return
                 }
                 self.postSceneNodes[id] = PostSCNNode(post: post)
             }
+        }.store(in: &cancellables)
+    }
+    
+    // subscribe to uploadPostService publishers
+    func subscribeToUploadPostServicePublishers(){
+        Publishers.uploadPostServiceDidUploadPostPublisher.sink { (optimisticUIPostModel) in
+            guard let id = optimisticUIPostModel.postModel.id else {return}
+            self.postSceneNodes[id] = PostSCNNode(post: optimisticUIPostModel.postModel, postImage: optimisticUIPostModel.postImage, scenePosition: self.currentPosition)
+            self.mainSceneNode?.addChildNode(self.postSceneNodes[id]!)
+            print("done--\(id)")
+            
         }.store(in: &cancellables)
     }
 }

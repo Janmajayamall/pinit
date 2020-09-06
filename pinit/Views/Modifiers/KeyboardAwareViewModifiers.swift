@@ -32,7 +32,7 @@ struct KeyboardAwareMaximumHeightFrameModifier: ViewModifier {
         }
     }
     
-    var viewBottomMargin: CGFloat = 20
+    var viewBottomMargin: CGFloat = 80
 }
 
 extension View {

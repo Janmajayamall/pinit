@@ -17,9 +17,9 @@ struct FadeKeyboard: View {
     
     var body: some View {
         VStack{
+            Text("What's on your mind?").foregroundColor(Color.white).applyDefaultThemeToTextHeader(ofType: .h2).padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0 ))
             UIKitUITextView(text: self.$editingViewModel.descriptionText, textViewHeight: self.$textViewHeight, isFirstResponder: true)
                 .applyKeyboardAwareMaximumHeightFrame(viewHeight: self.$textViewHeight, parentSize: self.parentSize)
-                .padding(.top, 20)
                 .onTapGesture {
                     
             }
