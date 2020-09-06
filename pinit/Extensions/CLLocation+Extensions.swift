@@ -22,22 +22,31 @@ extension CLLocation {
     }
     
     func getTranslation(to location: CLLocation) -> CLLocationTranslation {
-        
+    
         let locationWithin = CLLocation(latitude: self.coordinate.latitude, longitude: location.coordinate.longitude)
         
         let latitudeDistance = location.distance(from: locationWithin)
-        let latitudeTranslation = location.coordinate.latitude > locationWithin.coordinate.latitude ? latitudeDistance : -latitudeDistance
+        var latitudeTranslation = location.coordinate.latitude > locationWithin.coordinate.latitude ? latitudeDistance : -latitudeDistance
         
         let longitudeDistance = self.distance(from: locationWithin)
-        let longitudeTranslation = self.coordinate.longitude > locationWithin.coordinate.longitude ? -longitudeDistance : longitudeDistance
+        var longitudeTranslation = self.coordinate.longitude > locationWithin.coordinate.longitude ? -longitudeDistance : longitudeDistance
         
         let altitudeTranslation = location.altitude - self.altitude
         
-        return CLLocationTranslation(latitudeTranslation: latitudeTranslation, longitudeTranslation: longitudeTranslation, altitudeTranslation: altitudeTranslation)
+        // making sure that all 3 translations isn't in the range of -minTranslation to minTranslation so that
+        // image does not becomes bigger
+        let minTranslation: Double = 1
+        if (-minTranslation < latitudeTranslation && latitudeTranslation < minTranslation){
+            latitudeTranslation = latitudeTranslation < 0 ? -minTranslation : minTranslation
+        }
+        if (-minTranslation < longitudeTranslation && longitudeTranslation < minTranslation){
+            longitudeTranslation = longitudeTranslation < 0 ? -minTranslation : minTranslation
+        }
+        
+        return CLLocationTranslation(latitudeTranslation: latitudeTranslation, longitudeTranslation: longitudeTranslation, altitudeTranslation: 0)
         
                   
     }
-    
 }
 
 class CLLocationTranslation {

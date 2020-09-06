@@ -9,15 +9,14 @@
 import SwiftUI
 
 struct UIKitArSceneView: UIViewRepresentable {
-    
-    var parentSize: CGSize
+
+    var appArScnView: AppArScnView
     
     func makeUIView(context: Context) -> AppArScnView {
-        let aRScnView = AppArScnView(parentSize: self.parentSize)
         
-        aRScnView.startSession()
+        self.appArScnView.startSession()
         
-        return aRScnView
+        return self.appArScnView
     }
     
     func updateUIView(_ uiView: AppArScnView, context: Context) {

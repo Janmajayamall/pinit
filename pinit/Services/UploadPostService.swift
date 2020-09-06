@@ -146,8 +146,13 @@ extension UploadPostService {
     }
     
     func subscribeToLocationServicePublishers() {
-        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
+//        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
+//            self.currentLocation = location
+//            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
+//        }.store(in: &cancellables)
+        Publishers.aRSceneLocationServiceDidUpdateLocationEstimatesPublisher.sink { (location) in
             self.currentLocation = location
+            print("xyz received: \(self.currentLocation)")
             self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
         }.store(in: &cancellables)
     }

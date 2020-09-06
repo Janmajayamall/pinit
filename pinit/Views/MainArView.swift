@@ -26,7 +26,7 @@ struct MainArView: View {
             GeometryReader { geometryProxy in
                 ZStack{
                     
-                    UIKitArSceneView(parentSize: geometryProxy.size)
+                    UIKitArSceneView(appArScnView: self.settingsViewModel.appArScnView)
                     
                     MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
                     
@@ -57,6 +57,10 @@ struct MainArView: View {
                                     self.forceMapViewToDownState()
                                     
                                     if self.settingsViewModel.isUserAuthenticated() {
+                                        
+                                        // stop session
+                                        self.settingsViewModel.appArScnView.pauseSession()
+                                        
                                         self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
                                     }else {
                                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)

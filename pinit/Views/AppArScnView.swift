@@ -23,7 +23,7 @@ class AppArScnView: ARSCNView {
             
             // getting current location
             guard let currentLocation = self.aRSceneLocationService.currentLocation else {return}
-            
+            print(self.postSceneNodes.count, "this is the count")
             self.postSceneNodes.forEach { (id, node) in
                 guard node.isImageNodeLoaded else {return}
                 
@@ -51,8 +51,8 @@ class AppArScnView: ARSCNView {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init(parentSize: CGSize){
-        super.init(frame: CGRect(x: 0, y: 0, width: parentSize.width, height: parentSize.height), options: nil)
+    init(){
+        super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width), options: nil)
         
         //setting up debug options
         if (self.debug){
@@ -122,8 +122,8 @@ class AppArScnView: ARSCNView {
         self.session.pause()
         
         //stop other services as well
-        self.retrievePostService.stopListeningToPosts()
-        self.aRSceneLocationService.stop()
+//        self.retrievePostService.stopListeningToPosts()
+//        self.aRSceneLocationService.stop()
     }
     
     

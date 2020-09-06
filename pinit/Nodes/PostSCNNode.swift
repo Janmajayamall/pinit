@@ -71,7 +71,6 @@ class PostSCNNode: SCNNode, Identifiable {
     func updatePostNode(locationService: ARSceneLocationService, scenePosition: SCNVector3?, firstTime: Bool) {
         // getting current location & scene position
         guard let currentLocation = locationService.currentLocation, let scenePosition = scenePosition else {return}
-        print(self.location.distance(from: currentLocation), ":distance")
         //Start scene transaction
         SCNTransaction.begin()
         SCNTransaction.animationDuration = 0.0
@@ -80,28 +79,28 @@ class PostSCNNode: SCNNode, Identifiable {
         if (firstTime){
             // getting translation in vector form
             let translateCurrentLocationBy = currentLocation.getTranslation(to: self.location)
-            
+            print(self.location.distance(from: currentLocation), " :distance |", "with id: \(translateCurrentLocationBy.latitudeTranslation) \(translateCurrentLocationBy.longitudeTranslation) \(translateCurrentLocationBy.altitudeTranslation)")
             //translate the image from current position
             self.position = SCNVector3(
                 scenePosition.x + Float(translateCurrentLocationBy.longitudeTranslation),
                 scenePosition.y + Float(translateCurrentLocationBy.altitudeTranslation),
                 scenePosition.z - Float(translateCurrentLocationBy.latitudeTranslation)
             )
-            
         }
-        
-        //        // scale the child
-        //        let givenScale = self.scale
-        //
-        //        // apply the given scale to child
-        //        self.childNodes.forEach { (node) in
-        //            node.scale = givenScale
-        //            node.childNodes.forEach { (grandChildNode) in
-        //                grandChildNode.scale = scale
-        //            }
-        //        }
-        
-        
+//
+//        // scale the child
+//        let givenScale = self.scale
+//        self.scale = SCNVector3(1, 1, 1)
+//        print(givenScale, ": wee")
+//        // apply the given scale to child
+//        self.childNodes.forEach { (node) in
+//            node.scale = givenScale
+//            node.childNodes.forEach { (grandChildNode) in
+//                grandChildNode.scale = givenScale
+//            }
+//        }
+//
+//
         
         SCNTransaction.commit()
     }
@@ -120,7 +119,7 @@ class PostSCNNode: SCNNode, Identifiable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var maximumDistanceFromUser: CLLocationDistance = 50
+    private var maximumDistanceFromUser: CLLocationDistance = 500
 }
 
 class ImageSCNNode: SCNNode {
@@ -145,16 +144,19 @@ class ImageSCNNode: SCNNode {
         
         let width = self.fixedImageWidth
         let height = (imageOriginalDims.height * width)/imageOriginalDims.width
-        
+        print(width, height, "this should be constant", imageOriginalDims, description)
         return CGSize(width: width, height: height)
     }
     
     func addImageAsPlaneGeometry() {
         // getting scaled dims for the original image
         let scaledDims = self.getScaledDimensionsForImage()
-        print("scaledDims: \(scaledDims)")
+        
         // create plane for adding as geometry to the node
         let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
+        plane.cornerRadius = 0.1
+        
+        
         
         // texturing the plane with the image
         plane.firstMaterial?.diffuse.contents = image

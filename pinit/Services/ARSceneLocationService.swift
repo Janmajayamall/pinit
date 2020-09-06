@@ -51,7 +51,8 @@ class ARSceneLocationService {
     func updateEstimates(){
         removeOldEstimations()
                 
-        if let currentLocation = self.currentLocation {           
+        if let currentLocation = self.currentLocation {
+            print("xyz sent: \(currentLocation)")
             NotificationCenter.default.post(name: .aRSceneLocationServiceDidUpdateLocationEstimates, object: currentLocation)
         }
     }
