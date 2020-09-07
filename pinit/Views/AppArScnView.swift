@@ -92,8 +92,11 @@ class AppArScnView: ARSCNView {
         // getting the nodes with which the ray sent along the path of touchpoint would have interacted
         guard let touchedHitResult = view.hitTest(coordinates).first, let node = touchedHitResult.node as? ImageSCNNode else {return}
         
+        // checking whether the progile picture has been loaded or not
+        guard let userProfilePicture = node.userProfilePicture else {return}
+        
         // creating PostDisplayInfoModel for displaying on screen
-        let model = PostDisplayInfoModel(username: node.username, description: node.descriptionText)
+        let model = PostDisplayInfoModel(username: node.username, description: node.descriptionText, userProfilePicture: userProfilePicture)
         
         // post notification for post display info
         NotificationCenter.default.post(name: .aRViewDidTouchImageSCNNode, object: model)
@@ -190,7 +193,7 @@ extension AppArScnView {
     func subscribeToUploadPostServicePublishers(){
         Publishers.uploadPostServiceDidUploadPostPublisher.sink { (optimisticUIPostModel) in
             guard let id = optimisticUIPostModel.postModel.id else {return}
-            self.postSceneNodes[id] = PostSCNNode(post: optimisticUIPostModel.postModel, postImage: optimisticUIPostModel.postImage, scenePosition: self.currentPosition)
+            self.postSceneNodes[id] = PostSCNNode(post: optimisticUIPostModel.postModel, postImage: optimisticUIPostModel.postImage, scenePosition: self.currentPosition, locationService: self.aRSceneLocationService)
             self.mainSceneNode?.addChildNode(self.postSceneNodes[id]!)
             print("done--\(id)")
             

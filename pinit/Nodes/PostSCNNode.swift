@@ -53,20 +53,20 @@ class PostSCNNode: SCNNode, Identifiable {
         self.imageManager?.load()
     }
     
-    init(post: PostModel, postImage: UIImage, scenePosition: SCNVector3?){
+    init(post: PostModel, postImage: UIImage, scenePosition: SCNVector3?, locationService: ARSceneLocationService){
         self.post = post
         super.init()
         
         self.addImageSCNNode(withImage: postImage)
         self.isImageNodeLoaded = true
-        self.optimisticUIPlaceNode(scenePosition: scenePosition)
+        self.updatePostNode(locationService: locationService, scenePosition: scenePosition, firstTime: true)
     }
     
     func addImageSCNNode(withImage image: UIImage){
         // return if imageSCNNode has already been added
         guard self.isImageNodeLoaded == false else {return}
         
-        let imageNode = ImageSCNNode(image: image, description: self.post.description, username: self.post.username)
+        let imageNode = ImageSCNNode(image: image, description: self.post.description, username: self.post.username, userProfilePictureUrl: self.post.userProfilePicture)
         
         // define billboard constraint so that 2D plane always points towards the point of view
         let billboardConstraint = SCNBillboardConstraint()
@@ -77,7 +77,7 @@ class PostSCNNode: SCNNode, Identifiable {
         self.addChildNode(imageNode)
     }
     
-    func optimisticUIPlaceNode(scenePosition: SCNVector3?){
+    func optimisticUIPlaceNode(scenePosition: SCNVector3?, locationService: ARSceneLocationService){
         
         guard let scenePosition = scenePosition else {
             return
@@ -98,6 +98,7 @@ class PostSCNNode: SCNNode, Identifiable {
         
         SCNTransaction.commit()
     }
+    
     
     func updatePostNode(locationService: ARSceneLocationService, scenePosition: SCNVector3?, firstTime: Bool) {
         // getting current location & scene position
@@ -157,13 +158,24 @@ class ImageSCNNode: SCNNode {
     var image: UIImage
     var descriptionText: String
     var username: String
+    var userProfilePicture: UIImage?
+    var userProfilePictureManager: ImageManager
     
-    init(image: UIImage, description: String, username: String) {
+    private var cancellables: Set<AnyCancellable> = []
+    
+    init(image: UIImage, description: String, username: String, userProfilePictureUrl: String) {
         self.image = image
         self.descriptionText = description
         self.username = username
-        
+        self.userProfilePictureManager = ImageManager(url: URL(string: userProfilePictureUrl))
         super.init()
+        
+        // load profile image
+        self.userProfilePictureManager.$image.sink { (image) in
+            guard let image = image else {return}
+            self.userProfilePicture = image
+        }.store(in: &cancellables)
+        self.userProfilePictureManager.load()
         
         // setup image scene node
         self.addImageAsPlaneGeometry()

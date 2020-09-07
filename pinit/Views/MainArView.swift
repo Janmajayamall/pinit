@@ -84,16 +84,24 @@ struct MainArView: View {
                                 }.onTapGesture {
                                     self.postDisplayInfoViewModel.closeDisplayedInfo()
                                 }
-                                HStack{
+                                HStack(){
+                                    Image(uiImage: self.postDisplayInfoViewModel.postDisplayInfo?.userProfilePicture ?? UIImage(imageLiteralResourceName: "ProfileImage"))
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 70, height: 70, alignment: .center)
+                                        .cornerRadius(35)
+                                        .clipped()
                                     Text(self.postDisplayInfoViewModel.postDisplayInfo?.username ?? "")
-                                        .font(Font.custom("Avenir", size: 18).bold())
-                                    .foregroundColor(Color.white)
+                                        .foregroundColor(Color.white)
+                                    .font(Font.custom("Avenir", size: 18).bold())
                                     Spacer()
                                 }
                                 HStack{
                                     Text(self.postDisplayInfoViewModel.postDisplayInfo?.description ?? "")
                                     .font(Font.custom("Avenir", size: 18))
                                     .foregroundColor(Color.white)
+                                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
+                                    Spacer()
                                 }
                             }
                                 .padding(EdgeInsets(top: 10, leading: 5, bottom: 70, trailing: 5))
@@ -103,8 +111,6 @@ struct MainArView: View {
                     }
                     
                     ProfileView(parentSize: geometryProxy.size)
-                    
-                    
                     
                     LoginView(parentSize: geometryProxy.size).frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
                     
