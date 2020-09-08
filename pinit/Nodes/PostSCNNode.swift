@@ -59,7 +59,7 @@ class PostSCNNode: SCNNode, Identifiable {
         
         self.addImageSCNNode(withImage: postImage)
         self.isImageNodeLoaded = true
-        self.updatePostNode(locationService: locationService, scenePosition: scenePosition, firstTime: true)
+        self.optimisticUIPlaceNode(scenePosition: scenePosition, locationService: locationService)
     }
     
     func addImageSCNNode(withImage image: UIImage){
@@ -88,6 +88,7 @@ class PostSCNNode: SCNNode, Identifiable {
         SCNTransaction.animationDuration = 0.0
         
         //translate the image from current position
+        print("Used this pos")
         self.position = SCNVector3(
             scenePosition.x + 0,
             scenePosition.y + 0,
@@ -99,25 +100,30 @@ class PostSCNNode: SCNNode, Identifiable {
         SCNTransaction.commit()
     }
     
-    
+
     func updatePostNode(locationService: ARSceneLocationService, scenePosition: SCNVector3?, firstTime: Bool) {
         // getting current location & scene position
         guard let currentLocation = locationService.currentLocation, let scenePosition = scenePosition else {return}
         //Start scene transaction
         SCNTransaction.begin()
         SCNTransaction.animationDuration = 0.0
-        
+        print(scenePosition, ": this")
         // position would be set only for the first time
-        if (firstTime){
+        if (true){
             // getting translation in vector form
             let translateCurrentLocationBy = currentLocation.getTranslation(to: self.location)
             print(self.location.distance(from: currentLocation), " :distance |", "with id: \(translateCurrentLocationBy.latitudeTranslation) \(translateCurrentLocationBy.longitudeTranslation) \(translateCurrentLocationBy.altitudeTranslation)")
             //translate the image from current position
             self.position = SCNVector3(
-                scenePosition.x + Float(translateCurrentLocationBy.longitudeTranslation),
-                scenePosition.y + Float(translateCurrentLocationBy.altitudeTranslation),
-                scenePosition.z - Float(translateCurrentLocationBy.latitudeTranslation)
+                scenePosition.x+Float(0),
+                scenePosition.y+Float(0),
+                scenePosition.z+Float(1)
             )
+//            self.position = SCNVector3(
+//                scenePosition.x + Float(translateCurrentLocationBy.longitudeTranslation),
+//                scenePosition.y + Float(translateCurrentLocationBy.altitudeTranslation),
+//                scenePosition.z - Float(translateCurrentLocationBy.latitudeTranslation)
+//            )
         }
 //
 //        // scale the child
@@ -151,20 +157,22 @@ class PostSCNNode: SCNNode, Identifiable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var maximumDistanceFromUser: CLLocationDistance = 500
+    private var maximumDistanceFromUser: CLLocationDistance = 200
+    
 }
 
 class ImageSCNNode: SCNNode {
-    var image: UIImage
+    var imageList: Array<UIImage> = [UIImage(named: "image1")!, UIImage(named: "image2")!, UIImage(named: "image3")!, UIImage(named: "image4")!, UIImage(named: "image5")!]
     var descriptionText: String
     var username: String
     var userProfilePicture: UIImage?
     var userProfilePictureManager: ImageManager
     
+    var indexOfImageInFocus = 0
+    
     private var cancellables: Set<AnyCancellable> = []
     
     init(image: UIImage, description: String, username: String, userProfilePictureUrl: String) {
-        self.image = image
         self.descriptionText = description
         self.username = username
         self.userProfilePictureManager = ImageManager(url: URL(string: userProfilePictureUrl))
@@ -178,12 +186,12 @@ class ImageSCNNode: SCNNode {
         self.userProfilePictureManager.load()
         
         // setup image scene node
-        self.addImageAsPlaneGeometry()
+        self.switchDisplayedImage()
         
     }
     
-    func getScaledDimensionsForImage() -> CGSize{
-        let imageOriginalDims = self.image.size
+    func getScaledDimensions(forImage image: UIImage) -> CGSize{
+        let imageOriginalDims = image.size
         
         let width = self.fixedImageWidth
         let height = (imageOriginalDims.height * width)/imageOriginalDims.width
@@ -191,9 +199,9 @@ class ImageSCNNode: SCNNode {
         return CGSize(width: width, height: height)
     }
     
-    func addImageAsPlaneGeometry() {
+    func addImageAsPlaneGeometry(withImage image: UIImage) {
         // getting scaled dims for the original image
-        let scaledDims = self.getScaledDimensionsForImage()
+        let scaledDims = self.getScaledDimensions(forImage: image)
         
         // create plane for adding as geometry to the node
         let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
@@ -206,6 +214,17 @@ class ImageSCNNode: SCNNode {
         // adding to the node's geometry
         self.geometry = plane
     }
+    
+    func switchDisplayedImage(){
+        // getting the image
+        let image = self.imageList[self.indexOfImageInFocus]
+        
+        // adding the image as geometry
+        self.addImageAsPlaneGeometry(withImage: image)
+        
+        self.indexOfImageInFocus = (self.indexOfImageInFocus + 1) % self.imageList.count
+    }
+        
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -92,15 +92,18 @@ class AppArScnView: ARSCNView {
         // getting the nodes with which the ray sent along the path of touchpoint would have interacted
         guard let touchedHitResult = view.hitTest(coordinates).first, let node = touchedHitResult.node as? ImageSCNNode else {return}
         
-        // checking whether the progile picture has been loaded or not
-        guard let userProfilePicture = node.userProfilePicture else {return}
+        node.switchDisplayedImage()
         
-        // creating PostDisplayInfoModel for displaying on screen
-        let model = PostDisplayInfoModel(username: node.username, description: node.descriptionText, userProfilePicture: userProfilePicture)
-        
-        // post notification for post display info
-        NotificationCenter.default.post(name: .aRViewDidTouchImageSCNNode, object: model)
-        
+        // FIXME: Uncomment this
+//        // checking whether the progile picture has been loaded or not
+//        guard let userProfilePicture = node.userProfilePicture else {return}
+//
+//        // creating PostDisplayInfoModel for displaying on screen
+//        let model = PostDisplayInfoModel(username: node.username, description: node.descriptionText, userProfilePicture: userProfilePicture)
+//
+//        // post notification for post display info
+//        NotificationCenter.default.post(name: .aRViewDidTouchImageSCNNode, object: model)
+//
     }
     
     func startSession(){
@@ -111,7 +114,8 @@ class AppArScnView: ARSCNView {
         let configuration = ARWorldTrackingConfiguration()
         configuration.isLightEstimationEnabled = true
         
-        configuration.worldAlignment = .gravityAndHeading
+        configuration.worldAlignment = .gravity
+        
         
         //start other services
         self.aRSceneLocationService.start()
@@ -134,6 +138,7 @@ class AppArScnView: ARSCNView {
             
             // checking whether the node is valid to be rendered
             guard node.checkNodeRenderValidity(withCurrentLocation: currentLocation) else {
+                print("node -- remove -> \(node.id)")
                 node.removeFromParentNode()
                 return
             }
@@ -141,11 +146,14 @@ class AppArScnView: ARSCNView {
             // checking whether this node is being loaded first time (if the node was removed because it was declared not valid & is declared valid again its will act as firstTime)
             let firstTime = !(self.mainSceneNode?.childNodes.contains(node) ?? false)
             
-            node.updatePostNode(locationService: self.aRSceneLocationService, scenePosition: self.currentPosition, firstTime: firstTime)
+        
+                node.updatePostNode(locationService: self.aRSceneLocationService, scenePosition: self.currentPosition, firstTime: firstTime)
+            
+            
             
             // add node to mainSceneNode if it is loaded for the first time
             if (firstTime){
-                print("node added")
+                print("node -- added -> \(node.id)")
                 self.mainSceneNode?.addChildNode(node)
             }
         }

@@ -39,7 +39,7 @@ struct MoreSettingsViewModel: View {
                     .buttonStyle(SecondaryColorButtonStyle())
                     .padding(.bottom, 10)
                 Button(action: {
-                    print("logout")
+                    
                 }, label: {
                     Text("Privacy")
                 })

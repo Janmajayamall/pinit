@@ -57,6 +57,7 @@ struct SetupProfileView: View {
                 VStack{
                     CustomTextFieldView(text: self.$settingsViewModel.setupProfileViewModel.username, placeholder: "Username")
                         .font(Font.custom("Avenir", size: 18))
+                        .foregroundColor(Color.black)
                     Divider().background(Color.secondaryColor)
                 }
                 Spacer()

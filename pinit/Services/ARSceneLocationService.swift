@@ -52,6 +52,7 @@ class ARSceneLocationService {
         removeOldEstimations()
                 
         if let currentLocation = self.currentLocation {
+            print(currentLocation, "-- currentLocation")
             NotificationCenter.default.post(name: .aRSceneLocationServiceDidUpdateLocationEstimates, object: currentLocation)
         }
     }
@@ -59,7 +60,7 @@ class ARSceneLocationService {
     func removeOldEstimations(){
         
         // it is in meters; scene limit in meters measured from the current position
-        let aRSceneLimit: CGFloat = 100
+        let aRSceneLimit: CGFloat = 10
         
         guard let position = self.delegate?.scenePosition else {return}
         //for visualising position in 2D space; x & z axis
@@ -83,7 +84,7 @@ class ARSceneLocationService {
     }
     
     func start() {
-        Timer.publish(every: 0.5, on: .main, in: .common).autoconnect().sink { (we) in
+        Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink { _ in
             self.updateEstimates()
         }.store(in: &cancellables)
     }
@@ -129,6 +130,7 @@ class ARSceneLocationEstimate {
 extension ARSceneLocationService {
     func subscribeToLocationServicePublishers(){
         Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
+            print(location, "-- currentLocationOriginal")
             self.addLocationEstimate(location: location)
         }.store(in: &cancellables)
         

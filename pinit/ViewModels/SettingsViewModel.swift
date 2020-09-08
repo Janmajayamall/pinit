@@ -67,7 +67,7 @@ class SettingsViewModel: ObservableObject {
         self.uploadPostService.resetCurrentUserProfile()
         
         // resetting the screens
-        self.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
+        self.screenManagementService.mainScreenService.resetScreen()
     }
     
     func setupEditingViewModel(withUIImage image: UIImage) {

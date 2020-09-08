@@ -9,28 +9,97 @@
 import SwiftUI
 import Mapbox
 import FirebaseAuth
-
+import CoreLocation
 
 
 struct UIKitMapBox : UIViewRepresentable {
     class CustomUserLocationAnnotationView: MGLUserLocationAnnotationView {
-        override func layoutSubviews() {
-            super.layoutSubviews()
+        let size: CGFloat = 40
+        var dot: CALayer!
+        var arrow: CAShapeLayer!
+        
+        override func update() {
             
-            // Use CALayer’s corner radius to turn this view into a circle.
-            layer.cornerRadius = bounds.width / 2
-            layer.borderWidth = 4
-            layer.borderColor = UIColor.white.cgColor
+            // setting up the tint color
+            self.tintColor = UIColor(named: "primaryColor")
+            
+            if self.frame.isNull {
+                self.frame = CGRect(x: 0, y: 0, width: size, height:size)
+                self.setNeedsLayout()
+            }
+            
+            // checking whether we have user's location or not
+            if CLLocationCoordinate2DIsValid(self.userLocation!.coordinate){
+                self.setupLayers()
+                self.updateHeading()
+            }
         }
         
-        override func setSelected(_ selected: Bool, animated: Bool) {
-            super.setSelected(selected, animated: animated)
+        private func setupLayers(){
+            // This dot forms the base of the annotation.
+            if dot == nil {
+                dot = CALayer()
+                dot.bounds = CGRect(x: 0, y: 0, width: size, height: size)
+                
+                // Use CALayer’s corner radius to turn this layer into a circle.
+                dot.cornerRadius = size / 2
+                dot.backgroundColor = super.tintColor.cgColor
+                dot.borderWidth = 4
+                dot.borderColor = UIColor.white.cgColor
+                layer.addSublayer(dot)
+            }
             
-            // Animate the border width in/out, creating an iris effect.
-            let animation = CABasicAnimation(keyPath: "borderWidth")
-            animation.duration = 0.1
-            layer.borderWidth = selected ? bounds.width / 4 : 2
-            layer.add(animation, forKey: "borderWidth")
+            // This arrow overlays the dot and is rotated with the user’s heading.
+            if arrow == nil {
+                arrow = CAShapeLayer()
+                arrow.path = self.arrowPath()
+                arrow.frame = CGRect(x: 0, y: 0, width: size / 2, height: size / 2)
+                arrow.position = CGPoint(x: dot.frame.midX, y: dot.frame.midY)
+                arrow.fillColor = dot.borderColor
+                layer.addSublayer(arrow)
+            }
+        }
+        
+        private func updateHeading() {
+            // Show the heading arrow, if the heading of the user is available.
+            if let heading = userLocation!.heading?.trueHeading {
+                arrow.isHidden = false
+                
+                // Get the difference between the map’s current direction and the user’s heading, then convert it from degrees to radians.
+                let rotation: CGFloat = -MGLRadiansFromDegrees(mapView!.direction - heading)
+                
+                // If the difference would be perceptible, rotate the arrow.
+                if abs(rotation) > 0.01 {
+                    // Disable implicit animations of this rotation, which reduces lag between changes.
+                    CATransaction.begin()
+                    CATransaction.setDisableActions(true)
+                    arrow.setAffineTransform(CGAffineTransform.identity.rotated(by: rotation))
+                    CATransaction.commit()
+                }
+            } else {
+                arrow.isHidden = true
+            }
+        }
+        
+        // Calculate the vector path for an arrow, for use in a shape layer.
+        private func arrowPath() -> CGPath {
+            let max: CGFloat = size / 2
+            let pad: CGFloat = 3
+            
+            let top =    CGPoint(x: max * 0.5, y: 0)
+            let left =   CGPoint(x: 0 + pad,   y: max - pad)
+            let right =  CGPoint(x: max - pad, y: max - pad)
+            let center = CGPoint(x: max * 0.5, y: max * 0.6)
+            
+            let bezierPath = UIBezierPath()
+            bezierPath.move(to: top)
+            bezierPath.addLine(to: left)
+            bezierPath.addLine(to: center)
+            bezierPath.addLine(to: right)
+            bezierPath.addLine(to: top)
+            bezierPath.close()
+            
+            return bezierPath.cgPath
         }
         
     }
@@ -52,10 +121,6 @@ struct UIKitMapBox : UIViewRepresentable {
             
             if(annotation is MGLUserLocation){
                 let userAnnotation = CustomUserLocationAnnotationView()
-                // setting up the bounds
-                userAnnotation.bounds = CGRect(x: 0, y: 0, width: 25, height: 25)
-                // setting up the color
-                userAnnotation.backgroundColor = UIColor(named: "primaryColor")
                 return userAnnotation
             }
             
@@ -84,6 +149,18 @@ struct UIKitMapBox : UIViewRepresentable {
             
             return annotationView
             
+        }
+        
+        // Optional: tap the user location annotation to toggle heading tracking mode.
+        func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
+            if mapView.userTrackingMode != .followWithHeading {
+                mapView.userTrackingMode = .followWithHeading
+            } else {
+                mapView.resetNorth()
+            }
+            
+            // We're borrowing this method as a gesture recognizer, so reset selection state.
+            mapView.deselectAnnotation(annotation, animated: false)
         }
         
     }
