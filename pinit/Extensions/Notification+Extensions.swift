@@ -10,26 +10,30 @@ import Foundation
 import Combine
 
 extension Notification.Name {
-    
     // notifications for Authentication
     static let authenticationServiceDidAuthStatusChange = Notification.Name("authenticationServiceDidAuthStatusChange")
+    
     
     // notifications for location services
     static let locationServiceDidUpdateLocation = Notification.Name("locationServiceDidUpdateLocation")
     static let locationServiceDidUpdateHeading = Notification.Name("locationServiceDidUpdateHeading")
     
+    
     // notifications for geohasing service
     static let geohasingServiceDidUpdateGeohash = Notification.Name("geohasingServiceDidUpdateGeohash")
+    
+    // notifications for estimated user location service
+    static let estimatedUserLocationServiceDidUpdateLocation = Notification.Name("estimetedUserLocationServiceDidUpdateLocation")
+    
     
     // notifications for aRSceneLocationService
     static let aRSceneLocationServiceDidUpdateLocationEstimates = Notification.Name("aRSceneLocationServiceDidUpdateLocationEstimates")
     
-    // notifications for ImageSCNNodes
-    static let imageSCNNodeDidLoadImage = Notification.Name("imageSCNNodeDidLoadImage")
     
-    // notifications for upoadPostService
+    // notifications for uploadPostService
     static let uploadPostServiceDidRequestCreatePost = Notification.Name("uploadPostServiceDidRequestCreatePost")
     static let uploadPostServiceDidUploadPost = Notification.Name("uploadPostServiceDidUploadPost")
+    
     
     // notifications for userProfileService
     static let userProfileServiceDidRequestUsernameChange = Notification.Name("userProfileServiceDidRequestUsernameChange")
@@ -39,12 +43,11 @@ extension Notification.Name {
     static let userProfileServiceDidSetupProfileImage = Notification.Name("userProfileServiceDidSetupProfileImage")
     static let userProfileServiceDidRequestSetupUserProfile = Notification.Name("userProfileServiceDidRequestSetupUserProfile")
     
-    // notifications for post display type service
-    static let postDisplayTypeServiceDidChangeType = Notification.Name("postDisplayTypeServiceDidChangeType ")
     
     // notifications for AR View
     static let aRViewDidRequestResetMainView = Notification.Name("aRViewDidRequestResetMainView")
     static let aRViewDidTouchImageSCNNode = Notification.Name("aRViewDidTouchImageSCNNode")
+    
     
     // notifications for camera feed
     static let cameraFeedSwitchInUseCamera = Notification.Name("cameraFeedSwitchInUseCamera")

@@ -130,7 +130,6 @@ class UploadPostService {
     
     func setupService() {
         // setting up the subscribers
-        self.subscribeToArSceneLocationServices()
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToUserProfileServicePublishers()
     }
@@ -150,16 +149,16 @@ extension UploadPostService {
         }.store(in: &cancellables)
     }
     
-    func subscribeToArSceneLocationServices() {
-        Publishers.aRSceneLocationServiceDidUpdateLocationEstimatesPublisher.sink { (location) in
-            self.currentLocation = location
-            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
-        }.store(in: &cancellables)
-    }
-    
     func subscribeToUserProfileServicePublishers() {
         Publishers.userProfileServiceDidUpdateUserProfilePublisher.sink { (userProfile) in
             self.userProfile = userProfile
+        }.store(in: &cancellables)
+    }
+    
+    func subscribeToEstimatedUserLocationServicePublishers() {
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+            self.currentLocation = location
+            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
         }.store(in: &cancellables)
     }
 }

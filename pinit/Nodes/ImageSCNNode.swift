@@ -129,22 +129,3 @@ class ImageCNNode: SCNNode {
     }
     
 }
-//
-//extension ImageSCNNode {
-//    // SDWebImageSwiftUI
-//    func subscribeToSDWebImageSwiftPublishers(){
-//        self.imageManager.$image.sink(receiveValue: { (image) in
-//
-//            // return if geometry already exists
-//            guard self.geometry == nil else {return}
-//
-//            // return if image is nil
-//            guard let image = image else {return}
-//
-//            self.addImageAsGeometry(image)
-//            guard let id = self.id else {return}
-//
-//            NotificationCenter.default.post(name: .imageSCNNodeDidLoadImage, object: id)
-//        }).store(in: &cancellables)
-//    }
-//}

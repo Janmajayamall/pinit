@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0B4D5F688F31962E2310E9D4 /* Pods_pinitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D53FDF6D0C11D1E076B044 /* Pods_pinitTests.framework */; };
 		5D007A6424FD6EFC00F1D1C9 /* PostSCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D007A6324FD6EFC00F1D1C9 /* PostSCNNode.swift */; };
+		5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */; };
 		5D1CF0A82500095B00DD4E90 /* PostDisplayInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */; };
 		5D249CEF24FFFA3C00956241 /* PostDisplayInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */; };
 		5D27ABFE24F7CACE005D8992 /* PostDisplayTypeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */; };
@@ -108,6 +109,7 @@
 /* Begin PBXFileReference section */
 		181CC3BA6F356427D3D549A0 /* Pods_pinit_pinitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinit_pinitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D007A6324FD6EFC00F1D1C9 /* PostSCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSCNNode.swift; sourceTree = "<group>"; };
+		5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedUserLocationService.swift; sourceTree = "<group>"; };
 		5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoViewModel.swift; sourceTree = "<group>"; };
 		5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoModel.swift; sourceTree = "<group>"; };
 		5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayTypeService.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				5D52F7D924E9932600D9F27E /* LocationService.swift */,
 				5D5245FC24F4555E0000317D /* SetupProfileViewModel.swift */,
 				5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */,
+				5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -757,6 +760,7 @@
 				5D52F7DF24E9952800D9F27E /* CLLocation+Extensions.swift in Sources */,
 				5D1CF0A82500095B00DD4E90 /* PostDisplayInfoViewModel.swift in Sources */,
 				5D67E7F124E84E6C00F5D240 /* SceneDelegate.swift in Sources */,
+				5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */,
 				5D52F7C324E9566A00D9F27E /* EditProfileImageView.swift in Sources */,
 				5DC8527724EFE96500E36DCE /* UIKitUITextView.swift in Sources */,
 				5D52F7A924E91AE700D9F27E /* AuthenticationService.swift in Sources */,

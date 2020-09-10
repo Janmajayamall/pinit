@@ -44,7 +44,7 @@ class GeohashingService {
     
     func setupService(){
         // setting up subscribers
-        self.subscribeToArLocationServicePublishers()
+        
     }
     
     static func getGeohash(forCoordinates locationCoordinates: CLLocationCoordinate2D) -> String {
@@ -150,13 +150,13 @@ class GeohashingService {
     }
     
     static private let base32: Array<Character> = Array("0123456789bcdefghjkmnpqrstuvwxyz") // (geohash-specific) Base32
-    static private let geohashPrecision: Int = 7 // the length of the geophash determines the area covered by geohash
+    static private let geohashPrecision: Int = 9 // the length of the geophash determines the area covered by geohash
 }
 
-// extension for subscribing to publishers
+// for subscriptions of publishers
 extension GeohashingService {
-    func subscribeToArLocationServicePublishers(){
-        Publishers.aRSceneLocationServiceDidUpdateLocationEstimatesPublisher.sink { (location) in
+    func subscribeToEstimatedUserLocationServicePublishers() {
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
             self.updateGeohashToLocation(location)
         }.store(in: &cancellables)
     }

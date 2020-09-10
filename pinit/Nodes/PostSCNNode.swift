@@ -14,7 +14,7 @@ import CoreLocation
 
 
 class PostSCNNode: SCNNode, Identifiable {
-    var post: PostModel
+    var post: PostModel!
     var imageManager: ImageManager?
     var isImageNodeLoaded: Bool = false
     
@@ -31,6 +31,7 @@ class PostSCNNode: SCNNode, Identifiable {
     }
     
     private var cancellables: Set<AnyCancellable> = []
+    var directionView: DirectionView = .front
     
     init(post: PostModel) {
         self.post = post
@@ -62,11 +63,55 @@ class PostSCNNode: SCNNode, Identifiable {
         self.optimisticUIPlaceNode(scenePosition: scenePosition, locationService: locationService)
     }
     
+    init(scenePosition: SCNVector3?, directionView: DirectionView){
+        
+        self.directionView = directionView
+        
+        super.init()
+        
+        self.addImageSCNNode(withImage: UIImage(imageLiteralResourceName: "ProfileImage"))
+        self.isImageNodeLoaded = true
+        self.placeItDummy(scenePosition: scenePosition)
+        
+    }
+    
+    func placeItDummy(scenePosition: SCNVector3?) {
+        guard let scenePosition = scenePosition  else {return}
+        
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = 0.0
+        let moveBy: Float = 2
+        switch self.directionView {
+        case .front:
+            self.position = SCNVector3(
+                scenePosition.x + Float(0),
+                scenePosition.y + Float(-1),
+                scenePosition.z + Float(-moveBy))
+        case .right:
+            self.position = SCNVector3(
+                scenePosition.x + Float(moveBy),
+                scenePosition.y + Float(-1),
+                scenePosition.z + Float(0))
+        case .left:
+            self.position = SCNVector3(
+                scenePosition.x + Float(-moveBy),
+                scenePosition.y + Float(-1),
+                scenePosition.z + Float(0))
+        case .back:
+            self.position = SCNVector3(
+                scenePosition.x + Float(0),
+                scenePosition.y + Float(-1),
+                scenePosition.z + Float(moveBy))
+        }
+        
+        SCNTransaction.commit()
+    }
+    
     func addImageSCNNode(withImage image: UIImage){
         // return if imageSCNNode has already been added
         guard self.isImageNodeLoaded == false else {return}
         
-        let imageNode = ImageSCNNode(image: image, description: self.post.description, username: self.post.username, userProfilePictureUrl: self.post.userProfilePicture)
+        let imageNode = ImageSCNNode(image: image, description: "self.post.description", username: "self.post.username", userProfilePictureUrl: "https://avatars3.githubusercontent.com/u/40303619?s=460&v=4")
         
         // define billboard constraint so that 2D plane always points towards the point of view
         let billboardConstraint = SCNBillboardConstraint()
@@ -100,7 +145,7 @@ class PostSCNNode: SCNNode, Identifiable {
         SCNTransaction.commit()
     }
     
-
+    
     func updatePostNode(locationService: ARSceneLocationService, scenePosition: SCNVector3?, firstTime: Bool) {
         // getting current location & scene position
         guard let currentLocation = locationService.currentLocation, let scenePosition = scenePosition else {return}
@@ -109,36 +154,23 @@ class PostSCNNode: SCNNode, Identifiable {
         SCNTransaction.animationDuration = 0.0
         print(scenePosition, ": this")
         // position would be set only for the first time
-        if (true){
+        if (firstTime){
             // getting translation in vector form
             let translateCurrentLocationBy = currentLocation.getTranslation(to: self.location)
             print(self.location.distance(from: currentLocation), " :distance |", "with id: \(translateCurrentLocationBy.latitudeTranslation) \(translateCurrentLocationBy.longitudeTranslation) \(translateCurrentLocationBy.altitudeTranslation)")
             //translate the image from current position
             self.position = SCNVector3(
-                scenePosition.x+Float(0),
-                scenePosition.y+Float(0),
-                scenePosition.z+Float(1)
+                Float(-2),
+                Float(0),
+                Float(0)
             )
-//            self.position = SCNVector3(
-//                scenePosition.x + Float(translateCurrentLocationBy.longitudeTranslation),
-//                scenePosition.y + Float(translateCurrentLocationBy.altitudeTranslation),
-//                scenePosition.z - Float(translateCurrentLocationBy.latitudeTranslation)
-//            )
+            //            self.position = SCNVector3(
+            //                scenePosition.x + Float(translateCurrentLocationBy.longitudeTranslation),
+            //                scenePosition.y + Float(translateCurrentLocationBy.altitudeTranslation),
+            //                scenePosition.z - Float(translateCurrentLocationBy.latitudeTranslation)
+            //            )
         }
-//
-//        // scale the child
-//        let givenScale = self.scale
-//        self.scale = SCNVector3(1, 1, 1)
-//        print(givenScale, ": wee")
-//        // apply the given scale to child
-//        self.childNodes.forEach { (node) in
-//            node.scale = givenScale
-//            node.childNodes.forEach { (grandChildNode) in
-//                grandChildNode.scale = givenScale
-//            }
-//        }
-//
-//
+
         
         SCNTransaction.commit()
     }
@@ -161,12 +193,20 @@ class PostSCNNode: SCNNode, Identifiable {
     
 }
 
+enum DirectionView {
+    case front
+    case right
+    case left
+    case back
+}
+
 class ImageSCNNode: SCNNode {
     var imageList: Array<UIImage> = [UIImage(named: "image1")!, UIImage(named: "image2")!, UIImage(named: "image3")!, UIImage(named: "image4")!, UIImage(named: "image5")!]
     var descriptionText: String
     var username: String
     var userProfilePicture: UIImage?
     var userProfilePictureManager: ImageManager
+    
     
     var indexOfImageInFocus = 0
     
@@ -176,6 +216,7 @@ class ImageSCNNode: SCNNode {
         self.descriptionText = description
         self.username = username
         self.userProfilePictureManager = ImageManager(url: URL(string: userProfilePictureUrl))
+        
         super.init()
         
         // load profile image
@@ -224,11 +265,16 @@ class ImageSCNNode: SCNNode {
         
         self.indexOfImageInFocus = (self.indexOfImageInFocus + 1) % self.imageList.count
     }
-        
+    
+    func increaseSize(){
+        self.fixedImageWidth += 0.01
+        self.addImageAsPlaneGeometry(withImage: self.imageList[self.indexOfImageInFocus])
+    }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let fixedImageWidth: CGFloat = 1
+    private var fixedImageWidth: CGFloat = 1
 }

@@ -65,6 +65,17 @@ extension Publishers {
         .eraseToAnyPublisher()
     }
     
+    // publishers for estimated user location service
+    static var estimatedUserLocationServiceDidUpdateLocation: AnyPublisher<CLLocation, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .estimatedUserLocationServiceDidUpdateLocation)
+            .compactMap { (notification) -> CLLocation? in
+                guard let location = notification.object as? CLLocation else {return nil}
+                return location
+        }.eraseToAnyPublisher()
+    }
+    
     // publishers for aRSceneLocationService
     static var aRSceneLocationServiceDidUpdateLocationEstimatesPublisher: AnyPublisher<CLLocation, Never> {
         NotificationCenter
@@ -75,18 +86,7 @@ extension Publishers {
                 return locationEstimates
         }.eraseToAnyPublisher()
     }
-    
-    // publishers for imageSCNNode
-    static var imageSCNNodeDidLoadImagePublisher: AnyPublisher<String, Never> {
-        NotificationCenter
-            .default
-            .publisher(for: .imageSCNNodeDidLoadImage)
-            .compactMap { (notification) -> String? in
-                guard let id = notification.object as? String else {return nil}
-                return id
-        }
-        .eraseToAnyPublisher()
-    }
+
     
     // publishers for keyboard height
     static var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
@@ -186,16 +186,6 @@ extension Publishers {
         .eraseToAnyPublisher()
     }
     
-    // publishers for postDisplayType service
-    static var postDisplayTypeServiceDidChangeTypePublisher: AnyPublisher<PostDisplayType, Never>{
-        NotificationCenter
-            .default
-            .publisher(for: .postDisplayTypeServiceDidChangeType)
-            .compactMap { (notification) -> PostDisplayType? in
-                guard let type = notification.object as? PostDisplayType else {return nil}
-                return type
-        }.eraseToAnyPublisher()
-    }
     
     // publishers for ar view
     static var aRViewDidRequestResetMainView: AnyPublisher<Bool, Never>{

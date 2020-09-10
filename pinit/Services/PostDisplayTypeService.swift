@@ -24,12 +24,6 @@ class PostDisplayTypeService: ObservableObject {
         
         self.postDisplayType = type
         
-        // post notification for post display type change
-        NotificationCenter.default.post(name: .postDisplayTypeServiceDidChangeType, object: type)
-        
-        // post notification for ar view to reset its main scene
-        NotificationCenter.default.post(name: .aRViewDidRequestResetMainView, object: true)
-        
     }
 }
 

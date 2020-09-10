@@ -17,7 +17,6 @@ class SettingsViewModel: ObservableObject {
     @Published var user: User?
     @Published var userProfile: ProfileModel?
     @Published var userProfileImage: UIImage?
-    var currentLocation: CLLocation?
     
     // services
     private var authenticationService = AuthenticationService()
@@ -31,11 +30,11 @@ class SettingsViewModel: ObservableObject {
     @Published var setupProfileViewModel = SetupProfileViewModel()
     @Published var editingViewModel: EditingViewModel?
     
-    // ar scn view
-    var appArScnView = AppArScnView()
     
     // all posts
     @Published var allPosts: Dictionary<String, PostModel> = [:]
+    
+    var appArScnView: AppArScnView = AppArScnView()
     
     
     private var cancellables: Set<AnyCancellable> = []
@@ -99,16 +98,10 @@ extension SettingsViewModel {
     
     func subscribeToScreenManagementServicePublishers() {
         self.screenManagementService.objectWillChange.sink(receiveValue: { value in
-            print(value)
             self.objectWillChange.send()
         }).store(in: &cancellables)
     }
     
-    func subscribeToLocationServicePublishers() {
-        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
-            self.currentLocation = location
-        }.store(in: &cancellables)
-    }
     
     func subscribeToSetupProfileViewModelPublishers(){
         self.setupProfileViewModel.objectWillChange.sink { (_) in
@@ -138,7 +131,6 @@ extension SettingsViewModel {
     }
     
     func setupSubscribers() {
-        self.subscribeToLocationServicePublishers()
         self.subscribeToUserProfileServicePublishers()
         self.subscribeToScreenManagementServicePublishers()
         self.subscribeToCameraFeedPublishers()
