@@ -23,4 +23,7 @@
 1. https://medium.com/@gaspard.rosay/create-a-camera-app-with-swiftui-60876fcb9118
 2. https://www.appcoda.com/avfoundation-swift-guide/
 
+# Reference for moving dragging nodes around
+1. https://medium.com/@literalpie/dragging-objects-in-scenekit-and-arkit-3568212a90e5
+
 

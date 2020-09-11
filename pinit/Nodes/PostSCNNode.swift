@@ -80,7 +80,7 @@ class PostSCNNode: SCNNode, Identifiable {
         
         SCNTransaction.begin()
         SCNTransaction.animationDuration = 0.0
-        let moveBy: Float = 2
+        let moveBy: Float = 4
         switch self.directionView {
         case .front:
             self.position = SCNVector3(

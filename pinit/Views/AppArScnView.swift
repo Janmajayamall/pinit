@@ -27,9 +27,14 @@ class AppArScnView: ARSCNView {
         return self.scene.rootNode.convertPosition(pointOfView.position, to: mainSceneNode)
     }
     
-    var postSceneNodes: Array<PostSCNNode> = []
+    var postSceneNodes: Array<GroupSCNNode> = []
     
-    var debug: Bool = true
+    var debug: Bool = false
+    
+    // for pangesture
+    var lastPanLocation: SCNVector3?
+    var draggingNode: GroupSCNNode?
+    var prePanZ: CGFloat?
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -52,8 +57,16 @@ class AppArScnView: ARSCNView {
         
         
         // adding UITapGestureRecogniser
-        let gestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
-        self.addGestureRecognizer(gestureRecogniser)
+        let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
+        self.addGestureRecognizer(tapGestureRecogniser)
+        
+        // adding UIPanGestureRecognizer
+        let panGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture(sender:)))
+        self.addGestureRecognizer(panGestureRecogniser)
+        
+        // adding UIPinchGestureRecognizer
+        let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinchGesture(sender:)))
+        self.addGestureRecognizer(pinchGestureRecognizer)
         
         
     }
@@ -63,15 +76,70 @@ class AppArScnView: ARSCNView {
     }
     
     @objc func handleViewTap(sender: UITapGestureRecognizer){
-        // checking whether the touch is from class og type SCNView or not
+        // checking whether the touch is from class of type SCNView or not
         guard let view = sender.view as? SCNView else {return}
         
         // getting the touch location as 2 coordinates on screen
         let coordinates = sender.location(in: view)
         // getting the nodes with which the ray sent along the path of touchpoint would have interacted
-        guard let touchedHitResult = view.hitTest(coordinates).first, let node = touchedHitResult.node as? ImageSCNNode else {return}
+        guard let touchedHitResult = view.hitTest(coordinates).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
         
-        node.increaseSize()
+        // change the image
+        node.changeImage()
+    }
+    
+    @objc func handlePanGesture(sender: UIPanGestureRecognizer){
+        // checking whether the touch is from class of type SCNView or not
+        guard let view = sender.view as? SCNView else {return}
+        
+        // touch coordinates
+        let touchCoordinates = sender.location(in: view)
+        
+        switch sender.state {
+        case .began:
+            // getting the node touched
+            guard let touchedHitResult = view.hitTest(touchCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
+            
+            // setting it up
+            self.draggingNode = node
+            self.lastPanLocation = node.position
+            self.prePanZ = CGFloat(view.projectPoint(self.lastPanLocation!).z)
+            
+        case .changed:
+            guard let draggingNode = self.draggingNode, let prePanZ = self.prePanZ, let lastPanLocation = self.lastPanLocation else {return}
+            let worldTouchLocation = view.unprojectPoint(SCNVector3(touchCoordinates.x, touchCoordinates.y, prePanZ))
+            let translation = SCNVector3(
+                worldTouchLocation.x - lastPanLocation.x,
+                worldTouchLocation.y - lastPanLocation.y,
+                worldTouchLocation.z - lastPanLocation.z
+            )
+            
+            draggingNode.localTranslate(by: translation)
+            
+            self.lastPanLocation = worldTouchLocation
+        default:
+            self.draggingNode = nil
+            self.lastPanLocation = nil
+            self.prePanZ = nil
+            
+        }
+        
+    }
+    
+    @objc func handlePinchGesture(sender: UIPinchGestureRecognizer){
+        guard let view = sender.view as? SCNView else {return}
+        print(sender.scale, ": scale")
+        
+        if (sender.state == .changed){
+            // getting touched coordinates
+            let touchedCoordinates = sender.location(in: view)
+
+            // getting the node
+            guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
+            
+            // scaling current index image with sender scale
+            node.scaleImage(withValue: sender.scale)
+        }
     }
     
     func startSession(){
@@ -97,14 +165,16 @@ class AppArScnView: ARSCNView {
     }
     
     func addDummyNodes() {
-        let node1 = PostSCNNode(scenePosition: self.currentPosition, directionView: .front)
-        let node2 = PostSCNNode(scenePosition: self.currentPosition, directionView: .right)
-        let node3 = PostSCNNode(scenePosition: self.currentPosition, directionView: .left)
-        let node4 = PostSCNNode(scenePosition: self.currentPosition, directionView: .back)
+        let node1 = GroupSCNNode(scenePosition: self.currentPosition, direction: .front)
+        let node2 = GroupSCNNode(scenePosition: self.currentPosition, direction: .right)
+        let node3 = GroupSCNNode(scenePosition: self.currentPosition, direction: .left)
+        let node4 = GroupSCNNode(scenePosition: self.currentPosition, direction: .back)
+        
         self.mainSceneNode?.addChildNode(node1)
         self.mainSceneNode?.addChildNode(node2)
         self.mainSceneNode?.addChildNode(node3)
         self.mainSceneNode?.addChildNode(node4)
+        
         self.postSceneNodes.append(node1)
         self.postSceneNodes.append(node2)
         self.postSceneNodes.append(node3)
@@ -112,15 +182,9 @@ class AppArScnView: ARSCNView {
         
     }
     
-    func updateNodes() {
-        self.postSceneNodes.forEach { (node) in
-            node.placeItDummy(scenePosition: self.currentPosition)
-        }
-    }
-    
     func start() {
         Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink { _ in
-            self.updateNodes()
+            
         }.store(in: &cancellables)
     }
 }
@@ -154,10 +218,6 @@ extension AppArScnView {
     func subscribeToUploadPostServicePublishers(){
         Publishers.uploadPostServiceDidUploadPostPublisher.sink { (optimisticUIPostModel) in
             guard optimisticUIPostModel.postModel.id != nil else {return}
-            
-            
-            
-            
         }.store(in: &cancellables)
     }
 }

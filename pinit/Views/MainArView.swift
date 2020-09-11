@@ -28,8 +28,8 @@ struct MainArView: View {
                     
                     UIKitArSceneView(appArScnView: self.settingsViewModel.appArScnView)
                     
-                    MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
-                    
+//                    MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
+//                    
                     
                     VStack{
                         HStack{
