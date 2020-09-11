@@ -18,7 +18,11 @@ class AppArScnView: ARSCNView {
     /// Main root node and `mainSceneNode` have same position (i.e. the origin of 3d scene coordinate )
     var mainSceneNode: SCNNode?{
         didSet{
-            self.addDummyNodes()
+            guard self.mainSceneNode != nil else {return}
+            
+            self.groupNodes.values.forEach { (node) in
+                self.mainSceneNode!.addChildNode(node)
+            }
         }
     }
     
@@ -27,7 +31,9 @@ class AppArScnView: ARSCNView {
         return self.scene.rootNode.convertPosition(pointOfView.position, to: mainSceneNode)
     }
     
-    var postSceneNodes: Array<GroupSCNNode> = []
+    var groupNodes: Dictionary<NodeDirection, GroupSCNNode> = [:]
+    var exisitingPosts: Dictionary<String, PostModel> = [:]
+    var addPostToGroupOfDirection: NodeDirection = .front
     
     var debug: Bool = false
     
@@ -39,7 +45,11 @@ class AppArScnView: ARSCNView {
     private var cancellables: Set<AnyCancellable> = []
     
     init(){
+                
         super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width), options: nil)
+        
+        // adding group scene nodes
+        self.setupGroupNodes()
         
         //setting up debug options
         if (self.debug){
@@ -52,7 +62,6 @@ class AppArScnView: ARSCNView {
         
         // Setting up subscribers
         self.subscribeToRetrievePostServicePublishers()
-        self.subscribeToArSceneLocationServicePublishers()
         self.subscribeToUploadPostServicePublishers()
         
         
@@ -68,6 +77,9 @@ class AppArScnView: ARSCNView {
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinchGesture(sender:)))
         self.addGestureRecognizer(pinchGestureRecognizer)
         
+        // adding UILongPressGestureRecognizer
+        let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(sender:)))
+        self.addGestureRecognizer(longPressGestureRecognizer)
         
     }
     
@@ -85,7 +97,7 @@ class AppArScnView: ARSCNView {
         guard let touchedHitResult = view.hitTest(coordinates).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
         
         // change the image
-        node.changeImage()
+        node.changePostDisplay()
     }
     
     @objc func handlePanGesture(sender: UIPanGestureRecognizer){
@@ -128,18 +140,30 @@ class AppArScnView: ARSCNView {
     
     @objc func handlePinchGesture(sender: UIPinchGestureRecognizer){
         guard let view = sender.view as? SCNView else {return}
-        print(sender.scale, ": scale")
         
         if (sender.state == .changed){
             // getting touched coordinates
             let touchedCoordinates = sender.location(in: view)
-
+            
             // getting the node
             guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
             
             // scaling current index image with sender scale
-            node.scaleImage(withValue: sender.scale)
+            node.scaleNodePlane(withValue: sender.scale)
         }
+    }
+    
+    @objc func handleLongPressGesture(sender: UILongPressGestureRecognizer){
+        guard let view = sender.view as? SCNView else {return}
+        
+        // getting touched location
+        let touchedCoordinates = sender.location(in: view)
+        
+        // getting the touched node with hit test
+        guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
+        
+        // displaying info text
+        node.displayPostInfo()
     }
     
     func startSession(){
@@ -164,21 +188,43 @@ class AppArScnView: ARSCNView {
         self.session.pause()
     }
     
-    func addDummyNodes() {
-        let node1 = GroupSCNNode(scenePosition: self.currentPosition, direction: .front)
-        let node2 = GroupSCNNode(scenePosition: self.currentPosition, direction: .right)
-        let node3 = GroupSCNNode(scenePosition: self.currentPosition, direction: .left)
-        let node4 = GroupSCNNode(scenePosition: self.currentPosition, direction: .back)
+    func setupGroupNodes() {
+        if (self.groupNodes[.front] == nil){
+            self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front)
+        }
         
-        self.mainSceneNode?.addChildNode(node1)
-        self.mainSceneNode?.addChildNode(node2)
-        self.mainSceneNode?.addChildNode(node3)
-        self.mainSceneNode?.addChildNode(node4)
+        if (self.groupNodes[.frontRight] == nil){
+            self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight)
+        }
         
-        self.postSceneNodes.append(node1)
-        self.postSceneNodes.append(node2)
-        self.postSceneNodes.append(node3)
-        self.postSceneNodes.append(node4)
+        if (self.groupNodes[.frontLeft] == nil){
+            self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft)
+                
+        }
+            
+        // adding the nodes
+        self.groupNodes.values.forEach { (node) in
+            self.mainSceneNode?.addChildNode(node)
+        }
+    }
+    
+    func addPostToGroupNode(post: PostModel) {
+        // checking whether post already exits in one of the group nodes or not
+        guard let id = post.id, self.exisitingPosts[id] == nil else {return}
+        
+        // adding it to one of the group nodes
+        self.groupNodes[self.addPostToGroupOfDirection]?.addPost(post)
+        self.exisitingPosts[id] = post
+        print("post added \(self.addPostToGroupOfDirection) with ID \(id)")
+        // changing direction
+        switch self.addPostToGroupOfDirection {
+        case .front:
+            self.addPostToGroupOfDirection = .frontRight
+        case .frontRight:
+            self.addPostToGroupOfDirection = .frontLeft
+        case .frontLeft:
+            self.addPostToGroupOfDirection = .front
+        }
         
     }
     
@@ -192,26 +238,13 @@ class AppArScnView: ARSCNView {
 // extension for susbcribing to publishers
 extension AppArScnView {
     
-    // ARSceneLocationService
-    func subscribeToArSceneLocationServicePublishers(){
-        Publishers.aRSceneLocationServiceDidUpdateLocationEstimatesPublisher.sink { (location) in
-            
-        }.store(in: &cancellables)
-    }
-    
     // RetrievePostService
     func subscribeToRetrievePostServicePublishers(){
-        //        Publishers.retrievePostServiceDidReceivePostsForGeohashes.sink { (posts) in
-        //            posts.forEach { (post) in
-        //                guard let id = post.id else {return}
-        //                print("came in id--: \(id)")
-        //                guard self.postSceneNodes[id] == nil else {
-        //                    print("rejected Id--: \(id)")
-        //                    return
-        //                }
-        //                self.postSceneNodes[id] = PostSCNNode(post: post)
-        //            }
-        //        }.store(in: &cancellables)
+        Publishers.retrievePostServiceDidReceivePostsForGeohashes.sink { (posts) in
+            posts.forEach { (post) in
+                self.addPostToGroupNode(post: post)
+            }
+        }.store(in: &cancellables)
     }
     
     // subscribe to uploadPostService publishers

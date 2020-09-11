@@ -58,8 +58,8 @@ struct MainArView: View {
                                     
                                     if self.settingsViewModel.isUserAuthenticated() {
                                         
-                                        // stop session
-                                        self.settingsViewModel.appArScnView.pauseSession()
+//                                        // stop session
+//                                        self.settingsViewModel.appArScnView.pauseSession()
                                         
                                         self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
                                     }else {
@@ -84,13 +84,7 @@ struct MainArView: View {
                                 }.onTapGesture {
                                     self.postDisplayInfoViewModel.closeDisplayedInfo()
                                 }
-                                HStack(){
-                                    Image(uiImage: self.postDisplayInfoViewModel.postDisplayInfo?.userProfilePicture ?? UIImage(imageLiteralResourceName: "ProfileImage"))
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 70, height: 70, alignment: .center)
-                                        .cornerRadius(35)
-                                        .clipped()
+                                HStack(){                                   
                                     Text(self.postDisplayInfoViewModel.postDisplayInfo?.username ?? "")
                                         .foregroundColor(Color.white)
                                     .font(Font.custom("Avenir", size: 18).bold())

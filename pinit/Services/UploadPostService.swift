@@ -132,6 +132,7 @@ class UploadPostService {
         // setting up the subscribers
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToUserProfileServicePublishers()
+        self.subscribeToEstimatedUserLocationServicePublishers()
     }
     
     func resetCurrentUserProfile() {
@@ -156,9 +157,18 @@ extension UploadPostService {
     }
     
     func subscribeToEstimatedUserLocationServicePublishers() {
-        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+        // uncomment it after dev
+//        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+//            self.currentLocation = location
+//            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
+//        }.store(in: &cancellables)
+        
+        // for dev purposes
+        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
             self.currentLocation = location
             self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
         }.store(in: &cancellables)
     }
+    
+    
 }

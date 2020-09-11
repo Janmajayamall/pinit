@@ -16,6 +16,8 @@ class EstimatedUserLocationService: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
     
+    
+    
 }
 
 // extensions for subscriptions

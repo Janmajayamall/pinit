@@ -44,7 +44,7 @@ class GeohashingService {
     
     func setupService(){
         // setting up subscribers
-        
+        self.subscribeToEstimatedUserLocationServicePublishers()
     }
     
     static func getGeohash(forCoordinates locationCoordinates: CLLocationCoordinate2D) -> String {
@@ -156,7 +156,13 @@ class GeohashingService {
 // for subscriptions of publishers
 extension GeohashingService {
     func subscribeToEstimatedUserLocationServicePublishers() {
-        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+        // switch to estimated location service afterwards
+//        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+//            self.updateGeohashToLocation(location)
+//        }.store(in: &cancellables)
+//
+        // subscribe to locaiton service just for dev purposes
+        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
             self.updateGeohashToLocation(location)
         }.store(in: &cancellables)
     }

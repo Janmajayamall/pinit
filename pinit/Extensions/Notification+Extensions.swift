@@ -46,7 +46,10 @@ extension Notification.Name {
     
     // notifications for AR View
     static let aRViewDidRequestResetMainView = Notification.Name("aRViewDidRequestResetMainView")
-    static let aRViewDidTouchImageSCNNode = Notification.Name("aRViewDidTouchImageSCNNode")
+    
+    // notification for GroupSCNNode
+    static let groupSCNNodeDidLoadPostDisplayData = Notification.Name("groupSCNNodeDidLoadPostDisplayData")
+    static let groupSCNNodeDidRequestCurrentPostDisplayInfo = Notification.Name("groupSCNNodeDidRequestCurrentPostDisplayInfo")
     
     
     // notifications for camera feed

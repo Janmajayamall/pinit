@@ -12,5 +12,5 @@ import UIKit
 struct PostDisplayInfoModel {
     var username: String
     var description: String
-    var userProfilePicture: UIImage
+   
 }

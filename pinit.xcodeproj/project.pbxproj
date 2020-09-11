@@ -73,6 +73,7 @@
 		5D7E39C525059CA800C6E0AB /* OptimisticUIPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */; };
 		5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */; };
 		5DAE4136250A7EB50017A598 /* GroupSCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */; };
+		5DAE4138250C18820017A598 /* PostDisplayNodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */; };
 		5DB2B1A624F2CA8700E4D86B /* ImageCropViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */; };
 		5DC2859924ED029F00830887 /* AppArScnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859824ED029F00830887 /* AppArScnView.swift */; };
 		5DC2859B24ED06B800830887 /* UIKitMapBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859A24ED06B800830887 /* UIKitMapBox.swift */; };
@@ -181,6 +182,7 @@
 		5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimisticUIPostModel.swift; sourceTree = "<group>"; };
 		5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSetupUserProfileModel.swift; sourceTree = "<group>"; };
 		5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSCNNode.swift; sourceTree = "<group>"; };
+		5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayNodeModel.swift; sourceTree = "<group>"; };
 		5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropViewModel.swift; sourceTree = "<group>"; };
 		5DC2859824ED029F00830887 /* AppArScnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppArScnView.swift; sourceTree = "<group>"; };
 		5DC2859A24ED06B800830887 /* UIKitMapBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitMapBox.swift; sourceTree = "<group>"; };
@@ -300,6 +302,7 @@
 				5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */,
 				5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */,
 				5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */,
+				5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -767,6 +770,7 @@
 				5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */,
 				5D52F7C324E9566A00D9F27E /* EditProfileImageView.swift in Sources */,
 				5DC8527724EFE96500E36DCE /* UIKitUITextView.swift in Sources */,
+				5DAE4138250C18820017A598 /* PostDisplayNodeModel.swift in Sources */,
 				5D52F7A924E91AE700D9F27E /* AuthenticationService.swift in Sources */,
 				5D567CFB24F43BB500283E5B /* CustomButtonStyles.swift in Sources */,
 				5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */,

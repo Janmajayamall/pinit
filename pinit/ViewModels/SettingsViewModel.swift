@@ -25,6 +25,7 @@ class SettingsViewModel: ObservableObject {
     private var locationService = LocationService()
     private var uploadPostService = UploadPostService()
     private var retrievePostService = RetrievePostService()
+    private var geohasingService = GeohashingService()
     
     // view models
     @Published var setupProfileViewModel = SetupProfileViewModel()
@@ -36,7 +37,6 @@ class SettingsViewModel: ObservableObject {
     
     var appArScnView: AppArScnView = AppArScnView()
     
-    
     private var cancellables: Set<AnyCancellable> = []
     
     init() {
@@ -47,6 +47,7 @@ class SettingsViewModel: ObservableObject {
         self.uploadPostService.setupService()
         self.userProfileService.setupService()
         self.retrievePostService.setupService()
+        self.geohasingService.setupService()
         self.locationService.setupService()
         self.authenticationService.setupService()
     }

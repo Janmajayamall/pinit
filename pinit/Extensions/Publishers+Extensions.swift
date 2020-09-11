@@ -198,10 +198,21 @@ extension Publishers {
         }
     .eraseToAnyPublisher()
     }
-    static var aRViewDidTouchImageSCNNodePublisher: AnyPublisher<PostDisplayInfoModel, Never>{
+    
+    // publishers for group scn node
+    static var groupSCNNodeDidLoadPostDisplayData: AnyPublisher<Bool, Never>{
         NotificationCenter
         .default
-            .publisher(for: .aRViewDidTouchImageSCNNode)
+            .publisher(for: .groupSCNNodeDidLoadPostDisplayData)
+            .compactMap { (notification) -> Bool? in
+                guard let value = notification.object as? Bool else {return nil}
+                return value
+        }.eraseToAnyPublisher()
+    }
+    static var groupSCNNodeDidRequestCurrentPostDisplayInfoPublisher: AnyPublisher<PostDisplayInfoModel, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .groupSCNNodeDidRequestCurrentPostDisplayInfo)
             .compactMap { (notification) -> PostDisplayInfoModel? in
                 guard let model = notification.object as? PostDisplayInfoModel else {return nil}
                 return model

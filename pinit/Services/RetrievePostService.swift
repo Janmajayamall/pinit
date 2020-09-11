@@ -23,9 +23,9 @@ class RetrievePostService: ObservableObject {
     
     func listenToPostsForGeohashes(_ geohashes: Array<String>){
         self.stopListeningToPostForGeohashes()
-        print("geohashes, \(geohashes)")
         
-        self.documentsForGeohashesListener = self.postCollectionRef.whereField("geohash", in: geohashes).addSnapshotListener({ (querySnapshot, error) in
+//        .whereField("geohash", in: geohashes)
+        self.documentsForGeohashesListener = self.postCollectionRef.addSnapshotListener({ (querySnapshot, error) in
             self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error, forNotificationName: .retrievePostServiceDidReceivePostsForGeohashes)
         })
         

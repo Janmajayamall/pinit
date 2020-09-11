@@ -16,7 +16,7 @@ class PostDisplayInfoViewModel: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     
     init() {
-        self.subscribeToArViewPublishers()
+        self.subscribeToGroupSCNNodePublishers()
     }
     
     func displayInfo(for postDisplayInfo: PostDisplayInfoModel){
@@ -32,8 +32,8 @@ class PostDisplayInfoViewModel: ObservableObject {
 
 // extension for subscribers
 extension PostDisplayInfoViewModel {
-    func subscribeToArViewPublishers() {
-        Publishers.aRViewDidTouchImageSCNNodePublisher.sink { (postDisplayInfo) in
+    func subscribeToGroupSCNNodePublishers() {
+        Publishers.groupSCNNodeDidRequestCurrentPostDisplayInfoPublisher.sink { (postDisplayInfo) in
             self.displayInfo(for: postDisplayInfo)
         }.store(in: &cancellables)
     }

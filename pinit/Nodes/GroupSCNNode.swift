@@ -9,19 +9,27 @@
 import Foundation
 import SceneKit
 import ARKit
+import Combine
 
 class GroupSCNNode: SCNNode, Identifiable {
     
     var nodeDirection: NodeDirection
     
-    var imageList: Array<UIImage>  = [UIImage(named: "image1")!, UIImage(named: "image2")!, UIImage(named: "image3")!, UIImage(named: "image4")!, UIImage(named: "image5")!]
+    var postList: Array<PostDisplayNodeModel> = []
     
-    var currentImageIndex: Int = -1
+//    var imageList: Array<UIImage>  = [UIImage(named: "image1")!, UIImage(named: "image2")!, UIImage(named: "image3")!, UIImage(named: "image4")!, UIImage(named: "image5")!]
+    
+    var currentPostIndex: Int = -1
+    
+    private var cancellables: Set<AnyCancellable> = []
     
     init(scenePosition: SCNVector3?, direction: NodeDirection){
         self.nodeDirection = direction
         
         super.init()
+        
+        // subscribe to publishers
+        self.subscribeToGroupSCNNodePublishers()
         
         // add constraints to the node
         let billboardConstraint = SCNBillboardConstraint()
@@ -29,7 +37,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.constraints = [billboardConstraint]
         
         self.placeNode(scenePosition: scenePosition)
-        self.changeImage()
+        self.loadInitialPostDisplay()
     }
     
     required init?(coder: NSCoder) {
@@ -61,25 +69,48 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.geometry = plane
     }
     
-    func changeImage(){
+    func changePostDisplay(){
         
-        // changing the index
-        self.currentImageIndex = (self.currentImageIndex + 1) % self.imageList.count
+        guard self.postList.count > 0 && self.currentPostIndex >= 0 else {return}
+        
+        let refIndex = self.currentPostIndex
+        repeat{
+            // changing the index
+            self.currentPostIndex = (self.currentPostIndex + 1) % self.postList.count
+            
+            // if current index == refIndex then break
+            if (self.currentPostIndex == refIndex){
+                break
+            }
+        }while self.postList[self.currentPostIndex].isReadyToDisplay == false
+        
+        
         
         // adding image at current index to as geometry for node
-        self.addImageAsGeometry(image: self.imageList[self.currentImageIndex])
+        self.addImageAsGeometry(image: self.postList[self.currentPostIndex].postImage!)
     }
     
-    func scaleImage(withValue scale: CGFloat){
+    func scaleNodePlane(withValue scale: CGFloat){
         guard scale > 0 else {return}
         
-                if (scale > 1){
-                    self.fixedImageWidth += 0.05
-                }else {
-                    self.fixedImageWidth -= 0.05
-                }
+        if (scale > 1){
+            self.fixedImageWidth += 0.05
+        }else {
+            self.fixedImageWidth -= 0.05
+        }
         
-        self.addImageAsGeometry(image: self.imageList[self.currentImageIndex])
+        self.addImageAsGeometry(image: self.postList[self.currentPostIndex].postImage!)
+    }
+    
+    func displayPostInfo(){
+        let post = self.postList[self.currentPostIndex].post
+        
+        // creating post display info model
+        let postDisplayInfo = PostDisplayInfoModel(username: post.username, description: post.description)
+        
+        // post notification
+        NotificationCenter.default.post(name: .groupSCNNodeDidRequestCurrentPostDisplayInfo, object: postDisplayInfo)
+        
     }
     
     func placeNode(scenePosition: SCNVector3?){
@@ -93,36 +124,58 @@ class GroupSCNNode: SCNNode, Identifiable {
             self.position = SCNVector3(
                 scenePosition.x + Float(0),
                 scenePosition.y + self.defaultYCoordDis,
-                scenePosition.z + -self.defaultCoordDis)
-        case .right:
+                scenePosition.z + -self.defaultCoordDis - 1)
+        case .frontRight:
             self.position = SCNVector3(
-                scenePosition.x + self.defaultCoordDis,
+                scenePosition.x + (self.defaultCoordDis),
                 scenePosition.y + self.defaultYCoordDis,
                 scenePosition.z + -self.defaultCoordDis)
-        case .left:
+        case .frontLeft:
             self.position = SCNVector3(
-                scenePosition.x + -self.defaultCoordDis,
+                scenePosition.x + (-self.defaultCoordDis),
                 scenePosition.y + self.defaultYCoordDis,
-                scenePosition.z + -self.defaultCoordDis)
-        case .back:
-            self.position = SCNVector3(
-                scenePosition.x + Float(0),
-                scenePosition.y + 1.5,
                 scenePosition.z + -self.defaultCoordDis)
         }
         
         SCNTransaction.commit()
     }
     
+    func addPost(_ post: PostModel) {
+        // creating new post display node model
+        let model = PostDisplayNodeModel(post: post)
+        
+        // adding it to list
+        self.postList.append(model)
+    }
     
-    private var defaultCoordDis: Float = 2
-    private var defaultYCoordDis: Float = -1
+    func loadInitialPostDisplay() {
+        print("here I go, \(self.postList.count)")
+        guard self.currentPostIndex == -1 && self.postList.count > 0 && self.postList[0].isReadyToDisplay == true else {return}
+        
+        self.addImageAsGeometry(image: self.postList[0].postImage!)
+        self.currentPostIndex += 1
+        
+    }
+    
+    
+    private var defaultCoordDis: Float = 1.5
+    private var defaultYCoordDis: Float = -0.8
     private var fixedImageWidth: CGFloat = 1
+}
+
+// for subscribing to publishers
+extension GroupSCNNode {
+    func subscribeToGroupSCNNodePublishers() {
+        Publishers.groupSCNNodeDidLoadPostDisplayData.sink { (value) in
+            guard value == true else {return}
+            print("it did load")
+            self.loadInitialPostDisplay()
+        }.store(in: &cancellables)
+    }
 }
 
 enum NodeDirection {
     case front
-    case back
-    case right
-    case left
+    case frontRight
+    case frontLeft
 }
