@@ -22,9 +22,10 @@ class CameraFeedController: NSObject {
     var rearCameraInput: AVCaptureInput?
     
     var cameraPhotoOutput: AVCapturePhotoOutput?
+    var cameraMovieOutput: AVCaptureMovieFileOutput?
     
     var previewLayer: AVCaptureVideoPreviewLayer?
-       
+    
     var cameraFlashMode: AVCaptureDevice.FlashMode = .off
     
     private var cancellables: Set<AnyCancellable> = []
@@ -78,18 +79,18 @@ extension CameraFeedController {
                 if captureSession.canAddInput(self.rearCameraInput!) {
                     captureSession.addInput(self.rearCameraInput!)
                 }
-                                
+                
             }
-            
+                
             else if let frontCameraDevice = self.frontCameraDevice {
                 self.frontCameraInput = try AVCaptureDeviceInput(device: frontCameraDevice)
                 
                 if captureSession.canAddInput(self.frontCameraInput!){
                     captureSession.addInput(self.frontCameraInput!)
                 }
-                                
+                
             }
-            
+                
             else {
                 throw CameraFeedControllerError.noCamerasAvailable
             }
@@ -133,7 +134,7 @@ extension CameraFeedController {
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         self.previewLayer?.connection?.videoOrientation = .portrait
-   
+        
         view.layer.insertSublayer(self.previewLayer!, at: 0)
         self.previewLayer?.frame = view.frame
     }
@@ -185,6 +186,31 @@ extension CameraFeedController {
         captureSession.commitConfiguration()
     }
     
+    func switchCameraOutputType(to cameraOutputType: CameraOutputType ) throws {
+        guard let captureSession = self.captureSession else {
+            print("LOL here it is as well")
+            throw CameraFeedControllerError.captureSessionIsMissing}
+        print(cameraOutputType, ": Here is the type")
+        switch cameraOutputType {
+        case .photo:
+            self.cameraPhotoOutput = AVCapturePhotoOutput()
+            self.cameraPhotoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey:AVVideoCodecType.jpeg])], completionHandler: nil)
+            
+            if captureSession.canAddOutput(self.cameraPhotoOutput!) {
+                print("Yes")
+                captureSession.addOutput(self.cameraPhotoOutput!)
+            }
+        case .video:
+            self.cameraMovieOutput = AVCaptureMovieFileOutput()
+            
+            if captureSession.canAddOutput(self.cameraMovieOutput!) {
+                print("Yes")
+                captureSession.addOutput(self.cameraMovieOutput!)
+            }
+        }
+        captureSession.startRunning()
+    }
+    
     func captureImage() throws {
         guard let captureSession = self.captureSession, captureSession.isRunning else {throw CameraFeedControllerError.captureSessionIsMissing}
         
@@ -193,10 +219,37 @@ extension CameraFeedController {
         
         self.cameraPhotoOutput?.capturePhoto(with: captureSettings, delegate: self)
     }
-
+    
+    func toggleRecordingVideo() throws {
+        guard let captureSession = self.captureSession, captureSession.isRunning else {throw CameraFeedControllerError.captureSessionIsMissing}
+        
+        guard let movieOutput = self.cameraMovieOutput else {return}
+        if movieOutput.isRecording == false {
+            let connection = movieOutput.connection(with: AVMediaType.video)
+            
+            if (connection?.isVideoOrientationSupported)! {
+                connection?.videoOrientation = .portrait
+            }
+            
+            if (connection?.isVideoStabilizationSupported)! {
+                connection?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.auto
+            }
+            
+            // generating output file url for movie
+            let directory = NSTemporaryDirectory() as NSString
+            let path = directory.appendingPathComponent("\(UUID().uuidString)-\("PinIt").mp4")
+            let outputFileUrl =  URL(fileURLWithPath: path)
+            
+            movieOutput.startRecording(to: outputFileUrl, recordingDelegate: self)
+        }else {
+            //stop recording
+            movieOutput.stopRecording()
+        }
+    }
+    
 }
 
-extension CameraFeedController: AVCapturePhotoCaptureDelegate{
+extension CameraFeedController: AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error = error{
             print("Capture photo failed with errror: \(error.localizedDescription)")
@@ -210,7 +263,17 @@ extension CameraFeedController: AVCapturePhotoCaptureDelegate{
         print("Captured Image: \(image)")
         NotificationCenter.default.post(name: .cameraFeedDidCaptureImage, object: image)
     }
+    
+    func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
+        if let error = error {
+             print("File outout failed with errror: \(error.localizedDescription)")
+            return
+        }
+        
+        print("output file url \(outputFileURL)")
+    }
 }
+
 
 // extension for subscribing to publishers
 extension CameraFeedController {
@@ -236,6 +299,25 @@ extension CameraFeedController {
                 print("Camera Feed capture image failed with error: \(error)")
             }
         }.store(in: &cancellables)
+        
+        Publishers.cameraFeedSwitchCameraOutputTypePublishser.sink { (outputType) in
+            
+            do {
+                try self.switchCameraOutputType(to: outputType)
+            }catch{
+                print("Camera Feed Switch Output type for \(outputType) failed with error \(error)")
+            }
+        }.store(in: &cancellables)
+        
+        Publishers.cameraFeedDidRequestToggleRecordingVideoPublisher.sink { (value) in
+            guard value == true else {return}
+            
+            do{
+                try self.toggleRecordingVideo()
+            }catch{
+                print("Toggle recording video faile with error \(error)")
+            }
+        }.store(in: &cancellables)
     }
 }
 
@@ -252,5 +334,10 @@ extension CameraFeedController {
     enum CameraInUsePosition {
         case front
         case rear
+    }
+    
+    enum CameraOutputType {
+        case video
+        case photo
     }
 }

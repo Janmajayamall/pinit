@@ -256,6 +256,24 @@ extension Publishers {
                 return image
         }.eraseToAnyPublisher()
     }
+    static var cameraFeedSwitchCameraOutputTypePublishser: AnyPublisher<CameraFeedController.CameraOutputType, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .cameraFeedSwitchCameraOutputType)
+            .compactMap { (notification) -> CameraFeedController.CameraOutputType? in
+                guard let outputType = notification.object as? CameraFeedController.CameraOutputType else {return nil}
+                return outputType
+        }.eraseToAnyPublisher()
+    }
+    static var cameraFeedDidRequestToggleRecordingVideoPublisher: AnyPublisher<Bool, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .cameraFeedDidRequestToggleRecordingVideo)
+            .compactMap { (notification) -> Bool? in
+                guard let value = notification.object as? Bool else {return nil}
+                return value
+        }.eraseToAnyPublisher()
+    }
     
     // publishers for retrieve post serice
     static var retrievePostServiceDidReceivePostsForGeohashes: AnyPublisher<Array<PostModel>, Never>{

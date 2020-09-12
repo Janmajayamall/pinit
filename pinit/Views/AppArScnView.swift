@@ -192,15 +192,15 @@ class AppArScnView: ARSCNView {
         if (self.groupNodes[.front] == nil){
             self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front)
         }
-        
-        if (self.groupNodes[.frontRight] == nil){
-            self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight)
-        }
-        
-        if (self.groupNodes[.frontLeft] == nil){
-            self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft)
-                
-        }
+//        
+//        if (self.groupNodes[.frontRight] == nil){
+//            self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight)
+//        }
+//        
+//        if (self.groupNodes[.frontLeft] == nil){
+//            self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft)
+//                
+//        }
             
         // adding the nodes
         self.groupNodes.values.forEach { (node) in

@@ -57,6 +57,8 @@ extension Notification.Name {
     static let cameraFeedSwitchFlashMode = Notification.Name("cameraFeedSwitchFlashMode")
     static let cameraFeedDidRequestCaptureImage = Notification.Name("cameraFeedDidRequestCaptureImage")
     static let cameraFeedDidCaptureImage = Notification.Name("cameraFeedDidCaptureImage")
+    static let cameraFeedSwitchCameraOutputType = Notification.Name("cameraFeedSwitchCameraOutputType")
+    static let cameraFeedDidRequestToggleRecordingVideo = Notification.Name("cameraFeedDidRequestToggleRecordingVideo")
     
     // notification for retrieve post service
     static let retrievePostServiceDidReceivePostsForGeohashes = Notification.Name("retrievePostServiceDidReceivePostsForGeohashes")

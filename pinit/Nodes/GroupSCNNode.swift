@@ -10,6 +10,8 @@ import Foundation
 import SceneKit
 import ARKit
 import Combine
+import AVFoundation
+
 
 class GroupSCNNode: SCNNode, Identifiable {
     
@@ -38,6 +40,8 @@ class GroupSCNNode: SCNNode, Identifiable {
         
         self.placeNode(scenePosition: scenePosition)
         self.loadInitialPostDisplay()
+        
+        self.addAVPlayerAsGeometry()
     }
     
     required init?(coder: NSCoder) {
@@ -69,8 +73,52 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.geometry = plane
     }
     
-    func changePostDisplay(){
+    private var avPlayerContext = 0
+    private var avPlayer: AVPlayer?
+    
+    func addAVPlayerAsGeometry() {
+        guard let url = URL(string: "https://china-hatao.s3.ap-south-1.amazonaws.com/WhatsApp+Video+2020-09-13+at+1.04.32+AM.mp4") else {return}
         
+        self.avPlayer = AVPlayer(url: url)
+        self.avPlayer?.externalPlaybackVideoGravity = .resize
+        self.avPlayer!.addObserver(self, forKeyPath: #keyPath(AVPlayer.status), options: [.old, .new], context: &avPlayerContext)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard context == &avPlayerContext else {return}
+        
+        if keyPath == #keyPath(AVPlayer.status){
+            let status: AVPlayer.Status
+            
+            if let statusNumber = change?[.newKey] as? NSNumber {
+                status = AVPlayer.Status(rawValue: statusNumber.intValue)!
+            }else {
+                status = .unknown
+            }
+            
+            switch status {
+            case .readyToPlay:
+                guard let avPlayer = self.avPlayer else {return}
+                // adding the audio visual file as content of plane and then adding plane to node's geometry
+                let trialImage = UIImage(imageLiteralResourceName: "image1")
+                let scaledDims = self.getScaledDim(forImage: trialImage)
+                
+                let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
+                plane.firstMaterial?.diffuse.contents = avPlayer
+                 
+                avPlayer.play()
+                print("!!! started playing the video")
+                self.geometry = plane
+            case .failed:
+                print("!!! failed to load media")
+            default:
+                print("!!! unknown")
+            }
+        }
+    }
+    
+    func changePostDisplay(){
+         
         guard self.postList.count > 0 && self.currentPostIndex >= 0 else {return}
         
         let refIndex = self.currentPostIndex
