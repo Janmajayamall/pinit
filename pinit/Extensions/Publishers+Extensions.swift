@@ -106,12 +106,12 @@ extension Publishers {
     }
     
     // publishers for uploadPostService
-    static var uploadPostServiceDidRequestCreatePostPublisher: AnyPublisher<RequestCreatePostModel, Never> {
+    static var uploadPostServiceDidRequestCreatePostWithImagePublisher: AnyPublisher<RequestCreatePostWithImageModel, Never> {
         NotificationCenter
             .default
-            .publisher(for: .uploadPostServiceDidRequestCreatePost)
-            .compactMap { (notification) -> RequestCreatePostModel? in
-                guard let requestCreatePost = notification.object as? RequestCreatePostModel else {return nil}
+            .publisher(for: .uploadPostServiceDidRequestCreatePostWithImage)
+            .compactMap { (notification) -> RequestCreatePostWithImageModel? in
+                guard let requestCreatePost = notification.object as? RequestCreatePostWithImageModel else {return nil}
                 return requestCreatePost
         }
         .eraseToAnyPublisher()
@@ -123,6 +123,15 @@ extension Publishers {
             .compactMap { (notification) -> OptimisticUIPostModel? in
                 guard let post = notification.object as? OptimisticUIPostModel else {return nil}
                 return post
+        }.eraseToAnyPublisher()
+    }
+    static var uploadPostServiceDidRequestCreatePostWithVideoPublisher: AnyPublisher<RequestCreatePostWithVideoModel, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .uploadPostServiceDidRequestCreatePostWithVideo)
+            .compactMap { (notification) -> RequestCreatePostWithVideoModel? in
+                guard let requestPostModel = notification.object as? RequestCreatePostWithVideoModel else {return nil}
+                return requestPostModel
         }.eraseToAnyPublisher()
     }
     
@@ -272,6 +281,15 @@ extension Publishers {
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
                 return value
+        }.eraseToAnyPublisher()
+    }
+    static var cameraFeedDidCaptureVideoPublisher: AnyPublisher<URL, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .cameraFeedDidCaptureVideo)
+            .compactMap { (notification) -> URL? in
+                guard let videoUrl = notification.object as? URL else {return nil}
+                return videoUrl
         }.eraseToAnyPublisher()
     }
     

@@ -30,6 +30,7 @@ class SettingsViewModel: ObservableObject {
     // view models
     @Published var setupProfileViewModel = SetupProfileViewModel()
     @Published var editingViewModel: EditingViewModel?
+    @Published var editingVideoViewModel: EditingVideoViewModel?
     
     
     // all posts
@@ -78,8 +79,20 @@ class SettingsViewModel: ObservableObject {
         self.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .editCaptureImage)
     }
     
+    func setupEditingVideoViewModel(withVideoFilePathUrl fileUrl: URL){
+        // setting up editing video view model
+        self.editingVideoViewModel = EditingVideoViewModel(videoOutputFileUrl: fileUrl)
+        
+        // swithing captureImageView to state edtingVideo
+        self.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .editCaptureVideo)
+    }
+    
     func resetEditingViewModel() {
         self.editingViewModel = nil
+    }
+    
+    func resetEditingVideoViewModel() {
+        self.editingVideoViewModel = nil
     }
 }
 
@@ -113,6 +126,10 @@ extension SettingsViewModel {
     func subscribeToCameraFeedPublishers(){
         Publishers.cameraFeedDidCaptureImagePublisher.sink {(image) in
             self.setupEditingViewModel(withUIImage: image)
+        }.store(in: &cancellables)
+        
+        Publishers.cameraFeedDidCaptureVideoPublisher.sink { (videoFilePathUrl) in
+            self.setupEditingVideoViewModel(withVideoFilePathUrl: videoFilePathUrl)
         }.store(in: &cancellables)
     }
     

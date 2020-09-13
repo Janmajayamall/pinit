@@ -1,5 +1,5 @@
 //
-//  RequestCreatePostModel.swift
+//  RequestCreatePostWithImageModel.swift
 //  pinit
 //
 //  Created by Janmajaya Mall on 21/8/2020.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct RequestCreatePostModel {
+struct RequestCreatePostWithImageModel {
     var image: UIImage
     var description: String
     var isPublic: Bool

@@ -28,7 +28,10 @@ struct CaptureImageView: View {
         
         if self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.activeType == .editCaptureImage && self.settingsViewModel.editingViewModel != nil {
             EditCaptureImageView().environmentObject(self.settingsViewModel.editingViewModel!)
-        }else{
+        }else if (self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.activeType == .editCaptureVideo && self.settingsViewModel.editingVideoViewModel != nil){
+            EditCaptureVideoView().environmentObject(self.settingsViewModel.editingVideoViewModel!)
+        }
+        else{
             GeometryReader{ geometryProxy in
                 
                 CameraFeedViewController()

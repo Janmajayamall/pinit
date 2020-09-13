@@ -66,14 +66,14 @@ struct EditProfileImageView: View {
                     Spacer()
                     Image(systemName: "photo.fill")
                         .font(Font.system(size: 35, weight: .bold))
-                        .foregroundColor(Color.secondaryColor)
+                        .foregroundColor(Color.primaryColor)
                         .onTapGesture {
                             self.isImagePickerOpen = true
                     }
                     Spacer()
                     Image(systemName: "camera")
                         .font(Font.system(size: 35, weight: .bold))
-                        .foregroundColor(Color.secondaryColor)
+                        .foregroundColor(Color.primaryColor)
                     Spacer()
                 }
                 

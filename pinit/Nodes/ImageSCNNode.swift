@@ -39,7 +39,7 @@ class ImageCNNode: SCNNode {
     
     init(post: PostModel) {
         self.post = post
-        self.imageManager = ImageManager(url: URL(string: post.imageUrl))
+        self.imageManager = ImageManager(url: URL(string: post.imageUrl!))
         
         super.init()
         

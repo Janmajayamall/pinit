@@ -11,5 +11,7 @@ import UIKit
 
 struct OptimisticUIPostModel {
     var postModel: PostModel
-    var postImage: UIImage
+    var image: UIImage?
+    var videoFilePathUrl: URL?
+    var postContentType: PostContentType
 }

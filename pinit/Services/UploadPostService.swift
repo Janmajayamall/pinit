@@ -14,11 +14,10 @@ import FirebaseAuth
 import CoreLocation
 
 class UploadPostService {
-        
+    
     var userProfile: ProfileModel?
     var currentLocation: CLLocation?
     var currentLocationGeohash: String?
-    var currentRequestCreatePost: RequestCreatePostModel?
     
     private var postCollectionRef: CollectionReference = Firestore.firestore().collection("posts")
     private var storageRef = Storage.storage().reference()
@@ -26,108 +25,131 @@ class UploadPostService {
     private var cancellables: Set<AnyCancellable> = []
     
     init() {}
-        
-    func uploadPost(withRequestModel requestCreatePost: RequestCreatePostModel){
-        
-        guard self.userProfile != nil && self.currentLocationGeohash != nil && self.currentLocation != nil && self.currentRequestCreatePost == nil else {return}
-        self.currentRequestCreatePost = requestCreatePost
-        
-        // initiating upload image
-        self.uploadPostImage()
-    }
     
-    func uploadPostImage() {
+    func uploadPostWithImage(withRequestModel requestModel: RequestCreatePostWithImageModel) {
         
         guard let userProfile = self.userProfile else {
-            self.resetCurrentRequestCreatePost()
             return
         }
-        guard let image = self.currentRequestCreatePost?.image else {
-            self.resetCurrentRequestCreatePost()
+        guard let currentLocation = self.currentLocation else {
+            return
+        }
+        guard let currentLocationGeohash = self.currentLocationGeohash else {
             return
         }
         
         // generating image data from uiImage
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+        guard let postImageData = requestModel.image.jpegData(compressionQuality: 0.8) else {
             print("Unable to convert uImage to Image Data")
-            self.resetCurrentRequestCreatePost()
             return
         }
         // creating image upload ref
-        let imageUploadRef = self.storageRef.child("images/\(userProfile.id!)-\(UUID().uuidString).jpeg")
-        let imageUploadMeta = StorageMetadata()
-        imageUploadMeta.contentType = "image/jpeg"
+        let postImageUploadRef = self.storageRef.child("images/\(userProfile.id!)-\(UUID().uuidString).jpeg")
+        let postImageUploadMeta = StorageMetadata()
+        postImageUploadMeta.contentType = "image/jpeg"
         
-        imageUploadRef.putData(imageData, metadata: imageUploadMeta) {(metadata, error) in
+        postImageUploadRef.putData(postImageData, metadata: postImageUploadMeta) {(metadata, error) in
             guard let metadata = metadata else {
                 print("Image upload failed with error: \(String(describing: error?.localizedDescription))")
-                self.resetCurrentRequestCreatePost()
                 return
             }
             
-            imageUploadRef.downloadURL { (url, error) in
+            postImageUploadRef.downloadURL { (url, error) in
                 guard let url = url else {
                     print("Image upload downloadUrl failed with error: \(String(describing: error?.localizedDescription))")
-                    self.resetCurrentRequestCreatePost()
                     return
                 }
                 
-                self.uploadPostModel(withImageMetaData: metadata, withImageDownloadUrl: url, withUIImage: UIImage(data: imageData))
+                // creating post model
+                let postModel = PostModel(
+                    imageName: metadata.name,
+                    imageUrl: url.absoluteString,
+                    description: requestModel.description,
+                    isActive: true,
+                    geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
+                    geohash: currentLocationGeohash,
+                    altitude: currentLocation.altitude,
+                    isPublic: requestModel.isPublic,
+                    userId: userProfile.id!,
+                    username: userProfile.username,
+                    userProfilePicture: userProfile.profileImageUrl)
+                
+                // creating new post
+                do {
+                    // Notify that a post will be created
+                    if let postUIImage = UIImage(data: postImageData) {
+                        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, postImage: postUIImage))
+                    }
+                    
+                    _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
+                    
+                }catch{
+                    print("upload post with image failed with error \(error)")
+                }
             }
         }
     }
     
-    func uploadPostModel(withImageMetaData imageMetadata: StorageMetadata, withImageDownloadUrl imageDownloadUrl: URL, withUIImage uiImage: UIImage?) {
-        
+    func uploadPostWithVideo(withRequestModel requestModel: RequestCreatePostWithVideoModel) {
         guard let userProfile = self.userProfile else {
-            self.resetCurrentRequestCreatePost()
             return
         }
         guard let currentLocation = self.currentLocation else {
-            self.resetCurrentRequestCreatePost()
             return
         }
         guard let currentLocationGeohash = self.currentLocationGeohash else {
-            self.resetCurrentRequestCreatePost()
             return
-        }
-        guard let currentRequestCreatePost = self.currentRequestCreatePost else {
-            self.resetCurrentRequestCreatePost()
-            return
-        }
-                        
-        // creating Post Model
-        let postModel = PostModel(
-            imageName: imageMetadata.name ?? "",
-            imageUrl: imageDownloadUrl.absoluteString,
-            description: currentRequestCreatePost.description,
-            isActive: true,
-            geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
-            geohash: currentLocationGeohash,
-            altitude: currentLocation.altitude,
-            isPublic: currentRequestCreatePost.isPublic,
-            userId: userProfile.id!,
-            username: userProfile.username,
-            userProfilePicture: userProfile.profileImageUrl)
-                    
-        do {
-            // notifiying that the post is being uploaded
-            if let uiImage = uiImage {
-                NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, postImage: uiImage))
-            }
-            
-            _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
-        }catch {
-            print("Post model upload failed with error: \(error.localizedDescription)")
         }
         
-        self.resetCurrentRequestCreatePost()
+        // creating holder ref for video file
+        let postVideoUplaodRef = self.storageRef.child(("videos/\(userProfile.id!)-\(UUID().uuidString).mp4"))
+        let postVideoMetadata = StorageMetadata()
+        postVideoMetadata.contentType = "video/mp4"
+        
+        // uploding the video file
+        postVideoUplaodRef.putFile(from: requestModel.videoFilePathUrl, metadata: postVideoMetadata) {(metadata, error) in
+            
+            guard let metadata = metadata else {
+                print("Video upload failed with error: \(String(describing: error?.localizedDescription))")
+                return
+            }
+            
+            postVideoUplaodRef.downloadURL { (url, error) in
+                guard let url = url else {
+                    print("Video upload downloadUrl failed with error: \(String(describing: error?.localizedDescription))")
+                    return
+                }
+                
+                // crating post model
+                let postModel = PostModel(
+                    videoName: metadata.name,
+                    videoUrl: url.absoluteString,
+                    description: requestModel.description,
+                    isActive: true,
+                    geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
+                    geohash: currentLocationGeohash,
+                    altitude: currentLocation.altitude,
+                    isPublic: requestModel.isPublic,
+                    userId: userProfile.id!,
+                    username: userProfile.username,
+                    userProfilePicture: userProfile.profileImageUrl)
+                
+                // creating new post
+                do {
+                    // Notify that a post will be created
+                    //                    if let postUIImage = UIImage(data: postImageData) {
+                    //                        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, postImage: postUIImage))
+                    //                    }
+                    
+                    _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
+                    
+                }catch{
+                    print("upload post with image failed with error \(error)")
+                }
+            }
+        }
     }
-    
-    func resetCurrentRequestCreatePost() {
-        self.currentRequestCreatePost = nil
-    }
-    
+
     func setupService() {
         // setting up the subscribers
         self.subscribeToUploadPostServicePublishers()
@@ -145,10 +167,15 @@ class UploadPostService {
 extension UploadPostService {
     
     func subscribeToUploadPostServicePublishers() {
-        Publishers.uploadPostServiceDidRequestCreatePostPublisher.sink { (requestCreatePost) in
-            self.uploadPost(withRequestModel: requestCreatePost)
+        Publishers.uploadPostServiceDidRequestCreatePostWithImagePublisher.sink { (requestCreatePost) in
+            self.uploadPostWithImage(withRequestModel: requestCreatePost)
+        }.store(in: &cancellables)
+        
+        Publishers.uploadPostServiceDidRequestCreatePostWithVideoPublisher.sink { (requestCreatePost) in
+            self.uploadPostWithVideo(withRequestModel: requestCreatePost)
         }.store(in: &cancellables)
     }
+    
     
     func subscribeToUserProfileServicePublishers() {
         Publishers.userProfileServiceDidUpdateUserProfilePublisher.sink { (userProfile) in
@@ -158,10 +185,10 @@ extension UploadPostService {
     
     func subscribeToEstimatedUserLocationServicePublishers() {
         // uncomment it after dev
-//        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
-//            self.currentLocation = location
-//            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
-//        }.store(in: &cancellables)
+        //        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+        //            self.currentLocation = location
+        //            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
+        //        }.store(in: &cancellables)
         
         // for dev purposes
         Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in

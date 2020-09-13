@@ -16,7 +16,7 @@
 		5D2ED1F824FD0D3C00C542B0 /* TextViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */; };
 		5D2ED1FA24FD1B5F00C542B0 /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */; };
 		5D31948624F00ECF001182E4 /* SafeTopEdgeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */; };
-		5D31948824F0195F001182E4 /* RequestCreatePostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D31948724F0195F001182E4 /* RequestCreatePostModel.swift */; };
+		5D31948824F0195F001182E4 /* RequestCreatePostWithImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D31948724F0195F001182E4 /* RequestCreatePostWithImageModel.swift */; };
 		5D4DD09F24ED2A1200E1FDF3 /* CaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DD09E24ED2A1200E1FDF3 /* CaptureImageView.swift */; };
 		5D4DD0A224ED34B300E1FDF3 /* PathDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DD0A124ED34B300E1FDF3 /* PathDrawing.swift */; };
 		5D4DD0A424ED353B00E1FDF3 /* ImagePaintingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DD0A324ED353B00E1FDF3 /* ImagePaintingModel.swift */; };
@@ -78,12 +78,16 @@
 		5DC2859924ED029F00830887 /* AppArScnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859824ED029F00830887 /* AppArScnView.swift */; };
 		5DC2859B24ED06B800830887 /* UIKitMapBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859A24ED06B800830887 /* UIKitMapBox.swift */; };
 		5DC2859D24ED0F3400830887 /* EditingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859C24ED0F3400830887 /* EditingViewModel.swift */; };
+		5DC53050250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5304F250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift */; };
 		5DC8527124EFC87B00E36DCE /* ViewRectViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527024EFC87B00E36DCE /* ViewRectViewModifier.swift */; };
 		5DC8527324EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527224EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift */; };
 		5DC8527524EFDDC500E36DCE /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527424EFDDC500E36DCE /* UIView+Extensions.swift */; };
 		5DC8527724EFE96500E36DCE /* UIKitUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527624EFE96500E36DCE /* UIKitUITextView.swift */; };
 		5DC8527924EFED2300E36DCE /* KeyboardAwareViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527824EFED2300E36DCE /* KeyboardAwareViewModifiers.swift */; };
 		5DC8527B24EFF83E00E36DCE /* FadeKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527A24EFF83E00E36DCE /* FadeKeyboard.swift */; };
+		5DD2962D250E5EC000982587 /* EditingVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD2962C250E5EC000982587 /* EditingVideoViewModel.swift */; };
+		5DD2962F250E5FD600982587 /* EditCaptureVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */; };
+		5DD29631250E648200982587 /* UIKitAVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD29630250E648200982587 /* UIKitAVPlayerView.swift */; };
 		5DE4A3CA24FC082A00262A95 /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = 5DE4A3C924FC082A00262A95 /* ReadMe.md */; };
 		5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9524F5B185005F0A04 /* View+Extensions.swift */; };
 		5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */; };
@@ -118,7 +122,7 @@
 		5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewModifiers.swift; sourceTree = "<group>"; };
 		5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
 		5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeTopEdgeViewModifier.swift; sourceTree = "<group>"; };
-		5D31948724F0195F001182E4 /* RequestCreatePostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCreatePostModel.swift; sourceTree = "<group>"; };
+		5D31948724F0195F001182E4 /* RequestCreatePostWithImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCreatePostWithImageModel.swift; sourceTree = "<group>"; };
 		5D4DD09E24ED2A1200E1FDF3 /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
 		5D4DD0A124ED34B300E1FDF3 /* PathDrawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDrawing.swift; sourceTree = "<group>"; };
 		5D4DD0A324ED353B00E1FDF3 /* ImagePaintingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePaintingModel.swift; sourceTree = "<group>"; };
@@ -187,12 +191,16 @@
 		5DC2859824ED029F00830887 /* AppArScnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppArScnView.swift; sourceTree = "<group>"; };
 		5DC2859A24ED06B800830887 /* UIKitMapBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitMapBox.swift; sourceTree = "<group>"; };
 		5DC2859C24ED0F3400830887 /* EditingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingViewModel.swift; sourceTree = "<group>"; };
+		5DC5304F250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCreatePostWithVideoModel.swift; sourceTree = "<group>"; };
 		5DC8527024EFC87B00E36DCE /* ViewRectViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRectViewModifier.swift; sourceTree = "<group>"; };
 		5DC8527224EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+Extensions.swift"; sourceTree = "<group>"; };
 		5DC8527424EFDDC500E36DCE /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		5DC8527624EFE96500E36DCE /* UIKitUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitUITextView.swift; sourceTree = "<group>"; };
 		5DC8527824EFED2300E36DCE /* KeyboardAwareViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAwareViewModifiers.swift; sourceTree = "<group>"; };
 		5DC8527A24EFF83E00E36DCE /* FadeKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeKeyboard.swift; sourceTree = "<group>"; };
+		5DD2962C250E5EC000982587 /* EditingVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingVideoViewModel.swift; sourceTree = "<group>"; };
+		5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCaptureVideoView.swift; sourceTree = "<group>"; };
+		5DD29630250E648200982587 /* UIKitAVPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitAVPlayerView.swift; sourceTree = "<group>"; };
 		5DE4A3C924FC082A00262A95 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		5DE94F9524F5B185005F0A04 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -269,6 +277,7 @@
 				5DC2859C24ED0F3400830887 /* EditingViewModel.swift */,
 				5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */,
 				5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */,
+				5DD2962C250E5EC000982587 /* EditingVideoViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -298,11 +307,12 @@
 				5D52F7B824E93AAA00D9F27E /* PostModel.swift */,
 				5D52F7E224EA755C00D9F27E /* GeohashModel.swift */,
 				5D4DD0A324ED353B00E1FDF3 /* ImagePaintingModel.swift */,
-				5D31948724F0195F001182E4 /* RequestCreatePostModel.swift */,
+				5D31948724F0195F001182E4 /* RequestCreatePostWithImageModel.swift */,
 				5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */,
 				5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */,
 				5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */,
 				5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */,
+				5DC5304F250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -326,6 +336,7 @@
 				5D576A3724F1A465004A004C /* EmailAuthenticationView.swift */,
 				5D567CF624F428E400283E5B /* SetupProfileView.swift */,
 				5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */,
+				5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -339,6 +350,7 @@
 				5D52F7E024E9A1B600D9F27E /* UIKitArSceneView.swift */,
 				5DC2859A24ED06B800830887 /* UIKitMapBox.swift */,
 				5DC8527624EFE96500E36DCE /* UIKitUITextView.swift */,
+				5DD29630250E648200982587 /* UIKitAVPlayerView.swift */,
 			);
 			path = UIKitComponents;
 			sourceTree = "<group>";
@@ -733,6 +745,7 @@
 				5D52F7DD24E994C300D9F27E /* ImageSCNNode.swift in Sources */,
 				5D52F7CD24E972AA00D9F27E /* BottomSheetView.swift in Sources */,
 				5D52F7D824E98F5900D9F27E /* RetrievePostService.swift in Sources */,
+				5DD2962F250E5FD600982587 /* EditCaptureVideoView.swift in Sources */,
 				5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */,
 				5D52F7C624E9594F00D9F27E /* UIKitImagePicker.swift in Sources */,
 				5D52F7BB24E93CBE00D9F27E /* MapView.swift in Sources */,
@@ -746,7 +759,8 @@
 				5D52F7B324E9257E00D9F27E /* UserProfileService.swift in Sources */,
 				5D52F7B724E93A5200D9F27E /* ProfileModel.swift in Sources */,
 				5D6B1F7F24FEE7B800DCC418 /* CameraFeedController.swift in Sources */,
-				5D31948824F0195F001182E4 /* RequestCreatePostModel.swift in Sources */,
+				5D31948824F0195F001182E4 /* RequestCreatePostWithImageModel.swift in Sources */,
+				5DC53050250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift in Sources */,
 				5D52F7C124E9548D00D9F27E /* EditUsernameView.swift in Sources */,
 				5DC8527324EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift in Sources */,
 				5D52F7C824E95A9E00D9F27E /* ProfileImageEditorView.swift in Sources */,
@@ -772,8 +786,10 @@
 				5DC8527724EFE96500E36DCE /* UIKitUITextView.swift in Sources */,
 				5DAE4138250C18820017A598 /* PostDisplayNodeModel.swift in Sources */,
 				5D52F7A924E91AE700D9F27E /* AuthenticationService.swift in Sources */,
+				5DD29631250E648200982587 /* UIKitAVPlayerView.swift in Sources */,
 				5D567CFB24F43BB500283E5B /* CustomButtonStyles.swift in Sources */,
 				5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */,
+				5DD2962D250E5EC000982587 /* EditingVideoViewModel.swift in Sources */,
 				5D52F7E124E9A1B600D9F27E /* UIKitArSceneView.swift in Sources */,
 				5D52F7AD24E91EF200D9F27E /* SettingsViewModel.swift in Sources */,
 				5D7E39C525059CA800C6E0AB /* OptimisticUIPostModel.swift in Sources */,

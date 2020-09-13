@@ -15,7 +15,7 @@ struct EditCaptureImageView: View {
     
     @Environment(\.window) var window: UIWindow?
     
-    @State var screenState: ScreenState = .normal
+    @State var screenState: EditCaptureImageScreenState = .normal
     @State var isUserDrawing: Bool = false
     
     var body: some View {
@@ -33,7 +33,7 @@ struct EditCaptureImageView: View {
                 self.editingViewModel.imagePainting.currentDrawing
                 
                 if (self.screenState == .description){
-                    FadeKeyboard(parentSize: geometryProxy.size)
+                    FadeKeyboard(descriptionText: self.$editingViewModel.descriptionText, parentSize: geometryProxy.size )
                 }
                 
                 if (self.screenState == .normal){
@@ -188,7 +188,7 @@ struct EditCaptureImageView_Previews: PreviewProvider {
 }
 
 
-enum ScreenState {
+enum EditCaptureImageScreenState {
     case normal
     case painting
     case description

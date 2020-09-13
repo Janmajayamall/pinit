@@ -12,8 +12,10 @@ import FirebaseFirestore
 
 struct PostModel: Codable {
     
-    var imageName: String
-    var imageUrl: String
+    var imageName: String?
+    var imageUrl: String?
+    var videoName: String?
+    var videoUrl: String?
     var description: String
     var timestamp: Timestamp = Timestamp()
     var isActive: Bool
@@ -27,5 +29,4 @@ struct PostModel: Codable {
     var userProfilePicture: String
     
     @DocumentID var id: String? = UUID().uuidString
-    
 }

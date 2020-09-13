@@ -19,8 +19,6 @@ class GroupSCNNode: SCNNode, Identifiable {
     
     var postList: Array<PostDisplayNodeModel> = []
     
-//    var imageList: Array<UIImage>  = [UIImage(named: "image1")!, UIImage(named: "image2")!, UIImage(named: "image3")!, UIImage(named: "image4")!, UIImage(named: "image5")!]
-    
     var currentPostIndex: Int = -1
     
     private var cancellables: Set<AnyCancellable> = []
@@ -40,26 +38,22 @@ class GroupSCNNode: SCNNode, Identifiable {
         
         self.placeNode(scenePosition: scenePosition)
         self.loadInitialPostDisplay()
-        
-        self.addAVPlayerAsGeometry()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func getScaledDim(forImage image: UIImage) -> CGSize{
-        let imageOriginalDims = image.size
-        
+    func getScaledDim(forSize size: CGSize) -> CGSize{
         let width = self.fixedImageWidth
-        let height = (imageOriginalDims.height * width)/imageOriginalDims.width
+        let height = (size.height * width)/size.width
         
         return CGSize(width: width, height: height)
     }
     
     func addImageAsGeometry(image: UIImage){
         // getting scaled dims for the original image
-        let scaledDims = self.getScaledDim(forImage: image)
+        let scaledDims = self.getScaledDim(forSize: image.size)
         
         // create plane for adding as geometry to the node
         let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
@@ -73,52 +67,26 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.geometry = plane
     }
     
-    private var avPlayerContext = 0
-    private var avPlayer: AVPlayer?
-    
-    func addAVPlayerAsGeometry() {
-        guard let url = URL(string: "https://china-hatao.s3.ap-south-1.amazonaws.com/thisisit.mp4") else {return}
+    func addVideoAsGeometry(withAvQueuePlayer queuePlayer: AVQueuePlayer) {
+        // getting scaled dims for uiScreen
+        let scaledDims = self.getScaledDim(forSize: UIScreen.main.bounds.size)
         
-        self.avPlayer = AVPlayer(url: url)
-        self.avPlayer?.externalPlaybackVideoGravity = .resize
-        self.avPlayer!.addObserver(self, forKeyPath: #keyPath(AVPlayer.status), options: [.old, .new], context: &avPlayerContext)
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard context == &avPlayerContext else {return}
+        // create plane for adding as geometry to the node
+               let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
+               plane.cornerRadius = 0.1 * scaledDims.width
         
-        if keyPath == #keyPath(AVPlayer.status){
-            let status: AVPlayer.Status
-            
-            if let statusNumber = change?[.newKey] as? NSNumber {
-                status = AVPlayer.Status(rawValue: statusNumber.intValue)!
-            }else {
-                status = .unknown
-            }
-            
-            switch status {
-            case .readyToPlay:
-                guard let avPlayer = self.avPlayer else {return}
-                // adding the audio visual file as content of plane and then adding plane to node's geometry
-                let trialImage = UIImage(imageLiteralResourceName: "image1")
-                let scaledDims = self.getScaledDim(forImage: trialImage)
-                
-                let plane = SCNPlane(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                plane.firstMaterial?.diffuse.contents = avPlayer
-                 
-                avPlayer.play()
-                print("!!! started playing the video")
-                self.geometry = plane
-            case .failed:
-                print("!!! failed to load media")
-            default:
-                print("!!! unknown")
-            }
-        }
+        // texturing the plane with the image
+        plane.firstMaterial?.diffuse.contents = queuePlayer
+        plane.firstMaterial?.lightingModel = .constant
+        
+        // adding to the node's geometry
+        self.geometry = plane
+        
+        // playing the queuePlayer
+        queuePlayer.play()
     }
-    
-    func changePostDisplay(){
-         
+        
+    func nextPost(){
         guard self.postList.count > 0 && self.currentPostIndex >= 0 else {return}
         
         let refIndex = self.currentPostIndex
@@ -132,10 +100,55 @@ class GroupSCNNode: SCNNode, Identifiable {
             }
         }while self.postList[self.currentPostIndex].isReadyToDisplay == false
         
+        if (refIndex != self.currentPostIndex){
+            self.preparePostNodeOffloadFromGeometry(forIndex: refIndex)
+            self.addCurrentPostAsGeometry()
+        }
+    }
+    
+    func previousPost() {
+        guard self.postList.count > 0 && self.currentPostIndex >= 0 else {return}
         
+        let refIndex = self.currentPostIndex
+        repeat{
+            // changing the index
+            self.currentPostIndex = (self.currentPostIndex - 1) % self.postList.count
+            
+            // if current index == refIndex then break
+            if (self.currentPostIndex == refIndex){
+                break
+            }
+        }while self.postList[self.currentPostIndex].isReadyToDisplay == false
         
-        // adding image at current index to as geometry for node
-        self.addImageAsGeometry(image: self.postList[self.currentPostIndex].postImage!)
+        if (refIndex != self.currentPostIndex){
+            self.preparePostNodeOffloadFromGeometry(forIndex: refIndex)
+            self.addCurrentPostAsGeometry()
+        }
+    }
+    
+    func addCurrentPostAsGeometry() {
+        // checking content type
+        let postNode = self.postList[self.currentPostIndex]
+        
+        switch postNode.postContentType {
+        case .video:
+            guard let queuePlayer = postNode.queuePlayer else {return}
+            self.addVideoAsGeometry(withAvQueuePlayer: queuePlayer)
+        case .image:
+            guard let image = postNode.image else {return}
+            self.addImageAsGeometry(image: image)
+        default:
+            print("Not a valid postDiaplayNodeContentType")
+        }
+    }
+    
+    func preparePostNodeOffloadFromGeometry(forIndex index: Int) {
+        let postNode = self.postList[index]
+        
+        if (postNode.postContentType == .video){
+            guard let queuePlayer = postNode.queuePlayer else {return}
+            queuePlayer.pause()
+        }
     }
     
     func scaleNodePlane(withValue scale: CGFloat){
@@ -147,7 +160,7 @@ class GroupSCNNode: SCNNode, Identifiable {
             self.fixedImageWidth -= 0.05
         }
         
-        self.addImageAsGeometry(image: self.postList[self.currentPostIndex].postImage!)
+        self.addCurrentPostAsGeometry()
     }
     
     func displayPostInfo(){
@@ -199,10 +212,10 @@ class GroupSCNNode: SCNNode, Identifiable {
     func loadInitialPostDisplay() {
         print("here I go, \(self.postList.count)")
         guard self.currentPostIndex == -1 && self.postList.count > 0 && self.postList[0].isReadyToDisplay == true else {return}
-        
-        self.addImageAsGeometry(image: self.postList[0].postImage!)
+                
         self.currentPostIndex += 1
         
+        self.addCurrentPostAsGeometry()
     }
     
     
@@ -210,6 +223,7 @@ class GroupSCNNode: SCNNode, Identifiable {
     private var defaultYCoordDis: Float = -0.8
     private var fixedImageWidth: CGFloat = 1
 }
+
 
 // for subscribing to publishers
 extension GroupSCNNode {
@@ -227,3 +241,6 @@ enum NodeDirection {
     case frontRight
     case frontLeft
 }
+
+
+//    var imageList: Array<UIImage>  = [UIImage(named: "image1")!, UIImage(named: "image2")!, UIImage(named: "image3")!, UIImage(named: "image4")!, UIImage(named: "image5")!]

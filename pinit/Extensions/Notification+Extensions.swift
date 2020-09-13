@@ -31,8 +31,9 @@ extension Notification.Name {
     
     
     // notifications for uploadPostService
-    static let uploadPostServiceDidRequestCreatePost = Notification.Name("uploadPostServiceDidRequestCreatePost")
+    static let uploadPostServiceDidRequestCreatePostWithImage = Notification.Name("uploadPostServiceDidRequestCreatePostWithImage")
     static let uploadPostServiceDidUploadPost = Notification.Name("uploadPostServiceDidUploadPost")
+    static let uploadPostServiceDidRequestCreatePostWithVideo = Notification.Name("uploadPostServiceDidRequestCreatePostWithVideo")
     
     
     // notifications for userProfileService
@@ -59,6 +60,8 @@ extension Notification.Name {
     static let cameraFeedDidCaptureImage = Notification.Name("cameraFeedDidCaptureImage")
     static let cameraFeedSwitchCameraOutputType = Notification.Name("cameraFeedSwitchCameraOutputType")
     static let cameraFeedDidRequestToggleRecordingVideo = Notification.Name("cameraFeedDidRequestToggleRecordingVideo")
+    static let cameraFeedDidCaptureVideo = Notification.Name("cameraFeedDidCaptureVideo")
+    
     
     // notification for retrieve post service
     static let retrievePostServiceDidReceivePostsForGeohashes = Notification.Name("retrievePostServiceDidReceivePostsForGeohashes")

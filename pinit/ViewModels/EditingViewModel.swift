@@ -44,10 +44,10 @@ class EditingViewModel: NSObject, ObservableObject {
         guard let isPublic = self.isPostPublic else {return}
         
         // requestCreatePost
-        let requestCreatePost = RequestCreatePostModel(image: image, description: self.descriptionText, isPublic: isPublic)
+        let requestCreatePost = RequestCreatePostWithImageModel(image: image, description: self.descriptionText, isPublic: isPublic)
         
         // publish request for upload the post with object post model
-        NotificationCenter.default.post(name: .uploadPostServiceDidRequestCreatePost, object: requestCreatePost)
+        NotificationCenter.default.post(name: .uploadPostServiceDidRequestCreatePostWithImage, object: requestCreatePost)
         
     }
 }

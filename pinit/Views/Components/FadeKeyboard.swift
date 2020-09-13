@@ -9,16 +9,16 @@
 import SwiftUI
 
 struct FadeKeyboard: View {
-    
-    @EnvironmentObject var editingViewModel: EditingViewModel
+       
     @State var textViewHeight: CGFloat = 0
+    @Binding var descriptionText: String
     
     var parentSize: CGSize
     
     var body: some View {
         VStack{
             Text("What's on your mind?").foregroundColor(Color.white).applyDefaultThemeToTextHeader(ofType: .h2).padding(EdgeInsets(top: 30, leading: 0, bottom: 0, trailing: 0 ))
-            UIKitUITextView(text: self.$editingViewModel.descriptionText, textViewHeight: self.$textViewHeight, isFirstResponder: true)
+            UIKitUITextView(text: self.$descriptionText, textViewHeight: self.$textViewHeight, isFirstResponder: true)
                 .applyKeyboardAwareMaximumHeightFrame(viewHeight: self.$textViewHeight, parentSize: self.parentSize)
                 .onTapGesture {
                     
@@ -30,10 +30,9 @@ struct FadeKeyboard: View {
         .background(Color.black.opacity(0.5))
     }
 }
-
-struct FadeKeyboard_Previews: PreviewProvider {
-    static var previews: some View {
-        FadeKeyboard(parentSize: CGSize(width: 375, height: 675)).environmentObject(EditingViewModel(selectedImage: UIImage(imageLiteralResourceName: "ProfileImage")))
-        
-    }
-}
+//
+//struct FadeKeyboard_Previews: PreviewProvider {
+//    static var previews: some View {
+//        FadeKeyboard(descriptionText: Binding<String>, parentSize: CGSize(width: 375, height: 675))
+//    }
+//}

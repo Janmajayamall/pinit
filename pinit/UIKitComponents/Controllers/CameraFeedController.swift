@@ -275,31 +275,11 @@ extension CameraFeedController: AVCapturePhotoCaptureDelegate, AVCaptureFileOutp
              print("File outout failed with errror: \(error.localizedDescription)")
             return
         }
+        print("outputFileUrl for video: \(outputFileURL)")
         
-        // uploading the video file to the storage
-        let videoUploadRef = Storage.storage().reference().child("videos/thisisit.mp4")
-        let videoUploadMetadata = StorageMetadata()
-        videoUploadMetadata.contentType = "video/mp4"
-        
-        videoUploadRef.putFile(from: outputFileURL, metadata: videoUploadMetadata) {(metadata, error) in
-            guard let metadata = metadata else {
-                print("Video upload failed with some error")
-                return
-            }
-            
-            videoUploadRef.downloadURL { (url, error) in
-                guard let url = url else {
-                    print("Video upload download url failed with erro ")
-                    return
-                }
-                print("Video download url: \(url)")
-            }
-        }
-        
-        
+        // notify that video recorded has been stored in tmp file for application
+        NotificationCenter.default.post(name: .cameraFeedDidCaptureVideo, object: outputFileURL) 
     }
-    
-    
 }
 
 

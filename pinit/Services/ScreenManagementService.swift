@@ -176,6 +176,7 @@ struct MainArViewScreenService: ScreenService {
 enum CaptureImageViewScreenType {
     case normal
     case editCaptureImage
+    case editCaptureVideo
 }
 
 struct CaptureImageViewScreenService: ScreenService {
@@ -187,6 +188,8 @@ struct CaptureImageViewScreenService: ScreenService {
             self.switchToNormal()
         case .editCaptureImage:
             self.switchToEditCaptureImage()
+        case .editCaptureVideo:
+            self.switchToEditCaptureVideo()
         }
     }
     
@@ -196,6 +199,10 @@ struct CaptureImageViewScreenService: ScreenService {
     
     private mutating func switchToEditCaptureImage() {
         self.activeType = .editCaptureImage
+    }
+    
+    private mutating func switchToEditCaptureVideo() {
+        self.activeType = .editCaptureVideo
     }
     
     mutating func resetScreen(){

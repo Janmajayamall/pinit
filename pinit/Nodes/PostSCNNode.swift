@@ -35,7 +35,7 @@ class PostSCNNode: SCNNode, Identifiable {
     
     init(post: PostModel) {
         self.post = post
-        self.imageManager = ImageManager(url: URL(string: self.post.imageUrl))
+        self.imageManager = ImageManager(url: URL(string: self.post.imageUrl!))
         
         super.init()
         
