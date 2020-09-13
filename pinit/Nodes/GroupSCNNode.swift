@@ -77,7 +77,7 @@ class GroupSCNNode: SCNNode, Identifiable {
     private var avPlayer: AVPlayer?
     
     func addAVPlayerAsGeometry() {
-        guard let url = URL(string: "https://china-hatao.s3.ap-south-1.amazonaws.com/WhatsApp+Video+2020-09-13+at+1.04.32+AM.mp4") else {return}
+        guard let url = URL(string: "https://china-hatao.s3.ap-south-1.amazonaws.com/thisisit.mp4") else {return}
         
         self.avPlayer = AVPlayer(url: url)
         self.avPlayer?.externalPlaybackVideoGravity = .resize
@@ -103,7 +103,7 @@ class GroupSCNNode: SCNNode, Identifiable {
                 let trialImage = UIImage(imageLiteralResourceName: "image1")
                 let scaledDims = self.getScaledDim(forImage: trialImage)
                 
-                let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
+                let plane = SCNPlane(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 plane.firstMaterial?.diffuse.contents = avPlayer
                  
                 avPlayer.play()

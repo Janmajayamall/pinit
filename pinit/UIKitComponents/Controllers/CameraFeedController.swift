@@ -10,6 +10,8 @@ import Foundation
 import AVFoundation
 import UIKit
 import Combine
+import Firebase
+import FirebaseStorage
 
 class CameraFeedController: NSObject {
     
@@ -95,14 +97,22 @@ extension CameraFeedController {
                 throw CameraFeedControllerError.noCamerasAvailable
             }
         }
-        func setupCameraPhotoOutput() throws {
-            guard let captureSession = self.captureSession else { throw CameraFeedControllerError.captureSessionIsMissing}
+        func setupOutputs() throws {
+            guard let captureSession = self.captureSession else {
+                throw CameraFeedControllerError.captureSessionIsMissing
+            }
             
             self.cameraPhotoOutput = AVCapturePhotoOutput()
             self.cameraPhotoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey:AVVideoCodecType.jpeg])], completionHandler: nil)
             
             if captureSession.canAddOutput(self.cameraPhotoOutput!) {
                 captureSession.addOutput(self.cameraPhotoOutput!)
+            }
+            
+            self.cameraMovieOutput = AVCaptureMovieFileOutput()
+          
+            if captureSession.canAddOutput(self.cameraMovieOutput!) {
+                captureSession.addOutput(self.cameraMovieOutput!)
             }
             
             captureSession.startRunning()
@@ -114,7 +124,7 @@ extension CameraFeedController {
                 createCaptureSession()
                 try setupCaptureDevices()
                 try setupDeviceInputs()
-                try setupCameraPhotoOutput()
+                try setupOutputs()
             }catch{
                 DispatchQueue.main.async {
                     completionHandler(error)
@@ -188,8 +198,8 @@ extension CameraFeedController {
     
     func switchCameraOutputType(to cameraOutputType: CameraOutputType ) throws {
         guard let captureSession = self.captureSession else {
-            print("LOL here it is as well")
-            throw CameraFeedControllerError.captureSessionIsMissing}
+            throw CameraFeedControllerError.captureSessionIsMissing
+        }
         print(cameraOutputType, ": Here is the type")
         switch cameraOutputType {
         case .photo:
@@ -225,14 +235,10 @@ extension CameraFeedController {
         
         guard let movieOutput = self.cameraMovieOutput else {return}
         if movieOutput.isRecording == false {
-            let connection = movieOutput.connection(with: AVMediaType.video)
-            
+            let connection = self.cameraMovieOutput!.connection(with: AVMediaType.video)
+           
             if (connection?.isVideoOrientationSupported)! {
                 connection?.videoOrientation = .portrait
-            }
-            
-            if (connection?.isVideoStabilizationSupported)! {
-                connection?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.auto
             }
             
             // generating output file url for movie
@@ -252,7 +258,7 @@ extension CameraFeedController {
 extension CameraFeedController: AVCapturePhotoCaptureDelegate, AVCaptureFileOutputRecordingDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error = error{
-            print("Capture photo failed with errror: \(error.localizedDescription)")
+            print("Capture photo failed with error: \(error.localizedDescription)")
             return
         }
         
@@ -270,8 +276,30 @@ extension CameraFeedController: AVCapturePhotoCaptureDelegate, AVCaptureFileOutp
             return
         }
         
-        print("output file url \(outputFileURL)")
+        // uploading the video file to the storage
+        let videoUploadRef = Storage.storage().reference().child("videos/thisisit.mp4")
+        let videoUploadMetadata = StorageMetadata()
+        videoUploadMetadata.contentType = "video/mp4"
+        
+        videoUploadRef.putFile(from: outputFileURL, metadata: videoUploadMetadata) {(metadata, error) in
+            guard let metadata = metadata else {
+                print("Video upload failed with some error")
+                return
+            }
+            
+            videoUploadRef.downloadURL { (url, error) in
+                guard let url = url else {
+                    print("Video upload download url failed with erro ")
+                    return
+                }
+                print("Video download url: \(url)")
+            }
+        }
+        
+        
     }
+    
+    
 }
 
 

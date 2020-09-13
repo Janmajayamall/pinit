@@ -18,6 +18,8 @@ struct CaptureImageView: View {
     @State var captureType: CameraFeedController.CameraOutputType = .photo
     
     @State var isLongPress: Bool = false
+    @State var didTouchEnd: Bool = false
+    @State var didTouchBegin: Bool = false
     
     var cancellables: Set<AnyCancellable> = []
     
@@ -31,84 +33,97 @@ struct CaptureImageView: View {
                 
                 CameraFeedViewController()
                 
-                VStack{
-                    HStack (alignment: .top){
-                        Image(systemName: "xmark")
-                            .foregroundColor(Color.white)
-                            .applyDefaultIconTheme()
-                            .onTapGesture {
-                                self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
-                        }
-                        .applyTopLeftPaddingToIcon()
-                        Spacer()
-                        VStack{
-                            Image(systemName: self.cameraPosition == .rear ? "gobackward" : "goforward")
+                if (self.isLongPress == false) {
+                    VStack{
+                        HStack (alignment: .top){
+                            Image(systemName: "xmark")
                                 .foregroundColor(Color.white)
                                 .applyDefaultIconTheme()
                                 .onTapGesture {
-                                    switch self.cameraPosition{
-                                    case .rear:
-                                        self.cameraPosition = .front
-                                    case .front:
-                                        self.cameraPosition = .rear
-                                    }
-                                    NotificationCenter.default.post(name: .cameraFeedSwitchInUseCamera, object: self.cameraPosition)
-                            }.padding(.bottom)
-                            
-                            Image(systemName: self.cameraFlashMode == .off ? "bolt.slash" : "bolt.fill")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
-                                .onTapGesture {
-                                    switch self.cameraFlashMode{
-                                    case .off:
-                                        self.cameraFlashMode = .on
-                                    case .on:
-                                        self.cameraFlashMode = .off
-                                    default:
-                                        print("no possible error")
-                                    }
-                                    NotificationCenter.default.post(name: .cameraFeedSwitchFlashMode, object: self.cameraFlashMode)
-                                    
+                                    self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
                             }
-                            
-                        }.applyTopRightPaddingToIcon()
-                    }
-                    Spacer()
-                }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                            .applyTopLeftPaddingToIcon()
+                            Spacer()
+                            VStack{
+                                Image(systemName: self.cameraPosition == .rear ? "gobackward" : "goforward")
+                                    .foregroundColor(Color.white)
+                                    .applyDefaultIconTheme()
+                                    .onTapGesture {
+                                        switch self.cameraPosition{
+                                        case .rear:
+                                            self.cameraPosition = .front
+                                        case .front:
+                                            self.cameraPosition = .rear
+                                        }
+                                        NotificationCenter.default.post(name: .cameraFeedSwitchInUseCamera, object: self.cameraPosition)
+                                }.padding(.bottom)
+                                
+                                Image(systemName: self.cameraFlashMode == .off ? "bolt.slash" : "bolt.fill")
+                                    .foregroundColor(Color.white)
+                                    .applyDefaultIconTheme()
+                                    .onTapGesture {
+                                        switch self.cameraFlashMode{
+                                        case .off:
+                                            self.cameraFlashMode = .on
+                                        case .on:
+                                            self.cameraFlashMode = .off
+                                        default:
+                                            print("not possible error")
+                                        }
+                                        NotificationCenter.default.post(name: .cameraFeedSwitchFlashMode, object: self.cameraFlashMode)
+                                        
+                                }
+                                
+                            }.applyTopRightPaddingToIcon()
+                        }
+                        Spacer()
+                    }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                }
                 
                 VStack{
                     Spacer()
                     HStack{
                         Spacer()
-                        Button(action: {
-                            if (self.isLongPress == true){
-                                NotificationCenter.default.post(name: .cameraFeedDidRequestToggleRecordingVideo, object: true)
-                                self.isLongPress = false
-                            }else {
-                                print("Camera")
-                                // change output type to camera
-                                NotificationCenter.default
-                                    .post(name: .cameraFeedSwitchCameraOutputType, object: CameraFeedController.CameraOutputType.photo)
-                                
-//                                DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
-//                                    NotificationCenter.default.post(name: .cameraFeedDidRequestCaptureImage, object: true)
-//                                })
-                            }
-                        }, label: {
-                            Circle()
-                                .foregroundColor(Color.white.opacity(0.00001))
-                                .frame(width: 80, height: 80)
-                                .overlay(Circle().stroke(Color.white, lineWidth: 8))
-                        }).simultaneousGesture(LongPressGesture(minimumDuration: 0.2).onEnded({ (value) in
-                            self.isLongPress = true
-                            // change output type to video
-                            NotificationCenter.default
-                                .post(name: .cameraFeedSwitchCameraOutputType, object: CameraFeedController.CameraOutputType.video)
-                            DispatchQueue.main.async {
-                                NotificationCenter.default.post(name: .cameraFeedDidRequestToggleRecordingVideo, object: true)
-                            }
-                        }))
+                        //                        Button(action: {
+                        //                            if (self.isLongPress == true){
+                        //                                print("OFF")
+                        ////                                NotificationCenter.default.post(name: .cameraFeedDidRequestToggleRecordingVideo, object: true)
+                        //                                self.isLongPress = false
+                        //                            }else {
+                        //                                print("Camera")
+                        //                                NotificationCenter.default.post(name: .cameraFeedDidRequestCaptureImage, object: true)
+                        //                            }
+                        //                        }, label: {
+                        //
+                        //                        })
+                        Circle()
+                            .foregroundColor(Color.white.opacity(0.00001))
+                            .frame(width: self.isLongPress ? 120 : 80, height: self.isLongPress ? 120 : 80)
+                            .overlay(Circle().stroke(Color.white, lineWidth: 8))
+                            
+                            .gesture(DragGesture(minimumDistance: 0.0)
+                                .onChanged({ (value) in
+                                    guard self.didTouchBegin == false else {return}
+                                    self.didTouchBegin = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                                        guard self.didTouchEnd == false else {return}
+                                        self.isLongPress = true
+                                        NotificationCenter.default.post(name: .cameraFeedDidRequestToggleRecordingVideo, object: true)
+                                        
+                                    })
+                                    
+                                }).onEnded({ (value) in
+                                    DispatchQueue.main.async {
+                                        self.didTouchEnd = true
+                                    }
+                                    if (self.isLongPress == false){
+                                        NotificationCenter.default.post(name: .cameraFeedDidRequestCaptureImage, object: true)
+                                    }else {
+                                        NotificationCenter.default.post(name: .cameraFeedDidRequestToggleRecordingVideo, object: true)
+                                    }
+                                }))
                             .padding(.bottom, 10)
+                            .animation(.spring())
                         Spacer()
                     }
                 }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
