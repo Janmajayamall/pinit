@@ -244,6 +244,7 @@ extension CameraFeedController {
     }
     
     func toggleRecordingVideo() throws {
+        print("HEre I go, I did listen")
         guard let captureSession = self.captureSession, captureSession.isRunning else {throw CameraFeedControllerError.captureSessionIsMissing}
         
         guard let movieOutput = self.cameraMovieOutput else {return}

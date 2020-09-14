@@ -23,6 +23,9 @@ struct CaptureImageView: View {
     
     var cancellables: Set<AnyCancellable> = []
     
+    @State var recordingTimer: Timer?
+    @State var recordingCircleFillRatio: CGFloat =  0
+    
     @ViewBuilder
     var body: some View {
         
@@ -87,23 +90,13 @@ struct CaptureImageView: View {
                     Spacer()
                     HStack{
                         Spacer()
-                        //                        Button(action: {
-                        //                            if (self.isLongPress == true){
-                        //                                print("OFF")
-                        ////                                NotificationCenter.default.post(name: .cameraFeedDidRequestToggleRecordingVideo, object: true)
-                        //                                self.isLongPress = false
-                        //                            }else {
-                        //                                print("Camera")
-                        //                                NotificationCenter.default.post(name: .cameraFeedDidRequestCaptureImage, object: true)
-                        //                            }
-                        //                        }, label: {
-                        //
-                        //                        })
                         Circle()
                             .foregroundColor(Color.white.opacity(0.00001))
                             .frame(width: self.isLongPress ? 120 : 80, height: self.isLongPress ? 120 : 80)
                             .overlay(Circle().stroke(Color.white, lineWidth: 8))
-                            
+                            .overlay(Circle()
+                                .trim(from: 1-self.recordingCircleFillRatio, to: 1)
+                                .stroke(Color.red, lineWidth: 8))
                             .gesture(DragGesture(minimumDistance: 0.0)
                                 .onChanged({ (value) in
                                     guard self.didTouchBegin == false else {return}
@@ -113,6 +106,15 @@ struct CaptureImageView: View {
                                         self.isLongPress = true
                                         NotificationCenter.default.post(name: .cameraFeedDidRequestToggleRecordingVideo, object: true)
                                         
+                                        // start recording timer
+                                        let increaseBy: Double = 0.01
+                                        let timeInterval = (self.maxRecordingTime / (1/increaseBy))
+                                        self.recordingTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true, block: {_ in
+                                            self.recordingCircleFillRatio += CGFloat(increaseBy)
+                                        })
+                                        
+                                        // set recording deadline
+                                        self.setRecordingDeadline()
                                     })
                                     
                                 }).onEnded({ (value) in
@@ -122,6 +124,9 @@ struct CaptureImageView: View {
                                     if (self.isLongPress == false){
                                         NotificationCenter.default.post(name: .cameraFeedDidRequestCaptureImage, object: true)
                                     }else {
+                                        // invalidating the timer
+                                        self.recordingTimer?.invalidate()
+                                        
                                         NotificationCenter.default.post(name: .cameraFeedDidRequestToggleRecordingVideo, object: true)
                                     }
                                 }))
@@ -134,8 +139,22 @@ struct CaptureImageView: View {
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .background(Color.black)
                 .edgesIgnoringSafeArea(.all)
+            
         }
     }
+    
+    //    func startRecordingTimer
+    
+    func setRecordingDeadline() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.maxRecordingTime, execute: {
+            // invalidating the timer
+            self.recordingTimer?.invalidate()
+            
+            NotificationCenter.default.post(name: .cameraFeedDidRequestToggleRecordingVideo, object: true)
+        })
+    }
+    
+    let maxRecordingTime: Double = 10.0
     
 }
 
