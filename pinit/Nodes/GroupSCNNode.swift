@@ -56,6 +56,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         let scaledDims = self.getScaledDim(forSize: image.size)
         
         // create plane for adding as geometry to the node
+        print(scaledDims, ": scaled")
         let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
         plane.cornerRadius = 0.1 * scaledDims.width
         
@@ -73,11 +74,14 @@ class GroupSCNNode: SCNNode, Identifiable {
         let scaledDims = self.getScaledDim(forSize: UIScreen.main.bounds.size)
         
         // create plane for adding as geometry to the node
-               let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
-               plane.cornerRadius = 0.1 * scaledDims.width
-        
+       let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
+       plane.cornerRadius = 0.1 * scaledDims.width
         // texturing the plane with the image
         plane.firstMaterial?.diffuse.contents = avPlayer
+        let translation = SCNMatrix4MakeTranslation(-1, 0, 0)
+        let rotation = SCNMatrix4MakeRotation(-(Float.pi / 2), 0, 0, 1)
+        let transform = SCNMatrix4Mult(translation, rotation)
+        plane.firstMaterial?.diffuse.contentsTransform = transform
         plane.firstMaterial?.lightingModel = .constant
         
         // playing the queuePlayer

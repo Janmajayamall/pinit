@@ -217,7 +217,7 @@ enum MainScreenType {
 
 struct MainScreenService: ScreenService {
     
-    var activeType: MainScreenType = .captureImageView
+    var activeType: MainScreenType = .mainArView
     var mainArViewScreenService: MainArViewScreenService = MainArViewScreenService()
     var captureImageViewScreenService: CaptureImageViewScreenService = CaptureImageViewScreenService()
     

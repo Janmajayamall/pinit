@@ -123,7 +123,7 @@ extension CameraFeedController {
             }
             
             self.cameraMovieOutput = AVCaptureMovieFileOutput()
-          
+            
             if captureSession.canAddOutput(self.cameraMovieOutput!) {
                 captureSession.addOutput(self.cameraMovieOutput!)
             }
@@ -157,7 +157,7 @@ extension CameraFeedController {
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         self.previewLayer?.connection?.videoOrientation = .portrait
-        
+                
         view.layer.insertSublayer(self.previewLayer!, at: 0)
         self.previewLayer?.frame = view.frame
     }
@@ -244,14 +244,13 @@ extension CameraFeedController {
     }
     
     func toggleRecordingVideo() throws {
-        print("HEre I go, I did listen")
         guard let captureSession = self.captureSession, captureSession.isRunning else {throw CameraFeedControllerError.captureSessionIsMissing}
         
         guard let movieOutput = self.cameraMovieOutput else {return}
         if movieOutput.isRecording == false {
             let connection = self.cameraMovieOutput!.connection(with: AVMediaType.video)
-           
-            if (connection?.isVideoOrientationSupported)! {
+            
+            if (connection?.isVideoOrientationSupported)! {                
                 connection?.videoOrientation = .portrait
             }
             
@@ -286,7 +285,7 @@ extension CameraFeedController: AVCapturePhotoCaptureDelegate, AVCaptureFileOutp
     
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
         if let error = error {
-             print("File outout failed with errror: \(error.localizedDescription)")
+            print("File outout failed with errror: \(error.localizedDescription)")
             return
         }
         print("outputFileUrl for video: \(outputFileURL)")
