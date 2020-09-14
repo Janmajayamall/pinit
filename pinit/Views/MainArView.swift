@@ -51,7 +51,7 @@ struct MainArView: View {
                         HStack{
                             Image(systemName: "camera.fill")
                                 .applyDefaultIconTheme()
-                                .applyEdgePadding(for: .bottomRight)
+                                .applyEdgePadding(for: .bottomLeft)
                                 .onTapGesture {
                                     // closing the map view, if it is open
                                     self.forceMapViewToDownState()
@@ -68,6 +68,15 @@ struct MainArView: View {
                             }
                             
                             Spacer()
+                            
+                            Image(systemName: "mappin.and.ellipse")
+                            .applyDefaultIconTheme()
+                                .applyEdgePadding(for: .bottomRight)
+                                .onTapGesture {
+                                    print("Posted")
+                                    // notifiy app ar scene to reset group scn nodes positions
+                                    NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
+                            }
                         }
                         
                     }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)

@@ -21,7 +21,10 @@ class EditingVideoViewModel: ObservableObject {
     }
     
     func uploadPost() {
-        print("post being uploaded")
+        // request model
+        let requestCreatePost = RequestCreatePostWithVideoModel(videoFilePathUrl: self.videoOutputFileUrl, description: self.descriptionText, isPublic: true)
+        
+        NotificationCenter.default.post(name: .uploadPostServiceDidRequestCreatePostWithVideo, object: requestCreatePost)
     }
         
 }

@@ -47,6 +47,7 @@ extension Notification.Name {
     
     // notifications for AR View
     static let aRViewDidRequestResetMainView = Notification.Name("aRViewDidRequestResetMainView")
+    static let aRViewDidRequestResetGroupNodesPos = Notification.Name("aRViewDidRequestResetGroupNodesPos")
     
     // notification for GroupSCNNode
     static let groupSCNNodeDidLoadPostDisplayData = Notification.Name("groupSCNNodeDidLoadPostDisplayData")
@@ -66,4 +67,7 @@ extension Notification.Name {
     // notification for retrieve post service
     static let retrievePostServiceDidReceivePostsForGeohashes = Notification.Name("retrievePostServiceDidReceivePostsForGeohashes")
     static let retrievePostServiceDidReceiveAllPosts = Notification.Name("retrievePostServiceDidReceiveAllPosts")
+    
+    // notifications for PostDisplayNodeModel
+    static let postDisplayNodeModelDidRequestMuteAVPlayer = Notification.Name("postDisplayNodeModelDidRequestMuteAVPlayer")
 }

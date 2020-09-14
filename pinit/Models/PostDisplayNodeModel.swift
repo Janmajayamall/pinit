@@ -18,9 +18,7 @@ class PostDisplayNodeModel: NSObject {
     var imageManager: ImageManager?
     var image: UIImage?
     
-    var queuePlayer: AVQueuePlayer?
-    var playerItem: AVPlayerItem?
-    var playerLooper: AVPlayerLooper?
+    var avPlayer: AVPlayer?
     var avPlayerContext = 0
     
     var isReadyToDisplay: Bool = false
@@ -32,6 +30,7 @@ class PostDisplayNodeModel: NSObject {
         self.post = post
         
         super.init()
+        self.subscribeToPostDisplayNodeModelPublishers()
         
         // setup post data content
         self.setupPostContent()
@@ -41,6 +40,7 @@ class PostDisplayNodeModel: NSObject {
         self.post = optimisticPostModel.postModel
         
         super.init()
+        self.subscribeToPostDisplayNodeModelPublishers()
         
         switch optimisticPostModel.postContentType {
         case .video:
@@ -57,16 +57,21 @@ class PostDisplayNodeModel: NSObject {
         
         self.isReadyToDisplay = true
         self.postContentType = .image
+        print("Optimistic setup image")
     }
     
     func optimisticSetupVideoContent(withVideoFilePathUrl videoFilePathUrl: URL){
-        self.playerItem = AVPlayerItem(url: videoFilePathUrl)
-        self.queuePlayer = AVQueuePlayer()
-        self.playerLooper = AVPlayerLooper(player: self.queuePlayer!, templateItem: self.playerItem!)
+        self.avPlayer = AVPlayer(url: videoFilePathUrl)
+        self.avPlayerSetupLoopForVideo()
+        
+        // by default volume will be mute
+        self.avPlayer?.isMuted = true
         
         self.isReadyToDisplay = true
         self.postContentType = .video
+        print("Optimistic setup video")
     }
+    
     
     func setupPostContent() {
         if let imageUrl = self.post.imageUrl {
@@ -85,17 +90,29 @@ class PostDisplayNodeModel: NSObject {
             
             self.imageManager!.load()
             
-        }else if let videoUrl = self.post.videoUrl {
-            guard let videoURL = URL(string: videoUrl) else {return}
+        }else if let videoUrlString = self.post.videoUrl, let videoUrl = URL(string: videoUrlString)  {
+            self.avPlayer = AVPlayer(url: videoUrl)
+
+            // by default volume will be muted
+            self.avPlayer?.isMuted = true
             
-            self.playerItem = AVPlayerItem(url: videoURL)
-            self.queuePlayer = AVQueuePlayer()
-            self.playerLooper = AVPlayerLooper(player: self.queuePlayer!, templateItem: self.playerItem!)
-            
-            self.queuePlayer!.addObserver(self, forKeyPath: #keyPath(AVQueuePlayer.status), options: [.old, .new], context: &avPlayerContext)
+            self.avPlayerSetupLoopForVideo()
         }else {
             print("Not a valid post")
         }
+    }
+    
+    func avPlayerSetupLoopForVideo(){
+        guard let avPlayer = self.avPlayer else {return}
+        avPlayer.addObserver(self, forKeyPath: #keyPath(AVQueuePlayer.status), options: [.old, .new], context: &avPlayerContext)
+        
+        // setting up loop for video by adding notification for end time
+        avPlayer.actionAtItemEnd = .none
+        NotificationCenter.default.addObserver(self, selector: #selector(avPlayerItemDidReachEnd(notification:)), name: .AVPlayerItemDidPlayToEndTime, object: avPlayer.currentItem)
+    }
+    
+    @objc func avPlayerItemDidReachEnd(notification: Notification){
+        self.avPlayer?.seek(to: CMTime.zero)
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -114,7 +131,6 @@ class PostDisplayNodeModel: NSObject {
             case .readyToPlay:
                 self.isReadyToDisplay = true
                 self.postContentType = .video
-                
                 self.notifyDataDidLoad()
             case .failed:
                 print("avQueuePlayer status failed to load media")
@@ -128,6 +144,16 @@ class PostDisplayNodeModel: NSObject {
         NotificationCenter.default.post(name: .groupSCNNodeDidLoadPostDisplayData, object: true)
     }
     
+}
+
+// for subscribing to publishers
+extension PostDisplayNodeModel {
+    func subscribeToPostDisplayNodeModelPublishers() {
+        Publishers.postDisplayNodeModelDidRequestMuteAVPLayerPublisher.sink { (exceptionId) in
+            guard let avPlayer = self.avPlayer, let id = self.post.id, id != exceptionId else {return}
+            avPlayer.isMuted = true
+        }.store(in: &cancellables)
+    }
 }
 
 enum PostContentType {

@@ -49,7 +49,7 @@ struct EdgePaddingIconViewModifier: ViewModifier {
         case .topLeft:
             return EdgeInsets(top: 30, leading: 10, bottom: 0, trailing: 0)
         case .bottomRight:
-            return EdgeInsets(top: 0, leading: 10, bottom: 30, trailing: 0)
+            return EdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 10)
         case .bottomLeft:
             return EdgeInsets(top: 0, leading: 10, bottom: 30, trailing: 0)
         }

@@ -51,7 +51,7 @@ class RetrievePostService: ObservableObject {
             }
             posts.append(post)
         }
-        
+        print(posts, ": did receive posts")
         // notify according to the notification name
         NotificationCenter.default.post(name: notificationName, object: posts)
         

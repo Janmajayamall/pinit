@@ -25,7 +25,7 @@ class GroupSCNNode: SCNNode, Identifiable {
     
     init(scenePosition: SCNVector3?, direction: NodeDirection){
         self.nodeDirection = direction
-        
+        print("This is the node direction: \(nodeDirection)")
         super.init()
         
         // subscribe to publishers
@@ -63,11 +63,12 @@ class GroupSCNNode: SCNNode, Identifiable {
         plane.firstMaterial?.diffuse.contents = image
         plane.firstMaterial?.lightingModel = .constant
         
+        
         // adding to the node's geometry
         self.geometry = plane
     }
     
-    func addVideoAsGeometry(withAvQueuePlayer queuePlayer: AVQueuePlayer) {
+    func addVideoAsGeometry(withAVPlayer avPlayer: AVPlayer) {
         // getting scaled dims for uiScreen
         let scaledDims = self.getScaledDim(forSize: UIScreen.main.bounds.size)
         
@@ -76,14 +77,15 @@ class GroupSCNNode: SCNNode, Identifiable {
                plane.cornerRadius = 0.1 * scaledDims.width
         
         // texturing the plane with the image
-        plane.firstMaterial?.diffuse.contents = queuePlayer
+        plane.firstMaterial?.diffuse.contents = avPlayer
         plane.firstMaterial?.lightingModel = .constant
+        
+        // playing the queuePlayer
+        avPlayer.isMuted = true
+        avPlayer.play()
         
         // adding to the node's geometry
         self.geometry = plane
-        
-        // playing the queuePlayer
-        queuePlayer.play()
     }
         
     func nextPost(){
@@ -132,8 +134,8 @@ class GroupSCNNode: SCNNode, Identifiable {
         
         switch postNode.postContentType {
         case .video:
-            guard let queuePlayer = postNode.queuePlayer else {return}
-            self.addVideoAsGeometry(withAvQueuePlayer: queuePlayer)
+            guard let avPlayer = postNode.avPlayer else {return}
+            self.addVideoAsGeometry(withAVPlayer: avPlayer)
         case .image:
             guard let image = postNode.image else {return}
             self.addImageAsGeometry(image: image)
@@ -146,8 +148,9 @@ class GroupSCNNode: SCNNode, Identifiable {
         let postNode = self.postList[index]
         
         if (postNode.postContentType == .video){
-            guard let queuePlayer = postNode.queuePlayer else {return}
-            queuePlayer.pause()
+            guard let avPlayer = postNode.avPlayer else {return}
+            avPlayer.isMuted = true
+            avPlayer.pause()
         }
     }
     
@@ -174,9 +177,18 @@ class GroupSCNNode: SCNNode, Identifiable {
         
     }
     
+    func toggleVolumeIfVideoContentBeingOnDisplay() {
+        guard let avPlayer = self.postList[self.currentPostIndex].avPlayer, let id = self.postList[self.currentPostIndex].post.id else {return}
+        
+        avPlayer.isMuted = !avPlayer.isMuted
+
+        NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: id)
+
+    }
+    
     func placeNode(scenePosition: SCNVector3?){
         guard let scenePosition = scenePosition else {return}
-        
+        print("Changing node")
         SCNTransaction.begin()
         SCNTransaction.animationDuration = 0.0
         
@@ -207,6 +219,20 @@ class GroupSCNNode: SCNNode, Identifiable {
         
         // adding it to list
         self.postList.append(model)
+    }
+    
+    func optimisticAddPost(_ optimisticPostModel: OptimisticUIPostModel) {
+        // creating new post display node model
+        let model = PostDisplayNodeModel(optimisticPostModel: optimisticPostModel)
+        
+        // adding it to post list
+        // if the optimistic post is the first post then increase currentIndex by 1 to initiate the process of placing nodes
+        if (self.currentPostIndex == -1){
+            self.currentPostIndex += 1
+        }
+        self.postList.insert(model, at: self.currentPostIndex)
+        
+        self.addCurrentPostAsGeometry()
     }
     
     func loadInitialPostDisplay() {

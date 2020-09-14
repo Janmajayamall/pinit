@@ -23,6 +23,9 @@ class CameraFeedController: NSObject {
     var rearCameraDevice: AVCaptureDevice?
     var rearCameraInput: AVCaptureInput?
     
+    var audioDevice: AVCaptureDevice?
+    var audioInput: AVCaptureInput?
+    
     var cameraPhotoOutput: AVCapturePhotoOutput?
     var cameraMovieOutput: AVCaptureMovieFileOutput?
     
@@ -71,6 +74,8 @@ extension CameraFeedController {
                     self.rearCameraDevice?.unlockForConfiguration()
                 }
             }
+            
+            self.audioDevice = AVCaptureDevice.default(for: .audio)
         }
         func setupDeviceInputs() throws {
             guard let captureSession = self.captureSession else { throw CameraFeedControllerError.captureSessionIsMissing}
@@ -95,6 +100,14 @@ extension CameraFeedController {
                 
             else {
                 throw CameraFeedControllerError.noCamerasAvailable
+            }
+            
+            if let audioDevice = self.audioDevice {
+                self.audioInput = try AVCaptureDeviceInput(device: audioDevice)
+                
+                if captureSession.canAddInput(self.audioInput!) {
+                    captureSession.addInput(self.audioInput!)
+                }
             }
         }
         func setupOutputs() throws {
@@ -278,7 +291,7 @@ extension CameraFeedController: AVCapturePhotoCaptureDelegate, AVCaptureFileOutp
         print("outputFileUrl for video: \(outputFileURL)")
         
         // notify that video recorded has been stored in tmp file for application
-        NotificationCenter.default.post(name: .cameraFeedDidCaptureVideo, object: outputFileURL) 
+        NotificationCenter.default.post(name: .cameraFeedDidCaptureVideo, object: outputFileURL)
     }
 }
 

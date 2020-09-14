@@ -78,7 +78,7 @@ class UploadPostService {
                 do {
                     // Notify that a post will be created
                     if let postUIImage = UIImage(data: postImageData) {
-                        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, postImage: postUIImage))
+                        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, image: postUIImage, postContentType: .image))
                     }
                     
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
@@ -137,19 +137,16 @@ class UploadPostService {
                 // creating new post
                 do {
                     // Notify that a post will be created
-                    //                    if let postUIImage = UIImage(data: postImageData) {
-                    //                        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, postImage: postUIImage))
-                    //                    }
-                    
+                    NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, videoFilePathUrl: requestModel.videoFilePathUrl, postContentType: .video))
+                                        
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
-                    
                 }catch{
                     print("upload post with image failed with error \(error)")
                 }
             }
         }
     }
-
+    
     func setupService() {
         // setting up the subscribers
         self.subscribeToUploadPostServicePublishers()

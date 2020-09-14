@@ -207,6 +207,15 @@ extension Publishers {
         }
     .eraseToAnyPublisher()
     }
+    static var aRViewDidRequestResetGroupNodesPosPublisher: AnyPublisher<Bool, Never>{
+        NotificationCenter
+        .default
+            .publisher(for: .aRViewDidRequestResetGroupNodesPos)
+            .compactMap { (notification) -> Bool? in
+                guard let value = notification.object as? Bool else {return nil}
+                return value
+        }.eraseToAnyPublisher()
+    }
     
     // publishers for group scn node
     static var groupSCNNodeDidLoadPostDisplayData: AnyPublisher<Bool, Never>{
@@ -314,6 +323,17 @@ extension Publishers {
                     return nil
                 }
                 return models
+        }.eraseToAnyPublisher()
+    }
+    
+    // publishers for postDisplayNodeModel
+    static var postDisplayNodeModelDidRequestMuteAVPLayerPublisher: AnyPublisher<String, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .postDisplayNodeModelDidRequestMuteAVPlayer)
+            .compactMap { (notification) -> String? in
+                guard let exceptionId = notification.object as? String else {return nil}
+                return exceptionId
         }.eraseToAnyPublisher()
     }
     

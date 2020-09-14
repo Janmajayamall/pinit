@@ -63,16 +63,20 @@ class AppArScnView: ARSCNView {
         // Setting up subscribers
         self.subscribeToRetrievePostServicePublishers()
         self.subscribeToUploadPostServicePublishers()
-        
+        self.subscribeToArViewPublishers()
         
         // adding UITapGestureRecogniser
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
         self.addGestureRecognizer(tapGestureRecogniser)
         
+        let GestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
+        GestureRecogniser.numberOfTapsRequired = 2
+         self.addGestureRecognizer(GestureRecogniser)
+        
         // adding UIPanGestureRecognizer
         let panGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture(sender:)))
         self.addGestureRecognizer(panGestureRecogniser)
-        
+
         // adding UIPinchGestureRecognizer
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinchGesture(sender:)))
         self.addGestureRecognizer(pinchGestureRecognizer)
@@ -80,7 +84,7 @@ class AppArScnView: ARSCNView {
         // adding UILongPressGestureRecognizer
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(sender:)))
         self.addGestureRecognizer(longPressGestureRecognizer)
-        
+                
     }
     
     required init?(coder: NSCoder) {
@@ -156,14 +160,17 @@ class AppArScnView: ARSCNView {
     @objc func handleLongPressGesture(sender: UILongPressGestureRecognizer){
         guard let view = sender.view as? SCNView else {return}
         
-        // getting touched location
-        let touchedCoordinates = sender.location(in: view)
-        
-        // getting the touched node with hit test
-        guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
-        
-        // displaying info text
-        node.displayPostInfo()
+        if (sender.state == .began){
+            // getting touched location
+                   let touchedCoordinates = sender.location(in: view)
+                   
+                   // getting the touched node with hit test
+                   guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
+                   
+                   // displaying info text
+                   node.displayPostInfo()                   
+                   node.toggleVolumeIfVideoContentBeingOnDisplay()
+        }
     }
     
     func startSession(){
@@ -178,9 +185,7 @@ class AppArScnView: ARSCNView {
         
         //run the session
         self.session.run(configuration)
-        
-        // start the timer
-        self.start()
+
     }
     
     func pauseSession(){
@@ -191,15 +196,20 @@ class AppArScnView: ARSCNView {
     func setupGroupNodes() {
         if (self.groupNodes[.front] == nil){
             self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front)
+        }else {
+            self.groupNodes[.front]?.placeNode(scenePosition: self.currentPosition)
         }
         
         if (self.groupNodes[.frontRight] == nil){
             self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight)
+        }else{
+            self.groupNodes[.frontRight]?.placeNode(scenePosition: self.currentPosition)
         }
         
         if (self.groupNodes[.frontLeft] == nil){
             self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft)
-                
+        }else {
+            self.groupNodes[.frontLeft]?.placeNode(scenePosition: self.currentPosition)
         }
             
         // adding the nodes
@@ -210,12 +220,15 @@ class AppArScnView: ARSCNView {
     
     func addPostToGroupNode(post: PostModel) {
         // checking whether post already exits in one of the group nodes or not
-        guard let id = post.id, self.exisitingPosts[id] == nil else {return}
+        guard let id = post.id, self.exisitingPosts[id] == nil else {
+            print("Post with ID: \(post.id!) rejected - normal")
+            return
+        }
         
         // adding it to one of the group nodes
         self.groupNodes[self.addPostToGroupOfDirection]?.addPost(post)
         self.exisitingPosts[id] = post
-        print("post added \(self.addPostToGroupOfDirection) with ID \(id)")
+        print("Post with ID: \(id) added - normal;")
         // changing direction
         switch self.addPostToGroupOfDirection {
         case .front:
@@ -225,14 +238,16 @@ class AppArScnView: ARSCNView {
         case .frontLeft:
             self.addPostToGroupOfDirection = .front
         }
-        
     }
     
-    func start() {
-        Timer.publish(every: 0.01, on: .main, in: .common).autoconnect().sink { _ in
-            
-        }.store(in: &cancellables)
+    func optimisticUIAddPostToGroupNode(optimisticPostModel: OptimisticUIPostModel) {
+        guard let id = optimisticPostModel.postModel.id, self.exisitingPosts[id] == nil else {return}
+        print("Post with ID: \(id) added - optimistic")
+        // adding it to the front group node
+        self.groupNodes[.front]?.optimisticAddPost(optimisticPostModel)
+        self.exisitingPosts[id] = optimisticPostModel.postModel
     }
+
 }
 
 // extension for susbcribing to publishers
@@ -250,7 +265,16 @@ extension AppArScnView {
     // subscribe to uploadPostService publishers
     func subscribeToUploadPostServicePublishers(){
         Publishers.uploadPostServiceDidUploadPostPublisher.sink { (optimisticUIPostModel) in
-            guard optimisticUIPostModel.postModel.id != nil else {return}
+            self.optimisticUIAddPostToGroupNode(optimisticPostModel: optimisticUIPostModel)
+        }.store(in: &cancellables)
+    }
+    
+    // subscribe to arView publishers
+    func subscribeToArViewPublishers() {
+        Publishers.aRViewDidRequestResetGroupNodesPosPublisher.sink { (value) in
+            guard value == true else {return}
+            print("Received")
+            self.setupGroupNodes()
         }.store(in: &cancellables)
     }
 }
