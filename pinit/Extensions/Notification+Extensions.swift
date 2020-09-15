@@ -48,6 +48,7 @@ extension Notification.Name {
     // notifications for AR View
     static let aRViewDidRequestResetMainView = Notification.Name("aRViewDidRequestResetMainView")
     static let aRViewDidRequestResetGroupNodesPos = Notification.Name("aRViewDidRequestResetGroupNodesPos")
+    static let aRViewUserDidTapView = Notification.Name("aRViewUserDidTapView")
     
     // notification for GroupSCNNode
     static let groupSCNNodeDidLoadPostDisplayData = Notification.Name("groupSCNNodeDidLoadPostDisplayData")

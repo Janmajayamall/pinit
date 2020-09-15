@@ -12,6 +12,9 @@ struct EditUsernameView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     @State var username: String
+    @State var usernameError: String = ""
+    
+    var currentUsername: String
     
     var parentSize: CGSize
     
@@ -27,7 +30,16 @@ struct EditUsernameView: View {
     }
     
     var body: some View {
-        ZStack{
+        
+        let usernameBinding = Binding<String>(get: {
+            self.username
+        }, set: {
+            var username = $0.lowercased()
+            username = username.trimmingCharacters(in: .whitespacesAndNewlines)
+            self.username = String(username.prefix(30))
+        })
+        
+        return ZStack{
             VStack{
                 Spacer()
                 
@@ -43,10 +55,9 @@ struct EditUsernameView: View {
                 
                 HStack{
                     VStack{
-                        CustomTextFieldView(text: self.$username, placeholder: "Username")
+                        CustomTextFieldView(text: usernameBinding, placeholder: "Username", noteText: self.$usernameError)
                             .font(Font.custom("Avenir", size: 18))
                             .foregroundColor(Color.black)
-                        Divider().background(Color.secondaryColor)
                     }
                 }
                 .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
@@ -55,9 +66,7 @@ struct EditUsernameView: View {
                 
                 Button(action: {
                     self.changeUsername(to: self.username)
-                    
-                    // hiding the keyboard
-                    self.hideKeyboard()
+                                        
                 }, label: {
                     Text("Done")
                     
@@ -87,9 +96,26 @@ struct EditUsernameView: View {
         .animation(.spring())
     }
     
-    func changeUsername(to username: String){        
-        NotificationCenter.default.post(name: .userProfileServiceDidRequestUsernameChange, object: username)
-        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType = .normal
+    func changeUsername(to username: String){
+        // checking whether username has been changed or not
+        guard self.currentUsername != self.username else {
+            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType = .normal
+            return 
+        }
+        
+        // checking whether username is already taken or not
+        UserProfileService.checkUsernameExists(for: self.username) { (exists) in
+            if (exists == true){
+                self.usernameError = "Username already taken"
+            }else {
+                self.usernameError = ""
+                // hiding the keyboard
+                self.hideKeyboard()
+                
+                NotificationCenter.default.post(name: .userProfileServiceDidRequestUsernameChange, object: username)
+                self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType = .normal
+            }
+        }
     }
     
     private let viewHeightRatio: CGFloat = 0.30
@@ -98,6 +124,6 @@ struct EditUsernameView: View {
 
 struct EditUsernameView_Previews: PreviewProvider {
     static var previews: some View {
-        EditUsernameView(username: "default name", parentSize: CGSize(width: 300, height: 200))
+        EditUsernameView(username: "default name", currentUsername: "",parentSize: CGSize(width: 300, height: 200))
     }
 }

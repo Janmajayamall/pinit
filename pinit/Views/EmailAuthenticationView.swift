@@ -7,14 +7,24 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct EmailAuthenticationView: View {
     
     @State var emailId: String = ""
-    @State var password: String = ""
+    @State var password: String = "" {
+        didSet {
+            if self.password.count <= 6 {
+                self.passwordError = "Password is weak. Choose a stronger password"
+            }
+        }
+    }
     @State var loadingIndicator: Bool = false
     
-    @Binding var isOpen: Bool
+    @State var passwordError: String = ""
+    @State var emailIdError:String = ""
+    
+    @State var isOpen: Bool = true
     var viewType: emailAuthenticationViewType
     
     var body: some View {
@@ -39,21 +49,19 @@ struct EmailAuthenticationView: View {
             
             HStack{
                 VStack{
-                    CustomTextFieldView(text: self.$emailId, placeholder: "Email ID")
+                    CustomTextFieldView(text: self.$emailId, placeholder: "Email ID", noteText: self.$emailIdError)
                         .font(Font.custom("Avenir", size: 15).bold())
                         .foregroundColor(Color.black)
-                    Divider().background(Color.secondaryColor)
                 }
             }.padding(EdgeInsets(top: 0, leading: 20, bottom: 5, trailing: 20))
             
             HStack{
                 VStack{
-                    CustomTextFieldView(text: self.$password, placeholder: "Password")
+                    CustomTextFieldView(text: self.$password, placeholder: "Password", noteText: self.$passwordError)
                         .font(Font.custom("Avenir", size: 15).bold())
                         .foregroundColor(Color.black)
-                    Divider().background(Color.secondaryColor)
                 }
-            }.padding(EdgeInsets(top: 0, leading: 20, bottom: 15, trailing: 20))
+            }.padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
             
             HStack{
                 Button(action: {
@@ -82,14 +90,47 @@ struct EmailAuthenticationView: View {
         let signInWithEmailCoordinator = SignInWithEmailCoordinator(emailId: self.emailId, password: self.password)
         
         if (self.viewType == .login){
-            signInWithEmailCoordinator.login { (user) in
-                self.loadingIndicator = false
-                self.isOpen = false
+            signInWithEmailCoordinator.login(onSignedInHandler: {(user) in
+            self.loadingIndicator = false
+                self.isOpen = false}) { (errorCode) in
+                    switch (errorCode){
+                    case .invalidEmail:
+                        self.emailIdError = "Email ID is not valid"
+                        self.passwordError = ""
+                    case .missingEmail:
+                        self.emailIdError = "EmailID cannot be empty"
+                        self.passwordError = ""
+                    case .wrongPassword:
+                        self.passwordError = "Password is invalid"
+                        self.emailIdError = ""
+                    case .userNotFound:
+                        self.passwordError = "User with email does not exists"
+                        self.emailIdError = ""
+                    default:
+                        self.passwordError = "Email or Password are incorrect"
+                        self.emailIdError = ""
+                    }
             }
         }else if (self.viewType == .signUp){
-            signInWithEmailCoordinator.signUp { (user) in
+            signInWithEmailCoordinator.signUp(onSignedInHandler: { (user) in
                 self.loadingIndicator = false
                 self.isOpen = false
+            }) { (errorCode) in
+                switch (errorCode){
+                case .emailAlreadyInUse:
+                    self.emailIdError = "Account with Email ID already exists"
+                    self.passwordError = ""
+                case .invalidEmail:
+                    self.emailIdError = "Email ID is invalid"
+                    self.passwordError = ""
+                case .missingEmail:
+                    self.emailIdError = "Email ID field is empty"
+                    self.passwordError = ""
+                case .weakPassword:
+                    self.passwordError = "Enter a stronger password"
+                default:
+                    self.passwordError = "Sorry, something went wrong. Please try again!"
+                }
             }
         }
     }

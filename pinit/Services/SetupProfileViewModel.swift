@@ -11,24 +11,46 @@ import Combine
 import SwiftUI
 
 class SetupProfileViewModel: ObservableObject {
-    @Published var username: String = ""
+    @Published var username: String = "" {
+        didSet{
+            print("HHAAA \(self.username)")
+        }
+    }
+    @Published var usernameError: String = ""
+   
     @Published var profileImage: UIImage = UIImage(imageLiteralResourceName: "ProfileImage")
     private var cancellables: Set<AnyCancellable> = []
     
     init() {
         self.subscribeToUserProfileServicePublishers()
     }
-
-    func setupProfile(){
+    
+    func postNotification(for notificationType: Notification.Name, withObject object: Any){
+        NotificationCenter.default.post(name: notificationType, object: object)
+    }
+    
+    func initiateSetupProfile(withCallback callback: @escaping (Bool) -> Void) {
+        
+        // checking whether username is already taken or not
+        UserProfileService.checkUsernameExists(for: self.username) { (exists) in
+            if (exists == true) {
+                self.usernameError = "Username already taken"
+                callback(false)
+            }else {
+                self.usernameError = ""
+                self.setupProfile(withCallback: callback)
+            }
+        }
+    }
+    
+    func setupProfile(withCallback callback: (Bool) -> Void){
+        
         // creating request for setting up profile for user
         let requestModel = RequestSetupUserProfileModel(username: self.username, profileImage: self.profileImage)
         
         self.postNotification(for: .userProfileServiceDidRequestSetupUserProfile, withObject: requestModel)
         
-    }
-    
-    func postNotification(for notificationType: Notification.Name, withObject object: Any){
-        NotificationCenter.default.post(name: notificationType, object: object)
+        callback(true)
     }
 }
 

@@ -17,16 +17,17 @@ class PostDisplayInfoViewModel: ObservableObject {
     
     init() {
         self.subscribeToGroupSCNNodePublishers()
+        self.subscribeToArViewPublishers()
     }
     
     func displayInfo(for postDisplayInfo: PostDisplayInfoModel){
-        self.displayPostInfo = true
         self.postDisplayInfo = postDisplayInfo
+        self.displayPostInfo = true
+        
     }
     
     func closeDisplayedInfo() {
         self.displayPostInfo = false
-        self.postDisplayInfo = nil
     }
 }
 
@@ -35,6 +36,13 @@ extension PostDisplayInfoViewModel {
     func subscribeToGroupSCNNodePublishers() {
         Publishers.groupSCNNodeDidRequestCurrentPostDisplayInfoPublisher.sink { (postDisplayInfo) in
             self.displayInfo(for: postDisplayInfo)
+        }.store(in: &cancellables)
+    }
+    
+    func subscribeToArViewPublishers() {
+        Publishers.aRViewUserDidTapViewPublisher.sink { (value) in
+            guard value == true else {return}
+            self.closeDisplayedInfo()
         }.store(in: &cancellables)
     }
 }

@@ -168,7 +168,8 @@ extension CameraFeedController {
         captureSession.beginConfiguration()
         
         func switchToFrontCamera() throws {
-            guard let sessionInput = captureSession.inputs as? [AVCaptureInput], let rearCameraInput = self.rearCameraInput, sessionInput.contains(rearCameraInput), let frontCameraDevice = self.frontCameraDevice else {
+            let sessionInput = captureSession.inputs
+            guard let rearCameraInput = self.rearCameraInput, sessionInput.contains(rearCameraInput), let frontCameraDevice = self.frontCameraDevice else {
                 throw CameraFeedControllerError.invalidOperation}
             
             self.frontCameraInput = try AVCaptureDeviceInput(device: frontCameraDevice)
@@ -182,7 +183,8 @@ extension CameraFeedController {
             }
         }
         func switchToRearCamera() throws {
-            guard let sessionInput = captureSession.inputs as? [AVCaptureInput], let frontCameraInput = self.frontCameraInput, sessionInput.contains(frontCameraInput), let rearCameraDevice = self.rearCameraDevice else {
+            let sessionInput = captureSession.inputs
+            guard let frontCameraInput = self.frontCameraInput, sessionInput.contains(frontCameraInput), let rearCameraDevice = self.rearCameraDevice else {
                 throw CameraFeedControllerError.invalidOperation
                 
             }

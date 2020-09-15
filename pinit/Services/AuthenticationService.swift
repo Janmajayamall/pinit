@@ -8,6 +8,7 @@
 
 import Foundation
 import FirebaseAuth
+import Firebase
 import AuthenticationServices
 import CryptoKit
 import Combine
@@ -202,14 +203,16 @@ class SignInWithEmailCoordinator {
         self.password = password
     }
     
-    func login(onSignedInHandler: @escaping (User) -> Void) {
+    func login(onSignedInHandler: @escaping (User) -> Void, onErrorHandler: @escaping (AuthErrorCode) -> Void) {
         
         self.onSignedInHandler = onSignedInHandler
         
         Auth.auth().signIn(withEmail: self.emailId, password: self.password) { (result, error) in
             if let error = error {
-                print("Sign In with email & password failed with error: \(error.localizedDescription)")
-                return
+                print("Sign In with email & password failed with error: \(error._code)")
+                
+                // default error code is 17009 (i.e. when password is wrong)
+                onErrorHandler(AuthErrorCode(rawValue: error._code) ?? AuthErrorCode(rawValue: 17009)!)
             }
             
             guard let user = result?.user else {return}
@@ -219,12 +222,15 @@ class SignInWithEmailCoordinator {
         }
     }
     
-    func signUp(onSignedInHandler: @escaping (User) -> Void) {
+    func signUp(onSignedInHandler: @escaping (User) -> Void, onErrorHandler: @escaping (AuthErrorCode) -> Void) {
         self.onSignedInHandler = onSignedInHandler
         
         Auth.auth().createUser(withEmail: self.emailId, password: self.password) { (result, error) in
             if let error = error {
                 print("Create user with email & password failed with error: \(error.localizedDescription)")
+                
+                // default error coe is 17020 (i.e. network error)
+                onErrorHandler(AuthErrorCode(rawValue: error._code) ?? AuthErrorCode(rawValue: 17020)!)
                 return
             }
             

@@ -95,6 +95,9 @@ class AppArScnView: ARSCNView {
         // checking whether the touch is from class of type SCNView or not
         guard let view = sender.view as? SCNView else {return}
         
+        // posting notification that user tapped on ar view
+        NotificationCenter.default.post(name: .aRViewUserDidTapView, object: true)
+        
         // getting the touch location as 2 coordinates on screen
         let coordinates = sender.location(in: view)
         // getting the nodes with which the ray sent along the path of touchpoint would have interacted

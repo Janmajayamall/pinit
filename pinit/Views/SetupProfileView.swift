@@ -13,6 +13,8 @@ struct SetupProfileView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     var parentSize: CGSize
     
+    @State var noteText: String = ""
+    
     var viewSize: CGSize {
         return CGSize(width: self.parentSize.width * self.viewWidthRatio, height: self.parentSize.height * self.viewHeightRatio)
     }
@@ -26,16 +28,32 @@ struct SetupProfileView: View {
         }
     }
     
+    @State var forceRenderBool: Bool = true
+    
     var body: some View {
+        // binding for username
+        let usernameBinding = Binding<String>(
+            get: {
+                self.settingsViewModel.setupProfileViewModel.username
+        }, set: {
+            
+            var username = $0.lowercased()
+            username = username.trimmingCharacters(in: .whitespacesAndNewlines)
+            self.settingsViewModel.setupProfileViewModel.username = String(username.prefix(30))
+            
+            // forcing render UI
+            self.forceRenderBool.toggle()
+        }
+        )
         
-        VStack{
+        return VStack{
             Spacer()
             
             HStack{
-              Text("Setup your profile")
-                .applyDefaultThemeToTextHeader(ofType: .h3)
-                    
-            }.padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                Text("Setup your profile")
+                    .applyDefaultThemeToTextHeader(ofType: .h3)
+                
+            }.padding(EdgeInsets(top: self.forceRenderBool ? 0 : 0, leading: 0, bottom: 0, trailing: 0))
             
             Spacer()
             
@@ -48,31 +66,34 @@ struct SetupProfileView: View {
                 .onTapGesture {
                     self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.setupProfileViewScreenService.switchTo(screenType: .pickImage)
             }
-//            .padding(.bottom, 10)
+            //            .padding(.bottom, 10)
             
-             Spacer()
+            Spacer()
             
             HStack{
                 Spacer()
                 VStack{
-                    CustomTextFieldView(text: self.$settingsViewModel.setupProfileViewModel.username, placeholder: "Username")
+                    CustomTextFieldView(text: usernameBinding, placeholder: "Username", noteText: self.$settingsViewModel.setupProfileViewModel.usernameError)
                         .font(Font.custom("Avenir", size: 18))
-                        .foregroundColor(Color.black)
-                    Divider().background(Color.secondaryColor)
+                        .foregroundColor(Color.black)                    
                 }
                 Spacer()
             }
             
-             Spacer()
+            Spacer()
             
             Button(action: {
-                self.settingsViewModel.setupProfileViewModel.setupProfile()
-                
-                // hiding the keyboard
-                self.hideKeyboard()
-                
-                // switching the screen
-                self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
+                self.settingsViewModel.setupProfileViewModel.initiateSetupProfile { success in
+                    if (success == true){
+                        // hiding the keyboard
+                        self.hideKeyboard()
+                        
+                        // switching the screen
+                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
+                    }else {
+                        self.forceRenderBool.toggle()
+                    }
+                }
             }, label: {
                 Text("Done")
             })

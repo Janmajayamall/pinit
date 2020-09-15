@@ -209,6 +209,7 @@ class UserProfileService: ObservableObject {
             
         }
     }
+        
     
     func postNotification(for notificationType: Notification.Name, withObject object: Any){
         NotificationCenter.default.post(name: notificationType, object: object)
@@ -216,6 +217,21 @@ class UserProfileService: ObservableObject {
     
     private let userCollectionRef: CollectionReference = Firestore.firestore().collection("users")
     private let storageRef = Storage.storage().reference()
+    
+    static func checkUsernameExists(for username: String, withCallback callback: @escaping (Bool) -> Void) {
+        let userCollectionRef: CollectionReference = Firestore.firestore().collection("users")
+        
+        userCollectionRef.whereField("username", isEqualTo: username).getDocuments() {(querySnapshots, error) in
+            if let error = error {
+                print("Username already exists validation failed with error \(error)")
+                return
+            }
+            
+            let documents = querySnapshots!.documents
+            print("--Username document \(documents)")
+            callback(documents.count > 0)
+        }
+    }
 }
 
 // for subscribing to publishers

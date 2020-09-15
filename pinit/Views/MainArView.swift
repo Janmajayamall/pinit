@@ -124,7 +124,7 @@ struct MainArView: View {
                     MoreSettingsViewModel(parentSize: geometryProxy.size)
                     
                     if self.settingsViewModel.userProfile?.username != nil {
-                        EditUsernameView(username: self.settingsViewModel.userProfile!.username, parentSize: geometryProxy.size)
+                        EditUsernameView(username: self.settingsViewModel.userProfile!.username, currentUsername: self.settingsViewModel.userProfile!.username, parentSize: geometryProxy.size)
                     }
                 }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
