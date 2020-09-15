@@ -10,6 +10,5 @@ import Foundation
 import SwiftUI
 
 struct RequestSetupUserProfileModel {
-    var username: String
-    var profileImage: UIImage
+    var username: String    
 }

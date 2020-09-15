@@ -71,8 +71,7 @@ class UploadPostService {
                     altitude: currentLocation.altitude,
                     isPublic: requestModel.isPublic,
                     userId: userProfile.id!,
-                    username: userProfile.username,
-                    userProfilePicture: userProfile.profileImageUrl)
+                    username: userProfile.username)
                 
                 // creating new post
                 do {
@@ -131,8 +130,7 @@ class UploadPostService {
                     altitude: currentLocation.altitude,
                     isPublic: requestModel.isPublic,
                     userId: userProfile.id!,
-                    username: userProfile.username,
-                    userProfilePicture: userProfile.profileImageUrl)
+                    username: userProfile.username)
                 
                 // creating new post
                 do {

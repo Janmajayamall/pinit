@@ -9,8 +9,10 @@
 import Foundation
 import FirebaseFirestore
 import Combine
+import FirebaseAuth
 
 class RetrievePostService: ObservableObject {
+    var user: User?
     
     private var documentsForGeohashesListener: ListenerRegistration?
     private var allDocumentsListener: ListenerRegistration?
@@ -28,7 +30,6 @@ class RetrievePostService: ObservableObject {
         self.documentsForGeohashesListener = self.postCollectionRef.addSnapshotListener({ (querySnapshot, error) in
             self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error, forNotificationName: .retrievePostServiceDidReceivePostsForGeohashes)
         })
-        
     }
     
     func listenToAllPosts(){
@@ -51,7 +52,7 @@ class RetrievePostService: ObservableObject {
             }
             posts.append(post)
         }
-        print(posts, ": did receive posts")
+       
         // notify according to the notification name
 //        NotificationCenter.default.post(name: notificationName, object: posts)
         
@@ -84,6 +85,12 @@ extension RetrievePostService {
     func subscribeToGeohasingServicePublishers(){
         Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (geohashModel) in
             self.listenToPostsForGeohashes(geohashModel.currentAreaGeohashes)
+        }.store(in: &cancellables)
+    }
+    
+    func subscribeToAuthenticationServicePublishers(){
+        Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
+            self.user = user
         }.store(in: &cancellables)
     }
 }

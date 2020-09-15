@@ -17,13 +17,10 @@ class SetupProfileViewModel: ObservableObject {
         }
     }
     @Published var usernameError: String = ""
-   
-    @Published var profileImage: UIImage = UIImage(imageLiteralResourceName: "ProfileImage")
+     
     private var cancellables: Set<AnyCancellable> = []
     
-    init() {
-        self.subscribeToUserProfileServicePublishers()
-    }
+    init() {}
     
     func postNotification(for notificationType: Notification.Name, withObject object: Any){
         NotificationCenter.default.post(name: notificationType, object: object)
@@ -46,18 +43,10 @@ class SetupProfileViewModel: ObservableObject {
     func setupProfile(withCallback callback: (Bool) -> Void){
         
         // creating request for setting up profile for user
-        let requestModel = RequestSetupUserProfileModel(username: self.username, profileImage: self.profileImage)
+        let requestModel = RequestSetupUserProfileModel(username: self.username)
         
         self.postNotification(for: .userProfileServiceDidRequestSetupUserProfile, withObject: requestModel)
         
         callback(true)
-    }
-}
-
-extension SetupProfileViewModel {
-    func subscribeToUserProfileServicePublishers(){
-        Publishers.userProfileServiceDidSetupProfileImagePublisher.sink { (image) in
-            self.profileImage = image
-        }.store(in: &cancellables)
     }
 }

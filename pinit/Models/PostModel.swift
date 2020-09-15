@@ -26,7 +26,6 @@ struct PostModel: Codable {
     
     var userId: String
     var username: String
-    var userProfilePicture: String
     
     @DocumentID var id: String? = UUID().uuidString
 }

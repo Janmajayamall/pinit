@@ -30,21 +30,10 @@ struct ProfileView: View {
         ZStack{
             VStack{
                 Spacer()
-                Image(uiImage: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage"))
-                    .resizable().scaledToFit()
-                    .frame(width: self.profileImageDim, height: self.profileImageDim, alignment: .center)
-                    .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: self.profileImageDim, height: self.profileImageDim))
-                    .cornerRadius(self.profileImageDim/2)
-                    .clipped()
-                    .onTapGesture {
-                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editProfileImage)
-                    }
-                    .padding(.bottom, 10)
-                
                 HStack{
                     Spacer()
                     Text(self.settingsViewModel.userProfile?.username ?? "")
-                        .applyDefaultThemeToTextHeader(ofType: .h3)
+                        .applyDefaultThemeToTextHeader(ofType: .h2)
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editUsername)
                     }
@@ -80,9 +69,8 @@ struct ProfileView: View {
         .animation(.spring())
     }
     
-    private let viewHeightRatio: CGFloat = 0.30
+    private let viewHeightRatio: CGFloat = 0.20
     private let viewWidthRatio: CGFloat = 0.8
-    private let profileImageDim: CGFloat = 100
 }
 
 struct ProfileView_Previews: PreviewProvider {
@@ -90,3 +78,16 @@ struct ProfileView_Previews: PreviewProvider {
         ProfileView(parentSize: CGSize(width: 300, height: 800))
     }
 }
+//
+//
+//Image(uiImage: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage"))
+//         .resizable().scaledToFit()
+//         .frame(width: self.profileImageDim, height: self.profileImageDim, alignment: .center)
+//         .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: self.profileImageDim, height: self.profileImageDim))
+//         .cornerRadius(self.profileImageDim/2)
+//         .clipped()
+//         .onTapGesture {
+//             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editProfileImage)
+//         }
+//         .padding(.bottom, 10)
+//

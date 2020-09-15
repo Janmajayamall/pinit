@@ -106,9 +106,9 @@ struct LoginView: View {
         .cornerRadius(12)
         .offset(self.offset)
         .animation(.spring())
-//        .sheet(isPresented: self.$isEmailAuthViewOpen, content: {
-//            EmailAuthenticationView(isOpen: self.$isEmailAuthViewOpen, viewType: self.emailAuthViewType)
-//        })
+        .sheet(isPresented: self.$isEmailAuthViewOpen, content: {
+            EmailAuthenticationView(isOpen: self.$isEmailAuthViewOpen, viewType: self.emailAuthViewType)
+        })
     }
     
     private let viewHeightRatio: CGFloat = 0.6

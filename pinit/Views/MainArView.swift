@@ -28,9 +28,6 @@ struct MainArView: View {
                     
                     UIKitArSceneView(appArScnView: self.settingsViewModel.appArScnView)
                     
-//                    MapView(parentGeometrySize: geometryProxy.size, screenState: self.$mapViewScreenState, yDragTranslation: self.$mapViewYDragTranslation)
-//                    
-                    
                     VStack{
                         HStack{
                             Image(systemName: "person.fill")
@@ -58,8 +55,8 @@ struct MainArView: View {
                                     
                                     if self.settingsViewModel.isUserAuthenticated() {
                                         
-//                                        // stop session
-//                                        self.settingsViewModel.appArScnView.pauseSession()
+                                        //                                        // stop session
+                                        //                                        self.settingsViewModel.appArScnView.pauseSession()
                                         
                                         self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
                                     }else {
@@ -69,8 +66,15 @@ struct MainArView: View {
                             
                             Spacer()
                             
+                            Image(systemName: "arrow.counterclockwise")
+                                .applyDefaultIconTheme()
+                                .applyEdgePadding(for: .bottomRight)
+                                .onTapGesture {
+                                    NotificationCenter.default.post(name: .aRViewDidTapBackIcon, object: true)
+                            }
+                            
                             Image(systemName: "mappin.and.ellipse")
-                            .applyDefaultIconTheme()
+                                .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .bottomRight)
                                 .onTapGesture {
                                     print("Posted")
@@ -96,36 +100,36 @@ struct MainArView: View {
                                 HStack(){                                   
                                     Text(self.postDisplayInfoViewModel.postDisplayInfo?.username ?? "")
                                         .foregroundColor(Color.white)
-                                    .font(Font.custom("Avenir", size: 18).bold())
+                                        .font(Font.custom("Avenir", size: 18).bold())
                                     Spacer()
                                 }
                                 HStack{
                                     Text(self.postDisplayInfoViewModel.postDisplayInfo?.description ?? "")
-                                    .font(Font.custom("Avenir", size: 18))
-                                    .foregroundColor(Color.white)
+                                        .font(Font.custom("Avenir", size: 18))
+                                        .foregroundColor(Color.white)
                                         .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))
                                     Spacer()
                                 }
                             }
-                                .padding(EdgeInsets(top: 10, leading: 5, bottom: 70, trailing: 5))
+                            .padding(EdgeInsets(top: 10, leading: 5, bottom: 70, trailing: 5))
                             .frame(width: geometryProxy.size.width)
-                                .background(Color.black.opacity(0.4))
+                            .background(Color.black.opacity(0.4))
                         }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
                     }
-                    
                     ProfileView(parentSize: geometryProxy.size)
                     
                     LoginView(parentSize: geometryProxy.size).frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
                     
                     SetupProfileView(parentSize: geometryProxy.size)
                     
-                    EditProfileImageView(imageCropViewModel: ImageCropViewModel(image: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage")), parentSize: geometryProxy.size)
-                    
-                    MoreSettingsViewModel(parentSize: geometryProxy.size)
-                    
                     if self.settingsViewModel.userProfile?.username != nil {
                         EditUsernameView(username: self.settingsViewModel.userProfile!.username, currentUsername: self.settingsViewModel.userProfile!.username, parentSize: geometryProxy.size)
                     }
+                    
+                    
+                    MoreSettingsViewModel(parentSize: geometryProxy.size)
+                    
+                    
                 }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .background(Color.black)

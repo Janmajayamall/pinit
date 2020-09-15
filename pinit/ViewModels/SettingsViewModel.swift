@@ -16,15 +16,15 @@ class SettingsViewModel: ObservableObject {
     
     @Published var user: User?
     @Published var userProfile: ProfileModel?
-    @Published var userProfileImage: UIImage?
+    @Published var postCount: Int = 0
     
     // services
     private var authenticationService = AuthenticationService()
+    private var retrievePostService = RetrievePostService()
     @Published var userProfileService = UserProfileService()
     @Published var screenManagementService = ScreenManagementService()
     private var locationService = LocationService()
     private var uploadPostService = UploadPostService()
-    private var retrievePostService = RetrievePostService()
     private var geohasingService = GeohashingService()
     
     // view models
@@ -104,10 +104,7 @@ extension SettingsViewModel {
         }.store(in: &cancellables)
         
         self.userProfileService.$user.assign(to: \.user, on: self).store(in: &cancellables)
-        
         self.userProfileService.$userProfile.assign(to: \.userProfile, on: self).store(in: &cancellables)
-        
-        self.userProfileService.$userProfileImage.assign(to: \.userProfileImage, on: self).store(in: &cancellables)
     }
     
     func subscribeToScreenManagementServicePublishers() {

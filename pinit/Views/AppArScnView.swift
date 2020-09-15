@@ -42,6 +42,8 @@ class AppArScnView: ARSCNView {
     var draggingNode: GroupSCNNode?
     var prePanZ: CGFloat?
     
+    private var touchedNodeDirectionHistory: Array<NodeDirection> = []
+    
     private var cancellables: Set<AnyCancellable> = []
     
     init(){
@@ -91,6 +93,13 @@ class AppArScnView: ARSCNView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func handleBackIconTouch() {
+        guard let nodeDirection = self.touchedNodeDirectionHistory.popLast() else {return}
+        
+        // call previous post of group scn node in the node direction
+        self.groupNodes[nodeDirection]?.previousPost()
+    }
+    
     @objc func handleViewTap(sender: UITapGestureRecognizer){
         // checking whether the touch is from class of type SCNView or not
         guard let view = sender.view as? SCNView else {return}
@@ -105,6 +114,7 @@ class AppArScnView: ARSCNView {
         
         // change the image
         node.nextPost()
+        self.touchedNodeDirectionHistory.append(node.nodeDirection)
     }
     
     @objc func handlePanGesture(sender: UIPanGestureRecognizer){
@@ -276,8 +286,12 @@ extension AppArScnView {
     func subscribeToArViewPublishers() {
         Publishers.aRViewDidRequestResetGroupNodesPosPublisher.sink { (value) in
             guard value == true else {return}
-            print("Received")
             self.setupGroupNodes()
+            }.store(in: &cancellables)
+        
+        Publishers.aRViewDidTapBackIconPublisher.sink { (value) in
+            guard value == true else {return}
+            self.handleBackIconTouch()
         }.store(in: &cancellables)
     }
 }

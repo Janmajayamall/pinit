@@ -225,6 +225,15 @@ extension Publishers {
                 return value
         }.eraseToAnyPublisher()
     }
+    static var aRViewDidTapBackIconPublisher: AnyPublisher<Bool, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .aRViewDidTapBackIcon)
+            .compactMap { (notification) -> Bool? in
+                guard let value = notification.object as? Bool else {return nil}
+                return value
+        }.eraseToAnyPublisher()
+    }
     
     // publishers for group scn node
     static var groupSCNNodeDidLoadPostDisplayData: AnyPublisher<Bool, Never>{

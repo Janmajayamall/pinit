@@ -24,7 +24,7 @@ struct EmailAuthenticationView: View {
     @State var passwordError: String = ""
     @State var emailIdError:String = ""
     
-    @State var isOpen: Bool = true
+    @Binding var isOpen: Bool
     var viewType: emailAuthenticationViewType
     
     var body: some View {

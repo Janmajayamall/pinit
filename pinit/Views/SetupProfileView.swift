@@ -50,25 +50,10 @@ struct SetupProfileView: View {
             Spacer()
             
             HStack{
-                Text("Setup your profile")
-                    .applyDefaultThemeToTextHeader(ofType: .h3)
+                Text("Choose a username")
+                    .applyDefaultThemeToTextHeader(ofType: .h2)
                 
             }.padding(EdgeInsets(top: self.forceRenderBool ? 0 : 0, leading: 0, bottom: 0, trailing: 0))
-            
-            Spacer()
-            
-            Image(uiImage: self.settingsViewModel.setupProfileViewModel.profileImage)
-                .resizable().scaledToFit()
-                .frame(width: self.profileImageDim, height: self.profileImageDim, alignment: .center)
-                .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: self.profileImageDim, height: self.profileImageDim))
-                .cornerRadius(self.profileImageDim/2)
-                .clipped()
-                .onTapGesture {
-                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.setupProfileViewScreenService.switchTo(screenType: .pickImage)
-            }
-            //            .padding(.bottom, 10)
-            
-            Spacer()
             
             HStack{
                 Spacer()
@@ -109,7 +94,7 @@ struct SetupProfileView: View {
         .animation(.spring())
     }
     
-    let viewHeightRatio: CGFloat = 0.4
+    let viewHeightRatio: CGFloat = 0.3
     let viewWidthRatio: CGFloat = 0.8
     let profileImageDim: CGFloat = 100
 }
@@ -121,4 +106,20 @@ struct SetupProfileView_Previews: PreviewProvider {
 }
 
 
-
+//
+//
+//
+//Spacer()
+//
+//Image(uiImage: self.settingsViewModel.setupProfileViewModel.profileImage)
+//    .resizable().scaledToFit()
+//    .frame(width: self.profileImageDim, height: self.profileImageDim, alignment: .center)
+//    .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: self.profileImageDim, height: self.profileImageDim))
+//    .cornerRadius(self.profileImageDim/2)
+//    .clipped()
+//    .onTapGesture {
+//        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.setupProfileViewScreenService.switchTo(screenType: .pickImage)
+//}
+////            .padding(.bottom, 10)
+//
+//Spacer()
