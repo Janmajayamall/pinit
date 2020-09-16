@@ -258,15 +258,25 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.addCurrentPostAsGeometry()
     }
     
-    func loadInitialPostDisplay() {
-        print("here I go, \(self.postList.count)")
-        guard self.currentPostIndex == -1 && self.postList.count > 0 && self.postList[0].isReadyToDisplay == true else {return}
-                
-        self.currentPostIndex += 1
+    func resetNode() {
+        // remove current post content (i.e. geometry)
+        self.geometry = nil
         
-        self.addCurrentPostAsGeometry()
+        // reset the currentPostIndex
+        self.currentPostIndex = -1
+        self.loadInitialPostDisplay()
     }
     
+    func loadInitialPostDisplay() {
+        guard self.currentPostIndex == -1 && self.postList.count > 0 else {return}
+            
+        for index in 0..<self.postList.count {
+            if self.isPostValidForRender(self.postList[index]) {
+                self.currentPostIndex = index
+                self.addCurrentPostAsGeometry()
+            }
+        }
+    }
     
     private var defaultCoordDis: Float = 1.5
     private var defaultYCoordDis: Float = -0.8
@@ -286,7 +296,9 @@ extension GroupSCNNode {
         Publishers.groupSCNNodeDidRequestChangePostDisplayTypePublisher.sink { (postDisplayType) in
             self.postDisplayType = postDisplayType
             print(self.postDisplayType)
+            
             // reset the node
+            self.resetNode()
         }.store(in: &cancellables)
     }
     

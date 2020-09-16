@@ -31,7 +31,7 @@ struct EditCaptureVideoView: View {
                                 .foregroundColor(Color.white)
                                 .applyDefaultIconTheme()
                                 .onTapGesture {
-                                    self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
+                                    self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .normal)
                             }
                             .applyTopLeftPaddingToIcon()
                             Spacer()
