@@ -39,7 +39,7 @@ struct SetupProfileView: View {
             
             var username = $0.lowercased()
             username = username.trimmingCharacters(in: .whitespacesAndNewlines)
-            self.settingsViewModel.setupProfileViewModel.username = String(username.prefix(30))
+            self.settingsViewModel.setupProfileViewModel.username = String(username.prefix(25))
             
             // forcing render UI
             self.forceRenderBool.toggle()

@@ -32,7 +32,7 @@ struct ProfileView: View {
                 Spacer()
                 HStack{
                     Spacer()
-                    Text("dawjdioawjdiodjioawjdoiawdadaw" ?? "")
+                    Text(self.settingsViewModel.userProfile?.username ?? "")
                         .applyDefaultThemeToTextHeader(ofType: .h3)
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editUsername)
@@ -42,7 +42,8 @@ struct ProfileView: View {
                 HStack{
                     Spacer()
                     Text(" \(self.settingsViewModel.userPostCount) PINS")
-                        .applyDefaultThemeToTextHeader(ofType: .h3)
+                        .font(Font.custom("Avenir", size: 18))
+                        .foregroundColor(Color.black)
                     Spacer()
                 }
                 Spacer()
@@ -75,7 +76,7 @@ struct ProfileView: View {
         .animation(.spring())
     }
     
-    private let viewHeightRatio: CGFloat = 0.20
+    private let viewHeightRatio: CGFloat = 0.25
     private let viewWidthRatio: CGFloat = 0.8
 }
 

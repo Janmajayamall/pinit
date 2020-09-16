@@ -72,7 +72,7 @@ class RetrievePostService: ObservableObject {
         }
        
         // notify according to the notification name
-        NotificationCenter.default.post(name: notificationName, object: posts)
+//        NotificationCenter.default.post(name: notificationName, object: posts)
         
     }
     

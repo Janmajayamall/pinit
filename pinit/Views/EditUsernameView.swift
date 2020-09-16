@@ -36,7 +36,7 @@ struct EditUsernameView: View {
         }, set: {
             var username = $0.lowercased()
             username = username.trimmingCharacters(in: .whitespacesAndNewlines)
-            self.username = String(username.prefix(30))
+            self.username = String(username.prefix(25))
         })
         
         return ZStack{

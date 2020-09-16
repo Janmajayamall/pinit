@@ -26,7 +26,7 @@ class LocationService: NSObject {
         super.init()
         
         self.manager.delegate = self
-        self.manager.desiredAccuracy = kCLLocationAccuracyBest
+        self.manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         self.manager.distanceFilter = kCLDistanceFilterNone
         self.manager.headingFilter = kCLHeadingFilterNone
         
@@ -53,7 +53,7 @@ extension LocationService: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {        
         locations.forEach { (location) in
-            
+            print(location.coordinate)
             self.currentLocation = location
             NotificationCenter.default.post(name: .locationServiceDidUpdateLocation, object: location)
         }
