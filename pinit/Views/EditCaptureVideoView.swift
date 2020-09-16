@@ -24,30 +24,32 @@ struct EditCaptureVideoView: View {
                     FadeKeyboard(descriptionText: self.$editingVideoViewModel.descriptionText, parentSize: geometryProxy.size)
                 }
                 
-                VStack{
-                    HStack{
-                        Image(systemName: "xmark")
-                            .foregroundColor(Color.white)
-                            .applyDefaultIconTheme()
-                            .onTapGesture {
-                                self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
+                if (self.screenState == .normal) {
+                    VStack{
+                        HStack{
+                            Image(systemName: "xmark")
+                                .foregroundColor(Color.white)
+                                .applyDefaultIconTheme()
+                                .onTapGesture {
+                                    self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
+                            }
+                            .applyTopLeftPaddingToIcon()
+                            Spacer()
+                                            
+                            Image(systemName: "checkmark")
+                                .foregroundColor(Color.white)
+                                .applyDefaultIconTheme()
+                                .onTapGesture {
+                                    self.finalisePostVideo()
+                            }
+                            .applyTopRightPaddingToIcon()
+                            
                         }
-                        .applyTopLeftPaddingToIcon()
                         Spacer()
-                                        
-                        Image(systemName: "checkmark")
-                            .foregroundColor(Color.white)
-                            .applyDefaultIconTheme()
-                            .onTapGesture {
-                                self.finalisePostVideo()
-                        }
-                        .applyTopRightPaddingToIcon()
-                        
                     }
-                    Spacer()
+                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    .safeTopEdgePadding()
                 }
-                .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
-                .safeTopEdgePadding()
             }
             .onTapGesture {
                 if (self.screenState == .normal){

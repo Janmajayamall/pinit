@@ -14,7 +14,7 @@ struct MainArView: View {
     @State var mapViewScreenState: SwipeScreenState = .down
     @State var mapViewYDragTranslation: CGFloat = 0
     
-    @State var showMenu: Bool = false
+    @State var postDisplayType: PostDisplayType = .allPosts
     @ObservedObject var postDisplayInfoViewModel: PostDisplayInfoViewModel = PostDisplayInfoViewModel()
     
     @ViewBuilder
@@ -30,19 +30,38 @@ struct MainArView: View {
                     
                     VStack{
                         HStack{
-                            Image(systemName: "person.fill")
+                            Image(systemName: self.postDisplayType == .allPosts ? "person.fill": "person.2.fill")
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .topLeft)
+                                .onTapGesture {
+                                    if self.settingsViewModel.isUserAuthenticated() {
+                                        switch self.postDisplayType {
+                                        case .allPosts:
+                                            self.postDisplayType = .privatePosts
+                                        case .privatePosts:
+                                            self.postDisplayType = .allPosts
+                                        }
+                                        
+                                        // post notification for group scn node
+                                        NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
+                                        //                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
+                                    }else {
+                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                    }
+                            }
+                            
+                            Spacer()
+                            
+                            Image(systemName:"gear")
+                                .applyDefaultIconTheme()
+                                .applyEdgePadding(for: .topRight)
                                 .onTapGesture {
                                     if self.settingsViewModel.isUserAuthenticated() {
                                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
                                     }else {
                                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
                                     }
-                                    self.showMenu = false
                             }
-                            
-                            Spacer()
                         }
                         Spacer()
                         HStack{
@@ -50,13 +69,9 @@ struct MainArView: View {
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .bottomLeft)
                                 .onTapGesture {
-                                    // closing the map view, if it is open
-                                    self.forceMapViewToDownState()
-                                    
                                     if self.settingsViewModel.isUserAuthenticated() {
-                                        
-                                        //                                        // stop session
-                                        //                                        self.settingsViewModel.appArScnView.pauseSession()
+                                        // stop session
+                                        self.settingsViewModel.appArScnView.pauseSession()
                                         
                                         self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
                                     }else {

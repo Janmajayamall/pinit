@@ -254,6 +254,15 @@ extension Publishers {
                 return model
         }.eraseToAnyPublisher()
     }
+    static var groupSCNNodeDidRequestChangePostDisplayTypePublisher: AnyPublisher<PostDisplayType, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .groupSCNNodeDidRequestChangePostDisplayType)
+            .compactMap { (notification) -> PostDisplayType? in
+                guard let postDisplayType = notification.object as? PostDisplayType else {return nil}
+                return postDisplayType
+        }.eraseToAnyPublisher()
+    }
     
     // publishers for camera feed
     static var cameraFeedSwitchInUseCameraPublisher: AnyPublisher<CameraFeedController.CameraInUsePosition, Never>{
@@ -340,6 +349,15 @@ extension Publishers {
                 guard let models = notification.object as? Array<PostModel> else {
                     return nil
                 }
+                return models
+        }.eraseToAnyPublisher()
+    }
+    static var retrievePostServiceDidReceiveUserPostsPublisher: AnyPublisher<Array<PostModel>, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .retrievePostServiceDidReceiveUserPosts)
+            .compactMap { (notification) -> Array<PostModel>? in
+                guard let models = notification.object as? Array<PostModel> else {return nil}
                 return models
         }.eraseToAnyPublisher()
     }

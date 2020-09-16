@@ -40,6 +40,24 @@ class RetrievePostService: ObservableObject {
         })
     }
     
+    func listenToUserPosts() {
+        guard let user = self.user else {return}
+        
+        self.postCollectionRef.whereField("userId", isEqualTo: user.uid).addSnapshotListener({ (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {return}
+            
+            var posts: Array<PostModel> = []
+            
+            documents.forEach { (queryDocumentSnapshot) in
+                guard let post = try? queryDocumentSnapshot.data(as: PostModel.self) else {return}
+                posts.append(post)
+            }
+            print("Did receive user posts \(posts.count)")
+            // notify about user posts
+            NotificationCenter.default.post(name: .retrievePostServiceDidReceiveUserPosts, object: posts)
+        })
+    }
+    
     func handleReceivedPostDocuments(withQuerySnapshot querySnapshot: QuerySnapshot?, withError error: Error?, forNotificationName notificationName: Notification.Name){
         guard let documents = querySnapshot?.documents else {return}
         
@@ -54,7 +72,7 @@ class RetrievePostService: ObservableObject {
         }
        
         // notify according to the notification name
-//        NotificationCenter.default.post(name: notificationName, object: posts)
+        NotificationCenter.default.post(name: notificationName, object: posts)
         
     }
     
@@ -73,6 +91,7 @@ class RetrievePostService: ObservableObject {
     func setupService(){
         // setting up subscribers
         self.subscribeToGeohasingServicePublishers()
+        self.subscribeToAuthenticationServicePublishers()
         
         // start listening to all posts
         self.listenToAllPosts()
@@ -91,6 +110,7 @@ extension RetrievePostService {
     func subscribeToAuthenticationServicePublishers(){
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
             self.user = user
+            self.listenToUserPosts()
         }.store(in: &cancellables)
     }
 }

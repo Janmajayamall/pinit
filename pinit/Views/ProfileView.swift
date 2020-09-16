@@ -32,11 +32,17 @@ struct ProfileView: View {
                 Spacer()
                 HStack{
                     Spacer()
-                    Text(self.settingsViewModel.userProfile?.username ?? "")
-                        .applyDefaultThemeToTextHeader(ofType: .h2)
+                    Text("dawjdioawjdiodjioawjdoiawdadaw" ?? "")
+                        .applyDefaultThemeToTextHeader(ofType: .h3)
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editUsername)
                     }
+                    Spacer()
+                }.padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                HStack{
+                    Spacer()
+                    Text(" \(self.settingsViewModel.userPostCount) PINS")
+                        .applyDefaultThemeToTextHeader(ofType: .h3)
                     Spacer()
                 }
                 Spacer()

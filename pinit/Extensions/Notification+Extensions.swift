@@ -54,6 +54,7 @@ extension Notification.Name {
     // notification for GroupSCNNode
     static let groupSCNNodeDidLoadPostDisplayData = Notification.Name("groupSCNNodeDidLoadPostDisplayData")
     static let groupSCNNodeDidRequestCurrentPostDisplayInfo = Notification.Name("groupSCNNodeDidRequestCurrentPostDisplayInfo")
+    static let groupSCNNodeDidRequestChangePostDisplayType = Notification.Name("groupSCNNodeDidRequestChangePostDisplayType")
     
     
     // notifications for camera feed
@@ -69,6 +70,7 @@ extension Notification.Name {
     // notification for retrieve post service
     static let retrievePostServiceDidReceivePostsForGeohashes = Notification.Name("retrievePostServiceDidReceivePostsForGeohashes")
     static let retrievePostServiceDidReceiveAllPosts = Notification.Name("retrievePostServiceDidReceiveAllPosts")
+    static let retrievePostServiceDidReceiveUserPosts = Notification.Name("retrievePostServiceDidReceiveUserPosts")
     
     // notifications for PostDisplayNodeModel
     static let postDisplayNodeModelDidRequestMuteAVPlayer = Notification.Name("postDisplayNodeModelDidRequestMuteAVPlayer")

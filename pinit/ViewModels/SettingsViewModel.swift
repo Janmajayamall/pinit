@@ -16,7 +16,7 @@ class SettingsViewModel: ObservableObject {
     
     @Published var user: User?
     @Published var userProfile: ProfileModel?
-    @Published var postCount: Int = 0
+    @Published var userPostCount: Int = 0
     
     // services
     private var authenticationService = AuthenticationService()
@@ -142,6 +142,11 @@ extension SettingsViewModel {
                     self.allPosts[id] = post
                 }
             }
+        }.store(in: &cancellables)
+        
+        Publishers.retrievePostServiceDidReceiveUserPostsPublisher.sink { (posts) in
+            print("Did receive user posts ----- \(posts.count)")
+            self.userPostCount = posts.count
         }.store(in: &cancellables)
     }
     

@@ -157,7 +157,7 @@ extension CameraFeedController {
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
         self.previewLayer?.connection?.videoOrientation = .portrait
-                
+        
         view.layer.insertSublayer(self.previewLayer!, at: 0)
         self.previewLayer?.frame = view.frame
     }
@@ -239,8 +239,18 @@ extension CameraFeedController {
     func captureImage() throws {
         guard let captureSession = self.captureSession, captureSession.isRunning else {throw CameraFeedControllerError.captureSessionIsMissing}
         
+        
+        let connection = self.cameraPhotoOutput!.connection(with: AVMediaType.video)
+        if (connection?.isVideoOrientationSupported)! {
+            connection?.videoOrientation = .portrait
+        }
+        if let deviceInput = captureSession.inputs.first as? AVCaptureDeviceInput, deviceInput.device.position != .back {
+            connection?.isVideoMirrored = true
+        }
+        
         let captureSettings = AVCapturePhotoSettings()
         captureSettings.flashMode = self.cameraFlashMode
+        
         
         self.cameraPhotoOutput?.capturePhoto(with: captureSettings, delegate: self)
     }
@@ -254,6 +264,10 @@ extension CameraFeedController {
             
             if (connection?.isVideoOrientationSupported)! {                
                 connection?.videoOrientation = .portrait
+            }
+            
+            if let deviceInput = captureSession.inputs.first as? AVCaptureDeviceInput, deviceInput.device.position != .back {
+                connection?.isVideoMirrored = true
             }
             
             // generating output file url for movie

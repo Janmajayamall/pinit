@@ -11,13 +11,16 @@ import SceneKit
 import ARKit
 import Combine
 import AVFoundation
-
+import FirebaseAuth
 
 class GroupSCNNode: SCNNode, Identifiable {
     
     var nodeDirection: NodeDirection
     
     var postList: Array<PostDisplayNodeModel> = []
+    var postDisplayType: PostDisplayType = .allPosts
+    
+    var user: User?
     
     var currentPostIndex: Int = -1
     
@@ -30,6 +33,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         
         // subscribe to publishers
         self.subscribeToGroupSCNNodePublishers()
+        self.subcribeToAuthenticationServicePublishers()
         
         // add constraints to the node
         let billboardConstraint = SCNBillboardConstraint()
@@ -91,6 +95,18 @@ class GroupSCNNode: SCNNode, Identifiable {
         // adding to the node's geometry
         self.geometry = plane
     }
+    
+    func isPostValidForRender(_ postDisplay: PostDisplayNodeModel) -> Bool {
+        guard self.postDisplayType == .privatePosts else {
+            return postDisplay.isReadyToDisplay
+        }
+        
+        guard let user = self.user else {
+            return false
+        }
+        
+        return user.uid == postDisplay.post.userId
+    }
         
     func nextPost(){
         guard self.postList.count > 0 && self.currentPostIndex >= 0 else {return}
@@ -104,7 +120,7 @@ class GroupSCNNode: SCNNode, Identifiable {
             if (self.currentPostIndex == refIndex){
                 break
             }
-        }while self.postList[self.currentPostIndex].isReadyToDisplay == false
+        }while self.isPostValidForRender(self.postList[self.currentPostIndex]) == false
         
         if (refIndex != self.currentPostIndex){
             self.preparePostNodeOffloadFromGeometry(forIndex: refIndex)
@@ -117,9 +133,12 @@ class GroupSCNNode: SCNNode, Identifiable {
         
         let refIndex = self.currentPostIndex
         repeat{
-            // changing the index
+            // changing the index         
             self.currentPostIndex = (self.currentPostIndex - 1) % self.postList.count
-            
+            if (self.currentPostIndex < 0){
+                self.currentPostIndex = self.currentPostIndex + self.postList.count
+            }
+           
             // if current index == refIndex then break
             if (self.currentPostIndex == refIndex){
                 break
@@ -263,7 +282,21 @@ extension GroupSCNNode {
             print("it did load")
             self.loadInitialPostDisplay()
         }.store(in: &cancellables)
+        
+        Publishers.groupSCNNodeDidRequestChangePostDisplayTypePublisher.sink { (postDisplayType) in
+            self.postDisplayType = postDisplayType
+            print(self.postDisplayType)
+            // reset the node
+        }.store(in: &cancellables)
     }
+    
+    func subcribeToAuthenticationServicePublishers() {
+        Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
+            print("Group scn node did receive user \(user.uid)")
+            self.user = user
+        }.store(in: &cancellables)
+    }
+
 }
 
 enum NodeDirection {
@@ -272,5 +305,7 @@ enum NodeDirection {
     case frontLeft
 }
 
-
-//    var imageList: Array<UIImage>  = [UIImage(named: "image1")!, UIImage(named: "image2")!, UIImage(named: "image3")!, UIImage(named: "image4")!, UIImage(named: "image5")!]
+enum PostDisplayType {
+    case privatePosts
+    case allPosts
+}
