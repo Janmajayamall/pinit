@@ -72,6 +72,7 @@
 		5D7143D624FD01E1008EF04C /* DragGestureViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */; };
 		5D7E39C525059CA800C6E0AB /* OptimisticUIPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */; };
 		5D8386F7250F1597009CC01F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D8386F6250F1597009CC01F /* GoogleService-Info.plist */; };
+		5D86652C25138EC800049980 /* CameraFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86652B25138EC800049980 /* CameraFeedView.swift */; };
 		5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */; };
 		5DAE4136250A7EB50017A598 /* GroupSCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */; };
 		5DAE4138250C18820017A598 /* PostDisplayNodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */; };
@@ -186,6 +187,7 @@
 		5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureViewModifier.swift; sourceTree = "<group>"; };
 		5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimisticUIPostModel.swift; sourceTree = "<group>"; };
 		5D8386F6250F1597009CC01F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5D86652B25138EC800049980 /* CameraFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedView.swift; sourceTree = "<group>"; };
 		5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSetupUserProfileModel.swift; sourceTree = "<group>"; };
 		5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSCNNode.swift; sourceTree = "<group>"; };
 		5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayNodeModel.swift; sourceTree = "<group>"; };
@@ -339,6 +341,7 @@
 				5D567CF624F428E400283E5B /* SetupProfileView.swift */,
 				5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */,
 				5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */,
+				5D86652B25138EC800049980 /* CameraFeedView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -784,6 +787,7 @@
 				5D52F7D624E98F2F00D9F27E /* UploadPostService.swift in Sources */,
 				5D52F7DF24E9952800D9F27E /* CLLocation+Extensions.swift in Sources */,
 				5D1CF0A82500095B00DD4E90 /* PostDisplayInfoViewModel.swift in Sources */,
+				5D86652C25138EC800049980 /* CameraFeedView.swift in Sources */,
 				5D67E7F124E84E6C00F5D240 /* SceneDelegate.swift in Sources */,
 				5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */,
 				5D52F7C324E9566A00D9F27E /* EditProfileImageView.swift in Sources */,

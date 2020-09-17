@@ -24,6 +24,7 @@ class SettingsViewModel: ObservableObject {
     @Published var userProfileService = UserProfileService()
     @Published var screenManagementService = ScreenManagementService()
     private var locationService = LocationService()
+    private var estimatedUserLocationService = EstimatedUserLocationService()
     private var uploadPostService = UploadPostService()
     private var geohasingService = GeohashingService()
     
@@ -49,6 +50,7 @@ class SettingsViewModel: ObservableObject {
         self.userProfileService.setupService()
         self.retrievePostService.setupService()
         self.geohasingService.setupService()
+        self.estimatedUserLocationService.setupService()
         self.locationService.setupService()
         self.authenticationService.setupService()
     }

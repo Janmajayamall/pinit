@@ -136,7 +136,7 @@ class UploadPostService {
                 do {
                     // Notify that a post will be created
                     NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, videoFilePathUrl: requestModel.videoFilePathUrl, postContentType: .video))
-                                        
+                    
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
                 }catch{
                     print("upload post with image failed with error \(error)")
@@ -178,15 +178,8 @@ extension UploadPostService {
         }.store(in: &cancellables)
     }
     
-    func subscribeToEstimatedUserLocationServicePublishers() {
-        // uncomment it after dev
-        //        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
-        //            self.currentLocation = location
-        //            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
-        //        }.store(in: &cancellables)
-        
-        // for dev purposes
-        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
+    func subscribeToEstimatedUserLocationServicePublishers() {        
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
             self.currentLocation = location
             self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
         }.store(in: &cancellables)

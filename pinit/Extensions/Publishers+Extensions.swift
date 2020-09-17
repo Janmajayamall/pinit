@@ -335,9 +335,11 @@ extension Publishers {
         .default
             .publisher(for: .retrievePostServiceDidReceivePostsForGeohashes)
             .compactMap { (notification) -> Array<PostModel>? in
+                print("BHII AJSSJASS")
                 guard let models = notification.object as? Array<PostModel> else {
                     return nil
                 }
+                
                 return models
         }.eraseToAnyPublisher()
     }

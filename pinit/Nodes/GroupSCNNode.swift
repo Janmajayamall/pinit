@@ -35,7 +35,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.subscribeToGroupSCNNodePublishers()
         self.subcribeToAuthenticationServicePublishers()
         
-        // add constraints to the node
+        // add constraints to the nodeO
         let billboardConstraint = SCNBillboardConstraint()
         billboardConstraint.freeAxes = .Y
         self.constraints = [billboardConstraint]
@@ -268,6 +268,7 @@ class GroupSCNNode: SCNNode, Identifiable {
     }
     
     func loadInitialPostDisplay() {
+        print("TRIED THIS")
         guard self.currentPostIndex == -1 && self.postList.count > 0 else {return}
             
         for index in 0..<self.postList.count {
@@ -289,7 +290,6 @@ extension GroupSCNNode {
     func subscribeToGroupSCNNodePublishers() {
         Publishers.groupSCNNodeDidLoadPostDisplayData.sink { (value) in
             guard value == true else {return}
-            print("it did load")
             self.loadInitialPostDisplay()
         }.store(in: &cancellables)
         

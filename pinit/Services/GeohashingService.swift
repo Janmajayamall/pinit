@@ -38,7 +38,7 @@ class GeohashingService {
         guard self.geohashModel == nil || self.geohashModel?.currentLocationGeohash != locationGeohash else {return}
         let neighborGeohashes = GeohashingService.neighborsFor(geohash: locationGeohash)
         let geohashModel = GeohashModel(currentLocationGeohash: locationGeohash, neighborGeohashes: neighborGeohashes)
-        self.geohashModel = geohashModel        
+        self.geohashModel = geohashModel
         NotificationCenter.default.post(name: .geohasingServiceDidUpdateGeohash, object: geohashModel)
     }
     
@@ -156,13 +156,7 @@ class GeohashingService {
 // for subscriptions of publishers
 extension GeohashingService {
     func subscribeToEstimatedUserLocationServicePublishers() {
-        // switch to estimated location service afterwards
-//        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
-//            self.updateGeohashToLocation(location)
-//        }.store(in: &cancellables)
-//
-        // subscribe to locaiton service just for dev purposes
-        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
             self.updateGeohashToLocation(location)
         }.store(in: &cancellables)
     }

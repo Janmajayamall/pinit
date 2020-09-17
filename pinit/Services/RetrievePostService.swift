@@ -26,8 +26,8 @@ class RetrievePostService: ObservableObject {
     func listenToPostsForGeohashes(_ geohashes: Array<String>){
         self.stopListeningToPostForGeohashes()
         
-//        .whereField("geohash", in: geohashes)
-        self.documentsForGeohashesListener = self.postCollectionRef.addSnapshotListener({ (querySnapshot, error) in
+        
+        self.documentsForGeohashesListener = self.postCollectionRef.whereField("geohash", in: geohashes).addSnapshotListener({ (querySnapshot, error) in
             self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error, forNotificationName: .retrievePostServiceDidReceivePostsForGeohashes)
         })
     }
@@ -52,7 +52,7 @@ class RetrievePostService: ObservableObject {
                 guard let post = try? queryDocumentSnapshot.data(as: PostModel.self) else {return}
                 posts.append(post)
             }
-            print("Did receive user posts \(posts.count)")
+            
             // notify about user posts
             NotificationCenter.default.post(name: .retrievePostServiceDidReceiveUserPosts, object: posts)
         })
@@ -70,9 +70,9 @@ class RetrievePostService: ObservableObject {
             }
             posts.append(post)
         }
-       
+        
         // notify according to the notification name
-//        NotificationCenter.default.post(name: notificationName, object: posts)
+        NotificationCenter.default.post(name: notificationName, object: posts)
         
     }
     

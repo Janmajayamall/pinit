@@ -53,7 +53,7 @@ extension LocationService: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {        
         locations.forEach { (location) in
-            print(location.coordinate)
+            print(location.coordinate, location.horizontalAccuracy, ":::")
             self.currentLocation = location
             NotificationCenter.default.post(name: .locationServiceDidUpdateLocation, object: location)
         }
