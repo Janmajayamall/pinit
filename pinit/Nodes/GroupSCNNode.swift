@@ -311,7 +311,7 @@ extension GroupSCNNode {
 
 }
 
-enum NodeDirection {
+enum NodeDirection: String {
     case front
     case frontRight
     case frontLeft

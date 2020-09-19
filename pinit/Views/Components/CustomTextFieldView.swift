@@ -14,6 +14,8 @@ struct CustomTextFieldView: View {
     var placeholder: String
     @Binding var noteText: String
     
+    var isFieldSecure: Bool = false
+    
     var body: some View {
         return VStack{
             ZStack(alignment: .leading){
@@ -21,9 +23,15 @@ struct CustomTextFieldView: View {
                     Text(self.placeholder)
                         .foregroundColor(Color.textfieldColor)
                 }
-                TextField("", text: self.$text, onCommit: {
-                    print("committed")
-                })
+                if (self.isFieldSecure == false){
+                    TextField("", text: self.$text, onCommit: {
+                        self.hideKeyboard()
+                    })
+                }else {
+                    SecureField("", text: self.$text, onCommit: {
+                        self.hideKeyboard()
+                    })
+                }
              
             }
             Divider().background(Color.secondaryColor)

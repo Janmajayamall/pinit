@@ -115,6 +115,9 @@ class AppArScnView: ARSCNView {
         // change the image
         node.nextPost()
         self.touchedNodeDirectionHistory.append(node.nodeDirection)
+        
+        // create event
+        AnalyticsService.logNodeTap(inDirection: node.nodeDirection)
     }
     
     @objc func handlePanGesture(sender: UIPanGestureRecognizer){

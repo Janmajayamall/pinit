@@ -8,6 +8,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseAnalytics
 
 struct EmailAuthenticationView: View {
     
@@ -57,7 +58,7 @@ struct EmailAuthenticationView: View {
             
             HStack{
                 VStack{
-                    CustomTextFieldView(text: self.$password, placeholder: "Password", noteText: self.$passwordError)
+                    CustomTextFieldView(text: self.$password, placeholder: "Password", noteText: self.$passwordError, isFieldSecure: true)
                         .font(Font.custom("Avenir", size: 15).bold())
                         .foregroundColor(Color.black)
                 }
@@ -91,30 +92,39 @@ struct EmailAuthenticationView: View {
         
         if (self.viewType == .login){
             signInWithEmailCoordinator.login(onSignedInHandler: {(user) in
-            self.loadingIndicator = false
-                self.isOpen = false}) { (errorCode) in
-                    switch (errorCode){
-                    case .invalidEmail:
-                        self.emailIdError = "Email ID is not valid"
-                        self.passwordError = ""
-                    case .missingEmail:
-                        self.emailIdError = "EmailID cannot be empty"
-                        self.passwordError = ""
-                    case .wrongPassword:
-                        self.passwordError = "Password is invalid"
-                        self.emailIdError = ""
-                    case .userNotFound:
-                        self.passwordError = "User with email does not exists"
-                        self.emailIdError = ""
-                    default:
-                        self.passwordError = "Email or Password are incorrect"
-                        self.emailIdError = ""
-                    }
+                self.loadingIndicator = false
+                self.isOpen = false
+                
+               // create an event
+                AnalyticsService.logSignInEvent(withProvider: .email)
+                
+            }) { (errorCode) in
+                switch (errorCode){
+                case .invalidEmail:
+                    self.emailIdError = "Email ID is not valid"
+                    self.passwordError = ""
+                case .missingEmail:
+                    self.emailIdError = "EmailID cannot be empty"
+                    self.passwordError = ""
+                case .wrongPassword:
+                    self.passwordError = "Password is invalid"
+                    self.emailIdError = ""
+                case .userNotFound:
+                    self.passwordError = "User with email does not exists"
+                    self.emailIdError = ""
+                default:
+                    self.passwordError = "Email or Password are incorrect"
+                    self.emailIdError = ""
+                }
             }
         }else if (self.viewType == .signUp){
             signInWithEmailCoordinator.signUp(onSignedInHandler: { (user) in
                 self.loadingIndicator = false
                 self.isOpen = false
+                
+                // create an event
+                AnalyticsService.logSignInEvent(withProvider: .email)
+                
             }) { (errorCode) in
                 switch (errorCode){
                 case .emailAlreadyInUse:

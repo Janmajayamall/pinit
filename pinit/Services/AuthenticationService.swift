@@ -9,6 +9,7 @@
 import Foundation
 import FirebaseAuth
 import Firebase
+import FirebaseAnalytics
 import AuthenticationServices
 import CryptoKit
 import Combine
@@ -122,6 +123,9 @@ extension SignInWithAppleCoordinator: ASAuthorizationControllerDelegate {
                         print("Error authenticating: \(error.localizedDescription)")
                         return
                     }
+                    
+                    // create an event
+                    AnalyticsService.logSignInEvent(withProvider: .apple)
                     
                     guard let user = result?.user else {return}
                     if let onSignedInHandler = self.onSignedInHandler {

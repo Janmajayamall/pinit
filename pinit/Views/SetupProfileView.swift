@@ -79,6 +79,7 @@ struct SetupProfileView: View {
                         self.forceRenderBool.toggle()
                     }
                 }
+                self.hideKeyboard()
             }, label: {
                 Text("Done")
             })

@@ -93,6 +93,7 @@
 		5DE4A3CA24FC082A00262A95 /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = 5DE4A3C924FC082A00262A95 /* ReadMe.md */; };
 		5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9524F5B185005F0A04 /* View+Extensions.swift */; };
 		5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */; };
+		5DEA78DE25168BB50041D7AF /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */; };
 		D9962A9A448A29C596092CB4 /* Pods_pinit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAB1A9362C7F4B4EEDFD8209 /* Pods_pinit.framework */; };
 		EF589682F646D633C66E57A2 /* Pods_pinit_pinitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181CC3BA6F356427D3D549A0 /* Pods_pinit_pinitUITests.framework */; };
 /* End PBXBuildFile section */
@@ -208,6 +209,7 @@
 		5DE4A3C924FC082A00262A95 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		5DE94F9524F5B185005F0A04 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
+		5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		6709C44A89EC11F0E02FA123 /* Pods-pinit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit.debug.xcconfig"; path = "Target Support Files/Pods-pinit/Pods-pinit.debug.xcconfig"; sourceTree = "<group>"; };
 		6D7BD52D6C6DA6C3A0A94EB4 /* Pods-pinit-pinitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit-pinitUITests.debug.xcconfig"; path = "Target Support Files/Pods-pinit-pinitUITests/Pods-pinit-pinitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		86D53FDF6D0C11D1E076B044 /* Pods_pinitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -300,6 +302,7 @@
 				5D5245FC24F4555E0000317D /* SetupProfileViewModel.swift */,
 				5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */,
 				5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */,
+				5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -509,6 +512,7 @@
 				5D67E7E824E84E6C00F5D240 /* Frameworks */,
 				5D67E7E924E84E6C00F5D240 /* Resources */,
 				40C250427C7BEE32CF9224BF /* [CP] Embed Pods Frameworks */,
+				5DEA78DC251673D30041D7AF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -672,6 +676,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		5DEA78DC251673D30041D7AF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n\n";
+		};
 		9658556C2F8A6061086638E1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -780,6 +801,7 @@
 				5DC8527924EFED2300E36DCE /* KeyboardAwareViewModifiers.swift in Sources */,
 				5D564F4024F2829300962CEF /* IconViewModifiers.swift in Sources */,
 				5D52F7BD24E951AD00D9F27E /* Color+Extensions.swift in Sources */,
+				5DEA78DE25168BB50041D7AF /* AnalyticsService.swift in Sources */,
 				5D5245FD24F4555E0000317D /* SetupProfileViewModel.swift in Sources */,
 				5DC8527B24EFF83E00E36DCE /* FadeKeyboard.swift in Sources */,
 				5D6B1F8124FEF85D00DCC418 /* CameraFeedViewController.swift in Sources */,
@@ -983,6 +1005,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = pinit/pinit.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"pinit/Preview Content\"";
 				DEVELOPMENT_TEAM = B8GFL3DC67;
 				ENABLE_PREVIEWS = YES;

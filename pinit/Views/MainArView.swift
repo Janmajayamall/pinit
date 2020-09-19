@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct MainArView: View {
     
@@ -34,6 +35,11 @@ struct MainArView: View {
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .topLeft)
                                 .onTapGesture {
+                                    Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                                    AnalyticsParameterItemID: "id-\("title!")",
+                                    AnalyticsParameterItemName: "title!",
+                                    AnalyticsParameterContentType: "cont"
+                                    ])
                                     if self.settingsViewModel.isUserAuthenticated() {
                                         switch self.postDisplayType {
                                         case .allPosts:
@@ -44,7 +50,7 @@ struct MainArView: View {
                                         
                                         // post notification for group scn node
                                         NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
-                                        //                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
+                                        
                                     }else {
                                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
                                     }
@@ -137,13 +143,11 @@ struct MainArView: View {
                     
                     SetupProfileView(parentSize: geometryProxy.size)
                     
-                    if self.settingsViewModel.userProfile?.username != nil {
-                        EditUsernameView(username: self.settingsViewModel.userProfile!.username, currentUsername: self.settingsViewModel.userProfile!.username, parentSize: geometryProxy.size)
-                    }
-                    
-                    
                     MoreSettingsViewModel(parentSize: geometryProxy.size)
                     
+                    if self.settingsViewModel.userProfile?.username != nil {
+                        EditUsernameView(username: self.settingsViewModel.userProfile?.username ?? "", currentUsername: self.settingsViewModel.userProfile?.username ?? "", parentSize: geometryProxy.size)
+                    }
                     
                 }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)

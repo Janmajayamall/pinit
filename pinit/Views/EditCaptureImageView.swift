@@ -19,7 +19,20 @@ struct EditCaptureImageView: View {
     @State var isUserDrawing: Bool = false
     
     var body: some View {
-        GeometryReader { geometryProxy in
+        
+        
+        // binding for descriptionText
+        let descriptionText = Binding<String>(
+            get: {
+                self.editingViewModel.descriptionText
+        }, set: {
+            let descriptionText = $0.trimmingCharacters(in: .whitespacesAndNewlines)
+            self.editingViewModel.descriptionText = String(descriptionText.prefix(425))
+            
+        }
+        )
+        
+        return GeometryReader { geometryProxy in
             ZStack{
                 
                 Image(uiImage: self.editingViewModel.selectedImage)
@@ -33,7 +46,7 @@ struct EditCaptureImageView: View {
                 self.editingViewModel.imagePainting.currentDrawing
                 
                 if (self.screenState == .description){
-                    FadeKeyboard(descriptionText: self.$editingViewModel.descriptionText, parentSize: geometryProxy.size )
+                    FadeKeyboard(descriptionText: descriptionText, parentSize: geometryProxy.size )
                 }
                 
                 if (self.screenState == .normal){

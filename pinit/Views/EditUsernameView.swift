@@ -29,14 +29,20 @@ struct EditUsernameView: View {
         return CGSize(width: .zero, height: self.parentSize.height)
     }
     
+    @State var forceRenderBool: Bool = true
+    
     var body: some View {
-        
+        print("qwerty")
         let usernameBinding = Binding<String>(get: {
-            self.username
+            print(self.username)
+            return self.username
         }, set: {
             var username = $0.lowercased()
             username = username.trimmingCharacters(in: .whitespacesAndNewlines)
             self.username = String(username.prefix(25))
+            print(self.username)
+            // forcing render UI
+            self.forceRenderBool.toggle()
         })
         
         return ZStack{
@@ -66,7 +72,7 @@ struct EditUsernameView: View {
                 
                 Button(action: {
                     self.changeUsername(to: self.username)
-                                        
+                    self.hideKeyboard()
                 }, label: {
                     Text("Done")
                     
@@ -91,8 +97,8 @@ struct EditUsernameView: View {
         }
         .frame(width: self.viewSize.width, height: self.viewSize.height)
         .background(Color.white)
+            .cornerRadius(15)
         .offset(self.offset)
-        .cornerRadius(15)
         .animation(.spring())
     }
     

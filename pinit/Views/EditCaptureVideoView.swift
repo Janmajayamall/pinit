@@ -16,12 +16,24 @@ struct EditCaptureVideoView: View {
     @State var screenState: EditCaptureVideoScreenState = .normal
     
     var body: some View {
-        GeometryReader { geometryProxy in
+        
+        // binding for descriptionText
+        let descriptionText = Binding<String>(
+            get: {
+                self.editingVideoViewModel.descriptionText
+        }, set: {
+            let descriptionText = $0.trimmingCharacters(in: .whitespacesAndNewlines)
+            self.editingVideoViewModel.descriptionText = String(descriptionText.prefix(425))
+            
+        }
+        )
+        
+        return GeometryReader { geometryProxy in
             ZStack{
                 UIKitAVPlayerView(frame: CGRect(x: 0, y: 0, width: geometryProxy.size.width, height: geometryProxy.size.height), videoFilePathUrl: self.editingVideoViewModel.videoOutputFileUrl)
                 
                 if (self.screenState == .description){
-                    FadeKeyboard(descriptionText: self.$editingVideoViewModel.descriptionText, parentSize: geometryProxy.size)
+                    FadeKeyboard(descriptionText: descriptionText, parentSize: geometryProxy.size)
                 }
                 
                 if (self.screenState == .normal) {
