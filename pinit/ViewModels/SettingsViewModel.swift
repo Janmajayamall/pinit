@@ -18,6 +18,9 @@ class SettingsViewModel: ObservableObject {
     @Published var userProfile: ProfileModel?
     @Published var userPostCount: Int = 0
     
+    @Published var internetErrorConnection: Bool = false
+    @Published var loaderTasks: Int = 0
+    
     // services
     private var authenticationService = AuthenticationService()
     private var retrievePostService = RetrievePostService()
@@ -152,11 +155,38 @@ extension SettingsViewModel {
         }.store(in: &cancellables)
     }
     
+    func subscribeToGeneralFunctionPublishers() {
+        Publishers.generalFunctionDidFailInternetConnectionPublisher.sink { (value) in
+            guard value == true else {return}
+            self.internetErrorConnection = true
+            
+            // make error false after sometime
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
+                self.internetErrorConnection = false
+            })
+        }.store(in: &cancellables)
+        
+        Publishers.generalFunctionIncreaseTaskForMainLoaderPublisher.sink { (value) in
+            guard value == true else {return}
+            
+            // increase loader count
+            self.loaderTasks += 1
+        }.store(in: &cancellables)
+        
+        Publishers.generalFunctionDecreaseTaskForMainLoaderPublisher.sink { (value) in
+            guard value == true && self.loaderTasks > 0 else {return}
+            
+            // decrease loader count
+            self.loaderTasks -= 1
+        }.store(in: &cancellables)
+    }
+    
     func setupSubscribers() {
         self.subscribeToUserProfileServicePublishers()
         self.subscribeToScreenManagementServicePublishers()
         self.subscribeToCameraFeedPublishers()
         self.subscribeToRetrievePostPublishers()
+        self.subscribeToGeneralFunctionPublishers()
     }
     
 }

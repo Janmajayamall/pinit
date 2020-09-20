@@ -375,4 +375,32 @@ extension Publishers {
         }.eraseToAnyPublisher()
     }
     
+    // publishers for general error
+    static var generalFunctionDidFailInternetConnectionPublisher: AnyPublisher<Bool, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .generalFunctionDidFailInternetConnection)
+            .compactMap { (notification) -> Bool? in
+                guard let value = notification.object as? Bool else {return nil}
+                return value
+        }.eraseToAnyPublisher()
+    }
+    static var generalFunctionIncreaseTaskForMainLoaderPublisher: AnyPublisher<Bool, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .generalFunctionIncreaseTaskForMainLoader)
+            .compactMap { (notification) -> Bool? in
+                guard let value = notification.object as? Bool else {return nil}
+                return value
+        }.eraseToAnyPublisher()
+    }
+    static var generalFunctionDecreaseTaskForMainLoaderPublisher: AnyPublisher<Bool, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .generalFunctionDecreaseTaskForMainLoader)
+            .compactMap { (notification) -> Bool? in
+                guard let value = notification.object as? Bool else {return nil}
+                return value
+        }.eraseToAnyPublisher()
+    }
 }

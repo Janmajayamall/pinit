@@ -29,16 +29,39 @@ struct MainArView: View {
                     
                     UIKitArSceneView(appArScnView: self.settingsViewModel.appArScnView)
                     
+                    if (self.settingsViewModel.internetErrorConnection == true){
+                        VStack {
+                            HStack{
+                                Spacer()
+                                Text("Something went wrong. Not internet connection!")
+                                    .foregroundColor(Color.white)
+                                    .font(Font.custom("Avenir", size: 12).bold())
+                                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                Spacer()
+                            }
+                            .background(Color.red)
+                            Spacer()
+                        }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
+                            .animation(.spring())
+                    }
+                    
                     VStack{
                         HStack{
-                            Image(systemName: self.postDisplayType == .allPosts ? "person.fill": "person.2.fill")
-                                .applyDefaultIconTheme()
-                                .applyEdgePadding(for: .topLeft)
+                            ZStack{
+                                Image(systemName: self.postDisplayType == .allPosts ? "person.fill": "person.2.fill")
+                                    .applyDefaultIconTheme()
+                                
+                                if (self.settingsViewModel.loaderTasks > 0){
+                                    Loader()
+                                }
+                                                              
+                            }
+                                 .applyEdgePadding(for: .topLeft)
                                 .onTapGesture {
                                     Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
-                                    AnalyticsParameterItemID: "id-\("title!")",
-                                    AnalyticsParameterItemName: "title!",
-                                    AnalyticsParameterContentType: "cont"
+                                        AnalyticsParameterItemID: "id-\("title!")",
+                                        AnalyticsParameterItemName: "title!",
+                                        AnalyticsParameterContentType: "cont"
                                     ])
                                     if self.settingsViewModel.isUserAuthenticated() {
                                         switch self.postDisplayType {

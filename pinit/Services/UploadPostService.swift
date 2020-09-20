@@ -24,7 +24,12 @@ class UploadPostService {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init() {}
+    init() {
+        
+        // setting up max retry time for storage ref
+        self.storageRef.storage.maxUploadRetryTime = 15
+        self.storageRef.storage.maxDownloadRetryTime = 15
+    }
     
     func uploadPostWithImage(withRequestModel requestModel: RequestCreatePostWithImageModel) {
         
@@ -49,7 +54,11 @@ class UploadPostService {
             userId: userProfile.id!,
             username: userProfile.username)
         
+        // post notification for new post --> Latency compensation
         NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, image: requestModel.image, postContentType: .image))
+        
+        // notify loader for adding task
+        NotificationCenter.default.post(name: .generalFunctionIncreaseTaskForMainLoader, object: true)
         
         // generating image data from uiImage
         guard let postImageData = requestModel.image.jpegData(compressionQuality: 0.8) else {
@@ -60,33 +69,49 @@ class UploadPostService {
         let postImageUploadRef = self.storageRef.child("images/\(userProfile.id!)-\(UUID().uuidString).jpeg")
         let postImageUploadMeta = StorageMetadata()
         postImageUploadMeta.contentType = "image/jpeg"
-        
+        print("Image upload started: error JJJ")
         postImageUploadRef.putData(postImageData, metadata: postImageUploadMeta) {(metadata, error) in
             guard let metadata = metadata else {
-                print("Image upload failed with error: \(String(describing: error?.localizedDescription))")
+                print("Image upload failed with error JJJ: \(String(describing: error?.localizedDescription))")
+                // post notification about error
+                NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
+                
+                // notify loader for deducting task
+                NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                
                 return
             }
             
+            print("image uploaded: error JJJ")
+            
             postImageUploadRef.downloadURL { (url, error) in
                 guard let url = url else {
-                    print("Image upload downloadUrl failed with error: \(String(describing: error?.localizedDescription))")
+                    print("Image upload downloadUrl failed with error JJJ: \(String(describing: error?.localizedDescription))")
+                    // post notification about the error
+                    NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
+                    
+                    // notify loader for deducting task
+                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                    
                     return
                 }
-                
+                print("got download url: error JJJ")
                 // updating the content for uploading post
                 postModel.updatePostContent(withContentUrl: url.absoluteString, withName: metadata.name ?? "", contentType: .image)
                 
                 // creating new post
                 do {
-//                    // Notify that a post will be created
-//                    if let postUIImage = UIImage(data: postImageData) {
-//                        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, image: postUIImage, postContentType: .image))
-//                    }
-                    
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
                     
+                    // notify loader for deducting task
+                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
                 }catch{
                     print("upload post with image failed with error \(error)")
+                    // post notification about the error
+                    NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
+                    
+                    // notify loader for deducting task
+                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
                 }
             }
         }
@@ -117,6 +142,8 @@ class UploadPostService {
         // Notify that a post will be created --> For latency compensation
         NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, videoFilePathUrl: requestModel.videoFilePathUrl, postContentType: .video))
         
+        // notify loader for adding task
+        NotificationCenter.default.post(name: .generalFunctionIncreaseTaskForMainLoader, object: true)
         
         // UPLOADING THE POST
         // creating holder ref for video file
@@ -129,12 +156,22 @@ class UploadPostService {
             
             guard let metadata = metadata else {
                 print("Video upload failed with error: \(String(describing: error?.localizedDescription))")
+                // post notification about the error
+                NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
+                
+                // notify loader for deducting task
+                NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
                 return
             }
             
             postVideoUplaodRef.downloadURL { (url, error) in
                 guard let url = url else {
                     print("Video upload downloadUrl failed with error: \(String(describing: error?.localizedDescription))")
+                    // post notification about the error
+                    NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
+                    
+                    // notify loader for deducting task
+                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
                     return
                 }
                 
@@ -144,8 +181,15 @@ class UploadPostService {
                 // creating new post
                 do {
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
+                    // notify loader for deducting task
+                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
                 }catch{
                     print("upload post with image failed with error \(error)")
+                    // post notification about the error
+                    NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
+                    
+                    // notify loader for deducting task
+                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
                 }
             }
         }

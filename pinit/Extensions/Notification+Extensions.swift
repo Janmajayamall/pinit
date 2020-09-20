@@ -74,4 +74,9 @@ extension Notification.Name {
     
     // notifications for PostDisplayNodeModel
     static let postDisplayNodeModelDidRequestMuteAVPlayer = Notification.Name("postDisplayNodeModelDidRequestMuteAVPlayer")
+    
+    // notifications for general function
+    static let generalFunctionDidFailInternetConnection = Notification.Name("generalFunctionDidFailInternetConnection")
+    static let generalFunctionIncreaseTaskForMainLoader = Notification.Name("generalFunctionIncreaseTaskForMainLoader")
+    static let generalFunctionDecreaseTaskForMainLoader = Notification.Name("generalFunctionDecreaseTaskForMainLoader")
 }

@@ -90,6 +90,7 @@
 		5DD2962D250E5EC000982587 /* EditingVideoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD2962C250E5EC000982587 /* EditingVideoViewModel.swift */; };
 		5DD2962F250E5FD600982587 /* EditCaptureVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */; };
 		5DD29631250E648200982587 /* UIKitAVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD29630250E648200982587 /* UIKitAVPlayerView.swift */; };
+		5DD5E1142517B29600EA17CC /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD5E1132517B29600EA17CC /* Loader.swift */; };
 		5DE4A3CA24FC082A00262A95 /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = 5DE4A3C924FC082A00262A95 /* ReadMe.md */; };
 		5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9524F5B185005F0A04 /* View+Extensions.swift */; };
 		5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */; };
@@ -206,6 +207,7 @@
 		5DD2962C250E5EC000982587 /* EditingVideoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingVideoViewModel.swift; sourceTree = "<group>"; };
 		5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCaptureVideoView.swift; sourceTree = "<group>"; };
 		5DD29630250E648200982587 /* UIKitAVPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitAVPlayerView.swift; sourceTree = "<group>"; };
+		5DD5E1132517B29600EA17CC /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
 		5DE4A3C924FC082A00262A95 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		5DE94F9524F5B185005F0A04 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 				5D564F4124F2972400962CEF /* SliderMenuView.swift */,
 				5D567CF824F4340F00283E5B /* SoftEdgeButton.swift */,
 				5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */,
+				5DD5E1132517B29600EA17CC /* Loader.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -835,6 +838,7 @@
 				5D567CF724F428E400283E5B /* SetupProfileView.swift in Sources */,
 				5D52F7DA24E9932600D9F27E /* LocationService.swift in Sources */,
 				5D52F7CB24E96E8F00D9F27E /* LoginView.swift in Sources */,
+				5DD5E1142517B29600EA17CC /* Loader.swift in Sources */,
 				5D52F7BF24E952FE00D9F27E /* ProfileView.swift in Sources */,
 				5D52F7B924E93AAA00D9F27E /* PostModel.swift in Sources */,
 				5D4DD0A824ED3E4D00E1FDF3 /* StrokeWidthSlider.swift in Sources */,
