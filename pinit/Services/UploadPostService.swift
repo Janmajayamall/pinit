@@ -38,6 +38,19 @@ class UploadPostService {
             return
         }
         
+        // creating post model
+        var postModel = PostModel(
+            description: requestModel.description,
+            isActive: true,
+            geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
+            geohash: currentLocationGeohash,
+            altitude: currentLocation.altitude,
+            isPublic: requestModel.isPublic,
+            userId: userProfile.id!,
+            username: userProfile.username)
+        
+        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, image: requestModel.image, postContentType: .image))
+        
         // generating image data from uiImage
         guard let postImageData = requestModel.image.jpegData(compressionQuality: 0.8) else {
             print("Unable to convert uImage to Image Data")
@@ -60,25 +73,15 @@ class UploadPostService {
                     return
                 }
                 
-                // creating post model
-                let postModel = PostModel(
-                    imageName: metadata.name,
-                    imageUrl: url.absoluteString,
-                    description: requestModel.description,
-                    isActive: true,
-                    geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
-                    geohash: currentLocationGeohash,
-                    altitude: currentLocation.altitude,
-                    isPublic: requestModel.isPublic,
-                    userId: userProfile.id!,
-                    username: userProfile.username)
+                // updating the content for uploading post
+                postModel.updatePostContent(withContentUrl: url.absoluteString, withName: metadata.name ?? "", contentType: .image)
                 
                 // creating new post
                 do {
-                    // Notify that a post will be created
-                    if let postUIImage = UIImage(data: postImageData) {
-                        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, image: postUIImage, postContentType: .image))
-                    }
+//                    // Notify that a post will be created
+//                    if let postUIImage = UIImage(data: postImageData) {
+//                        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, image: postUIImage, postContentType: .image))
+//                    }
                     
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
                     
@@ -100,6 +103,22 @@ class UploadPostService {
             return
         }
         
+        // creating post model
+        var postModel = PostModel(
+            description: requestModel.description,
+            isActive: true,
+            geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
+            geohash: currentLocationGeohash,
+            altitude: currentLocation.altitude,
+            isPublic: requestModel.isPublic,
+            userId: userProfile.id!,
+            username: userProfile.username)
+        
+        // Notify that a post will be created --> For latency compensation
+        NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, videoFilePathUrl: requestModel.videoFilePathUrl, postContentType: .video))
+        
+        
+        // UPLOADING THE POST
         // creating holder ref for video file
         let postVideoUplaodRef = self.storageRef.child(("videos/\(userProfile.id!)-\(UUID().uuidString).mp4"))
         let postVideoMetadata = StorageMetadata()
@@ -119,24 +138,11 @@ class UploadPostService {
                     return
                 }
                 
-                // crating post model
-                let postModel = PostModel(
-                    videoName: metadata.name,
-                    videoUrl: url.absoluteString,
-                    description: requestModel.description,
-                    isActive: true,
-                    geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
-                    geohash: currentLocationGeohash,
-                    altitude: currentLocation.altitude,
-                    isPublic: requestModel.isPublic,
-                    userId: userProfile.id!,
-                    username: userProfile.username)
+                // updating post model with content for uploding it
+                postModel.updatePostContent(withContentUrl: url.absoluteString, withName: metadata.name ?? "", contentType: .video)
                 
                 // creating new post
                 do {
-                    // Notify that a post will be created
-                    NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, videoFilePathUrl: requestModel.videoFilePathUrl, postContentType: .video))
-                    
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
                 }catch{
                     print("upload post with image failed with error \(error)")

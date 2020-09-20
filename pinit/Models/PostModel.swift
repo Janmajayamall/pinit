@@ -28,4 +28,16 @@ struct PostModel: Codable {
     var username: String
     
     @DocumentID var id: String? = UUID().uuidString
+    
+    // function to update content
+    mutating func updatePostContent(withContentUrl url: String, withName name: String, contentType type: PostContentType) {
+        switch type {
+        case .video:
+            self.videoUrl = url
+            self.videoName = name
+        case .image:
+            self.imageUrl = url
+            self.imageName = name
+        }
+    }
 }

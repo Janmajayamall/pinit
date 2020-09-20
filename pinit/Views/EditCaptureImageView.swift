@@ -26,7 +26,7 @@ struct EditCaptureImageView: View {
             get: {
                 self.editingViewModel.descriptionText
         }, set: {
-            let descriptionText = $0.trimmingCharacters(in: .whitespacesAndNewlines)
+            let descriptionText = $0.trimmingCharacters(in: .newlines)
             self.editingViewModel.descriptionText = String(descriptionText.prefix(425))
             
         }
