@@ -31,15 +31,33 @@ struct MainArView: View {
                     
                     if (self.settingsViewModel.internetErrorConnection == true){
                         VStack {
+                            Spacer()
                             HStack{
                                 Spacer()
-                                Text("Something went wrong. Not internet connection!")
+                                Text("Couldn't refresh. No internet connection!")
                                     .foregroundColor(Color.white)
                                     .font(Font.custom("Avenir", size: 12).bold())
                                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                                 Spacer()
                             }
                             .background(Color.red)
+                        }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
+                            .animation(.spring())
+                    }
+                    
+                    if (self.settingsViewModel.postsDoNotExist == true){
+                        VStack {
+                            Spacer()
+                            HStack{
+                                Spacer()
+                                Text("No Pins near you. Be the first one?")
+                                    .foregroundColor(Color.white)
+                                    .font(Font.custom("Avenir", size: 17).bold())
+                                    .padding(10)
+                                    .background(Color.black.opacity(0.3))
+                                    .cornerRadius(10)
+                                Spacer()
+                            }
                             Spacer()
                         }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
                             .animation(.spring())
@@ -54,32 +72,40 @@ struct MainArView: View {
                                 if (self.settingsViewModel.loaderTasks > 0){
                                     Loader()
                                 }
-                                                              
+                                
                             }
-                                 .applyEdgePadding(for: .topLeft)
-                                .onTapGesture {
-                                    Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
-                                        AnalyticsParameterItemID: "id-\("title!")",
-                                        AnalyticsParameterItemName: "title!",
-                                        AnalyticsParameterContentType: "cont"
-                                    ])
-                                    if self.settingsViewModel.isUserAuthenticated() {
-                                        switch self.postDisplayType {
-                                        case .allPosts:
-                                            self.postDisplayType = .privatePosts
-                                        case .privatePosts:
-                                            self.postDisplayType = .allPosts
-                                        }
-                                        
-                                        // post notification for group scn node
-                                        NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
-                                        
-                                    }else {
-                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                            .applyEdgePadding(for: .topLeft)
+                            .onTapGesture {
+                                Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                                    AnalyticsParameterItemID: "id-\("title!")",
+                                    AnalyticsParameterItemName: "title!",
+                                    AnalyticsParameterContentType: "cont"
+                                ])
+                                if self.settingsViewModel.isUserAuthenticated() {
+                                    switch self.postDisplayType {
+                                    case .allPosts:
+                                        self.postDisplayType = .privatePosts
+                                    case .privatePosts:
+                                        self.postDisplayType = .allPosts
                                     }
+                                    
+                                    // post notification for group scn node
+                                    NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
+                                    
+                                }else {
+                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                }
                             }
                             
                             Spacer()
+                                                        
+                            Image(systemName: "arrow.counterclockwise")
+                                .applyDefaultIconTheme()
+                                .applyEdgePadding(for: .topRight)
+                                .onTapGesture {
+                                    NotificationCenter.default.post(name: .groupSCNNodeDidRequestReset, object: true)
+                                    
+                            }
                             
                             Image(systemName:"gear")
                                 .applyDefaultIconTheme()
@@ -110,7 +136,7 @@ struct MainArView: View {
                             
                             Spacer()
                             
-                            Image(systemName: "arrow.counterclockwise")
+                            Image(systemName: "arrow.left")
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .bottomRight)
                                 .onTapGesture {
@@ -228,5 +254,4 @@ struct MainArView_Previews: PreviewProvider {
 //        }
 //}
 //.applyTopLeftPaddingToIcon()
-
 

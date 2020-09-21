@@ -263,6 +263,15 @@ extension Publishers {
                 return postDisplayType
         }.eraseToAnyPublisher()
     }
+    static var groupSCNNodeDidRequestResetPublisher: AnyPublisher<Bool, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .groupSCNNodeDidRequestReset)
+            .compactMap { (notification) -> Bool? in
+                guard let value = notification.object as? Bool else {return nil}
+                return value
+        }.eraseToAnyPublisher()
+    }
     
     // publishers for camera feed
     static var cameraFeedSwitchInUseCameraPublisher: AnyPublisher<CameraFeedController.CameraInUsePosition, Never>{
@@ -398,6 +407,15 @@ extension Publishers {
         NotificationCenter
         .default
             .publisher(for: .generalFunctionDecreaseTaskForMainLoader)
+            .compactMap { (notification) -> Bool? in
+                guard let value = notification.object as? Bool else {return nil}
+                return value
+        }.eraseToAnyPublisher()
+    }
+    static var generalFunctionPostsDoNotExistForCurrentLocationPublisher: AnyPublisher<Bool, Never> {
+        NotificationCenter
+        .default
+            .publisher(for: .generalFunctionPostsDoNotExistForCurrentLocation)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
                 return value

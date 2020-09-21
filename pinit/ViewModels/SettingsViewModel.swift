@@ -13,13 +13,13 @@ import FirebaseAuth
 import CoreLocation
 
 class SettingsViewModel: ObservableObject {
-    
     @Published var user: User?
     @Published var userProfile: ProfileModel?
     @Published var userPostCount: Int = 0
     
     @Published var internetErrorConnection: Bool = false
-    @Published var loaderTasks: Int = 0
+    @Published var loaderTasks: Int = 1
+    @Published var postsDoNotExist: Bool = false
     
     // services
     private var authenticationService = AuthenticationService()
@@ -35,8 +35,7 @@ class SettingsViewModel: ObservableObject {
     @Published var setupProfileViewModel = SetupProfileViewModel()
     @Published var editingViewModel: EditingViewModel?
     @Published var editingVideoViewModel: EditingVideoViewModel?
-    
-    
+        
     // all posts
     @Published var allPosts: Dictionary<String, PostModel> = [:]
     
@@ -107,7 +106,6 @@ extension SettingsViewModel {
         self.userProfileService.objectWillChange.sink { (_) in
             self.objectWillChange.send()
         }.store(in: &cancellables)
-        
         self.userProfileService.$user.assign(to: \.user, on: self).store(in: &cancellables)
         self.userProfileService.$userProfile.assign(to: \.userProfile, on: self).store(in: &cancellables)
     }
@@ -141,7 +139,6 @@ extension SettingsViewModel {
                 guard let id = post.id else {
                     return
                 }
-                
                 // checking whether post already exists in the dict or not
                 if self.allPosts[id] == nil {
                     self.allPosts[id] = post
@@ -179,6 +176,17 @@ extension SettingsViewModel {
             // decrease loader count
             self.loaderTasks -= 1
         }.store(in: &cancellables)
+        
+        Publishers.generalFunctionPostsDoNotExistForCurrentLocationPublisher.sink { (value) in
+            guard value == true else {return}
+            
+            self.postsDoNotExist = true
+            
+            // make the `Posts Do Not Exist` error disspear
+            DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
+                self.postsDoNotExist = false
+            })
+        }.store(in: &cancellables)
     }
     
     func setupSubscribers() {
@@ -188,7 +196,4 @@ extension SettingsViewModel {
         self.subscribeToRetrievePostPublishers()
         self.subscribeToGeneralFunctionPublishers()
     }
-    
 }
-
-

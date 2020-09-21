@@ -68,6 +68,9 @@ class RetrievePostService: ObservableObject {
                 print("something went wrong")
                 return
             }
+//            if (notificationName == .retrievePostServiceDidReceivePostsForGeohashes){
+//                print("latest geohasing post geohash: \(post.geohash)")
+//            }
             posts.append(post)
         }
         

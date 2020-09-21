@@ -14,8 +14,8 @@ struct Loader: View {
     
     var body: some View {
         Circle()
-            .trim(from: 0, to: 0.2)
-            .stroke(Color.white, lineWidth: 3)
+            .trim(from: 0, to: 0.8)
+            .stroke(Color.primaryColor, style: StrokeStyle(lineWidth:5, lineCap: .round))
         .frame(width: 40, height:40)
             .rotationEffect(.init(degrees: self.animation ? 360 : 0))
             .animation(Animation.linear(duration: 0.7).repeatForever(autoreverses: false))

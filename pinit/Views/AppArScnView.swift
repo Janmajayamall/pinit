@@ -34,6 +34,7 @@ class AppArScnView: ARSCNView {
     var groupNodes: Dictionary<NodeDirection, GroupSCNNode> = [:]
     var exisitingPosts: Dictionary<String, PostModel> = [:]
     var addPostToGroupOfDirection: NodeDirection = .front
+    var postsWithLoadedDisplayData: Int = 0
     
     var debug: Bool = false
     
@@ -41,6 +42,8 @@ class AppArScnView: ARSCNView {
     var lastPanLocation: SCNVector3?
     var draggingNode: GroupSCNNode?
     var prePanZ: CGFloat?
+    
+    var currentGeohashModel: GeohashModel?
     
     private var touchedNodeDirectionHistory: Array<NodeDirection> = []
     
@@ -66,6 +69,8 @@ class AppArScnView: ARSCNView {
         self.subscribeToRetrievePostServicePublishers()
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToArViewPublishers()
+        self.subscribeToGeohashingServicePublishers()
+        self.subscribeToGroupSCNNodePublishers()
         
         // adding UITapGestureRecogniser
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
@@ -263,6 +268,26 @@ class AppArScnView: ARSCNView {
         self.groupNodes[.front]?.optimisticAddPost(optimisticPostModel)
         self.exisitingPosts[id] = optimisticPostModel.postModel
     }
+    
+    func checkPostsExistForCurrentLocation() {
+        guard let currentGeohashModel = self.currentGeohashModel else {return}
+        
+        var postExists = false
+        for post in self.exisitingPosts.values {
+            if (currentGeohashModel.currentAreaGeohashes.contains(post.geohash)){
+                postExists = true
+                break
+            }
+        }
+        
+        if (!postExists) {
+            // notify that the posts at location do not exist
+            NotificationCenter.default.post(name: .generalFunctionPostsDoNotExistForCurrentLocation, object: true)
+            
+            // notify the loader to decrease initial task as posts do not exist
+            NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+        }
+    }
 
 }
 
@@ -271,12 +296,14 @@ extension AppArScnView {
     
     // RetrievePostService
     func subscribeToRetrievePostServicePublishers(){
-        
         Publishers.retrievePostServiceDidReceivePostsForGeohashes.sink { (posts) in
             print("FFG Received posts \(posts.count)")
             posts.forEach { (post) in
                 self.addPostToGroupNode(post: post)
             }
+            
+            // check whether the post exists at current geolocation
+            self.checkPostsExistForCurrentLocation()
         }.store(in: &cancellables)
     }
     
@@ -297,6 +324,25 @@ extension AppArScnView {
         Publishers.aRViewDidTapBackIconPublisher.sink { (value) in
             guard value == true else {return}
             self.handleBackIconTouch()
+        }.store(in: &cancellables)
+    }
+    
+    // subscribe to Geohashing Service Publishers
+    func subscribeToGeohashingServicePublishers() {
+        Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (model) in
+            self.currentGeohashModel = model
+        }.store(in: &cancellables)
+    }
+    
+    // subscribe to Group SCN node Publisher
+    func subscribeToGroupSCNNodePublishers() {
+        Publishers.groupSCNNodeDidLoadPostDisplayData.sink { (value) in
+            guard self.postsWithLoadedDisplayData == 0 else {return}
+            
+            self.postsWithLoadedDisplayData += 1
+            
+            // notify the loader to decrease initial task
+            NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
         }.store(in: &cancellables)
     }
 }
@@ -321,48 +367,3 @@ extension AppArScnView: ARSCNViewDelegate {
     }
 }
 
-//
-//
-//
-//func updateSceneNodes(){
-//      guard let currentLocation = self.aRSceneLocationService.currentLocation else {return}
-//
-//      self.postSceneNodes.forEach { (id, node) in
-//          guard node.isImageNodeLoaded else {return}
-//
-//          // checking whether the node is valid to be rendered
-//          guard node.checkNodeRenderValidity(withCurrentLocation: currentLocation) else {
-//              print("node -- remove -> \(node.id)")
-//              node.removeFromParentNode()
-//              return
-//          }
-//
-//          // checking whether this node is being loaded first time (if the node was removed because it was declared not valid & is declared valid again its will act as firstTime)
-//          let firstTime = !(self.mainSceneNode?.childNodes.contains(node) ?? false)
-//
-//
-//              node.updatePostNode(locationService: self.aRSceneLocationService, scenePosition: self.currentPosition, firstTime: firstTime)
-//
-//
-//
-//          // add node to mainSceneNode if it is loaded for the first time
-//          if (firstTime){
-//              print("node -- added -> \(node.id)")
-//              self.mainSceneNode?.addChildNode(node)
-//          }
-//      }
-//
-//  }
-
-
-
-// FIXME: Uncomment this
-//        // checking whether the progile picture has been loaded or not
-//        guard let userProfilePicture = node.userProfilePicture else {return}
-//
-//        // creating PostDisplayInfoModel for displaying on screen
-//        let model = PostDisplayInfoModel(username: node.username, description: node.descriptionText, userProfilePicture: userProfilePicture)
-//
-//        // post notification for post display info
-//        NotificationCenter.default.post(name: .aRViewDidTouchImageSCNNode, object: model)
-//

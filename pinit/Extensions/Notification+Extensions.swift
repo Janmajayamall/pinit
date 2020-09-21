@@ -55,6 +55,7 @@ extension Notification.Name {
     static let groupSCNNodeDidLoadPostDisplayData = Notification.Name("groupSCNNodeDidLoadPostDisplayData")
     static let groupSCNNodeDidRequestCurrentPostDisplayInfo = Notification.Name("groupSCNNodeDidRequestCurrentPostDisplayInfo")
     static let groupSCNNodeDidRequestChangePostDisplayType = Notification.Name("groupSCNNodeDidRequestChangePostDisplayType")
+    static let groupSCNNodeDidRequestReset = Notification.Name("groupSCNNodeDidRequestReset")
     
     
     // notifications for camera feed
@@ -79,4 +80,5 @@ extension Notification.Name {
     static let generalFunctionDidFailInternetConnection = Notification.Name("generalFunctionDidFailInternetConnection")
     static let generalFunctionIncreaseTaskForMainLoader = Notification.Name("generalFunctionIncreaseTaskForMainLoader")
     static let generalFunctionDecreaseTaskForMainLoader = Notification.Name("generalFunctionDecreaseTaskForMainLoader")
+    static let generalFunctionPostsDoNotExistForCurrentLocation = Notification.Name("generalFunctionPostsDoNotExistForCurrentLocation")
 }

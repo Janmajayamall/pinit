@@ -24,6 +24,8 @@ class GroupSCNNode: SCNNode, Identifiable {
     
     var currentPostIndex: Int = -1
     
+    var currentGeohashModel: GeohashModel?
+    
     private var cancellables: Set<AnyCancellable> = []
     
     init(scenePosition: SCNVector3?, direction: NodeDirection){
@@ -34,6 +36,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         // subscribe to publishers
         self.subscribeToGroupSCNNodePublishers()
         self.subcribeToAuthenticationServicePublishers()
+        self.subscribeToGeohashingServicePublishers()
         
         // add constraints to the nodeO
         let billboardConstraint = SCNBillboardConstraint()
@@ -97,15 +100,32 @@ class GroupSCNNode: SCNNode, Identifiable {
     }
     
     func isPostValidForRender(_ postDisplay: PostDisplayNodeModel) -> Bool {
+        print("checking validity")
+        guard let currentGeohashModel = self.currentGeohashModel else {
+            return false
+        }
+                
         guard self.postDisplayType == .privatePosts else {
-            return postDisplay.isReadyToDisplay
+            // if the post display type is public, then check whether the geohash for the post is within current location geohashes
+            if (currentGeohashModel.currentAreaGeohashes.contains(postDisplay.post.geohash)){
+                return postDisplay.isReadyToDisplay
+            }else {
+                return false
+            }
         }
         
-        guard let user = self.user else {
+        // if post display type is private, then check whether the post belongs to the user. If it does not then return false
+        guard let user = self.user, user.uid == postDisplay.post.userId else {
             return false
         }
         
-        return user.uid == postDisplay.post.userId
+        // post belongs to the user
+        if (currentGeohashModel.currentAreaGeohashes.contains(postDisplay.post.geohash)){
+            return postDisplay.isReadyToDisplay
+        }else {
+            return false
+        }
+        
     }
         
     func nextPost(){
@@ -163,7 +183,7 @@ class GroupSCNNode: SCNNode, Identifiable {
             guard let image = postNode.image else {return}
             self.addImageAsGeometry(image: image)
         default:
-            print("Not a valid postDiaplayNodeContentType")
+            print("Not a valid postDisplayNodeContentType")
         }
     }
     
@@ -300,12 +320,24 @@ extension GroupSCNNode {
             // reset the node
             self.resetNode()
         }.store(in: &cancellables)
+        
+        Publishers.groupSCNNodeDidRequestResetPublisher.sink { (value) in
+            guard value == true else {return}
+            self.resetNode()
+            print("YESYESYES")
+            }.store(in: &cancellables)
     }
     
     func subcribeToAuthenticationServicePublishers() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
             print("Group scn node did receive user \(user.uid)")
             self.user = user
+        }.store(in: &cancellables)
+    }
+    
+    func subscribeToGeohashingServicePublishers() {
+        Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (model) in
+            self.currentGeohashModel = model
         }.store(in: &cancellables)
     }
 
