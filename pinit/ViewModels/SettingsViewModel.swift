@@ -181,11 +181,15 @@ extension SettingsViewModel {
             guard value == true else {return}
             
             self.postsDoNotExist = true
-            
-            // make the `Posts Do Not Exist` error disspear
+            // make the `Posts Do Not Exist` error dissapear
             DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
                 self.postsDoNotExist = false
             })
+            
+            // decreasing the loader count by 1
+            guard self.loaderTasks > 0 else {return}
+            self.loaderTasks -= 1
+        
         }.store(in: &cancellables)
     }
     

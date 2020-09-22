@@ -16,8 +16,7 @@ import CoreLocation
 class UploadPostService {
     
     var userProfile: ProfileModel?
-    var currentLocation: CLLocation?
-    var currentLocationGeohash: String?
+    var currentLocationGeohashModel: GeohashModel?
     
     private var postCollectionRef: CollectionReference = Firestore.firestore().collection("posts")
     private var storageRef = Storage.storage().reference()
@@ -36,12 +35,10 @@ class UploadPostService {
         guard let userProfile = self.userProfile else {
             return
         }
-        guard let currentLocation = self.currentLocation else {
-            return
-        }
-        guard let currentLocationGeohash = self.currentLocationGeohash else {
-            return
-        }
+        guard let currentLocationGeohashModel = self.currentLocationGeohashModel else {return}
+        
+        let currentLocation = currentLocationGeohashModel.currentLocation
+        let currentLocationGeohash = currentLocationGeohashModel.currentLocationGeohash
         
         // creating post model
         var postModel = PostModel(
@@ -121,12 +118,10 @@ class UploadPostService {
         guard let userProfile = self.userProfile else {
             return
         }
-        guard let currentLocation = self.currentLocation else {
-            return
-        }
-        guard let currentLocationGeohash = self.currentLocationGeohash else {
-            return
-        }
+        guard let currentLocationGeohashModel = self.currentLocationGeohashModel else {return}
+        
+        let currentLocation = currentLocationGeohashModel.currentLocation
+        let currentLocationGeohash = currentLocationGeohashModel.currentLocationGeohash
         
         // creating post model
         var postModel = PostModel(
@@ -199,7 +194,7 @@ class UploadPostService {
         // setting up the subscribers
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToUserProfileServicePublishers()
-        self.subscribeToEstimatedUserLocationServicePublishers()
+        self.subscribeToGeohashingServicePublisehers()
     }
     
     func resetCurrentUserProfile() {
@@ -228,10 +223,10 @@ extension UploadPostService {
         }.store(in: &cancellables)
     }
     
-    func subscribeToEstimatedUserLocationServicePublishers() {        
-        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
-            self.currentLocation = location
-            self.currentLocationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
+    
+    func subscribeToGeohashingServicePublisehers() {
+        Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (model) in
+            self.currentLocationGeohashModel = model
         }.store(in: &cancellables)
     }
     

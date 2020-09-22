@@ -50,7 +50,7 @@ class AppArScnView: ARSCNView {
     private var cancellables: Set<AnyCancellable> = []
     
     init(){
-                
+        
         super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width), options: nil)
         
         // adding group scene nodes
@@ -78,12 +78,12 @@ class AppArScnView: ARSCNView {
         
         let GestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
         GestureRecogniser.numberOfTapsRequired = 2
-         self.addGestureRecognizer(GestureRecogniser)
+        self.addGestureRecognizer(GestureRecogniser)
         
         // adding UIPanGestureRecognizer
         let panGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture(sender:)))
         self.addGestureRecognizer(panGestureRecogniser)
-
+        
         // adding UIPinchGestureRecognizer
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(handlePinchGesture(sender:)))
         self.addGestureRecognizer(pinchGestureRecognizer)
@@ -91,7 +91,7 @@ class AppArScnView: ARSCNView {
         // adding UILongPressGestureRecognizer
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(sender:)))
         self.addGestureRecognizer(longPressGestureRecognizer)
-                
+        
     }
     
     required init?(coder: NSCoder) {
@@ -183,14 +183,14 @@ class AppArScnView: ARSCNView {
         
         if (sender.state == .began){
             // getting touched location
-                   let touchedCoordinates = sender.location(in: view)
-                   
-                   // getting the touched node with hit test
-                   guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
-                   
-                   // displaying info text
-                   node.displayPostInfo()                   
-                   node.toggleVolumeIfVideoContentBeingOnDisplay()
+            let touchedCoordinates = sender.location(in: view)
+            
+            // getting the touched node with hit test
+            guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
+            
+            // displaying info text
+            node.displayPostInfo()
+            node.toggleVolumeIfVideoContentBeingOnDisplay()
         }
     }
     
@@ -206,7 +206,7 @@ class AppArScnView: ARSCNView {
         
         //run the session
         self.session.run(configuration)
-
+        
     }
     
     func pauseSession(){
@@ -232,7 +232,7 @@ class AppArScnView: ARSCNView {
         }else {
             self.groupNodes[.frontLeft]?.placeNode(scenePosition: self.currentPosition)
         }
-            
+        
         // adding the nodes
         self.groupNodes.values.forEach { (node) in
             self.mainSceneNode?.addChildNode(node)
@@ -270,25 +270,13 @@ class AppArScnView: ARSCNView {
     }
     
     func checkPostsExistForCurrentLocation() {
-        guard let currentGeohashModel = self.currentGeohashModel else {return}
+        guard self.exisitingPosts.count == 0 else {return}
         
-        var postExists = false
-        for post in self.exisitingPosts.values {
-            if (currentGeohashModel.currentAreaGeohashes.contains(post.geohash)){
-                postExists = true
-                break
-            }
-        }
-        
-        if (!postExists) {
-            // notify that the posts at location do not exist
-            NotificationCenter.default.post(name: .generalFunctionPostsDoNotExistForCurrentLocation, object: true)
-            
-            // notify the loader to decrease initial task as posts do not exist
-            NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
-        }
+        // notify that the posts at location do not exist
+        NotificationCenter.default.post(name: .generalFunctionPostsDoNotExistForCurrentLocation, object: true)
+                
     }
-
+    
 }
 
 // extension for susbcribing to publishers
@@ -319,7 +307,7 @@ extension AppArScnView {
         Publishers.aRViewDidRequestResetGroupNodesPosPublisher.sink { (value) in
             guard value == true else {return}
             self.setupGroupNodes()
-            }.store(in: &cancellables)
+        }.store(in: &cancellables)
         
         Publishers.aRViewDidTapBackIconPublisher.sink { (value) in
             guard value == true else {return}

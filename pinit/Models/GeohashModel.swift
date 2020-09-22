@@ -7,10 +7,12 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct GeohashModel {
     var currentLocationGeohash: String
     var neighborGeohashes: Array<String>
+    var currentLocation: CLLocation
     var currentAreaGeohashes: Array<String> {
         // generating geohashes array containing geohashes describing current location under watch
         var geohashes = self.neighborGeohashes

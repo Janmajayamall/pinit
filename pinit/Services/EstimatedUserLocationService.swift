@@ -39,7 +39,7 @@ class EstimatedUserLocationService: ObservableObject {
                 
                 // remove old location estimates
                 self.removeOldLocationEstimates()
-                
+                print("Current location estimate: \(self.currentLocation?.altitude)")
                 // notify that the location has been updated
                 NotificationCenter.default.post(name: .estimatedUserLocationServiceDidUpdateLocation, object: self.currentLocation)
             }

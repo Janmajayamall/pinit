@@ -37,7 +37,7 @@ class GeohashingService {
         let locationGeohash = GeohashingService.getGeohash(forCoordinates: location.coordinate)
         guard self.geohashModel == nil || self.geohashModel?.currentLocationGeohash != locationGeohash else {return}
         let neighborGeohashes = GeohashingService.neighborsFor(geohash: locationGeohash)
-        let geohashModel = GeohashModel(currentLocationGeohash: locationGeohash, neighborGeohashes: neighborGeohashes)
+        let geohashModel = GeohashModel(currentLocationGeohash: locationGeohash, neighborGeohashes: neighborGeohashes, currentLocation: location)
         self.geohashModel = geohashModel        
         NotificationCenter.default.post(name: .geohasingServiceDidUpdateGeohash, object: geohashModel)
     }

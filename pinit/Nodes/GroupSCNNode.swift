@@ -99,16 +99,32 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.geometry = plane
     }
     
+    func isAltitudeInRange(withAltitude altitude: Double, withCurrentAltitude currentAltitude: Double) -> Bool {
+        let altitudeRange: Double = 10
+        
+        if ((altitude >= (currentAltitude - altitudeRange)) && (altitude <= (currentAltitude + altitudeRange))){
+            return true
+        }
+        
+        return false
+    }
+    
     func isPostValidForRender(_ postDisplay: PostDisplayNodeModel) -> Bool {
-        print("checking validity")
+        
         guard let currentGeohashModel = self.currentGeohashModel else {
             return false
         }
-                
+        print("Checking post existence (validity): \(postDisplay.post.geohash); currentAreaGeohashes: \(self.currentGeohashModel?.currentAreaGeohashes)")
         guard self.postDisplayType == .privatePosts else {
             // if the post display type is public, then check whether the geohash for the post is within current location geohashes
             if (currentGeohashModel.currentAreaGeohashes.contains(postDisplay.post.geohash)){
-                return postDisplay.isReadyToDisplay
+                
+                // check whether post is in valid altitude range or not
+                if (self.isAltitudeInRange(withAltitude: postDisplay.post.altitude, withCurrentAltitude: currentGeohashModel.currentLocation.altitude)){
+                    return postDisplay.isReadyToDisplay
+                }else{
+                    return false
+                }
             }else {
                 return false
             }
@@ -121,7 +137,12 @@ class GroupSCNNode: SCNNode, Identifiable {
         
         // post belongs to the user
         if (currentGeohashModel.currentAreaGeohashes.contains(postDisplay.post.geohash)){
-            return postDisplay.isReadyToDisplay
+            // check whether post is in valid altitude range or not
+            if (self.isAltitudeInRange(withAltitude: postDisplay.post.altitude, withCurrentAltitude: currentGeohashModel.currentLocation.altitude)){
+                return postDisplay.isReadyToDisplay
+            }else{
+                return false
+            }
         }else {
             return false
         }
