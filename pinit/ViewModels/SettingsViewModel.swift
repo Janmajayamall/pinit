@@ -30,9 +30,9 @@ class SettingsViewModel: ObservableObject {
     private var estimatedUserLocationService = EstimatedUserLocationService()
     private var uploadPostService = UploadPostService()
     private var geohasingService = GeohashingService()
+    private var analyticsService = AnalyticsService()
     
     // view models
-    @Published var setupProfileViewModel = SetupProfileViewModel()
     @Published var editingViewModel: EditingViewModel?
     @Published var editingVideoViewModel: EditingVideoViewModel?
         
@@ -64,15 +64,6 @@ class SettingsViewModel: ObservableObject {
     func signOut() {
         // logging out from firebase auth
         self.authenticationService.signOut()
-        
-        // stopping user profile service
-        self.userProfileService.stopServiceForCurrentUser()
-        
-        // resetting user profile in upload service
-        self.uploadPostService.resetCurrentUserProfile()
-        
-        // resetting the screens
-        self.screenManagementService.mainScreenService.resetScreen()
     }
     
     func setupEditingViewModel(withUIImage image: UIImage) {
@@ -114,13 +105,6 @@ extension SettingsViewModel {
         self.screenManagementService.objectWillChange.sink(receiveValue: { value in
             self.objectWillChange.send()
         }).store(in: &cancellables)
-    }
-    
-    
-    func subscribeToSetupProfileViewModelPublishers(){
-        self.setupProfileViewModel.objectWillChange.sink { (_) in
-            self.objectWillChange.send()
-        }.store(in: &cancellables)
     }
     
     func subscribeToCameraFeedPublishers(){

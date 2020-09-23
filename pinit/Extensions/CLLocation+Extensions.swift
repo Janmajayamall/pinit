@@ -44,8 +44,18 @@ extension CLLocation {
         }
         
         return CLLocationTranslation(latitudeTranslation: latitudeTranslation, longitudeTranslation: longitudeTranslation, altitudeTranslation: 0)
+    }
+    
+    func checkAltitudeInRange(forAltitude otherAltitude: Double) -> Bool {
+        let currentAltitude = self.altitude
+        let altitudeRange: Double = 10.0
         
-                  
+        // checking whether altitude is in range or not
+        if (otherAltitude >= (currentAltitude - altitudeRange) && otherAltitude <= (currentAltitude + altitudeRange)){
+            return true
+        }else{
+            return false
+        }
     }
 }
 

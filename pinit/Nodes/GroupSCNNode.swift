@@ -99,28 +99,18 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.geometry = plane
     }
     
-    func isAltitudeInRange(withAltitude altitude: Double, withCurrentAltitude currentAltitude: Double) -> Bool {
-        let altitudeRange: Double = 10
-        
-        if ((altitude >= (currentAltitude - altitudeRange)) && (altitude <= (currentAltitude + altitudeRange))){
-            return true
-        }
-        
-        return false
-    }
-    
     func isPostValidForRender(_ postDisplay: PostDisplayNodeModel) -> Bool {
         
         guard let currentGeohashModel = self.currentGeohashModel else {
             return false
         }
-        print("Checking post existence (validity): \(postDisplay.post.geohash); currentAreaGeohashes: \(self.currentGeohashModel?.currentAreaGeohashes)")
+     
         guard self.postDisplayType == .privatePosts else {
             // if the post display type is public, then check whether the geohash for the post is within current location geohashes
             if (currentGeohashModel.currentAreaGeohashes.contains(postDisplay.post.geohash)){
                 
                 // check whether post is in valid altitude range or not
-                if (self.isAltitudeInRange(withAltitude: postDisplay.post.altitude, withCurrentAltitude: currentGeohashModel.currentLocation.altitude)){
+                if (currentGeohashModel.currentLocation.checkAltitudeInRange(forAltitude: postDisplay.post.altitude)){
                     return postDisplay.isReadyToDisplay
                 }else{
                     return false
@@ -138,7 +128,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         // post belongs to the user
         if (currentGeohashModel.currentAreaGeohashes.contains(postDisplay.post.geohash)){
             // check whether post is in valid altitude range or not
-            if (self.isAltitudeInRange(withAltitude: postDisplay.post.altitude, withCurrentAltitude: currentGeohashModel.currentLocation.altitude)){
+            if (currentGeohashModel.currentLocation.checkAltitudeInRange(forAltitude: postDisplay.post.altitude)){
                 return postDisplay.isReadyToDisplay
             }else{
                 return false
@@ -351,7 +341,7 @@ extension GroupSCNNode {
     
     func subcribeToAuthenticationServicePublishers() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
-            print("Group scn node did receive user \(user.uid)")
+//            print("Group scn node did receive user \(user.uid)")
             self.user = user
         }.store(in: &cancellables)
     }

@@ -16,20 +16,22 @@ import Combine
 import UIKit
 
 class AuthenticationService {
-
+    
     private var handle: AuthStateDidChangeListenerHandle?
-
+    
     init(){}
     
     func registerStateListener(){
-        if let handle = self.handle {
-            Auth.auth().removeStateDidChangeListener(handle)
-        }
+        self.stopStateListener()
         
         self.handle = Auth.auth().addStateDidChangeListener({(auth, user) in
-            if let user = user {                
-                self.postNotification(for: .authenticationServiceDidAuthStatusChange, withObject: user)
-            }
+            
+            self.postNotification(for: .authenticationServiceDidAuthStatusChange, withObject: user)
+//            guard let user = user else {
+//                return
+//            }
+//
+//            print("\(user.providerID) \(user.displayName) \(user.email) --HERE YOU GO")
         })
     }
     
@@ -125,7 +127,7 @@ extension SignInWithAppleCoordinator: ASAuthorizationControllerDelegate {
                     }
                     
                     // create an event
-                    AnalyticsService.logSignInEvent(withProvider: .apple)
+                    AnalyticsService.logSignUpEvent(withProvider: .apple)
                     
                     guard let user = result?.user else {return}
                     if let onSignedInHandler = self.onSignedInHandler {

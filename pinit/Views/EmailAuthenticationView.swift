@@ -93,11 +93,11 @@ struct EmailAuthenticationView: View {
         if (self.viewType == .login){
             signInWithEmailCoordinator.login(onSignedInHandler: {(user) in
                 self.loadingIndicator = false
-                self.isOpen = false
                 
-               // create an event
-                AnalyticsService.logSignInEvent(withProvider: .email)
+                // create an event
+                AnalyticsService.logLogInEvent(withProvider: .email)
                 
+                self.isOpen = false                
             }) { (errorCode) in
                 switch (errorCode){
                 case .invalidEmail:
@@ -120,11 +120,11 @@ struct EmailAuthenticationView: View {
         }else if (self.viewType == .signUp){
             signInWithEmailCoordinator.signUp(onSignedInHandler: { (user) in
                 self.loadingIndicator = false
-                self.isOpen = false
                 
                 // create an event
-                AnalyticsService.logSignInEvent(withProvider: .email)
+                AnalyticsService.logSignUpEvent(withProvider: .email)
                 
+                self.isOpen = false
             }) { (errorCode) in
                 switch (errorCode){
                 case .emailAlreadyInUse:

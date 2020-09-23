@@ -11,6 +11,8 @@ import SwiftUI
 struct SetupProfileView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
+    @ObservedObject var setupProfileViewModel: SetupProfileViewModel = SetupProfileViewModel()
+    
     var parentSize: CGSize
     
     @State var noteText: String = ""
@@ -34,12 +36,12 @@ struct SetupProfileView: View {
         // binding for username
         let usernameBinding = Binding<String>(
             get: {
-                self.settingsViewModel.setupProfileViewModel.username
+                self.setupProfileViewModel.username
         }, set: {
             
             var username = $0.lowercased()
             username = username.trimmingCharacters(in: .whitespacesAndNewlines)
-            self.settingsViewModel.setupProfileViewModel.username = String(username.prefix(25))
+            self.setupProfileViewModel.username = String(username.prefix(25))
             
             // forcing render UI
             self.forceRenderBool.toggle()
@@ -58,7 +60,7 @@ struct SetupProfileView: View {
             HStack{
                 Spacer()
                 VStack{
-                    CustomTextFieldView(text: usernameBinding, placeholder: "Username", noteText: self.$settingsViewModel.setupProfileViewModel.usernameError)
+                    CustomTextFieldView(text: usernameBinding, placeholder: "Username", noteText: self.$setupProfileViewModel.usernameError)
                         .font(Font.custom("Avenir", size: 18))
                         .foregroundColor(Color.black)                    
                 }
@@ -68,7 +70,7 @@ struct SetupProfileView: View {
             Spacer()
             
             Button(action: {
-                self.settingsViewModel.setupProfileViewModel.initiateSetupProfile { success in
+                self.setupProfileViewModel.initiateSetupProfile { success in
                     if (success == true){
                         // hiding the keyboard
                         self.hideKeyboard()

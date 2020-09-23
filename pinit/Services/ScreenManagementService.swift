@@ -246,8 +246,7 @@ struct MainScreenService: ScreenService {
         self.activeType = .mainArView
         
         // reset captureImageView Screen after switching screen, so it does not looks glitchy
-        self.captureImageViewScreenService.resetScreen()
-        
+        self.captureImageViewScreenService.resetScreen()        
     }
         
     mutating func resetScreen() {
@@ -268,6 +267,7 @@ class ScreenManagementService: ObservableObject {
     
     init(){
         self.subscribeToUserProfileServicePublishers()
+        self.subscribeToAuthenticationServicePublishers()
     }
     
     
@@ -280,6 +280,13 @@ extension ScreenManagementService {
             self.mainScreenService.switchToSetupUserProfile()
         }.store(in: &cancellables)
     }
+    
+    func subscribeToAuthenticationServicePublishers(){
+        Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
+            self.mainScreenService.resetScreen()
+        }.store(in: &cancellables)
+    }
+    
 }
 
 

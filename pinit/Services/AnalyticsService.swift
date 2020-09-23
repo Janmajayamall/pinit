@@ -8,11 +8,19 @@
 
 import Foundation
 import FirebaseAnalytics
+import FirebaseAuth
+import Combine
 
 class AnalyticsService {
     
+    private var cancellables: Set<AnyCancellable> = []
     
-    static func logSignInEvent(withProvider authProvider: AnalyticsService.AnalyticsAuthProvider){
+    init(){
+        self.subscribeToAuthenticationService()
+    }
+    
+    static func logSignUpEvent(withProvider authProvider: AnalyticsService.AnalyticsAuthProvider){
+        print("Logged signuUp")        
         Analytics.logEvent(AnalyticsEventSignUp, parameters: [AnalyticsParameterSignUpMethod: authProvider.rawValue] )
                           
     }
@@ -26,9 +34,29 @@ class AnalyticsService {
     }
 
     static func logNodeTap(inDirection nodeDirection: NodeDirection){
+        print("Logged for node direction \(nodeDirection.rawValue)")
         Analytics.logEvent(AnalyticsConstants.AnalyticsEventUserTapNode,  parameters:[AnalyticsConstants.AnalyticsParameterTapNodeDirection: nodeDirection.rawValue])
     }
+    
+    static func logUserDidPost(withContentType contentType: PostContentType){
+        Analytics.logEvent(AnalyticsConstants.AnalyticsEventUserDidPost, parameters: [AnalyticsConstants.AnalyticsParameterPostContentType: contentType.rawValue])
+    }
         
+}
+
+extension AnalyticsService {
+    func subscribeToAuthenticationService() {
+        Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
+            // setting up user id for analytics
+            Analytics.setUserID(user?.uid)
+            
+            if (user == nil){
+                Analytics.setUserProperty("false", forName: AnalyticsConstants.AnalyticsUserPropertyAuthenticated)
+            }else {
+                Analytics.setUserProperty("true", forName: AnalyticsConstants.AnalyticsUserPropertyAuthenticated)
+            }
+        }.store(in: &cancellables)
+    }
 }
 
 extension AnalyticsService {
@@ -38,7 +66,16 @@ extension AnalyticsService {
     }
     
     class AnalyticsConstants {
+        // events
         static let AnalyticsEventUserTapNode = "AnalyticsEventUserTapNode"
+        static let AnalyticsEventUserDidPost = "AnalyticsEventUserDidPost"
+        
+        // parameters
         static let AnalyticsParameterTapNodeDirection = "AnalyticsParameterTapNodeDirection"
+        static let AnalyticsParameterPostContentType = "AnalyticsParameterPostContentType"
+        
+        // user property
+        static let AnalyticsUserPropertyAuthenticated = "AnalyticsUserPropertyAuthenticated"
+        
     }
 }

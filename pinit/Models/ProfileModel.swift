@@ -12,5 +12,10 @@ import FirebaseFirestoreSwift
 
 struct ProfileModel: Codable {
     var username: String
+    var geolocation: GeoPoint?
+    var email: String
+    var createdAt: Timestamp = Timestamp()
+    var lastActive: Timestamp?
+    var lastUpload: Timestamp?
     @DocumentID var id: String? = UUID().uuidString
 }

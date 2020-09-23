@@ -54,7 +54,7 @@ class RetrievePostService: ObservableObject {
             }
             
             // notify about user posts
-            NotificationCenter.default.post(name: .retrievePostServiceDidReceiveUserPosts, object: posts)
+            self.postNotification(for: .retrievePostServiceDidReceiveUserPosts, withObject: posts)
         })
     }
     
@@ -68,15 +68,15 @@ class RetrievePostService: ObservableObject {
                 print("something went wrong")
                 return
             }
-//            if (notificationName == .retrievePostServiceDidReceivePostsForGeohashes){
-//                print("latest geohasing post geohash: \(post.geohash)")
-//            }
             posts.append(post)
         }
         
         // notify according to the notification name
-        NotificationCenter.default.post(name: notificationName, object: posts)
-        
+        self.postNotification(for: notificationName, withObject: posts)
+    }
+    
+    func postNotification(for notificationName: Notification.Name, withObject object: Any){
+        NotificationCenter.default.post(name: notificationName, object: object)
     }
     
     func stopListeningToAllPosts(){
@@ -113,7 +113,15 @@ extension RetrievePostService {
     func subscribeToAuthenticationServicePublishers(){
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
             self.user = user
-            self.listenToUserPosts()
+            
+            // when user is not nil, then listen to its posts
+            if (self.user != nil){
+                self.listenToUserPosts()
+            }else {
+                // make the usersPostCount in setting view model as zero
+                self.postNotification(for: .retrievePostServiceDidReceiveUserPosts, withObject: [])
+            }
+                        
         }.store(in: &cancellables)
     }
 }

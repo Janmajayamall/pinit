@@ -15,11 +15,11 @@ import AVFoundation
 extension Publishers {
     
     // publishers for Authentication
-    static var authenticationServiceDidAuthStatusChangePublisher: AnyPublisher<User, Never> {
+    static var authenticationServiceDidAuthStatusChangePublisher: AnyPublisher<User?, Never> {
         NotificationCenter
             .default
             .publisher(for: .authenticationServiceDidAuthStatusChange)
-            .compactMap({ (notification) -> User? in
+            .map({ (notification) -> User? in
                 if let user = notification.object as? User {
                     return user
                 }

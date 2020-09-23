@@ -156,7 +156,7 @@ extension PostDisplayNodeModel {
     }
 }
 
-enum PostContentType {
+enum PostContentType: String {
     case video
     case image
 }

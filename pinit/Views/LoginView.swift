@@ -70,8 +70,8 @@ struct LoginView: View {
                 self.signInWithAppleCoordinator = SignInWithAppleCoordinator(window: self.window)
                 self.signInWithAppleCoordinator?.signIn(onSignedInHandler: {user in                   
                     
-                    // close the login view
-                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
+//                    // close the login view
+//                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                 })
             }
             

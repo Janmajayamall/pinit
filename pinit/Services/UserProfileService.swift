@@ -11,11 +11,16 @@ import Firebase
 import Combine
 import SDWebImageSwiftUI
 import FirebaseStorage
+import CoreLocation
+import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 class UserProfileService: ObservableObject {
     
     @Published var user: User?
     @Published var userProfile: ProfileModel?
+    
+    var currentLocation: CLLocation?
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -36,6 +41,9 @@ class UserProfileService: ObservableObject {
     func stopServiceForCurrentUser() {
         self.user = nil
         self.userProfile = nil
+        
+        // stop listening to use profile
+        self.stopListeningToUserProfile()
     }
     
     func listenToUserProfile() {
@@ -64,6 +72,9 @@ class UserProfileService: ObservableObject {
             // notify that user profile changed
             self.postNotification(for: .userProfileServiceDidUpdateUserProfile, withObject: profile)
         }
+        
+        // update last active for the user
+        self.updateLastActive()
     }
 
     func stopListeningToUserProfile() {
@@ -77,7 +88,12 @@ class UserProfileService: ObservableObject {
         guard let user = self.user, self.userProfile == nil else {return}
         
         // creating profile model
-        let profile = ProfileModel(username: model.username)
+        var profile = ProfileModel(username: model.username, email: user.email ?? "")
+        
+        // upadting user's current geolocation
+        if let currentLocation = self.currentLocation {
+            profile.geolocation = GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+        }
         
         // creating user profile
         do {
@@ -86,7 +102,29 @@ class UserProfileService: ObservableObject {
         }catch {
             print("Setup User Profile failed with error: \(error.localizedDescription)")
         }
+    }
+    
+    func updateLastActive() {
+        print("Called Called")
+        guard let user = self.user else {return}
         
+        let userDocRef = self.userCollectionRef.document(user.uid)
+        
+        // updating lastActive
+        userDocRef.updateData([
+            "lastActive": Timestamp()
+        ])
+    }
+    
+    func updateLastUpload() {
+        guard let user = self.user else {return}
+        
+        let userDocRef = self.userCollectionRef.document(user.uid)
+        
+        // updating lastActive
+        userDocRef.updateData([
+            "lastUpload": Timestamp()
+        ])
     }
     
     /// updates the username of the user in database
@@ -116,6 +154,7 @@ class UserProfileService: ObservableObject {
         // setting up subscribers
         self.subscribeToAuthenticationSeriverPublishers()
         self.subscribeToUserProfileServicePublishers()
+        self.subscribeToEstimatedUserLocationService()
     }
 
     func postNotification(for notificationType: Notification.Name, withObject object: Any){
@@ -144,15 +183,27 @@ class UserProfileService: ObservableObject {
 // for subscribing to publishers
 extension UserProfileService {
     func subscribeToAuthenticationSeriverPublishers() {
-        Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
-            guard let currentUser = self.user else {
-                self.registerServiceForUser(user)
+        Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (newUser) in
+            guard let newUser = newUser else {
+                // log out the current user
+                self.stopServiceForCurrentUser()
                 return
             }
             
-            guard user.uid != currentUser.uid else {return}
+            guard let currentUser = self.user else {
+                // there is no exisitng user
+                self.registerServiceForUser(newUser)
+                return
+            }
             
-            self.registerServiceForUser(user)
+            // checking whether the current user is same as new user
+            guard newUser.uid != currentUser.uid else {
+                // if the user hasn't changed then return
+                return
+            }
+            
+            // register user profile services for new user
+            self.registerServiceForUser(newUser)
             return
         }.store(in: &cancellables)
     }
@@ -166,41 +217,17 @@ extension UserProfileService {
         Publishers.userProfileServiceDidRequestSetupUserProfilePublisher.sink { (requestModel) in
             self.setupUserProfile(withModel: requestModel)
         }.store(in: &cancellables)
-        
-    }        
+    }
+    
+    func subscribeToEstimatedUserLocationService() {
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+            self.currentLocation = location
+        }.store(in: &cancellables)
+    }
+    
+    func subscribeToUploadPostService() {
+        Publishers.uploadPostServiceDidUploadPostPublisher.sink { (model) in
+            self.updateLastUpload()
+        }.store(in: &cancellables)
+    }
 }
-//
-//
-//func uploadImage(withImage image: UIImage, withCallback callback: @escaping (String) -> Void){
-//    guard let user = self.user else {return}
-//
-//    // generating image data from uiImage
-//    guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-//        print("Generating JPEG data for profile image failed with error")
-//        return
-//    }
-//
-//    // image upload ref
-//    let imageUploadRef = self.storageRef.child("profileImages/\(user.uid)-\(UUID().uuidString).jpeg")
-//    let imageUploadMeta = StorageMetadata()
-//    imageUploadMeta.contentType = "image/jpeg"
-//
-//    imageUploadRef.putData(imageData, metadata: imageUploadMeta) {(metadata, error) in
-//        guard error == nil else {
-//            print("User profile image upload failed withe error: \(String(describing: error?.localizedDescription))")
-//            return
-//        }
-//
-//        imageUploadRef.downloadURL { (url, error) in
-//            guard let url = url else {
-//                print("User profile image upload downloadUrl failed with error: \(String(describing: error?.localizedDescription))")
-//                return
-//            }
-//
-//            // calling the callback passed by the caller
-//            callback(url.absoluteString)
-//        }
-//
-//    }
-//}
-//
