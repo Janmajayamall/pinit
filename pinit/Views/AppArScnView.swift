@@ -285,8 +285,9 @@ extension AppArScnView {
     // RetrievePostService
     func subscribeToRetrievePostServicePublishers(){
         Publishers.retrievePostServiceDidReceivePostsForGeohashes.sink { (posts) in
-            print("FFG Received posts \(posts.count)")
+            
             posts.forEach { (post) in
+                print("POST RCVV \(post.geohash)")
                 self.addPostToGroupNode(post: post)
             }
             

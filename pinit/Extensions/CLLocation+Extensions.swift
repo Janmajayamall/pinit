@@ -46,17 +46,34 @@ extension CLLocation {
         return CLLocationTranslation(latitudeTranslation: latitudeTranslation, longitudeTranslation: longitudeTranslation, altitudeTranslation: 0)
     }
     
-    func checkAltitudeInRange(forAltitude otherAltitude: Double) -> Bool {
-        let currentAltitude = self.altitude
+    /// returns true if given location is valid in distance (70 meters for now) and is in valid altitude difference (+- 10 meters) from current location (origin)
+    ///
+    /// - parameters:
+    ///     - forLocation: Other location
+    func checkIsInValidDistanceRange(forLocation location: CLLocation) -> Bool {
+        let maxDistanceFromOrigin: Double = 70 // in meters
         let altitudeRange: Double = 10.0
         
-        // checking whether altitude is in range or not
-        if (otherAltitude >= (currentAltitude - altitudeRange) && otherAltitude <= (currentAltitude + altitudeRange)){
-            return true
-        }else{
+        // distance of location from origin
+        let distance = self.distance(from: location)
+        
+        // if max distance from origin is violated then return false
+        if (distance > maxDistanceFromOrigin){
             return false
         }
+        
+        // Location is within expected distance from origin.
+        // Now check whether the altitude of the given location
+        // is in valid range from origin.
+        if (location.altitude >= (self.altitude - altitudeRange) && location.altitude <= (self.altitude + altitudeRange)){
+            // altitude & distance is in valid range from origin
+            return true
+        }
+        
+        // altitude is not in range
+        return false
     }
+    
 }
 
 class CLLocationTranslation {

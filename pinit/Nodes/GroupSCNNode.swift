@@ -12,6 +12,7 @@ import ARKit
 import Combine
 import AVFoundation
 import FirebaseAuth
+import CoreLocation
 
 class GroupSCNNode: SCNNode, Identifiable {
     
@@ -24,7 +25,7 @@ class GroupSCNNode: SCNNode, Identifiable {
     
     var currentPostIndex: Int = -1
     
-    var currentGeohashModel: GeohashModel?
+    var currentLocation: CLLocation?
     
     private var cancellables: Set<AnyCancellable> = []
     
@@ -36,7 +37,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         // subscribe to publishers
         self.subscribeToGroupSCNNodePublishers()
         self.subcribeToAuthenticationServicePublishers()
-        self.subscribeToGeohashingServicePublishers()
+        self.subscribeToEstimatedUserLocationServicePublishers()
         
         // add constraints to the nodeO
         let billboardConstraint = SCNBillboardConstraint()
@@ -81,8 +82,8 @@ class GroupSCNNode: SCNNode, Identifiable {
         let scaledDims = self.getScaledDim(forSize: UIScreen.main.bounds.size)
         
         // create plane for adding as geometry to the node
-       let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
-       plane.cornerRadius = 0.1 * scaledDims.width
+        let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
+        plane.cornerRadius = 0.1 * scaledDims.width
         // texturing the plane with the image
         plane.firstMaterial?.diffuse.contents = avPlayer
         let translation = SCNMatrix4MakeTranslation(-1, 0, 0)
@@ -101,21 +102,19 @@ class GroupSCNNode: SCNNode, Identifiable {
     
     func isPostValidForRender(_ postDisplay: PostDisplayNodeModel) -> Bool {
         
-        guard let currentGeohashModel = self.currentGeohashModel else {
+        guard let currentLocation = self.currentLocation else {
             return false
         }
-     
+        
+        let post = postDisplay.post
+        let postLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: post.geolocation.latitude, longitude: post.geolocation.longitude), altitude: post.altitude, horizontalAccuracy: 0, verticalAccuracy: 0, timestamp: .init())
+        
         guard self.postDisplayType == .privatePosts else {
-            // if the post display type is public, then check whether the geohash for the post is within current location geohashes
-            if (currentGeohashModel.currentAreaGeohashes.contains(postDisplay.post.geohash)){
-                
-                // check whether post is in valid altitude range or not
-                if (currentGeohashModel.currentLocation.checkAltitudeInRange(forAltitude: postDisplay.post.altitude)){
-                    return postDisplay.isReadyToDisplay
-                }else{
-                    return false
-                }
-            }else {
+            // check whether post is in valid distance and altitude range current locationprint("POST RCVV \(posts.count)")
+            print("POST RCVV \(currentLocation.checkIsInValidDistanceRange(forLocation: postLocation))")
+            if (currentLocation.checkIsInValidDistanceRange(forLocation: postLocation)){
+                return postDisplay.isReadyToDisplay
+            }else{
                 return false
             }
         }
@@ -125,20 +124,14 @@ class GroupSCNNode: SCNNode, Identifiable {
             return false
         }
         
-        // post belongs to the user
-        if (currentGeohashModel.currentAreaGeohashes.contains(postDisplay.post.geohash)){
-            // check whether post is in valid altitude range or not
-            if (currentGeohashModel.currentLocation.checkAltitudeInRange(forAltitude: postDisplay.post.altitude)){
-                return postDisplay.isReadyToDisplay
-            }else{
-                return false
-            }
-        }else {
+        // check whether post is in valid altitude range or not
+        if (currentLocation.checkIsInValidDistanceRange(forLocation: postLocation)){
+            return postDisplay.isReadyToDisplay
+        }else{
             return false
         }
-        
     }
-        
+    
     func nextPost(){
         guard self.postList.count > 0 && self.currentPostIndex >= 0 else {return}
         
@@ -169,7 +162,7 @@ class GroupSCNNode: SCNNode, Identifiable {
             if (self.currentPostIndex < 0){
                 self.currentPostIndex = self.currentPostIndex + self.postList.count
             }
-           
+            
             // if current index == refIndex then break
             if (self.currentPostIndex == refIndex){
                 break
@@ -235,9 +228,9 @@ class GroupSCNNode: SCNNode, Identifiable {
         guard let avPlayer = self.postList[self.currentPostIndex].avPlayer, let id = self.postList[self.currentPostIndex].post.id else {return}
         
         avPlayer.isMuted = !avPlayer.isMuted
-
+        
         NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: id)
-
+        
     }
     
     func placeNode(scenePosition: SCNVector3?){
@@ -299,9 +292,8 @@ class GroupSCNNode: SCNNode, Identifiable {
     }
     
     func loadInitialPostDisplay() {
-        print("TRIED THIS")
         guard self.currentPostIndex == -1 && self.postList.count > 0 else {return}
-            
+        
         for index in 0..<self.postList.count {
             if self.isPostValidForRender(self.postList[index]) {
                 self.currentPostIndex = index
@@ -335,23 +327,21 @@ extension GroupSCNNode {
         Publishers.groupSCNNodeDidRequestResetPublisher.sink { (value) in
             guard value == true else {return}
             self.resetNode()
-            print("YESYESYES")
-            }.store(in: &cancellables)
+        }.store(in: &cancellables)
     }
     
     func subcribeToAuthenticationServicePublishers() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
-//            print("Group scn node did receive user \(user.uid)")
             self.user = user
         }.store(in: &cancellables)
     }
     
-    func subscribeToGeohashingServicePublishers() {
-        Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (model) in
-            self.currentGeohashModel = model
+    func subscribeToEstimatedUserLocationServicePublishers() {
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+            self.currentLocation = location
+            self.loadInitialPostDisplay()
         }.store(in: &cancellables)
     }
-
 }
 
 enum NodeDirection: String {
@@ -364,3 +354,11 @@ enum PostDisplayType {
     case privatePosts
     case allPosts
 }
+
+
+//
+//func subscribeToGeohashingServicePublishers() {
+//    Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (model) in
+//        self.currentGeohashModel = model
+//    }.store(in: &cancellables)
+//}

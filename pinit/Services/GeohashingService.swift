@@ -9,6 +9,8 @@
 import Foundation
 import CoreLocation
 import Combine
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 enum Direction {
     case north
@@ -38,8 +40,22 @@ class GeohashingService {
         guard self.geohashModel == nil || self.geohashModel?.currentLocationGeohash != locationGeohash else {return}
         let neighborGeohashes = GeohashingService.neighborsFor(geohash: locationGeohash)
         let geohashModel = GeohashModel(currentLocationGeohash: locationGeohash, neighborGeohashes: neighborGeohashes, currentLocation: location)
-        self.geohashModel = geohashModel        
+        self.geohashModel = geohashModel
+        self.updateOnWeb()
+        print("Geohashing service updated \(self.geohashModel!.currentLocation) \(self.geohashModel!.currentLocationGeohash)")
         NotificationCenter.default.post(name: .geohasingServiceDidUpdateGeohash, object: geohashModel)
+    }
+    
+    func updateOnWeb() {
+        guard let model = self.geohashModel else {return}
+        
+        Firestore.firestore().collection("locations").document(UUID().uuidString).setData([
+            "geolocation":GeoPoint(latitude: model.currentLocation.coordinate.latitude, longitude: model.currentLocation.coordinate.longitude),
+            "altitude": model.currentLocation.altitude,
+            "geohash":model.currentLocationGeohash,
+            "timestamp": Timestamp(),
+            "geohashArray": model.currentAreaGeohashes
+        ])
     }
     
     func setupService(){
@@ -150,7 +166,7 @@ class GeohashingService {
     }
     
     static private let base32: Array<Character> = Array("0123456789bcdefghjkmnpqrstuvwxyz") // (geohash-specific) Base32
-    static private let geohashPrecision: Int = 9 // the length of the geophash determines the area covered by geohash
+    static private let geohashPrecision: Int = 8 // the length of the geophash determines the area covered by geohash
 }
 
 // for subscriptions of publishers

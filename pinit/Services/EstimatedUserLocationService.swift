@@ -39,14 +39,14 @@ class EstimatedUserLocationService: ObservableObject {
                 
                 // remove old location estimates
                 self.removeOldLocationEstimates()
-                print("Current location estimate: \(self.currentLocation?.altitude)")
+                
                 // notify that the location has been updated
                 NotificationCenter.default.post(name: .estimatedUserLocationServiceDidUpdateLocation, object: self.currentLocation)
             }
         }
     }
     
-    private func removeOldLocationEstimates() {
+    private func removeOldLocationEstimates() {        
         self.locationData = self.locationData.filter({ (location) -> Bool in
             let locationAge = -1 * location.timestamp.timeIntervalSinceNow
             
