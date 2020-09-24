@@ -125,8 +125,8 @@ struct MainArView: View {
                                 .applyEdgePadding(for: .bottomLeft)
                                 .onTapGesture {
                                     if self.settingsViewModel.isUserAuthenticated() {
-                                        // stop session
-                                        self.settingsViewModel.appArScnView.pauseSession()
+//                                        // stop session
+//                                        self.settingsViewModel.appArScnView.pauseSession()
                                         
                                         self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
                                     }else {
@@ -223,6 +223,10 @@ struct MainArView: View {
                         self.mapViewYDragTranslation = 0
                         }
                 ))
+                .onDisappear {
+                    self.settingsViewModel.appArScnView.pauseSession()
+            }
+            
             
         }
         

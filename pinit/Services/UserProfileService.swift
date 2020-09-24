@@ -105,7 +105,6 @@ class UserProfileService: ObservableObject {
     }
     
     func updateLastActive() {
-        print("Called Called")
         guard let user = self.user else {return}
         
         let userDocRef = self.userCollectionRef.document(user.uid)
@@ -155,6 +154,7 @@ class UserProfileService: ObservableObject {
         self.subscribeToAuthenticationSeriverPublishers()
         self.subscribeToUserProfileServicePublishers()
         self.subscribeToEstimatedUserLocationService()
+        self.subscribeToUploadPostService()
     }
 
     func postNotification(for notificationType: Notification.Name, withObject object: Any){

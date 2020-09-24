@@ -20,7 +20,6 @@ class AnalyticsService {
     }
     
     static func logSignUpEvent(withProvider authProvider: AnalyticsService.AnalyticsAuthProvider){
-        print("Logged signuUp")        
         Analytics.logEvent(AnalyticsEventSignUp, parameters: [AnalyticsParameterSignUpMethod: authProvider.rawValue] )
                           
     }
@@ -34,7 +33,6 @@ class AnalyticsService {
     }
 
     static func logNodeTap(inDirection nodeDirection: NodeDirection){
-        print("Logged for node direction \(nodeDirection.rawValue)")
         Analytics.logEvent(AnalyticsConstants.AnalyticsEventUserTapNode,  parameters:[AnalyticsConstants.AnalyticsParameterTapNodeDirection: nodeDirection.rawValue])
     }
     

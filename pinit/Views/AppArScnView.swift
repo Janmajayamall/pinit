@@ -210,7 +210,6 @@ class AppArScnView: ARSCNView {
     }
     
     func pauseSession(){
-        print("Pause ar session")
         self.session.pause()
     }
     

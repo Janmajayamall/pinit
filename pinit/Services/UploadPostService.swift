@@ -102,6 +102,9 @@ class UploadPostService {
                     
                     // notify loader for deducting task
                     NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                    
+                    // analytics
+                    AnalyticsService.logUserDidPost(withContentType: .image)
                 }catch{
                     print("upload post with image failed with error \(error)")
                     // post notification about the error
@@ -176,8 +179,12 @@ class UploadPostService {
                 // creating new post
                 do {
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
+                    
                     // notify loader for deducting task
                     NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                    
+                    // analytics
+                    AnalyticsService.logUserDidPost(withContentType: .video)
                 }catch{
                     print("upload post with image failed with error \(error)")
                     // post notification about the error

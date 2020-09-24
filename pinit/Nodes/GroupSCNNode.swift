@@ -101,7 +101,6 @@ class GroupSCNNode: SCNNode, Identifiable {
     }
     
     func isPostValidForRender(_ postDisplay: PostDisplayNodeModel) -> Bool {
-        
         guard let currentLocation = self.currentLocation else {
             return false
         }
@@ -326,6 +325,7 @@ extension GroupSCNNode {
         
         Publishers.groupSCNNodeDidRequestResetPublisher.sink { (value) in
             guard value == true else {return}
+            print("IT DID HAPPEN - group scn node reset itself")
             self.resetNode()
         }.store(in: &cancellables)
     }
