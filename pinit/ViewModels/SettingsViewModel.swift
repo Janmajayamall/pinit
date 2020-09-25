@@ -21,6 +21,7 @@ class SettingsViewModel: ObservableObject {
     @Published var postsDoNotExist: Bool = false
     @Published var loadIndicator: Int = 0
     @Published var uploadIndicator: Int = 0
+    @Published var refreshIndicator: Bool = false
     
     // services
     private var authenticationService = AuthenticationService()
@@ -94,6 +95,36 @@ class SettingsViewModel: ObservableObject {
         // stop session & remove GroupSCNNodes in AppARSCNNodes
         self.appArScnView.pauseSession()
         self.appArScnView.removeGroupNodes()
+    }
+    
+    func refreshScene() {
+        guard self.loadIndicator >= 0 && self.refreshIndicator == false else {return}
+        
+        // start pulse loader
+        self.loadIndicator = 1
+        
+        // RMEOVE STUFF
+        // stop location update service
+        self.locationService.stopService()
+        // stop gehashing service
+        self.geohasingService.stopService()
+        // remove GroupSCNNodes in AppArSCNNodes
+        self.appArScnView.removeGroupNodes()
+        
+        // START STUF
+        // add group scn nodes to the session
+        self.appArScnView.setupGroupNodes()
+        // start geohashing service
+        self.geohasingService.startService()
+        // start location update service
+        self.locationService.startService()
+     
+        // handle refresh
+        self.refreshIndicator = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            self.refreshIndicator = false
+        })
+    
     }
     
     func isUserAuthenticated() -> Bool {

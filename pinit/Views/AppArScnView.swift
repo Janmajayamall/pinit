@@ -35,7 +35,7 @@ class AppArScnView: ARSCNView {
     var addPostToGroupOfDirection: NodeDirection = .front
     var postsWithLoadedDisplayData: Int = 0
     
-    var debug: Bool = false
+    var debug: Bool = true
     
     // for pangesture
     var lastPanLocation: SCNVector3?
@@ -226,8 +226,7 @@ class AppArScnView: ARSCNView {
         }
     }
     
-    func removeGroupNodes() {
-        
+    func removeGroupNodes() {        
         // remove children of mainSceneNode
         self.mainSceneNode?.childNodes.forEach({ (node) in
             node.removeFromParentNode()
@@ -269,7 +268,7 @@ class AppArScnView: ARSCNView {
     }
     
     func optimisticUIAddPostToGroupNode(optimisticPostModel: OptimisticUIPostModel) {
-        guard let id = optimisticPostModel.postModel.id, self.exisitingPosts[id] == nil else {return}        
+        guard let id = optimisticPostModel.postModel.id, self.exisitingPosts[id] == nil else {return}
         // adding it to the front group node
         self.groupNodes[.front]?.optimisticAddPost(optimisticPostModel)
         self.exisitingPosts[id] = optimisticPostModel.postModel

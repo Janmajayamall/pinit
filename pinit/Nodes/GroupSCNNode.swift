@@ -243,17 +243,17 @@ class GroupSCNNode: SCNNode, Identifiable {
             self.position = SCNVector3(
                 scenePosition.x + Float(0),
                 scenePosition.y + self.defaultYCoordDis,
-                scenePosition.z + -self.defaultCoordDis - 1)
+                scenePosition.z + -self.defaultZCoordDis)
         case .frontRight:
             self.position = SCNVector3(
-                scenePosition.x + (self.defaultCoordDis),
+                scenePosition.x + self.defaultXCoordDis,
                 scenePosition.y + self.defaultYCoordDis,
-                scenePosition.z + -self.defaultCoordDis)
+                scenePosition.z + -self.defaultZCoordDis + 0.5)
         case .frontLeft:
             self.position = SCNVector3(
-                scenePosition.x + (-self.defaultCoordDis),
+                scenePosition.x + -self.defaultXCoordDis,
                 scenePosition.y + self.defaultYCoordDis,
-                scenePosition.z + -self.defaultCoordDis)
+                scenePosition.z + -self.defaultZCoordDis + 0.5)
         }
         
         SCNTransaction.commit()
@@ -303,8 +303,9 @@ class GroupSCNNode: SCNNode, Identifiable {
         }
     }
     
-    private var defaultCoordDis: Float = 1.5
-    private var defaultYCoordDis: Float = -0.8
+    private var defaultZCoordDis: Float = 2.5
+    private var defaultXCoordDis: Float = 1
+    private var defaultYCoordDis: Float = -1
     private var fixedImageWidth: CGFloat = 1
 }
 

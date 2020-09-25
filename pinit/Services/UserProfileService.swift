@@ -92,11 +92,15 @@ class UserProfileService: ObservableObject {
         
         // upadting user's current geolocation
         if let currentLocation = self.currentLocation {
-            profile.geolocation = GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+            let geopoint = GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+            profile.createdAtLocation = geopoint
+            profile.lastLocation = geopoint
+            
         }
         
         // creating user profile
         do {
+            print("ERTT \(profile)")
             // adding doc to users collection
             _ = try self.userCollectionRef.document(user.uid).setData(from: profile)
         }catch {
@@ -113,6 +117,9 @@ class UserProfileService: ObservableObject {
         userDocRef.updateData([
             "lastActive": Timestamp()
         ])
+        
+        // update location
+        self.updateLastLocation()
     }
     
     func updateLastUpload() {
@@ -124,7 +131,22 @@ class UserProfileService: ObservableObject {
         userDocRef.updateData([
             "lastUpload": Timestamp()
         ])
+        
+        // update lastActive as well
+        self.updateLastActive()
     }
+    
+    func updateLastLocation() {
+        guard let user = self.user, let currentLocation = self.currentLocation else {return}
+        
+        let userDocRef = self.userCollectionRef.document(user.uid)
+        
+        // updating lastActive
+        userDocRef.updateData([
+            "lastLocation": GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+        ])
+    }
+    
     
     /// updates the username of the user in database
     ///

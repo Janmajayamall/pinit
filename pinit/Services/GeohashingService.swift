@@ -181,6 +181,7 @@ class GeohashingService {
 extension GeohashingService {
     func subscribeToEstimatedUserLocationServicePublishers() {
         Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+            print("ERRERRREERRRR")
             self.updateGeohashToLocation(location)
         }.store(in: &cancellables)
     }

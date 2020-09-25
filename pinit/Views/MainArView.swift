@@ -69,8 +69,7 @@ struct MainArView: View {
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .topRight)
                                 .onTapGesture {
-                                    NotificationCenter.default.post(name: .groupSCNNodeDidRequestReset, object: true)
-                                    
+                                    self.settingsViewModel.refreshScene()
                             }
                             
                             Image(systemName:"gear")
@@ -156,7 +155,7 @@ struct MainArView: View {
                                 .animation(.spring())
                         }
                         
-                        if (self.settingsViewModel.loadIndicator > 0){
+                        if (self.settingsViewModel.loadIndicator > 0 || self.settingsViewModel.refreshIndicator == true){
                             PulseLoader(parentSize: geometryProxy.size)
                         }
                     }
