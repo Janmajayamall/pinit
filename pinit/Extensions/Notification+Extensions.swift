@@ -78,7 +78,7 @@ extension Notification.Name {
     
     // notifications for general function
     static let generalFunctionDidFailInternetConnection = Notification.Name("generalFunctionDidFailInternetConnection")
-    static let generalFunctionIncreaseTaskForMainLoader = Notification.Name("generalFunctionIncreaseTaskForMainLoader")
-    static let generalFunctionDecreaseTaskForMainLoader = Notification.Name("generalFunctionDecreaseTaskForMainLoader")
+    static let generalFunctionManipulateTaskForUploadIndicator = Notification.Name("generalFunctionManipulateTaskForUploadIndicator")
+    static let generalFunctionManipulateTaskForLoadIndicator = Notification.Name("generalFunctionManipulateTaskForLoadIndicator")    
     static let generalFunctionPostsDoNotExistForCurrentLocation = Notification.Name("generalFunctionPostsDoNotExistForCurrentLocation")
 }

@@ -35,25 +35,28 @@ class LocationService: NSObject {
         self.manager.requestWhenInUseAuthorization()
     }
     
-    func activateHeadingUpdates(){
-        self.manager.startUpdatingHeading()
-    }
-    
     func activateLocationUpdates(){
         self.manager.startUpdatingLocation()
     }
     
-    func setupService(){
+    func setupService(){}
+    
+    func startService(){
         self.activateLocationUpdates()
     }
     
+    func stopService(){
+        self.manager.stopUpdatingLocation()
+    }
 }
 
 extension LocationService: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {        
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        print("IT DID HAPPEN - ", locations.first?.coordinate, locations.first?.horizontalAccuracy)
+        
         locations.forEach { (location) in
-            print(location.coordinate, location.horizontalAccuracy, ":::")
+            print(location.coordinate, location.horizontalAccuracy)
             self.currentLocation = location
             NotificationCenter.default.post(name: .locationServiceDidUpdateLocation, object: location)
         }

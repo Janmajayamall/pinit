@@ -18,8 +18,9 @@ class SettingsViewModel: ObservableObject {
     @Published var userPostCount: Int = 0
     
     @Published var internetErrorConnection: Bool = false
-    @Published var loaderTasks: Int = 1
     @Published var postsDoNotExist: Bool = false
+    @Published var loadIndicator: Int = 0
+    @Published var uploadIndicator: Int = 0
     
     // services
     private var authenticationService = AuthenticationService()
@@ -55,6 +56,44 @@ class SettingsViewModel: ObservableObject {
         self.estimatedUserLocationService.setupService()
         self.locationService.setupService()
         self.authenticationService.setupService()
+    }
+    
+    func handleSceneDidBecomeActive() {
+        // start pulse loader
+        self.loadIndicator = 1
+        
+        // start the session setup GroupSCNNodes in AppARSCNNodes
+        self.appArScnView.startSession()
+        self.appArScnView.setupGroupNodes()
+        
+        // start geohashing service
+        self.geohasingService.startService()
+        
+        // start estimated location service
+        self.estimatedUserLocationService.startService()
+        
+        // start location service
+        self.locationService.startService()
+        
+        // update user last active & log app open event
+        self.userProfileService.updateLastActive()
+        AnalyticsService.logAppOpenEvent()
+    }
+    
+    func handleSceneWillResignActive() {
+
+        // stop location service
+        self.locationService.stopService()
+                
+        // stop estimated location service
+        self.estimatedUserLocationService.stopService()
+                        
+        // stop geohashing service
+        self.geohasingService.stopService()
+                
+        // stop session & remove GroupSCNNodes in AppARSCNNodes
+        self.appArScnView.pauseSession()
+        self.appArScnView.removeGroupNodes()
     }
     
     func isUserAuthenticated() -> Bool {
@@ -147,33 +186,32 @@ extension SettingsViewModel {
             })
         }.store(in: &cancellables)
         
-        Publishers.generalFunctionIncreaseTaskForMainLoaderPublisher.sink { (value) in
-            guard value == true else {return}
-            
-            // increase loader count
-            self.loaderTasks += 1
+        Publishers.generalFunctionManipulateTaskForLoadIndicatorPublisher.sink { (value) in
+            self.loadIndicator = 0
         }.store(in: &cancellables)
         
-        Publishers.generalFunctionDecreaseTaskForMainLoaderPublisher.sink { (value) in
-            guard value == true && self.loaderTasks > 0 else {return}
+        Publishers.generalFunctionManipulateTaskForUploadIndicatorPublisher.sink { (value) in
+            print("DID RCV VALUE \(value)")
+            guard value != 0 else {return}
             
-            // decrease loader count
-            self.loaderTasks -= 1
+            if (value > 0){
+                self.uploadIndicator += 1
+            }else if (value < 0 && self.uploadIndicator > 0){
+                self.uploadIndicator -= 1
+            }else {
+                self.uploadIndicator = 0
+            }
         }.store(in: &cancellables)
         
         Publishers.generalFunctionPostsDoNotExistForCurrentLocationPublisher.sink { (value) in
             guard value == true else {return}
             
+            self.loadIndicator = 0
             self.postsDoNotExist = true
-            // make the `Posts Do Not Exist` error dissapear
-            DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
                 self.postsDoNotExist = false
             })
-            
-            // decreasing the loader count by 1
-            guard self.loaderTasks > 0 else {return}
-            self.loaderTasks -= 1
-        
         }.store(in: &cancellables)
     }
     

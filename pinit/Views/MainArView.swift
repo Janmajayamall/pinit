@@ -29,47 +29,13 @@ struct MainArView: View {
                     
                     UIKitArSceneView(appArScnView: self.settingsViewModel.appArScnView)
                     
-                    if (self.settingsViewModel.internetErrorConnection == true){
-                        VStack {
-                            Spacer()
-                            HStack{
-                                Spacer()
-                                Text("Couldn't refresh. No internet connection!")
-                                    .foregroundColor(Color.white)
-                                    .font(Font.custom("Avenir", size: 12).bold())
-                                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                                Spacer()
-                            }
-                            .background(Color.red)
-                        }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
-                            .animation(.spring())
-                    }
-                    
-                    if (self.settingsViewModel.postsDoNotExist == true){
-                        VStack {
-                            Spacer()
-                            HStack{
-                                Spacer()
-                                Text("No Pins near you. Be the first one?")
-                                    .foregroundColor(Color.white)
-                                    .font(Font.custom("Avenir", size: 17).bold())
-                                    .padding(10)
-                                    .background(Color.black.opacity(0.3))
-                                    .cornerRadius(10)
-                                Spacer()
-                            }
-                            Spacer()
-                        }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
-                            .animation(.spring())
-                    }
-                    
                     VStack{
                         HStack{
                             ZStack{
                                 Image(systemName: self.postDisplayType == .allPosts ? "person.fill": "person.2.fill")
                                     .applyDefaultIconTheme()
                                 
-                                if (self.settingsViewModel.loaderTasks > 0){
+                                if (self.settingsViewModel.uploadIndicator > 0){
                                     Loader()
                                 }
                                 
@@ -98,7 +64,7 @@ struct MainArView: View {
                             }
                             
                             Spacer()
-                                                        
+                            
                             Image(systemName: "arrow.counterclockwise")
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .topRight)
@@ -125,8 +91,8 @@ struct MainArView: View {
                                 .applyEdgePadding(for: .bottomLeft)
                                 .onTapGesture {
                                     if self.settingsViewModel.isUserAuthenticated() {
-//                                        // stop session
-//                                        self.settingsViewModel.appArScnView.pauseSession()
+                                        //                                        // stop session
+                                        //                                        self.settingsViewModel.appArScnView.pauseSession()
                                         
                                         self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
                                     }else {
@@ -154,6 +120,46 @@ struct MainArView: View {
                         }
                         
                     }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
+                    
+                    ZStack{
+                        if (self.settingsViewModel.internetErrorConnection == true){
+                            VStack {
+                                Spacer()
+                                HStack{
+                                    Spacer()
+                                    Text("Couldn't refresh. No internet connection!")
+                                        .foregroundColor(Color.white)
+                                        .font(Font.custom("Avenir", size: 12).bold())
+                                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                    Spacer()
+                                }
+                                .background(Color.red)
+                            }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
+                                .animation(.spring())
+                        }
+                        
+                        if (self.settingsViewModel.postsDoNotExist == true){
+                            VStack {
+                                Spacer()
+                                HStack{
+                                    Spacer()
+                                    Text("No Pins near you. Be the first one?")
+                                        .foregroundColor(Color.white)
+                                        .font(Font.custom("Avenir", size: 17).bold())
+                                        .padding(10)
+                                        .background(Color.black.opacity(0.3))
+                                        .cornerRadius(10)
+                                    Spacer()
+                                }
+                                Spacer()
+                            }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
+                                .animation(.spring())
+                        }
+                        
+                        if (self.settingsViewModel.loadIndicator > 0){
+                            PulseLoader(parentSize: geometryProxy.size)
+                        }
+                    }
                     
                     if self.postDisplayInfoViewModel.displayPostInfo == true {
                         VStack{
@@ -194,10 +200,9 @@ struct MainArView: View {
                     
                     MoreSettingsViewModel(parentSize: geometryProxy.size)
                     
-                    if self.settingsViewModel.userProfile?.username != nil {
+                    if (self.settingsViewModel.userProfile?.username != nil) {
                         EditUsernameView(username: self.settingsViewModel.userProfile?.username ?? "", currentUsername: self.settingsViewModel.userProfile?.username ?? "", parentSize: geometryProxy.size)
                     }
-                    
                 }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .background(Color.black)

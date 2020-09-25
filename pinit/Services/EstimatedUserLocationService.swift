@@ -61,6 +61,14 @@ class EstimatedUserLocationService: ObservableObject {
     func setupService() {
         self.subscribeToLocationService()
     }
+    
+    func stopService() {
+        self.locationData.removeAll()
+    }
+    
+    func startService(){
+        self.stopService()
+    }
 }
 
 // extensions for subscriptions

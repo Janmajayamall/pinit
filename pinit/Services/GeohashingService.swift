@@ -63,6 +63,14 @@ class GeohashingService {
         self.subscribeToEstimatedUserLocationServicePublishers()
     }
     
+    func stopService(){
+        self.geohashModel = nil
+    }
+    
+    func startService(){
+        self.stopService()
+    }
+    
     static func getGeohash(forCoordinates locationCoordinates: CLLocationCoordinate2D) -> String {
         
         let lat: Double = locationCoordinates.latitude

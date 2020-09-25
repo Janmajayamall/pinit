@@ -19,7 +19,6 @@ class AppArScnView: ARSCNView {
     var mainSceneNode: SCNNode?{
         didSet{
             guard self.mainSceneNode != nil else {return}
-            
             self.groupNodes.values.forEach { (node) in
                 self.mainSceneNode!.addChildNode(node)
             }
@@ -43,19 +42,13 @@ class AppArScnView: ARSCNView {
     var draggingNode: GroupSCNNode?
     var prePanZ: CGFloat?
     
-    var currentGeohashModel: GeohashModel?
-    
     private var touchedNodeDirectionHistory: Array<NodeDirection> = []
     
     private var cancellables: Set<AnyCancellable> = []
     
     init(){
-        
         super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width), options: nil)
-        
-        // adding group scene nodes
-        self.setupGroupNodes()
-        
+    
         //setting up debug options
         if (self.debug){
             self.debugOptions = ARSCNDebugOptions(arrayLiteral: [.showWorldOrigin, .showFeaturePoints])
@@ -69,17 +62,21 @@ class AppArScnView: ARSCNView {
         self.subscribeToRetrievePostServicePublishers()
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToArViewPublishers()
-        self.subscribeToGeohashingServicePublishers()
         self.subscribeToGroupSCNNodePublishers()
         
+        // setup ui gesture recognizers
+        self.setupUIGestureRecognizers()
+    }
+    
+    func setupUIGestureRecognizers() {
         // adding UITapGestureRecogniser
         let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
         self.addGestureRecognizer(tapGestureRecogniser)
         
-        let GestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
-        GestureRecogniser.numberOfTapsRequired = 2
-        self.addGestureRecognizer(GestureRecogniser)
-        
+        //        let GestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(handleViewTap(sender:)))
+        //        GestureRecogniser.numberOfTapsRequired = 2
+        //        self.addGestureRecognizer(GestureRecogniser)
+        //
         // adding UIPanGestureRecognizer
         let panGestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(self.handlePanGesture(sender:)))
         self.addGestureRecognizer(panGestureRecogniser)
@@ -214,27 +211,38 @@ class AppArScnView: ARSCNView {
     }
     
     func setupGroupNodes() {
-        if (self.groupNodes[.front] == nil){
-            self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front)
-        }else {
-            self.groupNodes[.front]?.placeNode(scenePosition: self.currentPosition)
-        }
         
-        if (self.groupNodes[.frontRight] == nil){
-            self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight)
-        }else{
-            self.groupNodes[.frontRight]?.placeNode(scenePosition: self.currentPosition)
-        }
+        removeGroupNodes()
         
-        if (self.groupNodes[.frontLeft] == nil){
-            self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft)
-        }else {
-            self.groupNodes[.frontLeft]?.placeNode(scenePosition: self.currentPosition)
-        }
+        self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front)
+        
+        self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight)
+        
+        self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft)
         
         // adding the nodes
         self.groupNodes.values.forEach { (node) in
             self.mainSceneNode?.addChildNode(node)
+        }
+    }
+    
+    func removeGroupNodes() {
+        
+        // remove children of mainSceneNode
+        self.mainSceneNode?.childNodes.forEach({ (node) in
+            node.removeFromParentNode()
+        })
+        
+        // empty groupNodes dict, exisiting posts & rest
+        self.groupNodes.removeAll()
+        self.exisitingPosts.removeAll()
+        self.addPostToGroupOfDirection = .front
+        self.postsWithLoadedDisplayData = 0
+    }
+    
+    func resetGroupNodesPositions() {
+        self.groupNodes.values.forEach { (node) in
+            node.placeNode(scenePosition: self.currentPosition)
         }
     }
     
@@ -261,8 +269,7 @@ class AppArScnView: ARSCNView {
     }
     
     func optimisticUIAddPostToGroupNode(optimisticPostModel: OptimisticUIPostModel) {
-        guard let id = optimisticPostModel.postModel.id, self.exisitingPosts[id] == nil else {return}
-        print("Post with ID: \(id) added - optimistic")
+        guard let id = optimisticPostModel.postModel.id, self.exisitingPosts[id] == nil else {return}        
         // adding it to the front group node
         self.groupNodes[.front]?.optimisticAddPost(optimisticPostModel)
         self.exisitingPosts[id] = optimisticPostModel.postModel
@@ -273,7 +280,7 @@ class AppArScnView: ARSCNView {
         
         // notify that the posts at location do not exist
         NotificationCenter.default.post(name: .generalFunctionPostsDoNotExistForCurrentLocation, object: true)
-                
+        
     }
     
 }
@@ -306,7 +313,7 @@ extension AppArScnView {
     func subscribeToArViewPublishers() {
         Publishers.aRViewDidRequestResetGroupNodesPosPublisher.sink { (value) in
             guard value == true else {return}
-            self.setupGroupNodes()
+            self.resetGroupNodesPositions()
         }.store(in: &cancellables)
         
         Publishers.aRViewDidTapBackIconPublisher.sink { (value) in
@@ -314,14 +321,7 @@ extension AppArScnView {
             self.handleBackIconTouch()
         }.store(in: &cancellables)
     }
-    
-    // subscribe to Geohashing Service Publishers
-    func subscribeToGeohashingServicePublishers() {
-        Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (model) in
-            self.currentGeohashModel = model
-        }.store(in: &cancellables)
-    }
-    
+
     // subscribe to Group SCN node Publisher
     func subscribeToGroupSCNNodePublishers() {
         Publishers.groupSCNNodeDidLoadPostDisplayData.sink { (value) in
@@ -330,7 +330,7 @@ extension AppArScnView {
             self.postsWithLoadedDisplayData += 1
             
             // notify the loader to decrease initial task
-            NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+            NotificationCenter.default.post(name: .generalFunctionManipulateTaskForLoadIndicator, object: -1)
         }.store(in: &cancellables)
     }
 }

@@ -68,7 +68,7 @@ extension Publishers {
     // publishers for estimated user location service
     static var estimatedUserLocationServiceDidUpdateLocation: AnyPublisher<CLLocation, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .estimatedUserLocationServiceDidUpdateLocation)
             .compactMap { (notification) -> CLLocation? in
                 guard let location = notification.object as? CLLocation else {return nil}
@@ -86,7 +86,7 @@ extension Publishers {
                 return locationEstimates
         }.eraseToAnyPublisher()
     }
-
+    
     
     // publishers for keyboard height
     static var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
@@ -118,7 +118,7 @@ extension Publishers {
     }
     static var uploadPostServiceDidUploadPostPublisher: AnyPublisher<OptimisticUIPostModel, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .uploadPostServiceDidUploadPost)
             .compactMap { (notification) -> OptimisticUIPostModel? in
                 guard let post = notification.object as? OptimisticUIPostModel else {return nil}
@@ -127,7 +127,7 @@ extension Publishers {
     }
     static var uploadPostServiceDidRequestCreatePostWithVideoPublisher: AnyPublisher<RequestCreatePostWithVideoModel, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .uploadPostServiceDidRequestCreatePostWithVideo)
             .compactMap { (notification) -> RequestCreatePostWithVideoModel? in
                 guard let requestPostModel = notification.object as? RequestCreatePostWithVideoModel else {return nil}
@@ -199,17 +199,17 @@ extension Publishers {
     // publishers for ar view
     static var aRViewDidRequestResetMainView: AnyPublisher<Bool, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .aRViewDidRequestResetMainView)
             .compactMap { (notificatoin) -> Bool? in
                 guard let value = notificatoin.object as? Bool else {return nil}
                 return value
         }
-    .eraseToAnyPublisher()
+        .eraseToAnyPublisher()
     }
     static var aRViewDidRequestResetGroupNodesPosPublisher: AnyPublisher<Bool, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .aRViewDidRequestResetGroupNodesPos)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
@@ -218,7 +218,7 @@ extension Publishers {
     }
     static var aRViewUserDidTapViewPublisher: AnyPublisher<Bool, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .aRViewUserDidTapView)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
@@ -227,7 +227,7 @@ extension Publishers {
     }
     static var aRViewDidTapBackIconPublisher: AnyPublisher<Bool, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .aRViewDidTapBackIcon)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
@@ -238,7 +238,7 @@ extension Publishers {
     // publishers for group scn node
     static var groupSCNNodeDidLoadPostDisplayData: AnyPublisher<Bool, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .groupSCNNodeDidLoadPostDisplayData)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
@@ -247,7 +247,7 @@ extension Publishers {
     }
     static var groupSCNNodeDidRequestCurrentPostDisplayInfoPublisher: AnyPublisher<PostDisplayInfoModel, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .groupSCNNodeDidRequestCurrentPostDisplayInfo)
             .compactMap { (notification) -> PostDisplayInfoModel? in
                 guard let model = notification.object as? PostDisplayInfoModel else {return nil}
@@ -256,7 +256,7 @@ extension Publishers {
     }
     static var groupSCNNodeDidRequestChangePostDisplayTypePublisher: AnyPublisher<PostDisplayType, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .groupSCNNodeDidRequestChangePostDisplayType)
             .compactMap { (notification) -> PostDisplayType? in
                 guard let postDisplayType = notification.object as? PostDisplayType else {return nil}
@@ -265,7 +265,7 @@ extension Publishers {
     }
     static var groupSCNNodeDidRequestResetPublisher: AnyPublisher<Bool, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .groupSCNNodeDidRequestReset)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
@@ -276,7 +276,7 @@ extension Publishers {
     // publishers for camera feed
     static var cameraFeedSwitchInUseCameraPublisher: AnyPublisher<CameraFeedController.CameraInUsePosition, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .cameraFeedSwitchInUseCamera)
             .compactMap { (notification) -> CameraFeedController.CameraInUsePosition? in
                 guard let object = notification.object as? CameraFeedController.CameraInUsePosition else {return nil}
@@ -285,7 +285,7 @@ extension Publishers {
     }
     static var cameraFeedSwitchFlashModePublisher: AnyPublisher<AVCaptureDevice.FlashMode, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .cameraFeedSwitchFlashMode)
             .compactMap { (notification) -> AVCaptureDevice.FlashMode? in
                 guard let object = notification.object as? AVCaptureDevice.FlashMode else {return nil}
@@ -294,7 +294,7 @@ extension Publishers {
     }
     static var cameraFeedDidRequestCaptureImagePublisher: AnyPublisher<Bool, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .cameraFeedDidRequestCaptureImage)
             .compactMap { (notification) -> Bool? in
                 guard let object = notification.object as? Bool else {return nil}
@@ -303,7 +303,7 @@ extension Publishers {
     }
     static var cameraFeedDidCaptureImagePublisher: AnyPublisher<UIImage, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .cameraFeedDidCaptureImage)
             .compactMap { (notification) -> UIImage? in
                 guard let image = notification.object as? UIImage else {return nil}
@@ -312,7 +312,7 @@ extension Publishers {
     }
     static var cameraFeedSwitchCameraOutputTypePublishser: AnyPublisher<CameraFeedController.CameraOutputType, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .cameraFeedSwitchCameraOutputType)
             .compactMap { (notification) -> CameraFeedController.CameraOutputType? in
                 guard let outputType = notification.object as? CameraFeedController.CameraOutputType else {return nil}
@@ -321,7 +321,7 @@ extension Publishers {
     }
     static var cameraFeedDidRequestToggleRecordingVideoPublisher: AnyPublisher<Bool, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .cameraFeedDidRequestToggleRecordingVideo)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
@@ -330,7 +330,7 @@ extension Publishers {
     }
     static var cameraFeedDidCaptureVideoPublisher: AnyPublisher<URL, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .cameraFeedDidCaptureVideo)
             .compactMap { (notification) -> URL? in
                 guard let videoUrl = notification.object as? URL else {return nil}
@@ -341,7 +341,7 @@ extension Publishers {
     // publishers for retrieve post serice
     static var retrievePostServiceDidReceivePostsForGeohashes: AnyPublisher<Array<PostModel>, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .retrievePostServiceDidReceivePostsForGeohashes)
             .compactMap { (notification) -> Array<PostModel>? in
                 print("BHII AJSSJASS")
@@ -354,7 +354,7 @@ extension Publishers {
     }
     static var retrievePostServiceDidReceiveAllPosts: AnyPublisher<Array<PostModel>, Never>{
         NotificationCenter
-        .default
+            .default
             .publisher(for: .retrievePostServiceDidReceiveAllPosts)
             .compactMap { (notification) -> Array<PostModel>? in
                 guard let models = notification.object as? Array<PostModel> else {
@@ -365,7 +365,7 @@ extension Publishers {
     }
     static var retrievePostServiceDidReceiveUserPostsPublisher: AnyPublisher<Array<PostModel>, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .retrievePostServiceDidReceiveUserPosts)
             .compactMap { (notification) -> Array<PostModel>? in
                 guard let models = notification.object as? Array<PostModel> else {return nil}
@@ -376,7 +376,7 @@ extension Publishers {
     // publishers for postDisplayNodeModel
     static var postDisplayNodeModelDidRequestMuteAVPLayerPublisher: AnyPublisher<String, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .postDisplayNodeModelDidRequestMuteAVPlayer)
             .compactMap { (notification) -> String? in
                 guard let exceptionId = notification.object as? String else {return nil}
@@ -384,37 +384,37 @@ extension Publishers {
         }.eraseToAnyPublisher()
     }
     
-    // publishers for general error
+    // publishers for general function
     static var generalFunctionDidFailInternetConnectionPublisher: AnyPublisher<Bool, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .generalFunctionDidFailInternetConnection)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
                 return value
         }.eraseToAnyPublisher()
     }
-    static var generalFunctionIncreaseTaskForMainLoaderPublisher: AnyPublisher<Bool, Never> {
+    static var generalFunctionManipulateTaskForUploadIndicatorPublisher: AnyPublisher<Int, Never> {
         NotificationCenter
-        .default
-            .publisher(for: .generalFunctionIncreaseTaskForMainLoader)
-            .compactMap { (notification) -> Bool? in
-                guard let value = notification.object as? Bool else {return nil}
+            .default
+            .publisher(for: .generalFunctionManipulateTaskForUploadIndicator)
+            .compactMap { (notification) -> Int? in
+                guard let value = notification.object as? Int else {return nil}
                 return value
         }.eraseToAnyPublisher()
     }
-    static var generalFunctionDecreaseTaskForMainLoaderPublisher: AnyPublisher<Bool, Never> {
+    static var generalFunctionManipulateTaskForLoadIndicatorPublisher: AnyPublisher<Int, Never> {
         NotificationCenter
         .default
-            .publisher(for: .generalFunctionDecreaseTaskForMainLoader)
-            .compactMap { (notification) -> Bool? in
-                guard let value = notification.object as? Bool else {return nil}
+            .publisher(for: .generalFunctionManipulateTaskForLoadIndicator)
+            .compactMap { (notification) -> Int? in
+                guard let value = notification.object as? Int else {return nil}
                 return value
         }.eraseToAnyPublisher()
     }
     static var generalFunctionPostsDoNotExistForCurrentLocationPublisher: AnyPublisher<Bool, Never> {
         NotificationCenter
-        .default
+            .default
             .publisher(for: .generalFunctionPostsDoNotExistForCurrentLocation)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}

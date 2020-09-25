@@ -74,6 +74,7 @@
 		5D8386F7250F1597009CC01F /* GoogleService-Info--1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D8386F6250F1597009CC01F /* GoogleService-Info--1.plist */; };
 		5D86652C25138EC800049980 /* CameraFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86652B25138EC800049980 /* CameraFeedView.swift */; };
 		5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */; };
+		5DADAC9D251E01EA002C2571 /* PulseLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DADAC9C251E01EA002C2571 /* PulseLoader.swift */; };
 		5DAE4136250A7EB50017A598 /* GroupSCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */; };
 		5DAE4138250C18820017A598 /* PostDisplayNodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */; };
 		5DB2B1A624F2CA8700E4D86B /* ImageCropViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */; };
@@ -191,6 +192,7 @@
 		5D8386F6250F1597009CC01F /* GoogleService-Info--1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info--1.plist"; sourceTree = "<group>"; };
 		5D86652B25138EC800049980 /* CameraFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedView.swift; sourceTree = "<group>"; };
 		5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSetupUserProfileModel.swift; sourceTree = "<group>"; };
+		5DADAC9C251E01EA002C2571 /* PulseLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseLoader.swift; sourceTree = "<group>"; };
 		5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSCNNode.swift; sourceTree = "<group>"; };
 		5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayNodeModel.swift; sourceTree = "<group>"; };
 		5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropViewModel.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				5D567CF824F4340F00283E5B /* SoftEdgeButton.swift */,
 				5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */,
 				5DD5E1132517B29600EA17CC /* Loader.swift */,
+				5DADAC9C251E01EA002C2571 /* PulseLoader.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -769,6 +772,7 @@
 				5DC8527524EFDDC500E36DCE /* UIView+Extensions.swift in Sources */,
 				5D52F7D224E98E0F00D9F27E /* GeohashingService.swift in Sources */,
 				5D4DD0A624ED3B7100E1FDF3 /* ColorPickerSlider.swift in Sources */,
+				5DADAC9D251E01EA002C2571 /* PulseLoader.swift in Sources */,
 				5D52F7A724E917D400D9F27E /* MainArView.swift in Sources */,
 				5DAE4136250A7EB50017A598 /* GroupSCNNode.swift in Sources */,
 				5DC2859924ED029F00830887 /* AppArScnView.swift in Sources */,

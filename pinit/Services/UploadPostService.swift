@@ -55,63 +55,56 @@ class UploadPostService {
         NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, image: requestModel.image, postContentType: .image))
         
         // notify loader for adding task
-        NotificationCenter.default.post(name: .generalFunctionIncreaseTaskForMainLoader, object: true)
+        NotificationCenter.default.post(name: .generalFunctionManipulateTaskForUploadIndicator, object: 1)
         
         // generating image data from uiImage
         guard let postImageData = requestModel.image.jpegData(compressionQuality: 0.8) else {
-            print("Unable to convert uImage to Image Data")
             return
         }
+        
         // creating image upload ref
         let postImageUploadRef = self.storageRef.child("images/\(userProfile.id!)-\(UUID().uuidString).jpeg")
         let postImageUploadMeta = StorageMetadata()
         postImageUploadMeta.contentType = "image/jpeg"
-        print("Image upload started: error JJJ")
+        
+        // upload image data
         postImageUploadRef.putData(postImageData, metadata: postImageUploadMeta) {(metadata, error) in
+            
             guard let metadata = metadata else {
-                print("Image upload failed with error JJJ: \(String(describing: error?.localizedDescription))")
-                // post notification about error
-                NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
                 
-                // notify loader for deducting task
-                NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
-                
+                // handle upload task failed
+                self.handleFinishUploadTaskNotification(forContent: .image, didSucceed: false)
                 return
+                
             }
             
-            print("image uploaded: error JJJ")
-            
+            // get download url
             postImageUploadRef.downloadURL { (url, error) in
+                
                 guard let url = url else {
-                    print("Image upload downloadUrl failed with error JJJ: \(String(describing: error?.localizedDescription))")
-                    // post notification about the error
-                    NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
                     
-                    // notify loader for deducting task
-                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
-                    
+                    // handle upload task failed
+                    self.handleFinishUploadTaskNotification(forContent: .image, didSucceed: false)
                     return
+                    
                 }
-                print("got download url: error JJJ")
+                
                 // updating the content for uploading post
                 postModel.updatePostContent(withContentUrl: url.absoluteString, withName: metadata.name ?? "", contentType: .image)
                 
                 // creating new post
                 do {
+                    
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
                     
-                    // notify loader for deducting task
-                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                    // handle upload task success
+                    self.handleFinishUploadTaskNotification(forContent: .image, didSucceed: true)
                     
-                    // analytics
-                    AnalyticsService.logUserDidPost(withContentType: .image)
                 }catch{
-                    print("upload post with image failed with error \(error)")
-                    // post notification about the error
-                    NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
                     
-                    // notify loader for deducting task
-                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                    // handle upload task failed
+                    self.handleFinishUploadTaskNotification(forContent: .image, didSucceed: false)
+                    
                 }
             }
         }
@@ -141,7 +134,7 @@ class UploadPostService {
         NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, videoFilePathUrl: requestModel.videoFilePathUrl, postContentType: .video))
         
         // notify loader for adding task
-        NotificationCenter.default.post(name: .generalFunctionIncreaseTaskForMainLoader, object: true)
+        NotificationCenter.default.post(name: .generalFunctionManipulateTaskForUploadIndicator, object: 1)
         
         // UPLOADING THE POST
         // creating holder ref for video file
@@ -153,24 +146,22 @@ class UploadPostService {
         postVideoUplaodRef.putFile(from: requestModel.videoFilePathUrl, metadata: postVideoMetadata) {(metadata, error) in
             
             guard let metadata = metadata else {
-                print("Video upload failed with error: \(String(describing: error?.localizedDescription))")
-                // post notification about the error
-                NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
                 
-                // notify loader for deducting task
-                NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                // handle upload task failed
+                self.handleFinishUploadTaskNotification(forContent: .video, didSucceed: false)
                 return
+                
             }
             
+            // get download url
             postVideoUplaodRef.downloadURL { (url, error) in
+                
                 guard let url = url else {
-                    print("Video upload downloadUrl failed with error: \(String(describing: error?.localizedDescription))")
-                    // post notification about the error
-                    NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
                     
-                    // notify loader for deducting task
-                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                    // handle upload task failed
+                    self.handleFinishUploadTaskNotification(forContent: .video, didSucceed: false)
                     return
+                    
                 }
                 
                 // updating post model with content for uploding it
@@ -178,22 +169,34 @@ class UploadPostService {
                 
                 // creating new post
                 do {
+                    
                     _ = try self.postCollectionRef.document(postModel.id!).setData(from: postModel)
                     
-                    // notify loader for deducting task
-                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                    // handle upload task success
+                    self.handleFinishUploadTaskNotification(forContent: .video, didSucceed: true)
                     
-                    // analytics
-                    AnalyticsService.logUserDidPost(withContentType: .video)
                 }catch{
-                    print("upload post with image failed with error \(error)")
-                    // post notification about the error
-                    NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
                     
-                    // notify loader for deducting task
-                    NotificationCenter.default.post(name: .generalFunctionDecreaseTaskForMainLoader, object: true)
+                    // handle upload task failed
+                    self.handleFinishUploadTaskNotification(forContent: .video, didSucceed: false)
+                    
                 }
             }
+        }
+    }
+    
+    func handleFinishUploadTaskNotification(forContent contentType: PostContentType,didSucceed
+        success: Bool){
+        
+        // notification for deducting upload task indicator
+        NotificationCenter.default.post(name: .generalFunctionManipulateTaskForUploadIndicator, object: -1)
+        
+        if (success == true){
+            // analytics
+            AnalyticsService.logUserDidPost(withContentType: contentType)
+        }else {
+            // post notification about the error
+            NotificationCenter.default.post(name: .generalFunctionDidFailInternetConnection, object: true)
         }
     }
     

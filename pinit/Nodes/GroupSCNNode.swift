@@ -285,6 +285,8 @@ class GroupSCNNode: SCNNode, Identifiable {
         // remove current post content (i.e. geometry)
         self.geometry = nil
         
+        print("GROUP SCN NODE DID RESET")
+        
         // reset the currentPostIndex
         self.currentPostIndex = -1
         self.loadInitialPostDisplay()
