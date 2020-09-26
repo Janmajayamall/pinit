@@ -42,11 +42,8 @@ struct MainArView: View {
                             }
                             .applyEdgePadding(for: .topLeft)
                             .onTapGesture {
-                                Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
-                                    AnalyticsParameterItemID: "id-\("title!")",
-                                    AnalyticsParameterItemName: "title!",
-                                    AnalyticsParameterContentType: "cont"
-                                ])
+                                guard self.areButtonsActive() else {return}
+                                
                                 if self.settingsViewModel.isUserAuthenticated() {
                                     switch self.postDisplayType {
                                     case .allPosts:
@@ -69,6 +66,8 @@ struct MainArView: View {
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .topRight)
                                 .onTapGesture {
+                                    guard self.areButtonsActive() else {return}
+                                    
                                     self.settingsViewModel.refreshScene()
                             }
                             
@@ -76,6 +75,8 @@ struct MainArView: View {
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .topRight)
                                 .onTapGesture {
+                                    guard self.areButtonsActive() else {return}
+                                    
                                     if self.settingsViewModel.isUserAuthenticated() {
                                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
                                     }else {
@@ -89,6 +90,8 @@ struct MainArView: View {
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .bottomLeft)
                                 .onTapGesture {
+                                    guard self.areButtonsActive() else {return}
+                                    
                                     if self.settingsViewModel.isUserAuthenticated() {
                                         //                                        // stop session
                                         //                                        self.settingsViewModel.appArScnView.pauseSession()
@@ -105,6 +108,8 @@ struct MainArView: View {
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .bottomRight)
                                 .onTapGesture {
+                                    guard self.areButtonsActive() else {return}
+                                    
                                     NotificationCenter.default.post(name: .aRViewDidTapBackIcon, object: true)
                             }
                             
@@ -112,7 +117,8 @@ struct MainArView: View {
                                 .applyDefaultIconTheme()
                                 .applyEdgePadding(for: .bottomRight)
                                 .onTapGesture {
-                                    print("Posted")
+                                    guard self.areButtonsActive() else {return}
+                                    
                                     // notifiy app ar scene to reset group scn nodes positions
                                     NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
                             }
@@ -202,6 +208,8 @@ struct MainArView: View {
                     if (self.settingsViewModel.userProfile?.username != nil) {
                         EditUsernameView(username: self.settingsViewModel.userProfile?.username ?? "", currentUsername: self.settingsViewModel.userProfile?.username ?? "", parentSize: geometryProxy.size)
                     }
+                    
+                    PopUpWarningView(parentSize: geometryProxy.size, popUpWarningType: self.settingsViewModel.popUpWarningType)
                 }
             }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                 .background(Color.black)
@@ -239,6 +247,11 @@ struct MainArView: View {
     func forceMapViewToDownState(){
         self.mapViewYDragTranslation = 0
         self.mapViewScreenState = .down
+    }
+    
+    func areButtonsActive() -> Bool {
+        // checking for no pop up warning
+        return self.settingsViewModel.popUpWarningType == .none
     }
 }
 

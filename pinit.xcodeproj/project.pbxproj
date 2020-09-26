@@ -92,6 +92,7 @@
 		5DD2962F250E5FD600982587 /* EditCaptureVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */; };
 		5DD29631250E648200982587 /* UIKitAVPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD29630250E648200982587 /* UIKitAVPlayerView.swift */; };
 		5DD5E1142517B29600EA17CC /* Loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD5E1132517B29600EA17CC /* Loader.swift */; };
+		5DD88BC4251F4DD100EA99A1 /* PopUpWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD88BC3251F4DD100EA99A1 /* PopUpWarningView.swift */; };
 		5DE4A3CA24FC082A00262A95 /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = 5DE4A3C924FC082A00262A95 /* ReadMe.md */; };
 		5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9524F5B185005F0A04 /* View+Extensions.swift */; };
 		5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */; };
@@ -210,6 +211,7 @@
 		5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCaptureVideoView.swift; sourceTree = "<group>"; };
 		5DD29630250E648200982587 /* UIKitAVPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitAVPlayerView.swift; sourceTree = "<group>"; };
 		5DD5E1132517B29600EA17CC /* Loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loader.swift; sourceTree = "<group>"; };
+		5DD88BC3251F4DD100EA99A1 /* PopUpWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpWarningView.swift; sourceTree = "<group>"; };
 		5DE4A3C924FC082A00262A95 /* ReadMe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		5DE94F9524F5B185005F0A04 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 				5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */,
 				5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */,
 				5D86652B25138EC800049980 /* CameraFeedView.swift */,
+				5DD88BC3251F4DD100EA99A1 /* PopUpWarningView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -788,6 +791,7 @@
 				5D52F7AF24E9251800D9F27E /* ScreenManagementService.swift in Sources */,
 				5D52F7AB24E91DEA00D9F27E /* Notification+Extensions.swift in Sources */,
 				5D249CEF24FFFA3C00956241 /* PostDisplayInfoModel.swift in Sources */,
+				5DD88BC4251F4DD100EA99A1 /* PopUpWarningView.swift in Sources */,
 				5D31948624F00ECF001182E4 /* SafeTopEdgeViewModifier.swift in Sources */,
 				5D007A6424FD6EFC00F1D1C9 /* PostSCNNode.swift in Sources */,
 				5D67E7EF24E84E6C00F5D240 /* AppDelegate.swift in Sources */,

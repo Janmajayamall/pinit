@@ -52,8 +52,7 @@ class LocationService: NSObject {
 
 extension LocationService: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("IT DID HAPPEN - ", locations.first?.coordinate, locations.first?.horizontalAccuracy)
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {   
         
         locations.forEach { (location) in
             print(location.coordinate, location.horizontalAccuracy)

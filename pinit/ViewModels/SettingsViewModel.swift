@@ -11,6 +11,7 @@ import Combine
 import SwiftUI
 import FirebaseAuth
 import CoreLocation
+import AVFoundation
 
 class SettingsViewModel: ObservableObject {
     @Published var user: User?
@@ -22,6 +23,8 @@ class SettingsViewModel: ObservableObject {
     @Published var loadIndicator: Int = 0
     @Published var uploadIndicator: Int = 0
     @Published var refreshIndicator: Bool = false
+    
+    @Published var popUpWarningType: PopUpWarningType = .none
     
     // services
     private var authenticationService = AuthenticationService()
@@ -59,7 +62,45 @@ class SettingsViewModel: ObservableObject {
         self.authenticationService.setupService()
     }
     
+    func checkDevicePermissions() -> Bool {
+        // checking camera permission
+        var cameraAuthorised: Bool {
+            return AVCaptureDevice.authorizationStatus(for: .video) == .authorized
+        }
+        
+        // checking location permission
+        var locationAuthorised: Bool {
+            let locationPermission = CLLocationManager.authorizationStatus()
+            
+            return locationPermission == .authorizedAlways || locationPermission == .authorizedWhenInUse
+        }
+        
+        // set pop up warning
+        if (cameraAuthorised == false && locationAuthorised == false){
+            self.popUpWarningType = .locationAndCameraPermissionUnavailable
+        } else if (cameraAuthorised == false && locationAuthorised == true){
+            self.popUpWarningType = .cameraPermissionUnavailable
+        } else if (cameraAuthorised == true && locationAuthorised == false){
+            self.popUpWarningType = .locationPermissionUnavailable
+        } else {
+            self.popUpWarningType = .none
+        }
+        
+        // set the mainArView to warning type
+        if (cameraAuthorised == false || locationAuthorised == false){
+            self.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .popUpWarning)
+        } else {
+            self.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
+        }
+               
+        return cameraAuthorised && locationAuthorised
+    }
+    
     func handleSceneDidBecomeActive() {
+        guard self.checkDevicePermissions() else {
+            return
+        }
+        
         // start pulse loader
         self.loadIndicator = 1
         

@@ -35,7 +35,7 @@ class AppArScnView: ARSCNView {
     var addPostToGroupOfDirection: NodeDirection = .front
     var postsWithLoadedDisplayData: Int = 0
     
-    var debug: Bool = true
+    var debug: Bool = false
     
     // for pangesture
     var lastPanLocation: SCNVector3?
