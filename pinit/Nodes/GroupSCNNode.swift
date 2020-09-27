@@ -29,8 +29,9 @@ class GroupSCNNode: SCNNode, Identifiable {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init(scenePosition: SCNVector3?, direction: NodeDirection){
+    init(scenePosition: SCNVector3?, direction: NodeDirection, user: User?){
         self.nodeDirection = direction
+        self.user = user
         print("This is the node direction: \(nodeDirection)")
         super.init()
         
@@ -120,9 +121,10 @@ class GroupSCNNode: SCNNode, Identifiable {
         
         // if post display type is private, then check whether the post belongs to the user. If it does not then return false
         guard let user = self.user, user.uid == postDisplay.post.userId else {
+            print("RGGGF FAIL\(self.user?.uid)")
             return false
         }
-        
+        print("RGGGF PASS\(self.user?.uid)")
         // check whether post is in valid altitude range or not
         if (currentLocation.checkIsInValidDistanceRange(forLocation: postLocation)){
             return postDisplay.isReadyToDisplay
@@ -225,9 +227,9 @@ class GroupSCNNode: SCNNode, Identifiable {
     
     func toggleVolumeIfVideoContentBeingOnDisplay() {
         guard let avPlayer = self.postList[self.currentPostIndex].avPlayer, let id = self.postList[self.currentPostIndex].post.id else {return}
-        
+        print("YYUU before \(id) -- \(avPlayer.isMuted)")
         avPlayer.isMuted = !avPlayer.isMuted
-        
+        print("YYUU after \(id) -- \(avPlayer.isMuted)")
         NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: id)
         
     }
@@ -335,6 +337,7 @@ extension GroupSCNNode {
     
     func subcribeToAuthenticationServicePublishers() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
+            print("QWWERR")
             self.user = user
         }.store(in: &cancellables)
     }

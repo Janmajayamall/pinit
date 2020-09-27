@@ -17,6 +17,7 @@
 		5D2ED1FA24FD1B5F00C542B0 /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */; };
 		5D31948624F00ECF001182E4 /* SafeTopEdgeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */; };
 		5D31948824F0195F001182E4 /* RequestCreatePostWithImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D31948724F0195F001182E4 /* RequestCreatePostWithImageModel.swift */; };
+		5D35B3B42521290A0050EDF9 /* CirclesScaleLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D35B3B32521290A0050EDF9 /* CirclesScaleLoader.swift */; };
 		5D4DD09F24ED2A1200E1FDF3 /* CaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DD09E24ED2A1200E1FDF3 /* CaptureImageView.swift */; };
 		5D4DD0A224ED34B300E1FDF3 /* PathDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DD0A124ED34B300E1FDF3 /* PathDrawing.swift */; };
 		5D4DD0A424ED353B00E1FDF3 /* ImagePaintingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DD0A324ED353B00E1FDF3 /* ImagePaintingModel.swift */; };
@@ -129,6 +130,7 @@
 		5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
 		5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeTopEdgeViewModifier.swift; sourceTree = "<group>"; };
 		5D31948724F0195F001182E4 /* RequestCreatePostWithImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCreatePostWithImageModel.swift; sourceTree = "<group>"; };
+		5D35B3B32521290A0050EDF9 /* CirclesScaleLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesScaleLoader.swift; sourceTree = "<group>"; };
 		5D4DD09E24ED2A1200E1FDF3 /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
 		5D4DD0A124ED34B300E1FDF3 /* PathDrawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDrawing.swift; sourceTree = "<group>"; };
 		5D4DD0A324ED353B00E1FDF3 /* ImagePaintingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePaintingModel.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */,
 				5DD5E1132517B29600EA17CC /* Loader.swift */,
 				5DADAC9C251E01EA002C2571 /* PulseLoader.swift */,
+				5D35B3B32521290A0050EDF9 /* CirclesScaleLoader.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -829,6 +832,7 @@
 				5D52F7A924E91AE700D9F27E /* AuthenticationService.swift in Sources */,
 				5DD29631250E648200982587 /* UIKitAVPlayerView.swift in Sources */,
 				5D567CFB24F43BB500283E5B /* CustomButtonStyles.swift in Sources */,
+				5D35B3B42521290A0050EDF9 /* CirclesScaleLoader.swift in Sources */,
 				5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */,
 				5DD2962D250E5EC000982587 /* EditingVideoViewModel.swift in Sources */,
 				5D52F7E124E9A1B600D9F27E /* UIKitArSceneView.swift in Sources */,

@@ -8,6 +8,8 @@
 
 import SwiftUI
 import FirebaseAnalytics
+import Combine
+
 
 struct MainArView: View {
     
@@ -16,7 +18,10 @@ struct MainArView: View {
     @State var mapViewYDragTranslation: CGFloat = 0
     
     @State var postDisplayType: PostDisplayType = .allPosts
+    @State var postDisplayNotification: Bool = false
     @ObservedObject var postDisplayInfoViewModel: PostDisplayInfoViewModel = PostDisplayInfoViewModel()
+    
+    var cancellables: Set<AnyCancellable> = []
     
     @ViewBuilder
     var body: some View {
@@ -31,34 +36,40 @@ struct MainArView: View {
                     
                     VStack{
                         HStack{
-                            ZStack{
-                                Image(systemName: self.postDisplayType == .allPosts ? "person.fill": "person.2.fill")
-                                    .applyDefaultIconTheme()
-                                
-                                if (self.settingsViewModel.uploadIndicator > 0){
-                                    Loader()
-                                }
-                                
-                            }
-                            .applyEdgePadding(for: .topLeft)
-                            .onTapGesture {
-                                guard self.areButtonsActive() else {return}
-                                
-                                if self.settingsViewModel.isUserAuthenticated() {
-                                    switch self.postDisplayType {
-                                    case .allPosts:
-                                        self.postDisplayType = .privatePosts
-                                    case .privatePosts:
-                                        self.postDisplayType = .allPosts
+                            Text(self.postDisplayType == .allPosts ? "📍": "📍🔒")
+                                .font(Font.system(size: 30, weight: .heavy))
+                                .foregroundColor(Color.white)
+                                .background(Color.black.opacity(0.3))
+                                .cornerRadius(10)
+                                .applyEdgePadding(for: .topLeft)
+                                .onTapGesture {
+                                    guard self.areButtonsActive() else {return}
+                                    
+                                    if self.settingsViewModel.isUserAuthenticated() {
+                                        switch self.postDisplayType {
+                                        case .allPosts:
+                                            self.postDisplayType = .privatePosts
+                                        case .privatePosts:
+                                            self.postDisplayType = .allPosts
+                                        }
+                                        
+                                        // post notification for group scn node
+                                        NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
+                                        
+                                        // display post diplay notification text
+                                        self.postDisplayNotification = true
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                            self.postDisplayNotification = false
+                                        })
+                                        
+                                    }else {
+                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
                                     }
-                                    
-                                    // post notification for group scn node
-                                    NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
-                                    
-                                }else {
-                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
-                                }
                             }
+                            
+                            
+                            
+                            
                             
                             Spacer()
                             
@@ -113,15 +124,20 @@ struct MainArView: View {
                                     NotificationCenter.default.post(name: .aRViewDidTapBackIcon, object: true)
                             }
                             
-                            Image(systemName: "mappin.and.ellipse")
-                                .applyDefaultIconTheme()
-                                .applyEdgePadding(for: .bottomRight)
-                                .onTapGesture {
-                                    guard self.areButtonsActive() else {return}
-                                    
-                                    // notifiy app ar scene to reset group scn nodes positions
-                                    NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
-                            }
+                            ZStack{
+                                Image(systemName: "mappin.and.ellipse")
+                                    .applyDefaultIconTheme()
+                                    .onTapGesture {
+                                        guard self.areButtonsActive() else {return}
+                                        
+                                        // notifiy app ar scene to reset group scn nodes positions
+                                        NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
+                                }
+                                
+                                if (self.settingsViewModel.uploadIndicator > 0){
+                                    Loader()
+                                }
+                            } .applyEdgePadding(for: .bottomRight)
                         }
                         
                     }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
@@ -160,6 +176,26 @@ struct MainArView: View {
                             }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
                                 .animation(.spring())
                         }
+                        
+                        if (self.postDisplayNotification == true){
+                            VStack {
+                                Spacer()
+                                HStack{
+                                    Spacer()
+                                    Text(self.postDisplayType == .allPosts ? "Normal View" : "Private View")
+                                        .foregroundColor(Color.white)
+                                        .font(Font.custom("Avenir", size: 20).bold())
+                                        .padding(10)
+                                        .background(Color.black.opacity(0.3))
+                                        .cornerRadius(10)
+                                    Spacer()
+                                }
+                                Spacer()
+                            }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
+                                .animation(.easeIn)
+                        }
+                        
+                        
                         
                         if (self.settingsViewModel.loadIndicator > 0 || self.settingsViewModel.refreshIndicator == true){
                             PulseLoader(parentSize: geometryProxy.size)
@@ -244,10 +280,6 @@ struct MainArView: View {
         
     }
     
-    func forceMapViewToDownState(){
-        self.mapViewYDragTranslation = 0
-        self.mapViewScreenState = .down
-    }
     
     func areButtonsActive() -> Bool {
         // checking for no pop up warning

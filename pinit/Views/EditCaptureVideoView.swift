@@ -22,7 +22,7 @@ struct EditCaptureVideoView: View {
             get: {
                 self.editingVideoViewModel.descriptionText
         }, set: {
-            let descriptionText = $0.trimmingCharacters(in: .whitespacesAndNewlines)
+            let descriptionText = $0.trimmingCharacters(in: .newlines)
             self.editingVideoViewModel.descriptionText = String(descriptionText.prefix(425))
             
         }

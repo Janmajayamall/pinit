@@ -374,11 +374,11 @@ extension Publishers {
     }
     
     // publishers for postDisplayNodeModel
-    static var postDisplayNodeModelDidRequestMuteAVPLayerPublisher: AnyPublisher<String, Never> {
+    static var postDisplayNodeModelDidRequestMuteAVPLayerPublisher: AnyPublisher<String?, Never> {
         NotificationCenter
             .default
             .publisher(for: .postDisplayNodeModelDidRequestMuteAVPlayer)
-            .compactMap { (notification) -> String? in
+            .map { (notification) -> String? in
                 guard let exceptionId = notification.object as? String else {return nil}
                 return exceptionId
         }.eraseToAnyPublisher()

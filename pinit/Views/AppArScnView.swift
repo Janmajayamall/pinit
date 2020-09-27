@@ -10,6 +10,7 @@ import Foundation
 import SceneKit
 import ARKit
 import Combine
+import FirebaseAuth
 
 class AppArScnView: ARSCNView {
     
@@ -42,6 +43,8 @@ class AppArScnView: ARSCNView {
     var draggingNode: GroupSCNNode?
     var prePanZ: CGFloat?
     
+    var user: User?
+    
     private var touchedNodeDirectionHistory: Array<NodeDirection> = []
     
     private var cancellables: Set<AnyCancellable> = []
@@ -63,6 +66,7 @@ class AppArScnView: ARSCNView {
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToArViewPublishers()
         self.subscribeToGroupSCNNodePublishers()
+        self.subscribeToAuthenticationService()
         
         // setup ui gesture recognizers
         self.setupUIGestureRecognizers()
@@ -214,11 +218,11 @@ class AppArScnView: ARSCNView {
         
         removeGroupNodes()
         
-        self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front)
+        self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front, user: self.user)
         
-        self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight)
+        self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight, user: self.user)
         
-        self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft)
+        self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft, user: self.user)
         
         // adding the nodes
         self.groupNodes.values.forEach { (node) in
@@ -330,6 +334,13 @@ extension AppArScnView {
             
             // notify the loader to decrease initial task
             NotificationCenter.default.post(name: .generalFunctionManipulateTaskForLoadIndicator, object: -1)
+        }.store(in: &cancellables)
+    }
+    
+    // subscribe to authentication services
+    func subscribeToAuthenticationService() {
+        Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
+            self.user = user
         }.store(in: &cancellables)
     }
 }

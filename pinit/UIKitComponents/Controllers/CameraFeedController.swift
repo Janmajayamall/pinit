@@ -33,6 +33,8 @@ class CameraFeedController: NSObject {
     
     var cameraFlashMode: AVCaptureDevice.FlashMode = .off
     
+    var cameraPosition: CameraInUsePosition?
+    
     private var cancellables: Set<AnyCancellable> = []
     
     override init(){
@@ -84,6 +86,7 @@ extension CameraFeedController {
                 self.rearCameraInput = try AVCaptureDeviceInput(device: rearCameraDevice)
                 
                 if captureSession.canAddInput(self.rearCameraInput!) {
+                    self.cameraPosition = .rear
                     captureSession.addInput(self.rearCameraInput!)
                 }
                 
@@ -93,6 +96,7 @@ extension CameraFeedController {
                 self.frontCameraInput = try AVCaptureDeviceInput(device: frontCameraDevice)
                 
                 if captureSession.canAddInput(self.frontCameraInput!){
+                    self.cameraPosition = .front
                     captureSession.addInput(self.frontCameraInput!)
                 }
                 
@@ -177,6 +181,7 @@ extension CameraFeedController {
             captureSession.removeInput(rearCameraInput)
             
             if captureSession.canAddInput(self.frontCameraInput!){
+                self.cameraPosition = .front
                 captureSession.addInput(self.frontCameraInput!)
             }else {
                 throw CameraFeedControllerError.invalidOperation
@@ -185,6 +190,7 @@ extension CameraFeedController {
         func switchToRearCamera() throws {
             let sessionInput = captureSession.inputs
             guard let frontCameraInput = self.frontCameraInput, sessionInput.contains(frontCameraInput), let rearCameraDevice = self.rearCameraDevice else {
+                self.cameraPosition = .rear
                 throw CameraFeedControllerError.invalidOperation
                 
             }
@@ -194,6 +200,7 @@ extension CameraFeedController {
             captureSession.removeInput(frontCameraInput)
             
             if captureSession.canAddInput(self.rearCameraInput!){
+                self.cameraPosition = .rear
                 captureSession.addInput(self.rearCameraInput!)
             }else {
                 throw CameraFeedControllerError.invalidOperation
@@ -244,8 +251,15 @@ extension CameraFeedController {
         if (connection?.isVideoOrientationSupported)! {
             connection?.videoOrientation = .portrait
         }
-        if let deviceInput = captureSession.inputs.first as? AVCaptureDeviceInput, deviceInput.device.position != .back {
-            connection?.isVideoMirrored = true
+        
+        if let currentCameraPosition = self.cameraPosition {
+            print("THISHJJ \(self.cameraPosition)")
+            switch currentCameraPosition {
+            case .front:
+                connection?.isVideoMirrored = true
+            case .rear:
+                connection?.isVideoMirrored = false
+            }
         }
         
         let captureSettings = AVCapturePhotoSettings()
@@ -266,8 +280,13 @@ extension CameraFeedController {
                 connection?.videoOrientation = .portrait
             }
             
-            if let deviceInput = captureSession.inputs.first as? AVCaptureDeviceInput, deviceInput.device.position != .back {
-                connection?.isVideoMirrored = true
+            if let currentCameraPosition = self.cameraPosition {
+                switch currentCameraPosition {
+                case .front:
+                    connection?.isVideoMirrored = true
+                case .rear:
+                    connection?.isVideoMirrored = false
+                }
             }
             
             // generating output file url for movie

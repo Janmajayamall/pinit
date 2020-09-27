@@ -150,8 +150,13 @@ class PostDisplayNodeModel: NSObject {
 extension PostDisplayNodeModel {
     func subscribeToPostDisplayNodeModelPublishers() {
         Publishers.postDisplayNodeModelDidRequestMuteAVPLayerPublisher.sink { (exceptionId) in
-            guard let avPlayer = self.avPlayer, let id = self.post.id, id != exceptionId else {return}
-            avPlayer.isMuted = true
+            guard let avPlayer = self.avPlayer, let id = self.post.id else {return}
+            
+            if let exceptionId = exceptionId, exceptionId == id {
+                return
+            }else {
+                avPlayer.isMuted = true
+            }                   
         }.store(in: &cancellables)
     }
 }

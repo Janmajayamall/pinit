@@ -132,6 +132,9 @@ class SettingsViewModel: ObservableObject {
                         
         // stop geohashing service
         self.geohasingService.stopService()
+        
+        // mute all av player
+        NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: nil)
                 
         // stop session & remove GroupSCNNodes in AppARSCNNodes
         self.appArScnView.pauseSession()

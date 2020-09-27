@@ -32,7 +32,7 @@ struct CameraFeedView: View {
             if (self.isLongPress == false) {
                 VStack{
                     HStack (alignment: .top){
-                        Image(systemName: "xmark")
+                        Image(systemName: "chevron.left")
                             .foregroundColor(Color.white)
                             .applyDefaultIconTheme()
                             .onTapGesture {

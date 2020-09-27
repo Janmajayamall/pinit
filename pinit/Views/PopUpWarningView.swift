@@ -42,7 +42,11 @@ struct PopUpWarningView: View {
                 Spacer()
                 
                 Button(action: {
-                    //
+                    guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {return}
+                    
+                    if (UIApplication.shared.canOpenURL(settingsURL)){
+                        UIApplication.shared.open(settingsURL)
+                    }
                 }, label: {
                     Text("Open Settings")
                 })
