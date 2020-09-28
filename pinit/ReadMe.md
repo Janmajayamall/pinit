@@ -26,4 +26,8 @@
 # Reference for moving dragging nodes around
 1. https://medium.com/@literalpie/dragging-objects-in-scenekit-and-arkit-3568212a90e5
 
+# Reference for setting up dev & prod env
+1. https://dev.to/theagilemonkeys/how-to-have-debug-and-release-firebase-environments-in-an-ios-project-1egc
+2. https://medium.com/@pablosanchezdev/using-different-firebase-environments-in-an-ios-app-35eb0dd36e7c
+
 
