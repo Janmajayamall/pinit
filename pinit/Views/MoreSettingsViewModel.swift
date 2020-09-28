@@ -34,46 +34,47 @@ struct MoreSettingsViewModel: View {
                 Button(action:{
                     
                 }, label: {
-                    
                     HStack{
                         Spacer()
                         Text("Feedback")
                         Spacer()
                     }
-                        
                 })
                     .buttonStyle(LeanOutlineColoredButtonStyle())
                 
-//
-//                Button(action: {
-//
-//                }, label: {
-//                    Text("Feedback")
-//                })
-//                    .buttonStyle(SecondaryColorButtonStyle())
-//
-//                Button(action: {
-//
-//                }, label: {
-//                    Text("More about PinIt")
-//                })
-//                    .buttonStyle(SecondaryColorButtonStyle())
-//
-//                Button(action: {
-//
-//                }, label: {
-//                    Text("Privacy Matters")
-//                })
-//                    .buttonStyle(SecondaryColorButtonStyle())
-//
-//                Button(action: {
-//                    self.settingsViewModel.signOut()
-//                }, label: {
-//                    Text("Logout")
-//                })
-//                    .buttonStyle(SecondaryColorButtonStyle())
-//                    .padding(.bottom, 10)
-//
+                Button(action:{
+                    
+                }, label: {
+                    HStack{
+                        Spacer()
+                        Text("More about PinIt")
+                        Spacer()
+                    }
+                })
+                    .buttonStyle(LeanOutlineColoredButtonStyle())
+                
+                Button(action:{
+                    
+                }, label: {
+                    HStack{
+                        Spacer()
+                        Text("Privacy Matters")
+                        Spacer()
+                    }
+                })
+                    .buttonStyle(LeanOutlineColoredButtonStyle())
+                
+                Button(action:{
+                    self.settingsViewModel.signOut()
+                }, label: {
+                    HStack{
+                        Spacer()
+                        Text("Logout")
+                        Spacer()
+                    }
+                })
+                    .buttonStyle(LeanOutlineColoredButtonStyle())
+                
                 Spacer()
             }.zIndex(1)
             VStack{

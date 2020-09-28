@@ -25,7 +25,6 @@
 		5D4DD0A824ED3E4D00E1FDF3 /* StrokeWidthSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DD0A724ED3E4D00E1FDF3 /* StrokeWidthSlider.swift */; };
 		5D4DD0AA24ED425700E1FDF3 /* EditCaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DD0A924ED425700E1FDF3 /* EditCaptureImageView.swift */; };
 		5D5245FD24F4555E0000317D /* SetupProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5245FC24F4555E0000317D /* SetupProfileViewModel.swift */; };
-		5D52F7A524E9117500D9F27E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D52F7A424E9117500D9F27E /* GoogleService-Info.plist */; };
 		5D52F7A724E917D400D9F27E /* MainArView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7A624E917D400D9F27E /* MainArView.swift */; };
 		5D52F7A924E91AE700D9F27E /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7A824E91AE700D9F27E /* AuthenticationService.swift */; };
 		5D52F7AB24E91DEA00D9F27E /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7AA24E91DEA00D9F27E /* Notification+Extensions.swift */; };
@@ -72,7 +71,6 @@
 		5D6B1F8124FEF85D00DCC418 /* CameraFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */; };
 		5D7143D624FD01E1008EF04C /* DragGestureViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */; };
 		5D7E39C525059CA800C6E0AB /* OptimisticUIPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */; };
-		5D8386F7250F1597009CC01F /* GoogleService-Info--1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5D8386F6250F1597009CC01F /* GoogleService-Info--1.plist */; };
 		5D86652C25138EC800049980 /* CameraFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86652B25138EC800049980 /* CameraFeedView.swift */; };
 		5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */; };
 		5DADAC9D251E01EA002C2571 /* PulseLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DADAC9C251E01EA002C2571 /* PulseLoader.swift */; };
@@ -138,7 +136,6 @@
 		5D4DD0A724ED3E4D00E1FDF3 /* StrokeWidthSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeWidthSlider.swift; sourceTree = "<group>"; };
 		5D4DD0A924ED425700E1FDF3 /* EditCaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCaptureImageView.swift; sourceTree = "<group>"; };
 		5D5245FC24F4555E0000317D /* SetupProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupProfileViewModel.swift; sourceTree = "<group>"; };
-		5D52F7A424E9117500D9F27E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D52F7A624E917D400D9F27E /* MainArView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainArView.swift; sourceTree = "<group>"; };
 		5D52F7A824E91AE700D9F27E /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		5D52F7AA24E91DEA00D9F27E /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
@@ -192,7 +189,6 @@
 		5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedViewController.swift; sourceTree = "<group>"; };
 		5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureViewModifier.swift; sourceTree = "<group>"; };
 		5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimisticUIPostModel.swift; sourceTree = "<group>"; };
-		5D8386F6250F1597009CC01F /* GoogleService-Info--1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info--1.plist"; sourceTree = "<group>"; };
 		5D86652B25138EC800049980 /* CameraFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedView.swift; sourceTree = "<group>"; };
 		5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSetupUserProfileModel.swift; sourceTree = "<group>"; };
 		5DADAC9C251E01EA002C2571 /* PulseLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseLoader.swift; sourceTree = "<group>"; };
@@ -218,6 +214,8 @@
 		5DE94F9524F5B185005F0A04 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
 		5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
+		5DFF62F82522788A0038820A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5DFF62F9252278BF0038820A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6709C44A89EC11F0E02FA123 /* Pods-pinit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit.debug.xcconfig"; path = "Target Support Files/Pods-pinit/Pods-pinit.debug.xcconfig"; sourceTree = "<group>"; };
 		6D7BD52D6C6DA6C3A0A94EB4 /* Pods-pinit-pinitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit-pinitUITests.debug.xcconfig"; path = "Target Support Files/Pods-pinit-pinitUITests/Pods-pinit-pinitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		86D53FDF6D0C11D1E076B044 /* Pods_pinitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -418,12 +416,11 @@
 		5D67E7ED24E84E6C00F5D240 /* pinit */ = {
 			isa = PBXGroup;
 			children = (
-				5D8386F6250F1597009CC01F /* GoogleService-Info--1.plist */,
+				5DFF62F52522780F0038820A /* Firebase */,
 				5D567CF124F3E55B00283E5B /* Fonts */,
 				5D52F7DB24E994A400D9F27E /* Nodes */,
 				5D52F7C924E96E5900D9F27E /* pinit.entitlements */,
 				5D52F7C424E958BE00D9F27E /* UIKitComponents */,
-				5D52F7A424E9117500D9F27E /* GoogleService-Info.plist */,
 				5D52F7A324E90D6500D9F27E /* Views */,
 				5D52F7A224E90D6000D9F27E /* Models */,
 				5D52F7A124E90D5600D9F27E /* Services */,
@@ -489,6 +486,31 @@
 			path = Modifiers;
 			sourceTree = "<group>";
 		};
+		5DFF62F52522780F0038820A /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				5DFF62F7252278200038820A /* Release */,
+				5DFF62F6252278180038820A /* Debug */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		5DFF62F6252278180038820A /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				5DFF62F9252278BF0038820A /* GoogleService-Info.plist */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
+		5DFF62F7252278200038820A /* Release */ = {
+			isa = PBXGroup;
+			children = (
+				5DFF62F82522788A0038820A /* GoogleService-Info.plist */,
+			);
+			path = Release;
+			sourceTree = "<group>";
+		};
 		6163506BD753541FA968A04C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -522,6 +544,7 @@
 				426F46D650BFFAEE52D2E4DC /* [CP] Check Pods Manifest.lock */,
 				5D67E7E724E84E6C00F5D240 /* Sources */,
 				5D67E7E824E84E6C00F5D240 /* Frameworks */,
+				5DFF62FB252279EE0038820A /* Setup firebase plist files */,
 				5D67E7E924E84E6C00F5D240 /* Resources */,
 				40C250427C7BEE32CF9224BF /* [CP] Embed Pods Frameworks */,
 				5DEA78DC251673D30041D7AF /* ShellScript */,
@@ -623,12 +646,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D67E7FB24E84E7000F5D240 /* LaunchScreen.storyboard in Resources */,
-				5D52F7A524E9117500D9F27E /* GoogleService-Info.plist in Resources */,
 				5DE4A3CA24FC082A00262A95 /* ReadMe.md in Resources */,
 				5D67E7F824E84E7000F5D240 /* Preview Assets.xcassets in Resources */,
 				5D67E7F524E84E7000F5D240 /* Assets.xcassets in Resources */,
 				5D567CF324F3E57300283E5B /* Avenir.ttc in Resources */,
-				5D8386F7250F1597009CC01F /* GoogleService-Info--1.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -704,6 +725,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n\n";
+		};
+		5DFF62FB252279EE0038820A /* Setup firebase plist files */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Setup firebase plist files";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nINFO_PLIST=GoogleService-Info.plist\n\nDEBUG_INFO_PLIST=${PROJECT_DIR}/${TARGET_NAME}/Firebase/Debug/${INFO_PLIST}\nRELEASE_INFO_PLIST=${PROJECT_DIR}/${TARGET_NAME}/Firebase/Release/${INFO_PLIST}\n\necho \"Checking ${INFO_PLIST} in ${DEBUG_INFO_PLIST}\"\nif [ ! -f $DEBUG_INFO_PLIST ] ; then\n    echo \"Debug GoogleService-Info.plist not found.\"\n    exit 1\nfi\n\necho \"Checking ${INFO_PLIST} in ${RELEASE_INFO_PLIST}\"\nif [ ! -f $RELEASE_INFO_PLIST ] ; then\n    echo \"Release GoogleService-Info.plist not found.\"\n    exit 1\nfi\n\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Copying ${INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\nif [ \"${CONFIGURATION}\" == \"Release\" ] ; then\n    echo \"Copied ${RELEASE_INFO_PLIST}.\"\n    cp \"${RELEASE_INFO_PLIST}\" \"${PLIST_DESTINATION}\"\nelse\n    echo \"Copied ${DEBUG_INFO_PLIST}.\"\n    cp \"${DEBUG_INFO_PLIST}\" \"${PLIST_DESTINATION}\"\nfi\n";
 		};
 		9658556C2F8A6061086638E1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1026,6 +1065,7 @@
 				DEVELOPMENT_TEAM = B8GFL3DC67;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = pinit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1048,6 +1088,7 @@
 				DEVELOPMENT_TEAM = B8GFL3DC67;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = pinit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

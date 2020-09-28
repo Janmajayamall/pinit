@@ -41,8 +41,7 @@ class GeohashingService {
         let neighborGeohashes = GeohashingService.neighborsFor(geohash: locationGeohash)
         let geohashModel = GeohashModel(currentLocationGeohash: locationGeohash, neighborGeohashes: neighborGeohashes, currentLocation: location)
         self.geohashModel = geohashModel
-        self.updateOnWeb()
-        print("Geohashing service updated \(self.geohashModel!.currentLocation) \(self.geohashModel!.currentLocationGeohash)")
+       
         NotificationCenter.default.post(name: .geohasingServiceDidUpdateGeohash, object: geohashModel)
     }
     

@@ -3,34 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>164441196521-jsa0o4tlo3rrmnd33hkg41cv1vsvul0h.apps.googleusercontent.com</string>
+	<string>822130586756-meat46s0j3t42112mi2ik3tko929179l.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.164441196521-jsa0o4tlo3rrmnd33hkg41cv1vsvul0h</string>
+	<string>com.googleusercontent.apps.822130586756-meat46s0j3t42112mi2ik3tko929179l</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCfakoYgp5rYmAMJhydp1_8Wnmf5mXVRDo</string>
+	<string>AIzaSyDDiwNBb5Qa2aGVwN4iPFzngyI1gTSy5LI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>164441196521</string>
+	<string>822130586756</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.pinit.here.pinit</string>
 	<key>PROJECT_ID</key>
-	<string>trial-f54cf</string>
+	<string>pinit-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>trial-f54cf.appspot.com</string>
+	<string>pinit-prod.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:164441196521:ios:8d5946b8433ea00b6dad78</string>
+	<string>1:822130586756:ios:8e726789ed28529779fed1</string>
 	<key>DATABASE_URL</key>
-	<string>https://trial-f54cf.firebaseio.com</string>
+	<string>https://pinit-prod.firebaseio.com</string>
 </dict>
 </plist>

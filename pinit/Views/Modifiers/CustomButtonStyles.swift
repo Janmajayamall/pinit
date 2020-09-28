@@ -29,11 +29,14 @@ struct LeanOutlineColoredButtonStyle: ButtonStyle {
         .font(Font.custom("Avenir", size: 18).bold())
         .foregroundColor(Color.primaryColor)
         .padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
+            .background(Color.white)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.primaryColor, lineWidth: 1.5)
         )
-            .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))     
-        
+            .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+        .opacity(configuration.isPressed ? 0.7 : 1)
+        .scaleEffect(configuration.isPressed ? 0.9 : 1)
+        .animation(.easeInOut(duration: 0.2))
     }
 }
