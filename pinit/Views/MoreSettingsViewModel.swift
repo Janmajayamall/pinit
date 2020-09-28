@@ -31,20 +31,49 @@ struct MoreSettingsViewModel: View {
             VStack{
                 Spacer()
                 
-                Button(action: {
-                    self.settingsViewModel.signOut()
-                }, label: {
-                    Text("Logout")
-                })
-                    .buttonStyle(SecondaryColorButtonStyle())
-                    .padding(.bottom, 10)
-                Button(action: {
+                Button(action:{
                     
                 }, label: {
-                    Text("Privacy")
+                    
+                    HStack{
+                        Spacer()
+                        Text("Feedback")
+                        Spacer()
+                    }
+                        
                 })
-                    .buttonStyle(SecondaryColorButtonStyle())
-               
+                    .buttonStyle(LeanOutlineColoredButtonStyle())
+                
+//
+//                Button(action: {
+//
+//                }, label: {
+//                    Text("Feedback")
+//                })
+//                    .buttonStyle(SecondaryColorButtonStyle())
+//
+//                Button(action: {
+//
+//                }, label: {
+//                    Text("More about PinIt")
+//                })
+//                    .buttonStyle(SecondaryColorButtonStyle())
+//
+//                Button(action: {
+//
+//                }, label: {
+//                    Text("Privacy Matters")
+//                })
+//                    .buttonStyle(SecondaryColorButtonStyle())
+//
+//                Button(action: {
+//                    self.settingsViewModel.signOut()
+//                }, label: {
+//                    Text("Logout")
+//                })
+//                    .buttonStyle(SecondaryColorButtonStyle())
+//                    .padding(.bottom, 10)
+//
                 Spacer()
             }.zIndex(1)
             VStack{
@@ -68,7 +97,7 @@ struct MoreSettingsViewModel: View {
         .animation(.spring())
     }
     
-    let viewHeightRatio: CGFloat = 0.30
+    let viewHeightRatio: CGFloat = 0.50
     let viewWidthRatio: CGFloat = 0.8
 }
 

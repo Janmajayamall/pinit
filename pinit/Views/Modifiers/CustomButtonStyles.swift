@@ -22,3 +22,18 @@ struct SecondaryColorButtonStyle: ButtonStyle {
         
     }
 }
+
+struct LeanOutlineColoredButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+        .font(Font.custom("Avenir", size: 18).bold())
+        .foregroundColor(Color.primaryColor)
+        .padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.primaryColor, lineWidth: 1.5)
+        )
+            .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5))     
+        
+    }
+}
