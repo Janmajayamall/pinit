@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>822130586756-meat46s0j3t42112mi2ik3tko929179l.apps.googleusercontent.com</string>
+	<string>822130586756-rfu44qr9e5id58jibdruelttvmkat0rf.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.822130586756-meat46s0j3t42112mi2ik3tko929179l</string>
+	<string>com.googleusercontent.apps.822130586756-rfu44qr9e5id58jibdruelttvmkat0rf</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDDiwNBb5Qa2aGVwN4iPFzngyI1gTSy5LI</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.pinit.here.pinit</string>
+	<string>com.pastime</string>
 	<key>PROJECT_ID</key>
 	<string>pinit-prod</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:822130586756:ios:8e726789ed28529779fed1</string>
+	<string>1:822130586756:ios:4c4fdaa1e8ccd55279fed1</string>
 	<key>DATABASE_URL</key>
 	<string>https://pinit-prod.firebaseio.com</string>
 </dict>

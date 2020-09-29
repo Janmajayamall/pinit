@@ -32,15 +32,15 @@ struct EditUsernameView: View {
     @State var forceRenderBool: Bool = true
     
     var body: some View {
-        print("qwerty")
+        
         let usernameBinding = Binding<String>(get: {
-            print(self.username)
+            print(self.username, "qwerty 1")
             return self.username
         }, set: {
             var username = $0.lowercased()
             username = username.trimmingCharacters(in: .whitespacesAndNewlines)
             self.username = String(username.prefix(25))
-            print(self.username)
+            print(self.username, "qwerty 12121")
             // forcing render UI
             self.forceRenderBool.toggle()
         })
@@ -78,7 +78,7 @@ struct EditUsernameView: View {
                     
                 })
                     .buttonStyle(SecondaryColorButtonStyle())
-                
+                    .padding(EdgeInsets(top: self.forceRenderBool ? 0 : 0, leading: 0, bottom: 0, trailing: 0))
                 Spacer()
             }.zIndex(1)
             VStack{
@@ -97,7 +97,7 @@ struct EditUsernameView: View {
         }
         .frame(width: self.viewSize.width, height: self.viewSize.height)
         .background(Color.white)
-            .cornerRadius(15)
+        .cornerRadius(15)
         .offset(self.offset)
         .animation(.spring())
     }

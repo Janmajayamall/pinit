@@ -56,7 +56,7 @@ struct ProfileView: View {
                     Spacer()
                     HStack{
                         Spacer()
-                        Text("Share PinIt").foregroundColor(Color.primaryColor)
+                        Text("Share Pastime").foregroundColor(Color.primaryColor)
                         Text("with your friends 😜").foregroundColor(Color.black)
                         Spacer()
                     }
