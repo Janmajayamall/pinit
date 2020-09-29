@@ -74,7 +74,7 @@ class UserProfileService: ObservableObject {
         }
         
         // update last active for the user
-        self.updateLastActive()
+        self.updateUserActiveData()
     }
 
     func stopListeningToUserProfile() {
@@ -94,10 +94,8 @@ class UserProfileService: ObservableObject {
         if let currentLocation = self.currentLocation {
             let geopoint = GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
             profile.createdAtLocation = geopoint
-            profile.lastLocation = geopoint
-            
         }
-        
+        print("PROFILE MODEL +++++++ \(profile)")
         // creating user profile
         do {
             print("ERTT \(profile)")
@@ -108,45 +106,58 @@ class UserProfileService: ObservableObject {
         }
     }
     
-    func updateLastActive() {
+    func setupUserActiveData() {
         guard let user = self.user else {return}
         
-        let userDocRef = self.userCollectionRef.document(user.uid)
+        // creating user active data model
+        var activeDataModel = UserActiveDataModel(lastActive: Timestamp())
         
-        // updating lastActive
-        userDocRef.updateData([
-            "lastActive": Timestamp()
-        ])
+        // updating last location
+        if let currentLocation = self.currentLocation {
+            let geopoint = GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+            activeDataModel.lastLocation = geopoint
+        }
         
-        // update location
-        self.updateLastLocation()
+        // setup user active data
+        do {
+            _ = try self.userActiveDataCollectionRef.document(user.uid).setData(from: activeDataModel)
+        }catch{
+            print("Setup User Active Data failed with error: \(error.localizedDescription)")
+        }
     }
     
-    func updateLastUpload() {
+    func updateUserActiveData() {
         guard let user = self.user else {return}
         
-        let userDocRef = self.userCollectionRef.document(user.uid)
+        let docRef = self.userActiveDataCollectionRef.document(user.uid)
+        
+        if let currentLocation = self.currentLocation {
+            // updating lastActive and locatLocation
+            docRef.updateData([
+                "lastActive": Timestamp(),
+                "lastLocation": GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+            ])
+        }else {
+            // updating lastActive
+            docRef.updateData([
+                "lastActive": Timestamp()
+            ])
+        }
+    }
+    
+    func updateLastUploadInUserActiveData() {
+        guard let user = self.user else {return}
+        
+        let docRef = self.userActiveDataCollectionRef.document(user.uid)
         
         // updating lastActive
-        userDocRef.updateData([
+        docRef.updateData([
             "lastUpload": Timestamp()
         ])
         
         // update lastActive as well
-        self.updateLastActive()
+        self.updateUserActiveData()
     }
-    
-    func updateLastLocation() {
-        guard let user = self.user, let currentLocation = self.currentLocation else {return}
-        
-        let userDocRef = self.userCollectionRef.document(user.uid)
-        
-        // updating lastActive
-        userDocRef.updateData([
-            "lastLocation": GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
-        ])
-    }
-    
     
     /// updates the username of the user in database
     ///
@@ -184,6 +195,7 @@ class UserProfileService: ObservableObject {
     }
     
     private let userCollectionRef: CollectionReference = Firestore.firestore().collection("users")
+    private let userActiveDataCollectionRef: CollectionReference = Firestore.firestore().collection("userActiveData")
     private let storageRef = Storage.storage().reference()
     
     static func checkUsernameExists(for username: String, withCallback callback: @escaping (Bool) -> Void) {
@@ -238,6 +250,7 @@ extension UserProfileService {
         
         Publishers.userProfileServiceDidRequestSetupUserProfilePublisher.sink { (requestModel) in
             self.setupUserProfile(withModel: requestModel)
+            self.setupUserActiveData()
         }.store(in: &cancellables)
     }
     
@@ -249,7 +262,7 @@ extension UserProfileService {
     
     func subscribeToUploadPostService() {
         Publishers.uploadPostServiceDidUploadPostPublisher.sink { (model) in
-            self.updateLastUpload()
+            self.updateLastUploadInUserActiveData()
         }.store(in: &cancellables)
     }
 }

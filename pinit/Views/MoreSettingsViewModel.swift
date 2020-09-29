@@ -26,35 +26,44 @@ struct MoreSettingsViewModel: View {
         }
     }
     
+    @State var isSafariOpen: Bool = false
+    @State var safariUrl: URL?
+    
     var body: some View {
         ZStack{
             VStack{
                 Spacer()
                 
                 Button(action:{
-                    
+                    guard let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeqgRqgUiJt0khh0UpABb_szeKCnLK0v7I0aPN9uV1bpt6IyQ/viewform?usp=sf_link") else {return}
+                    self.safariUrl = url
+                    self.isSafariOpen = true
                 }, label: {
                     HStack{
                         Spacer()
-                        Text("Feedback")
+                        Text("Your suggestions for Pastime")
                         Spacer()
                     }
                 })
                     .buttonStyle(LeanOutlineColoredButtonStyle())
                 
                 Button(action:{
-                    
+                    guard let url = URL(string: "https://techcrunch.com/") else {return}
+                    self.safariUrl = url
+                    self.isSafariOpen = true
                 }, label: {
                     HStack{
                         Spacer()
-                        Text("More about PinIt")
+                        Text("More about Pastime")
                         Spacer()
                     }
                 })
                     .buttonStyle(LeanOutlineColoredButtonStyle())
                 
                 Button(action:{
-                    
+                    guard let url = URL(string: "https://techcrunch.com/") else {return}
+                    self.safariUrl = url
+                    self.isSafariOpen = true
                 }, label: {
                     HStack{
                         Spacer()
@@ -96,6 +105,9 @@ struct MoreSettingsViewModel: View {
         .cornerRadius(15)
         .offset(self.offset)
         .animation(.spring())
+        .sheet(isPresented: self.$isSafariOpen, content: {
+            UIKitSafariWebView(url: self.safariUrl!)
+        })
     }
     
     let viewHeightRatio: CGFloat = 0.50

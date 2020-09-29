@@ -118,7 +118,7 @@ class SettingsViewModel: ObservableObject {
         self.locationService.startService()
         
         // update user last active & log app open event
-        self.userProfileService.updateLastActive()
+        self.userProfileService.updateUserActiveData()
         AnalyticsService.logAppOpenEvent()
     }
     

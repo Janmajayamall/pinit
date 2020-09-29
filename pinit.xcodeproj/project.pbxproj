@@ -13,6 +13,8 @@
 		5D1CF0A82500095B00DD4E90 /* PostDisplayInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */; };
 		5D249CEF24FFFA3C00956241 /* PostDisplayInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */; };
 		5D27ABFE24F7CACE005D8992 /* PostDisplayTypeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */; };
+		5D297D4125236574008E9FF5 /* UIKitSafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */; };
+		5D297D4525238316008E9FF5 /* UserActiveDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */; };
 		5D2ED1F824FD0D3C00C542B0 /* TextViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */; };
 		5D2ED1FA24FD1B5F00C542B0 /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */; };
 		5D31948624F00ECF001182E4 /* SafeTopEdgeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */; };
@@ -124,6 +126,10 @@
 		5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoViewModel.swift; sourceTree = "<group>"; };
 		5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoModel.swift; sourceTree = "<group>"; };
 		5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayTypeService.swift; sourceTree = "<group>"; };
+		5D297D3E252359F1008E9FF5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5D297D3F25235A63008E9FF5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitSafariWebView.swift; sourceTree = "<group>"; };
+		5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActiveDataModel.swift; sourceTree = "<group>"; };
 		5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewModifiers.swift; sourceTree = "<group>"; };
 		5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
 		5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeTopEdgeViewModifier.swift; sourceTree = "<group>"; };
@@ -172,7 +178,7 @@
 		5D567CF824F4340F00283E5B /* SoftEdgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftEdgeButton.swift; sourceTree = "<group>"; };
 		5D567CFA24F43BB500283E5B /* CustomButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonStyles.swift; sourceTree = "<group>"; };
 		5D576A3724F1A465004A004C /* EmailAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthenticationView.swift; sourceTree = "<group>"; };
-		5D67E7EB24E84E6C00F5D240 /* pinit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pinit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D67E7EB24E84E6C00F5D240 /* Pastime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pastime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D67E7EE24E84E6C00F5D240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D67E7F024E84E6C00F5D240 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5D67E7F424E84E7000F5D240 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -214,8 +220,6 @@
 		5DE94F9524F5B185005F0A04 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
 		5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
-		5DFF62F82522788A0038820A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		5DFF62F9252278BF0038820A /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6709C44A89EC11F0E02FA123 /* Pods-pinit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit.debug.xcconfig"; path = "Target Support Files/Pods-pinit/Pods-pinit.debug.xcconfig"; sourceTree = "<group>"; };
 		6D7BD52D6C6DA6C3A0A94EB4 /* Pods-pinit-pinitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit-pinitUITests.debug.xcconfig"; path = "Target Support Files/Pods-pinit-pinitUITests/Pods-pinit-pinitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		86D53FDF6D0C11D1E076B044 /* Pods_pinitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -329,6 +333,7 @@
 				5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */,
 				5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */,
 				5DC5304F250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift */,
+				5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -369,6 +374,7 @@
 				5DC2859A24ED06B800830887 /* UIKitMapBox.swift */,
 				5DC8527624EFE96500E36DCE /* UIKitUITextView.swift */,
 				5DD29630250E648200982587 /* UIKitAVPlayerView.swift */,
+				5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */,
 			);
 			path = UIKitComponents;
 			sourceTree = "<group>";
@@ -406,7 +412,7 @@
 		5D67E7EC24E84E6C00F5D240 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5D67E7EB24E84E6C00F5D240 /* pinit.app */,
+				5D67E7EB24E84E6C00F5D240 /* Pastime.app */,
 				5D67E80124E84E7000F5D240 /* pinitTests.xctest */,
 				5D67E80C24E84E7000F5D240 /* pinitUITests.xctest */,
 			);
@@ -498,7 +504,7 @@
 		5DFF62F6252278180038820A /* Debug */ = {
 			isa = PBXGroup;
 			children = (
-				5DFF62F9252278BF0038820A /* GoogleService-Info.plist */,
+				5D297D3F25235A63008E9FF5 /* GoogleService-Info.plist */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -506,7 +512,7 @@
 		5DFF62F7252278200038820A /* Release */ = {
 			isa = PBXGroup;
 			children = (
-				5DFF62F82522788A0038820A /* GoogleService-Info.plist */,
+				5D297D3E252359F1008E9FF5 /* GoogleService-Info.plist */,
 			);
 			path = Release;
 			sourceTree = "<group>";
@@ -555,7 +561,7 @@
 			);
 			name = pinit;
 			productName = pinit;
-			productReference = 5D67E7EB24E84E6C00F5D240 /* pinit.app */;
+			productReference = 5D67E7EB24E84E6C00F5D240 /* Pastime.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5D67E80024E84E7000F5D240 /* pinitTests */ = {
@@ -887,11 +893,13 @@
 				5D4DD0AA24ED425700E1FDF3 /* EditCaptureImageView.swift in Sources */,
 				5D27ABFE24F7CACE005D8992 /* PostDisplayTypeService.swift in Sources */,
 				5D567CF724F428E400283E5B /* SetupProfileView.swift in Sources */,
+				5D297D4525238316008E9FF5 /* UserActiveDataModel.swift in Sources */,
 				5D52F7DA24E9932600D9F27E /* LocationService.swift in Sources */,
 				5D52F7CB24E96E8F00D9F27E /* LoginView.swift in Sources */,
 				5DD5E1142517B29600EA17CC /* Loader.swift in Sources */,
 				5D52F7BF24E952FE00D9F27E /* ProfileView.swift in Sources */,
 				5D52F7B924E93AAA00D9F27E /* PostModel.swift in Sources */,
+				5D297D4125236574008E9FF5 /* UIKitSafariWebView.swift in Sources */,
 				5D4DD0A824ED3E4D00E1FDF3 /* StrokeWidthSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1070,8 +1078,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinit.here.pinit;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pastime;
+				PRODUCT_NAME = Pastime;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1093,8 +1101,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.pinit.here.pinit;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pastime;
+				PRODUCT_NAME = Pastime;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
