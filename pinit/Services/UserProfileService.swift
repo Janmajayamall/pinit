@@ -224,19 +224,6 @@ extension UserProfileService {
                 return
             }
             
-            guard let currentUser = self.user else {
-                // there is no exisitng user
-                self.registerServiceForUser(newUser)
-                return
-            }
-            
-            // checking whether the current user is same as new user
-            guard newUser.uid != currentUser.uid else {
-                // if the user hasn't changed then return
-                return
-            }
-            
-            // register user profile services for new user
             self.registerServiceForUser(newUser)
             return
         }.store(in: &cancellables)

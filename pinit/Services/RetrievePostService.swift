@@ -32,14 +32,6 @@ class RetrievePostService: ObservableObject {
         })
     }
     
-    func listenToAllPosts(){
-        self.stopListeningToAllPosts()
-        
-        self.allDocumentsListener = self.postCollectionRef.addSnapshotListener({ (querySnapshot, error) in
-            self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error, forNotificationName: .retrievePostServiceDidReceiveAllPosts)
-        })
-    }
-    
     func listenToUserPosts() {
         guard let user = self.user else {return}
         
@@ -59,7 +51,13 @@ class RetrievePostService: ObservableObject {
     }
     
     func handleReceivedPostDocuments(withQuerySnapshot querySnapshot: QuerySnapshot?, withError error: Error?, forNotificationName notificationName: Notification.Name){
-        guard let documents = querySnapshot?.documents else {return}
+        guard let documents = querySnapshot?.documents else {
+            if (notificationName == .retrievePostServiceDidReceivePostsForGeohashes){
+                // notify the loader to decrease initial task
+                NotificationCenter.default.post(name: .generalFunctionManipulateTaskForLoadIndicator, object: -1)
+            }
+            return
+        }
         
         var posts: Array<PostModel> = []
         
@@ -95,9 +93,7 @@ class RetrievePostService: ObservableObject {
         // setting up subscribers
         self.subscribeToGeohasingServicePublishers()
         self.subscribeToAuthenticationServicePublishers()
-        
-        // start listening to all posts
-        self.listenToAllPosts()
+                
     }
     
 }

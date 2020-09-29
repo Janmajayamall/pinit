@@ -40,10 +40,7 @@ class SettingsViewModel: ObservableObject {
     // view models
     @Published var editingViewModel: EditingViewModel?
     @Published var editingVideoViewModel: EditingVideoViewModel?
-        
-    // all posts
-    @Published var allPosts: Dictionary<String, PostModel> = [:]
-    
+               
     var appArScnView: AppArScnView = AppArScnView()
     
     private var cancellables: Set<AnyCancellable> = []
@@ -59,7 +56,7 @@ class SettingsViewModel: ObservableObject {
         self.geohasingService.setupService()
         self.estimatedUserLocationService.setupService()
         self.locationService.setupService()
-        self.authenticationService.setupService()
+//        self.authenticationService.setupService()
     }
     
     func checkDevicePermissions() -> Bool {
@@ -101,6 +98,9 @@ class SettingsViewModel: ObservableObject {
             return
         }
         
+        // start authentication service
+        self.authenticationService.startService()
+        
         // start pulse loader
         self.loadIndicator = 1
         
@@ -139,6 +139,9 @@ class SettingsViewModel: ObservableObject {
         // stop session & remove GroupSCNNodes in AppARSCNNodes
         self.appArScnView.pauseSession()
         self.appArScnView.removeGroupNodes()
+        
+        // stop authentication service
+        self.authenticationService.stopService()
     }
     
     func refreshScene() {
@@ -232,18 +235,6 @@ extension SettingsViewModel {
     }
     
     func subscribeToRetrievePostPublishers(){
-        Publishers.retrievePostServiceDidReceiveAllPosts.sink { (posts) in
-            posts.forEach { (post) in
-                guard let id = post.id else {
-                    return
-                }
-                // checking whether post already exists in the dict or not
-                if self.allPosts[id] == nil {
-                    self.allPosts[id] = post
-                }
-            }
-        }.store(in: &cancellables)
-        
         Publishers.retrievePostServiceDidReceiveUserPostsPublisher.sink { (posts) in
             print("Did receive user posts ----- \(posts.count)")
             self.userPostCount = posts.count

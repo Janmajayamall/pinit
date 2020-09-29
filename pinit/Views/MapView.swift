@@ -45,7 +45,7 @@ struct MapView: View {
         )
         
         return ZStack{
-            UIKitMapBox(posts: self.$settingsViewModel.allPosts, user: self.$settingsViewModel.user)
+//            UIKitMapBox(posts: self.$settingsViewModel.allPosts, user: self.$settingsViewModel.user)
             
             VStack{
                 HStack{
