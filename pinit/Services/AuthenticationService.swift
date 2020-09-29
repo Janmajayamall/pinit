@@ -23,9 +23,9 @@ class AuthenticationService {
     
     func registerStateListener(){
         self.stopStateListener()
-        
+        print("---- USER")
         self.handle = Auth.auth().addStateDidChangeListener({(auth, user) in
-            
+            print("---- USER \(user)")
             self.postNotification(for: .authenticationServiceDidAuthStatusChange, withObject: user)
 //            guard let user = user else {
 //                return
@@ -45,13 +45,19 @@ class AuthenticationService {
     }
     
     func stopStateListener(){
+        print("---- USER STOPPED")
         if let handle = self.handle {
+            print("---- USER STOPPED 12")
             Auth.auth().removeStateDidChangeListener(handle)
         }
     }
     
-    func setupService(){
+    func startService(){
         self.registerStateListener()
+    }
+    
+    func stopService(){
+        self.stopStateListener()
     }
     
     func postNotification(for notificationType: Notification.Name, withObject object: Any){
