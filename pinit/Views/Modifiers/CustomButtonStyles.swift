@@ -26,17 +26,29 @@ struct SecondaryColorButtonStyle: ButtonStyle {
 struct LeanOutlineColoredButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-        .font(Font.custom("Avenir", size: 18).bold())
-        .foregroundColor(Color.primaryColor)
-        .padding(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
+            .font(Font.custom("Avenir", size: 16).bold())
+            .foregroundColor(Color.primaryColor)
+            .padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
             .background(Color.white)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.primaryColor, lineWidth: 1.5)
-        )
-            .padding(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
-        .opacity(configuration.isPressed ? 0.7 : 1)
-        .scaleEffect(configuration.isPressed ? 0.9 : 1)
-        .animation(.easeInOut(duration: 0.2))
+            .cornerRadius(5)
+            .shadow(color: Color.black.opacity(0.2), radius: 2.5, x: 2.5, y: 2.5)
+            .shadow(color: Color.white.opacity(0.2), radius: 2.5, x: -2.5, y: -2.5)
+            .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
+            .opacity(configuration.isPressed ? 0.7 : 1)
+            .animation(.easeInOut(duration: 0.2))
     }
 }
+
+
+//
+//           .background(Color.white)
+//       .overlay(
+//           RoundedRectangle(cornerRadius: 10)
+//              .fill(Color.white)
+//       )
+//
+//           .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
+//                    .shadow(color: Color.white.opacity(0.7), radius: 10, x: -5, y: -5)
+//       .opacity(configuration.isPressed ? 0.7 : 1)
+//       .scaleEffect(configuration.isPressed ? 0.9 : 1)
+//
