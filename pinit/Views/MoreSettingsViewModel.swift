@@ -33,15 +33,15 @@ struct MoreSettingsViewModel: View {
         ZStack{
             VStack{
                 Spacer()
-                
+               
                 Button(action:{
                     guard let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeqgRqgUiJt0khh0UpABb_szeKCnLK0v7I0aPN9uV1bpt6IyQ/viewform?usp=sf_link") else {return}
                     self.safariUrl = url
                     self.isSafariOpen = true
                 }, label: {
                     HStack{
-                        Spacer()
                         Text("Your suggestions for Pastime")
+                         .padding(.leading, 5)
                         Spacer()
                     }
                 })
@@ -53,8 +53,8 @@ struct MoreSettingsViewModel: View {
                     self.isSafariOpen = true
                 }, label: {
                     HStack{
-                        Spacer()
                         Text("More about Pastime")
+                            .padding(.leading, 5)
                         Spacer()
                     }
                 })
@@ -66,8 +66,8 @@ struct MoreSettingsViewModel: View {
                     self.isSafariOpen = true
                 }, label: {
                     HStack{
-                        Spacer()
                         Text("Privacy Matters")
+                         .padding(.leading, 5)
                         Spacer()
                     }
                 })
@@ -77,8 +77,8 @@ struct MoreSettingsViewModel: View {
                     self.settingsViewModel.signOut()
                 }, label: {
                     HStack{
-                        Spacer()
                         Text("Logout")
+                         .padding(.leading, 5)
                         Spacer()
                     }
                 })
@@ -110,7 +110,7 @@ struct MoreSettingsViewModel: View {
         })
     }
     
-    let viewHeightRatio: CGFloat = 0.50
+    let viewHeightRatio: CGFloat = 0.45
     let viewWidthRatio: CGFloat = 0.8
 }
 

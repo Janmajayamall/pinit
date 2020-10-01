@@ -67,10 +67,7 @@ struct MainArView: View {
                                     }
                             }
                             
-                            
-                            
-                            
-                            
+                                                                                                                
                             Spacer()
                             
                             Image(systemName: "arrow.counterclockwise")
