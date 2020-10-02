@@ -222,21 +222,19 @@ extension CameraFeedController {
         guard let captureSession = self.captureSession else {
             throw CameraFeedControllerError.captureSessionIsMissing
         }
-        print(cameraOutputType, ": Here is the type")
+        
         switch cameraOutputType {
         case .photo:
             self.cameraPhotoOutput = AVCapturePhotoOutput()
             self.cameraPhotoOutput!.setPreparedPhotoSettingsArray([AVCapturePhotoSettings(format: [AVVideoCodecKey:AVVideoCodecType.jpeg])], completionHandler: nil)
             
             if captureSession.canAddOutput(self.cameraPhotoOutput!) {
-                print("Yes")
                 captureSession.addOutput(self.cameraPhotoOutput!)
             }
         case .video:
             self.cameraMovieOutput = AVCaptureMovieFileOutput()
             
             if captureSession.canAddOutput(self.cameraMovieOutput!) {
-                print("Yes")
                 captureSession.addOutput(self.cameraMovieOutput!)
             }
         }
@@ -252,8 +250,7 @@ extension CameraFeedController {
             connection?.videoOrientation = .portrait
         }
         
-        if let currentCameraPosition = self.cameraPosition {
-            print("THISHJJ \(self.cameraPosition)")
+        if let currentCameraPosition = self.cameraPosition {        
             switch currentCameraPosition {
             case .front:
                 connection?.isVideoMirrored = true
@@ -314,7 +311,7 @@ extension CameraFeedController: AVCapturePhotoCaptureDelegate, AVCaptureFileOutp
             print("Unknown error while getting captured image file representation")
             return
         }
-        print("Captured Image: \(image)")
+        
         NotificationCenter.default.post(name: .cameraFeedDidCaptureImage, object: image)
     }
     
@@ -323,7 +320,6 @@ extension CameraFeedController: AVCapturePhotoCaptureDelegate, AVCaptureFileOutp
             print("File outout failed with errror: \(error.localizedDescription)")
             return
         }
-        print("outputFileUrl for video: \(outputFileURL)")
         
         // notify that video recorded has been stored in tmp file for application
         NotificationCenter.default.post(name: .cameraFeedDidCaptureVideo, object: outputFileURL)

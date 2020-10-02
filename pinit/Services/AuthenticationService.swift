@@ -23,31 +23,21 @@ class AuthenticationService {
     
     func registerStateListener(){
         self.stopStateListener()
-        print("---- USER")
         self.handle = Auth.auth().addStateDidChangeListener({(auth, user) in
-            print("---- USER \(user)")
             self.postNotification(for: .authenticationServiceDidAuthStatusChange, withObject: user)
-//            guard let user = user else {
-//                return
-//            }
-//
-//            print("\(user.providerID) \(user.displayName) \(user.email) --HERE YOU GO")
         })
     }
     
     func signOut(){
         do {
             try Auth.auth().signOut()
-            print("User signed out sucessfully")
         }catch {
             print("Error trying to sign out: \(error.localizedDescription)")
         }
     }
     
     func stopStateListener(){
-        print("---- USER STOPPED")
         if let handle = self.handle {
-            print("---- USER STOPPED 12")
             Auth.auth().removeStateDidChangeListener(handle)
         }
     }
@@ -141,7 +131,7 @@ extension SignInWithAppleCoordinator: ASAuthorizationControllerDelegate {
                     }
                 })
             default:
-                print("Nothing happened hahaha")
+                break
             }
             
             

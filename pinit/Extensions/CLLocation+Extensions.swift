@@ -56,7 +56,7 @@ extension CLLocation {
         
         // distance of location from origin
         let distance = self.distance(from: location)
-        print(distance, " this is it ---")
+        
         // if max distance from origin is violated then return false
         if (distance > maxDistanceFromOrigin){
             return false

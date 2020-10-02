@@ -15,8 +15,7 @@ struct LoginView: View {
     
     var parentSize: CGSize
     
-    var viewHeight: CGFloat {
-        print(self.parentSize.height, self.viewHeightRatio)
+    var viewHeight: CGFloat {        
         return self.parentSize.height * self.viewHeightRatio
     }
     var offset: CGSize {

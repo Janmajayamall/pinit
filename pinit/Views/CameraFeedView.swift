@@ -61,7 +61,7 @@ struct CameraFeedView: View {
                                     case .on:
                                         self.cameraFlashMode = .off
                                     default:
-                                        print("not possible error")
+                                        break
                                     }
                                     NotificationCenter.default.post(name: .cameraFeedSwitchFlashMode, object: self.cameraFlashMode)
                                     

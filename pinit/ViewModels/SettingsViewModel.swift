@@ -236,7 +236,6 @@ extension SettingsViewModel {
     
     func subscribeToRetrievePostPublishers(){
         Publishers.retrievePostServiceDidReceiveUserPostsPublisher.sink { (posts) in
-            print("Did receive user posts ----- \(posts.count)")
             self.userPostCount = posts.count
         }.store(in: &cancellables)
     }
@@ -257,7 +256,6 @@ extension SettingsViewModel {
         }.store(in: &cancellables)
         
         Publishers.generalFunctionManipulateTaskForUploadIndicatorPublisher.sink { (value) in
-            print("DID RCV VALUE \(value)")
             guard value != 0 else {return}
             
             if (value > 0){

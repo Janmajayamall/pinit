@@ -60,8 +60,6 @@ class UserProfileService: ObservableObject {
             }
             
             guard let profile = try? document.data(as: ProfileModel.self) else {
-                print("User Profile does not exists")
-                
                 // posting notification that user profile does not exits
                 self.postNotification(for: .userProfileServiceDidNotFindUserProfile, withObject: user)
                 return
@@ -95,10 +93,9 @@ class UserProfileService: ObservableObject {
             let geopoint = GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
             profile.createdAtLocation = geopoint
         }
-        print("PROFILE MODEL +++++++ \(profile)")
+        
         // creating user profile
         do {
-            print("ERTT \(profile)")
             // adding doc to users collection
             _ = try self.userCollectionRef.document(user.uid).setData(from: profile)
         }catch {
@@ -207,8 +204,7 @@ class UserProfileService: ObservableObject {
                 return
             }
             
-            let documents = querySnapshots!.documents
-            print("--Username document \(documents)")
+            let documents = querySnapshots!.documents            
             callback(documents.count > 0)
         }
     }

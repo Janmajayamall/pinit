@@ -76,17 +76,6 @@ extension Publishers {
         }.eraseToAnyPublisher()
     }
     
-    // publishers for aRSceneLocationService
-    static var aRSceneLocationServiceDidUpdateLocationEstimatesPublisher: AnyPublisher<CLLocation, Never> {
-        NotificationCenter
-            .default
-            .publisher(for: .aRSceneLocationServiceDidUpdateLocationEstimates)
-            .compactMap { (notification) -> CLLocation? in
-                guard let locationEstimates = notification.object as? CLLocation else {return nil}
-                return locationEstimates
-        }.eraseToAnyPublisher()
-    }
-    
     
     // publishers for keyboard height
     static var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
@@ -146,16 +135,6 @@ extension Publishers {
         }
         .eraseToAnyPublisher()
     }
-    static var userProfileServiceDidRequestProfileImageChangePublisher: AnyPublisher<UIImage, Never> {
-        NotificationCenter
-            .default
-            .publisher(for: .userProfileServiceDidRequestProfileImageChange)
-            .compactMap { (notification) -> UIImage? in
-                guard let profileImage = notification.object as? UIImage else {return nil}
-                return profileImage
-        }
-        .eraseToAnyPublisher()
-    }
     static var userProfileServiceDidUpdateUserProfilePublisher: AnyPublisher<ProfileModel, Never>{
         NotificationCenter
             .default
@@ -173,15 +152,6 @@ extension Publishers {
             .compactMap { (notification) -> User? in
                 guard let user = notification.object as? User else {return nil}
                 return user
-        }.eraseToAnyPublisher()
-    }
-    static var userProfileServiceDidSetupProfileImagePublisher: AnyPublisher<UIImage, Never>{
-        NotificationCenter
-            .default
-            .publisher(for: .userProfileServiceDidSetupProfileImage)
-            .compactMap { (notification) -> UIImage? in
-                guard let image = notification.object as? UIImage else {return nil}
-                return image
         }.eraseToAnyPublisher()
     }
     static var userProfileServiceDidRequestSetupUserProfilePublisher: AnyPublisher<RequestSetupUserProfileModel, Never>{
@@ -343,23 +313,11 @@ extension Publishers {
         NotificationCenter
             .default
             .publisher(for: .retrievePostServiceDidReceivePostsForGeohashes)
-            .compactMap { (notification) -> Array<PostModel>? in
-                print("BHII AJSSJASS")
+            .compactMap { (notification) -> Array<PostModel>? in               
                 guard let models = notification.object as? Array<PostModel> else {
                     return nil
                 }
                 
-                return models
-        }.eraseToAnyPublisher()
-    }
-    static var retrievePostServiceDidReceiveAllPosts: AnyPublisher<Array<PostModel>, Never>{
-        NotificationCenter
-            .default
-            .publisher(for: .retrievePostServiceDidReceiveAllPosts)
-            .compactMap { (notification) -> Array<PostModel>? in
-                guard let models = notification.object as? Array<PostModel> else {
-                    return nil
-                }
                 return models
         }.eraseToAnyPublisher()
     }

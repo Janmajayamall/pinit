@@ -62,8 +62,7 @@ class RetrievePostService: ObservableObject {
         var posts: Array<PostModel> = []
         
         documents.forEach { (queryDocumentSnapshot) in
-            guard let post = try? queryDocumentSnapshot.data(as: PostModel.self) else {
-                print("something went wrong")
+            guard let post = try? queryDocumentSnapshot.data(as: PostModel.self) else { 
                 return
             }
             posts.append(post)

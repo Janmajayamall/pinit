@@ -57,7 +57,6 @@ class PostDisplayNodeModel: NSObject {
         
         self.isReadyToDisplay = true
         self.postContentType = .image
-        print("Optimistic setup image")
     }
     
     func optimisticSetupVideoContent(withVideoFilePathUrl videoFilePathUrl: URL){
@@ -69,7 +68,6 @@ class PostDisplayNodeModel: NSObject {
         
         self.isReadyToDisplay = true
         self.postContentType = .video
-        print("Optimistic setup video")
     }
     
     
@@ -97,8 +95,6 @@ class PostDisplayNodeModel: NSObject {
             self.avPlayer?.isMuted = true
             
             self.avPlayerSetupLoopForVideo()
-        }else {
-            print("Not a valid post")
         }
     }
     

@@ -32,7 +32,7 @@ class GroupSCNNode: SCNNode, Identifiable {
     init(scenePosition: SCNVector3?, direction: NodeDirection, user: User?){
         self.nodeDirection = direction
         self.user = user
-        print("This is the node direction: \(nodeDirection)")
+        
         super.init()
         
         // subscribe to publishers
@@ -65,7 +65,6 @@ class GroupSCNNode: SCNNode, Identifiable {
         let scaledDims = self.getScaledDim(forSize: image.size)
         
         // create plane for adding as geometry to the node
-        print(scaledDims, ": scaled")
         let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)
         plane.cornerRadius = 0.1 * scaledDims.width
         
@@ -110,8 +109,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         let postLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: post.geolocation.latitude, longitude: post.geolocation.longitude), altitude: post.altitude, horizontalAccuracy: 0, verticalAccuracy: 0, timestamp: .init())
         
         guard self.postDisplayType == .privatePosts else {
-            // check whether post is in valid distance and altitude range current locationprint("POST RCVV \(posts.count)")
-            print("POST RCVV \(currentLocation.checkIsInValidDistanceRange(forLocation: postLocation))")
+            // check whether post is in valid distance and altitude range current
             if (currentLocation.checkIsInValidDistanceRange(forLocation: postLocation)){
                 return postDisplay.isReadyToDisplay
             }else{
@@ -121,10 +119,9 @@ class GroupSCNNode: SCNNode, Identifiable {
         
         // if post display type is private, then check whether the post belongs to the user. If it does not then return false
         guard let user = self.user, user.uid == postDisplay.post.userId else {
-            print("RGGGF FAIL\(self.user?.uid)")
             return false
         }
-        print("RGGGF PASS\(self.user?.uid)")
+        
         // check whether post is in valid altitude range or not
         if (currentLocation.checkIsInValidDistanceRange(forLocation: postLocation)){
             return postDisplay.isReadyToDisplay
@@ -188,7 +185,7 @@ class GroupSCNNode: SCNNode, Identifiable {
             guard let image = postNode.image else {return}
             self.addImageAsGeometry(image: image)
         default:
-            print("Not a valid postDisplayNodeContentType")
+            break
         }
     }
     
@@ -229,16 +226,14 @@ class GroupSCNNode: SCNNode, Identifiable {
     
     func toggleVolumeIfVideoContentBeingOnDisplay() {
         guard let avPlayer = self.postList[self.currentPostIndex].avPlayer, let id = self.postList[self.currentPostIndex].post.id else {return}
-        print("YYUU before \(id) -- \(avPlayer.isMuted)")
         avPlayer.isMuted = !avPlayer.isMuted
-        print("YYUU after \(id) -- \(avPlayer.isMuted)")
         NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: id)
         
     }
     
     func placeNode(scenePosition: SCNVector3?){
         guard let scenePosition = scenePosition else {return}
-        print("Changing node")
+        
         SCNTransaction.begin()
         SCNTransaction.animationDuration = 0.0
         
@@ -302,8 +297,6 @@ class GroupSCNNode: SCNNode, Identifiable {
         // remove current post content (i.e. geometry)
         self.geometry = nil
         
-        print("GROUP SCN NODE DID RESET")
-        
         // reset the currentPostIndex
         self.currentPostIndex = -1
         self.loadInitialPostDisplay()
@@ -337,7 +330,6 @@ extension GroupSCNNode {
         
         Publishers.groupSCNNodeDidRequestChangePostDisplayTypePublisher.sink { (postDisplayType) in
             self.postDisplayType = postDisplayType
-            print(self.postDisplayType)
             
             // reset the node
             self.resetNode()
@@ -345,14 +337,13 @@ extension GroupSCNNode {
         
         Publishers.groupSCNNodeDidRequestResetPublisher.sink { (value) in
             guard value == true else {return}
-            print("IT DID HAPPEN - group scn node reset itself")
+            
             self.resetNode()
         }.store(in: &cancellables)
     }
     
     func subcribeToAuthenticationServicePublishers() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
-            print("QWWERR")
             self.user = user
         }.store(in: &cancellables)
     }

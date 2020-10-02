@@ -34,13 +34,12 @@ struct EditUsernameView: View {
     var body: some View {
         
         let usernameBinding = Binding<String>(get: {
-            print(self.username, "qwerty 1")
             return self.username
         }, set: {
             var username = $0.lowercased()
             username = username.trimmingCharacters(in: .whitespacesAndNewlines)
             self.username = String(username.prefix(25))
-            print(self.username, "qwerty 12121")
+            
             // forcing render UI
             self.forceRenderBool.toggle()
         })

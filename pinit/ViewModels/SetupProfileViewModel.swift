@@ -11,11 +11,7 @@ import Combine
 import SwiftUI
 
 class SetupProfileViewModel: ObservableObject {
-    @Published var username: String = "" {
-        didSet{
-            print("HHAAA \(self.username)")
-        }
-    }
+    @Published var username: String = "" 
     @Published var usernameError: String = ""
      
     private var cancellables: Set<AnyCancellable> = []

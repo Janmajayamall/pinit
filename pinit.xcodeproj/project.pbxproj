@@ -8,11 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0B4D5F688F31962E2310E9D4 /* Pods_pinitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86D53FDF6D0C11D1E076B044 /* Pods_pinitTests.framework */; };
-		5D007A6424FD6EFC00F1D1C9 /* PostSCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D007A6324FD6EFC00F1D1C9 /* PostSCNNode.swift */; };
 		5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */; };
 		5D1CF0A82500095B00DD4E90 /* PostDisplayInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */; };
 		5D249CEF24FFFA3C00956241 /* PostDisplayInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */; };
-		5D27ABFE24F7CACE005D8992 /* PostDisplayTypeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */; };
 		5D297D4125236574008E9FF5 /* UIKitSafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */; };
 		5D297D4525238316008E9FF5 /* UserActiveDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */; };
 		5D2ED1F824FD0D3C00C542B0 /* TextViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */; };
@@ -36,22 +34,15 @@
 		5D52F7B524E9288200D9F27E /* Publishers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7B424E9288200D9F27E /* Publishers+Extensions.swift */; };
 		5D52F7B724E93A5200D9F27E /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7B624E93A5200D9F27E /* ProfileModel.swift */; };
 		5D52F7B924E93AAA00D9F27E /* PostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7B824E93AAA00D9F27E /* PostModel.swift */; };
-		5D52F7BB24E93CBE00D9F27E /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7BA24E93CBE00D9F27E /* MapView.swift */; };
 		5D52F7BD24E951AD00D9F27E /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7BC24E951AD00D9F27E /* Color+Extensions.swift */; };
 		5D52F7BF24E952FE00D9F27E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7BE24E952FE00D9F27E /* ProfileView.swift */; };
 		5D52F7C124E9548D00D9F27E /* EditUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7C024E9548D00D9F27E /* EditUsernameView.swift */; };
-		5D52F7C324E9566A00D9F27E /* EditProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7C224E9566A00D9F27E /* EditProfileImageView.swift */; };
-		5D52F7C624E9594F00D9F27E /* UIKitImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7C524E9594F00D9F27E /* UIKitImagePicker.swift */; };
-		5D52F7C824E95A9E00D9F27E /* ProfileImageEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7C724E95A9E00D9F27E /* ProfileImageEditorView.swift */; };
 		5D52F7CB24E96E8F00D9F27E /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7CA24E96E8F00D9F27E /* LoginView.swift */; };
-		5D52F7CD24E972AA00D9F27E /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7CC24E972AA00D9F27E /* BottomSheetView.swift */; };
 		5D52F7CF24E974D600D9F27E /* UIKItSignInWithApple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7CE24E974D600D9F27E /* UIKItSignInWithApple.swift */; };
 		5D52F7D224E98E0F00D9F27E /* GeohashingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7D124E98E0F00D9F27E /* GeohashingService.swift */; };
-		5D52F7D424E98E2E00D9F27E /* ARSceneLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7D324E98E2E00D9F27E /* ARSceneLocationService.swift */; };
 		5D52F7D624E98F2F00D9F27E /* UploadPostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7D524E98F2F00D9F27E /* UploadPostService.swift */; };
 		5D52F7D824E98F5900D9F27E /* RetrievePostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7D724E98F5900D9F27E /* RetrievePostService.swift */; };
 		5D52F7DA24E9932600D9F27E /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7D924E9932600D9F27E /* LocationService.swift */; };
-		5D52F7DD24E994C300D9F27E /* ImageSCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7DC24E994C200D9F27E /* ImageSCNNode.swift */; };
 		5D52F7DF24E9952800D9F27E /* CLLocation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7DE24E9952800D9F27E /* CLLocation+Extensions.swift */; };
 		5D52F7E124E9A1B600D9F27E /* UIKitArSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7E024E9A1B600D9F27E /* UIKitArSceneView.swift */; };
 		5D52F7E324EA755C00D9F27E /* GeohashModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7E224EA755C00D9F27E /* GeohashModel.swift */; };
@@ -71,16 +62,13 @@
 		5D67E81124E84E7000F5D240 /* pinitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E81024E84E7000F5D240 /* pinitUITests.swift */; };
 		5D6B1F7F24FEE7B800DCC418 /* CameraFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B1F7E24FEE7B800DCC418 /* CameraFeedController.swift */; };
 		5D6B1F8124FEF85D00DCC418 /* CameraFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */; };
-		5D7143D624FD01E1008EF04C /* DragGestureViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */; };
 		5D7E39C525059CA800C6E0AB /* OptimisticUIPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */; };
 		5D86652C25138EC800049980 /* CameraFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86652B25138EC800049980 /* CameraFeedView.swift */; };
 		5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */; };
 		5DADAC9D251E01EA002C2571 /* PulseLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DADAC9C251E01EA002C2571 /* PulseLoader.swift */; };
 		5DAE4136250A7EB50017A598 /* GroupSCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */; };
 		5DAE4138250C18820017A598 /* PostDisplayNodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */; };
-		5DB2B1A624F2CA8700E4D86B /* ImageCropViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */; };
 		5DC2859924ED029F00830887 /* AppArScnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859824ED029F00830887 /* AppArScnView.swift */; };
-		5DC2859B24ED06B800830887 /* UIKitMapBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859A24ED06B800830887 /* UIKitMapBox.swift */; };
 		5DC2859D24ED0F3400830887 /* EditingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC2859C24ED0F3400830887 /* EditingViewModel.swift */; };
 		5DC53050250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC5304F250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift */; };
 		5DC8527124EFC87B00E36DCE /* ViewRectViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC8527024EFC87B00E36DCE /* ViewRectViewModifier.swift */; };
@@ -121,11 +109,9 @@
 
 /* Begin PBXFileReference section */
 		181CC3BA6F356427D3D549A0 /* Pods_pinit_pinitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinit_pinitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5D007A6324FD6EFC00F1D1C9 /* PostSCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSCNNode.swift; sourceTree = "<group>"; };
 		5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedUserLocationService.swift; sourceTree = "<group>"; };
 		5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoViewModel.swift; sourceTree = "<group>"; };
 		5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoModel.swift; sourceTree = "<group>"; };
-		5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayTypeService.swift; sourceTree = "<group>"; };
 		5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitSafariWebView.swift; sourceTree = "<group>"; };
 		5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActiveDataModel.swift; sourceTree = "<group>"; };
 		5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewModifiers.swift; sourceTree = "<group>"; };
@@ -149,23 +135,16 @@
 		5D52F7B424E9288200D9F27E /* Publishers+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+Extensions.swift"; sourceTree = "<group>"; };
 		5D52F7B624E93A5200D9F27E /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		5D52F7B824E93AAA00D9F27E /* PostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostModel.swift; sourceTree = "<group>"; };
-		5D52F7BA24E93CBE00D9F27E /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		5D52F7BC24E951AD00D9F27E /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		5D52F7BE24E952FE00D9F27E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		5D52F7C024E9548D00D9F27E /* EditUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameView.swift; sourceTree = "<group>"; };
-		5D52F7C224E9566A00D9F27E /* EditProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileImageView.swift; sourceTree = "<group>"; };
-		5D52F7C524E9594F00D9F27E /* UIKitImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitImagePicker.swift; sourceTree = "<group>"; };
-		5D52F7C724E95A9E00D9F27E /* ProfileImageEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageEditorView.swift; sourceTree = "<group>"; };
 		5D52F7C924E96E5900D9F27E /* pinit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pinit.entitlements; sourceTree = "<group>"; };
 		5D52F7CA24E96E8F00D9F27E /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		5D52F7CC24E972AA00D9F27E /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		5D52F7CE24E974D600D9F27E /* UIKItSignInWithApple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKItSignInWithApple.swift; sourceTree = "<group>"; };
 		5D52F7D124E98E0F00D9F27E /* GeohashingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeohashingService.swift; sourceTree = "<group>"; };
-		5D52F7D324E98E2E00D9F27E /* ARSceneLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSceneLocationService.swift; sourceTree = "<group>"; };
 		5D52F7D524E98F2F00D9F27E /* UploadPostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPostService.swift; sourceTree = "<group>"; };
 		5D52F7D724E98F5900D9F27E /* RetrievePostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrievePostService.swift; sourceTree = "<group>"; };
 		5D52F7D924E9932600D9F27E /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
-		5D52F7DC24E994C200D9F27E /* ImageSCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSCNNode.swift; sourceTree = "<group>"; };
 		5D52F7DE24E9952800D9F27E /* CLLocation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Extensions.swift"; sourceTree = "<group>"; };
 		5D52F7E024E9A1B600D9F27E /* UIKitArSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitArSceneView.swift; sourceTree = "<group>"; };
 		5D52F7E224EA755C00D9F27E /* GeohashModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeohashModel.swift; sourceTree = "<group>"; };
@@ -191,7 +170,6 @@
 		5D67E81224E84E7000F5D240 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5D6B1F7E24FEE7B800DCC418 /* CameraFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedController.swift; sourceTree = "<group>"; };
 		5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedViewController.swift; sourceTree = "<group>"; };
-		5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragGestureViewModifier.swift; sourceTree = "<group>"; };
 		5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimisticUIPostModel.swift; sourceTree = "<group>"; };
 		5D86652B25138EC800049980 /* CameraFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedView.swift; sourceTree = "<group>"; };
 		5D86EEE225266ACA00180155 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -200,9 +178,7 @@
 		5DADAC9C251E01EA002C2571 /* PulseLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseLoader.swift; sourceTree = "<group>"; };
 		5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSCNNode.swift; sourceTree = "<group>"; };
 		5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayNodeModel.swift; sourceTree = "<group>"; };
-		5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCropViewModel.swift; sourceTree = "<group>"; };
 		5DC2859824ED029F00830887 /* AppArScnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppArScnView.swift; sourceTree = "<group>"; };
-		5DC2859A24ED06B800830887 /* UIKitMapBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitMapBox.swift; sourceTree = "<group>"; };
 		5DC2859C24ED0F3400830887 /* EditingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingViewModel.swift; sourceTree = "<group>"; };
 		5DC5304F250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCreatePostWithVideoModel.swift; sourceTree = "<group>"; };
 		5DC8527024EFC87B00E36DCE /* ViewRectViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRectViewModifier.swift; sourceTree = "<group>"; };
@@ -294,7 +270,7 @@
 			children = (
 				5D52F7AC24E91EF200D9F27E /* SettingsViewModel.swift */,
 				5DC2859C24ED0F3400830887 /* EditingViewModel.swift */,
-				5DB2B1A524F2CA8700E4D86B /* ImageCropViewModel.swift */,
+				5D5245FC24F4555E0000317D /* SetupProfileViewModel.swift */,
 				5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */,
 				5DD2962C250E5EC000982587 /* EditingVideoViewModel.swift */,
 			);
@@ -308,12 +284,9 @@
 				5D52F7AE24E9251800D9F27E /* ScreenManagementService.swift */,
 				5D52F7B224E9257D00D9F27E /* UserProfileService.swift */,
 				5D52F7D124E98E0F00D9F27E /* GeohashingService.swift */,
-				5D52F7D324E98E2E00D9F27E /* ARSceneLocationService.swift */,
 				5D52F7D524E98F2F00D9F27E /* UploadPostService.swift */,
 				5D52F7D724E98F5900D9F27E /* RetrievePostService.swift */,
 				5D52F7D924E9932600D9F27E /* LocationService.swift */,
-				5D5245FC24F4555E0000317D /* SetupProfileViewModel.swift */,
-				5D27ABFD24F7CACE005D8992 /* PostDisplayTypeService.swift */,
 				5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */,
 				5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */,
 			);
@@ -344,13 +317,9 @@
 				5DC8526F24EFC82B00E36DCE /* Modifiers */,
 				5D4DD0A024ED349A00E1FDF3 /* Components */,
 				5D52F7A624E917D400D9F27E /* MainArView.swift */,
-				5D52F7BA24E93CBE00D9F27E /* MapView.swift */,
 				5D52F7BE24E952FE00D9F27E /* ProfileView.swift */,
 				5D52F7C024E9548D00D9F27E /* EditUsernameView.swift */,
-				5D52F7C224E9566A00D9F27E /* EditProfileImageView.swift */,
-				5D52F7C724E95A9E00D9F27E /* ProfileImageEditorView.swift */,
 				5D52F7CA24E96E8F00D9F27E /* LoginView.swift */,
-				5D52F7CC24E972AA00D9F27E /* BottomSheetView.swift */,
 				5DC2859824ED029F00830887 /* AppArScnView.swift */,
 				5D4DD09E24ED2A1200E1FDF3 /* CaptureImageView.swift */,
 				5D4DD0A924ED425700E1FDF3 /* EditCaptureImageView.swift */,
@@ -368,10 +337,8 @@
 			isa = PBXGroup;
 			children = (
 				5D6B1F7D24FEE79400DCC418 /* Controllers */,
-				5D52F7C524E9594F00D9F27E /* UIKitImagePicker.swift */,
 				5D52F7CE24E974D600D9F27E /* UIKItSignInWithApple.swift */,
 				5D52F7E024E9A1B600D9F27E /* UIKitArSceneView.swift */,
-				5DC2859A24ED06B800830887 /* UIKitMapBox.swift */,
 				5DC8527624EFE96500E36DCE /* UIKitUITextView.swift */,
 				5DD29630250E648200982587 /* UIKitAVPlayerView.swift */,
 				5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */,
@@ -382,8 +349,6 @@
 		5D52F7DB24E994A400D9F27E /* Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				5D52F7DC24E994C200D9F27E /* ImageSCNNode.swift */,
-				5D007A6324FD6EFC00F1D1C9 /* PostSCNNode.swift */,
 				5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */,
 			);
 			path = Nodes;
@@ -486,7 +451,6 @@
 				5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */,
 				5D564F3F24F2829300962CEF /* IconViewModifiers.swift */,
 				5D567CFA24F43BB500283E5B /* CustomButtonStyles.swift */,
-				5D7143D524FD01E1008EF04C /* DragGestureViewModifier.swift */,
 				5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */,
 			);
 			path = Modifiers;
@@ -819,7 +783,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D564F4224F2972400962CEF /* SliderMenuView.swift in Sources */,
-				5DB2B1A624F2CA8700E4D86B /* ImageCropViewModel.swift in Sources */,
 				5DC8527524EFDDC500E36DCE /* UIView+Extensions.swift in Sources */,
 				5D52F7D224E98E0F00D9F27E /* GeohashingService.swift in Sources */,
 				5D4DD0A624ED3B7100E1FDF3 /* ColorPickerSlider.swift in Sources */,
@@ -828,20 +791,15 @@
 				5DAE4136250A7EB50017A598 /* GroupSCNNode.swift in Sources */,
 				5DC2859924ED029F00830887 /* AppArScnView.swift in Sources */,
 				5D2ED1F824FD0D3C00C542B0 /* TextViewModifiers.swift in Sources */,
-				5D52F7DD24E994C300D9F27E /* ImageSCNNode.swift in Sources */,
-				5D52F7CD24E972AA00D9F27E /* BottomSheetView.swift in Sources */,
 				5D52F7D824E98F5900D9F27E /* RetrievePostService.swift in Sources */,
 				5DD2962F250E5FD600982587 /* EditCaptureVideoView.swift in Sources */,
 				5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */,
-				5D52F7C624E9594F00D9F27E /* UIKitImagePicker.swift in Sources */,
-				5D52F7BB24E93CBE00D9F27E /* MapView.swift in Sources */,
 				5D52F7E324EA755C00D9F27E /* GeohashModel.swift in Sources */,
 				5D52F7AF24E9251800D9F27E /* ScreenManagementService.swift in Sources */,
 				5D52F7AB24E91DEA00D9F27E /* Notification+Extensions.swift in Sources */,
 				5D249CEF24FFFA3C00956241 /* PostDisplayInfoModel.swift in Sources */,
 				5DD88BC4251F4DD100EA99A1 /* PopUpWarningView.swift in Sources */,
 				5D31948624F00ECF001182E4 /* SafeTopEdgeViewModifier.swift in Sources */,
-				5D007A6424FD6EFC00F1D1C9 /* PostSCNNode.swift in Sources */,
 				5D67E7EF24E84E6C00F5D240 /* AppDelegate.swift in Sources */,
 				5D52F7B324E9257E00D9F27E /* UserProfileService.swift in Sources */,
 				5D52F7B724E93A5200D9F27E /* ProfileModel.swift in Sources */,
@@ -850,13 +808,11 @@
 				5DC53050250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift in Sources */,
 				5D52F7C124E9548D00D9F27E /* EditUsernameView.swift in Sources */,
 				5DC8527324EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift in Sources */,
-				5D52F7C824E95A9E00D9F27E /* ProfileImageEditorView.swift in Sources */,
 				5D52F7CF24E974D600D9F27E /* UIKItSignInWithApple.swift in Sources */,
 				5D4DD09F24ED2A1200E1FDF3 /* CaptureImageView.swift in Sources */,
 				5D4DD0A224ED34B300E1FDF3 /* PathDrawing.swift in Sources */,
 				5D567CF924F4340F00283E5B /* SoftEdgeButton.swift in Sources */,
 				5D2ED1FA24FD1B5F00C542B0 /* CustomTextFieldView.swift in Sources */,
-				5D7143D624FD01E1008EF04C /* DragGestureViewModifier.swift in Sources */,
 				5DC8527924EFED2300E36DCE /* KeyboardAwareViewModifiers.swift in Sources */,
 				5D564F4024F2829300962CEF /* IconViewModifiers.swift in Sources */,
 				5D52F7BD24E951AD00D9F27E /* Color+Extensions.swift in Sources */,
@@ -871,7 +827,6 @@
 				5D86652C25138EC800049980 /* CameraFeedView.swift in Sources */,
 				5D67E7F124E84E6C00F5D240 /* SceneDelegate.swift in Sources */,
 				5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */,
-				5D52F7C324E9566A00D9F27E /* EditProfileImageView.swift in Sources */,
 				5DC8527724EFE96500E36DCE /* UIKitUITextView.swift in Sources */,
 				5DAE4138250C18820017A598 /* PostDisplayNodeModel.swift in Sources */,
 				5D52F7A924E91AE700D9F27E /* AuthenticationService.swift in Sources */,
@@ -884,14 +839,11 @@
 				5D52F7AD24E91EF200D9F27E /* SettingsViewModel.swift in Sources */,
 				5D7E39C525059CA800C6E0AB /* OptimisticUIPostModel.swift in Sources */,
 				5DC8527124EFC87B00E36DCE /* ViewRectViewModifier.swift in Sources */,
-				5DC2859B24ED06B800830887 /* UIKitMapBox.swift in Sources */,
 				5DC2859D24ED0F3400830887 /* EditingViewModel.swift in Sources */,
 				5D4DD0A424ED353B00E1FDF3 /* ImagePaintingModel.swift in Sources */,
-				5D52F7D424E98E2E00D9F27E /* ARSceneLocationService.swift in Sources */,
 				5D52F7B524E9288200D9F27E /* Publishers+Extensions.swift in Sources */,
 				5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */,
 				5D4DD0AA24ED425700E1FDF3 /* EditCaptureImageView.swift in Sources */,
-				5D27ABFE24F7CACE005D8992 /* PostDisplayTypeService.swift in Sources */,
 				5D567CF724F428E400283E5B /* SetupProfileView.swift in Sources */,
 				5D297D4525238316008E9FF5 /* UserActiveDataModel.swift in Sources */,
 				5D52F7DA24E9932600D9F27E /* LocationService.swift in Sources */,

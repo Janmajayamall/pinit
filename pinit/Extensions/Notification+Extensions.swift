@@ -24,12 +24,7 @@ extension Notification.Name {
     
     // notifications for estimated user location service
     static let estimatedUserLocationServiceDidUpdateLocation = Notification.Name("estimetedUserLocationServiceDidUpdateLocation")
-    
-    
-    // notifications for aRSceneLocationService
-    static let aRSceneLocationServiceDidUpdateLocationEstimates = Notification.Name("aRSceneLocationServiceDidUpdateLocationEstimates")
-    
-    
+
     // notifications for uploadPostService
     static let uploadPostServiceDidRequestCreatePostWithImage = Notification.Name("uploadPostServiceDidRequestCreatePostWithImage")
     static let uploadPostServiceDidUploadPost = Notification.Name("uploadPostServiceDidUploadPost")
@@ -38,12 +33,9 @@ extension Notification.Name {
     
     // notifications for userProfileService
     static let userProfileServiceDidRequestUsernameChange = Notification.Name("userProfileServiceDidRequestUsernameChange")
-    static let userProfileServiceDidRequestProfileImageChange = Notification.Name("userProfileServiceDidRequestProfileImageChange")
     static let userProfileServiceDidUpdateUserProfile = Notification.Name("userProfileServiceDidUpdateUserProfile")
     static let userProfileServiceDidNotFindUserProfile = Notification.Name("userProfileServiceDidNotFindUserProfile")
-    static let userProfileServiceDidSetupProfileImage = Notification.Name("userProfileServiceDidSetupProfileImage")
     static let userProfileServiceDidRequestSetupUserProfile = Notification.Name("userProfileServiceDidRequestSetupUserProfile")
-    
     
     // notifications for AR View
     static let aRViewDidRequestResetMainView = Notification.Name("aRViewDidRequestResetMainView")
@@ -70,7 +62,6 @@ extension Notification.Name {
     
     // notification for retrieve post service
     static let retrievePostServiceDidReceivePostsForGeohashes = Notification.Name("retrievePostServiceDidReceivePostsForGeohashes")
-    static let retrievePostServiceDidReceiveAllPosts = Notification.Name("retrievePostServiceDidReceiveAllPosts")
     static let retrievePostServiceDidReceiveUserPosts = Notification.Name("retrievePostServiceDidReceiveUserPosts")
     
     // notifications for PostDisplayNodeModel

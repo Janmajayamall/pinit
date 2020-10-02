@@ -196,9 +196,6 @@ class AppArScnView: ARSCNView {
     }
     
     func startSession(){
-        
-        print("AR scene session started")
-        
         //configure AR session
         let configuration = ARWorldTrackingConfiguration()
         configuration.isLightEstimationEnabled = true
@@ -210,8 +207,7 @@ class AppArScnView: ARSCNView {
         
     }
     
-    func pauseSession(){
-        print("ASSDDDDDDD")
+    func pauseSession(){        
         self.session.pause()
     }
     
@@ -253,14 +249,13 @@ class AppArScnView: ARSCNView {
     func addPostToGroupNode(post: PostModel) {
         // checking whether post already exits in one of the group nodes or not
         guard let id = post.id, self.exisitingPosts[id] == nil else {
-            print("Post with ID: \(post.id!) rejected - normal")
             return
         }
         
         // adding it to one of the group nodes
         self.groupNodes[self.addPostToGroupOfDirection]?.addPost(post)
         self.exisitingPosts[id] = post
-        print("Post with ID: \(id) added - normal;")
+        
         // changing direction
         switch self.addPostToGroupOfDirection {
         case .front:
@@ -297,7 +292,6 @@ extension AppArScnView {
         Publishers.retrievePostServiceDidReceivePostsForGeohashes.sink { (posts) in
             
             posts.forEach { (post) in
-                print("POST RCVV \(post.geohash)")
                 self.addPostToGroupNode(post: post)
             }
             
@@ -346,13 +340,6 @@ extension AppArScnView {
     }
 }
 
-extension AppArScnView: ARSceneLocationServiceDelegate {
-    
-    var scenePosition: SCNVector3? {
-        return self.currentPosition
-    }
-    
-}
 
 extension AppArScnView: ARSCNViewDelegate {
     

@@ -15,7 +15,7 @@ final class CameraFeedViewController: UIViewController {
     var previewView: UIView!
     
     override func viewDidLoad() {
-        print("this happened: \(UIScreen.main.bounds.width) \(UIScreen.main.bounds.height) )")
+        
         self.previewView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
         self.previewView.contentMode = UIView.ContentMode.scaleAspectFit
         self.view.addSubview(self.previewView)
@@ -23,6 +23,7 @@ final class CameraFeedViewController: UIViewController {
         self.cameraFeedController.prepareController { (error) in
             if let error = error{
                 print(error)
+                return
             }
             
             try? self.cameraFeedController.displayViewPreview(on: self.previewView)
