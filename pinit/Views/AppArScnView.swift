@@ -246,7 +246,7 @@ class AppArScnView: ARSCNView {
     
     func resetGroupNodesPositions() {
         self.groupNodes.values.forEach { (node) in
-            node.placeNode(scenePosition: self.currentPosition)
+            node.resetNodePos(scenePosition: self.currentPosition)
         }
     }
     

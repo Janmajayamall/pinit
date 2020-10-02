@@ -53,8 +53,7 @@ struct EditCaptureImageView: View {
                     VStack{
                         HStack{
                             Image(systemName: "xmark")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                                 .onTapGesture {
                                     self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .normal)
                             }
@@ -62,22 +61,21 @@ struct EditCaptureImageView: View {
                             Spacer()
                             
                             
-                            Image(systemName: "scribble")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
-                                .onTapGesture {
-                                    self.screenState = .painting
-                            }
-                            .applyTopRightPaddingToIcon()
-                            .padding(.trailing, 5)
-                            
-                            Image(systemName: "checkmark")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
-                                .onTapGesture {
-                                    self.finalisePostImage()
-                            }
-                            .applyTopRightPaddingToIcon()
+                            HStack{
+                                Image(systemName: "scribble")
+                                    .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                                    .onTapGesture {
+                                        self.screenState = .painting
+                                }
+                                
+                                
+                                Image(systemName: "checkmark")
+                                   .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                                    .onTapGesture {
+                                        self.finalisePostImage()
+                                }
+                               
+                            }.applyTopRightPaddingToIcon()
                             
                         }
                         Spacer()
@@ -90,8 +88,7 @@ struct EditCaptureImageView: View {
                     VStack{
                         HStack{
                             Image(systemName: "chevron.left")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
+                               .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                                 .onTapGesture {
                                     guard self.screenState == .painting else {return}
                                     self.screenState = .normal
@@ -101,9 +98,8 @@ struct EditCaptureImageView: View {
                             
                             Spacer()
                             
-                            Image(systemName: "arrow.counterclockwise")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
+                            Image(systemName: "arrow.counterclockwise")                                
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                                 .onTapGesture {
                                     guard self.screenState == .painting else {return}
                                     

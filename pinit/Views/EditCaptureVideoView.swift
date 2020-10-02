@@ -40,8 +40,7 @@ struct EditCaptureVideoView: View {
                     VStack{
                         HStack{
                             Image(systemName: "xmark")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                                 .onTapGesture {
                                     self.settingsViewModel.screenManagementService.mainScreenService.captureImageViewScreenService.switchTo(screenType: .normal)
                             }
@@ -49,8 +48,7 @@ struct EditCaptureVideoView: View {
                             Spacer()
                                             
                             Image(systemName: "checkmark")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                                 .onTapGesture {
                                     self.finalisePostVideo()
                             }

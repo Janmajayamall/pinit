@@ -28,7 +28,7 @@ struct BottomSheetView <Content: View>: View {
             HStack{
                 Spacer()
                 Image(systemName: "xmark")
-                .applyDefaultIconTheme()
+                .applyDefaultIconTheme(forIconDisplayType: .normal)
                     .onTapGesture {
                         self.isOpen = false
                 }

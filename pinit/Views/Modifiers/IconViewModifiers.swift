@@ -10,12 +10,16 @@ import Foundation
 import SwiftUI
 
 struct IconDefaultThemeViewModifier: ViewModifier {
+    
+    let iconDisplayType: IconDisplayType
+    
     func body(content: Content) -> some View {
         content
             .font(Font.system(size: 25, weight: .heavy))
-            .foregroundColor(Color.white)
+            .foregroundColor(self.iconDisplayType == .normal ? Color.primaryColor : Color.white)
             .frame(width: 40, height: 40, alignment: .center)
-            .background(Color.white.opacity(0.0001))
+            .background(self.iconDisplayType == .normal ? Color.white.opacity(0.0001) : Color.black.opacity(0.1))
+        .cornerRadius(10)
     }
 }
 
@@ -57,8 +61,8 @@ struct EdgePaddingIconViewModifier: ViewModifier {
 }
 
 extension View {
-    func applyDefaultIconTheme() -> some View {
-        return ModifiedContent(content: self, modifier: IconDefaultThemeViewModifier())
+    func applyDefaultIconTheme(forIconDisplayType iconDisplayType: IconDisplayType) -> some View {
+        return ModifiedContent(content: self, modifier: IconDefaultThemeViewModifier(iconDisplayType: iconDisplayType))
     }
     
     func applyTopLeftPaddingToIcon() -> some View {
@@ -80,4 +84,9 @@ enum EdgePaddingType {
     case topLeft
     case bottomRight
     case bottomLeft
+}
+
+enum IconDisplayType {
+    case normal
+    case liveFeed
 }

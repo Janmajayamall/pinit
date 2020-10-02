@@ -33,8 +33,7 @@ struct CameraFeedView: View {
                 VStack{
                     HStack (alignment: .top){
                         Image(systemName: "chevron.left")
-                            .foregroundColor(Color.white)
-                            .applyDefaultIconTheme()
+                            .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                             .onTapGesture {
                                 self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .mainArView)
                         }
@@ -42,8 +41,7 @@ struct CameraFeedView: View {
                         Spacer()
                         VStack{
                             Image(systemName: self.cameraPosition == .rear ? "gobackward" : "goforward")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                                 .onTapGesture {
                                     switch self.cameraPosition{
                                     case .rear:
@@ -52,11 +50,10 @@ struct CameraFeedView: View {
                                         self.cameraPosition = .rear
                                     }
                                     NotificationCenter.default.post(name: .cameraFeedSwitchInUseCamera, object: self.cameraPosition)
-                            }.padding(.bottom)
+                            }
                             
                             Image(systemName: self.cameraFlashMode == .off ? "bolt.slash" : "bolt.fill")
-                                .foregroundColor(Color.white)
-                                .applyDefaultIconTheme()
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                                 .onTapGesture {
                                     switch self.cameraFlashMode{
                                     case .off:

@@ -39,7 +39,7 @@ struct MainArView: View {
                             Text(self.postDisplayType == .allPosts ? "📍": "📍🔒")
                                 .font(Font.system(size: 30, weight: .heavy))
                                 .foregroundColor(Color.white)
-                                .background(Color.black.opacity(0.3))
+                                .background(Color.black.opacity(0.1))
                                 .cornerRadius(10)
                                 .applyEdgePadding(for: .topLeft)
                                 .onTapGesture {
@@ -67,74 +67,79 @@ struct MainArView: View {
                                     }
                             }
                             
-                                                                                                                
-                            Spacer()
-                            
-                            Image(systemName: "arrow.counterclockwise")
-                                .applyDefaultIconTheme()
-                                .applyEdgePadding(for: .topRight)
-                                .onTapGesture {
-                                    guard self.areButtonsActive() else {return}
-                                    
-                                    self.settingsViewModel.refreshScene()
-                            }
-                            
-                            Image(systemName:"gear")
-                                .applyDefaultIconTheme()
-                                .applyEdgePadding(for: .topRight)
-                                .onTapGesture {
-                                    guard self.areButtonsActive() else {return}
-                                    
-                                    if self.settingsViewModel.isUserAuthenticated() {
-                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
-                                    }else {
-                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
-                                    }
-                            }
-                        }
-                        Spacer()
-                        HStack{
-                            Image(systemName: "camera.fill")
-                                .applyDefaultIconTheme()
-                                .applyEdgePadding(for: .bottomLeft)
-                                .onTapGesture {
-                                    guard self.areButtonsActive() else {return}
-                                    
-                                    if self.settingsViewModel.isUserAuthenticated() {
-                                        //                                        // stop session
-                                        //                                        self.settingsViewModel.appArScnView.pauseSession()
-                                        
-                                        self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
-                                    }else {
-                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
-                                    }
-                            }
                             
                             Spacer()
                             
-                            Image(systemName: "arrow.left")
-                                .applyDefaultIconTheme()
-                                .applyEdgePadding(for: .bottomRight)
-                                .onTapGesture {
-                                    guard self.areButtonsActive() else {return}
-                                    
-                                    NotificationCenter.default.post(name: .aRViewDidTapBackIcon, object: true)
-                            }
-                            
-                            ZStack{
-                                Image(systemName: "mappin.and.ellipse")
-                                    .applyDefaultIconTheme()
+                            HStack{
+                                Image(systemName: "arrow.counterclockwise")
+                                    .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                                     .onTapGesture {
                                         guard self.areButtonsActive() else {return}
                                         
-                                        // notifiy app ar scene to reset group scn nodes positions
-                                        NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
+                                        self.settingsViewModel.refreshScene()
                                 }
                                 
-                                if (self.settingsViewModel.uploadIndicator > 0){
-                                    Loader()
+                                Image(systemName:"gear")
+                                    .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                                    .onTapGesture {
+                                        guard self.areButtonsActive() else {return}
+                                        
+                                        if self.settingsViewModel.isUserAuthenticated() {
+                                            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
+                                        }else {
+                                            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                        }
                                 }
-                            } .applyEdgePadding(for: .bottomRight)
+                            }
+                            .applyEdgePadding(for: .topRight)
+                        }
+                        Spacer()
+                        HStack{
+                            HStack{
+                                Image(systemName: "camera.fill")
+                                    .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                                    .onTapGesture {
+                                        guard self.areButtonsActive() else {return}
+                                        
+                                        if self.settingsViewModel.isUserAuthenticated() {
+                                            //                                        // stop session
+                                            //                                        self.settingsViewModel.appArScnView.pauseSession()
+                                            
+                                            self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
+                                        }else {
+                                            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                        }
+                                }
+                            }
+                            .applyEdgePadding(for: .bottomLeft)
+                            
+                            Spacer()
+                            
+                            HStack {
+                                Image(systemName: "arrow.left")
+                                    .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                                    .onTapGesture {
+                                        guard self.areButtonsActive() else {return}
+                                        
+                                        NotificationCenter.default.post(name: .aRViewDidTapBackIcon, object: true)
+                                }
+                                
+                                ZStack{
+                                    Image(systemName: "mappin.and.ellipse")
+                                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                                        .onTapGesture {
+                                            guard self.areButtonsActive() else {return}
+                                            
+                                            // notifiy app ar scene to reset group scn nodes positions
+                                            NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
+                                    }
+                                    
+                                    if (self.settingsViewModel.uploadIndicator > 0){
+                                        Loader()
+                                    }
+                                }
+                            }
+                            .applyEdgePadding(for: .bottomRight)
                         }
                         
                     }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
@@ -179,7 +184,7 @@ struct MainArView: View {
                                 Spacer()
                                 HStack{
                                     Spacer()
-                                    Text(self.postDisplayType == .allPosts ? "Normal View" : "Private View")
+                                    Text(self.postDisplayType == .allPosts ? "Normal View" : "Personal View")
                                         .foregroundColor(Color.white)
                                         .font(Font.custom("Avenir", size: 20).bold())
                                         .padding(10)

@@ -18,15 +18,15 @@ struct SliderMenuView: View {
             if (self.showMenu == true){
                 VStack{
                     Image(systemName: "person.fill")
-                        .applyDefaultIconTheme()
+//                        .applyDefaultIconTheme()
                         .padding(.bottom, 20)
                     
                     Image(systemName: "globe")
-                        .applyDefaultIconTheme()
+//                        .applyDefaultIconTheme()
                         .padding(.bottom, 20)
                     
                     Image(systemName: "gear")
-                        .applyDefaultIconTheme()
+//                        .applyDefaultIconTheme()
                         .onTapGesture {
                             if self.settingsViewModel.isUserAuthenticated() {
                                 self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
