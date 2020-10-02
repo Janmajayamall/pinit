@@ -64,20 +64,21 @@ struct ProfileView: View {
                     .font(Font.custom("Avenir", size: 15).bold())
                     Spacer()
                 }.padding(EdgeInsets(top: 0, leading: 0, bottom: 8, trailing: 0))
+                    .onTapGesture {
+                        self.openShareControl()
+                }
             }
             VStack{
                 HStack{
                     Image(systemName: "xmark")
-                        .foregroundColor(Color.primaryColor)
-                        .applyDefaultIconTheme()
+                        .applyDefaultIconTheme(forIconDisplayType: .normal)
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                     }
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     Spacer()
                     Image(systemName: "ellipsis")
-                        .foregroundColor(Color.primaryColor)
-                        .applyDefaultIconTheme()
+                        .applyDefaultIconTheme(forIconDisplayType: .normal)
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .settings)
                     }
@@ -91,6 +92,16 @@ struct ProfileView: View {
         .cornerRadius(15)
         .offset(self.offset)
         .animation(.spring())
+    }
+    
+    func openShareControl() {
+        guard let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeqgRqgUiJt0khh0UpABb_szeKCnLK0v7I0aPN9uV1bpt6IyQ/viewform?usp=sf_link") else {return}
+        let shareText = "Check out FinchIt on iOS"
+        let shareControl = UIActivityViewController(activityItems: [shareText, url], applicationActivities: nil)
+        shareControl.excludedActivityTypes = [.airDrop, .assignToContact, .openInIBooks, .print, .saveToCameraRoll, .markupAsPDF]
+        
+        // present share control
+        UIApplication.shared.windows.first?.rootViewController?.present(shareControl, animated: true, completion: nil)
     }
     
     private let viewHeightRatio: CGFloat = 0.30

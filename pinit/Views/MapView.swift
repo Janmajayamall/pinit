@@ -50,7 +50,7 @@ struct MapView: View {
             VStack{
                 HStack{
                     Image(systemName: "xmark")
-                        .applyDefaultIconTheme()
+//                        .applyDefaultIconTheme()
                         .onTapGesture {
                             self.closeView()
                     }

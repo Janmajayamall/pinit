@@ -83,8 +83,7 @@ struct EditProfileImageView: View {
             VStack{
                 HStack{
                     Image(systemName: "xmark")
-                        .foregroundColor(Color.primaryColor)
-                        .applyDefaultIconTheme()                        
+                        .applyDefaultIconTheme(forIconDisplayType: .normal)
                         .onTapGesture {
                             self.closeEditProfileImageView()
                     }
@@ -95,7 +94,7 @@ struct EditProfileImageView: View {
                     if self.imageCropViewModel.isDoneIconVisible == true {
                         Image(systemName: "checkmark")
                             .foregroundColor(Color.primaryColor)
-                            .applyDefaultIconTheme()
+//                            .applyDefaultIconTheme()
                             .onTapGesture {                                                                                             
                                 // finalise the image & notify accordingly
                                 if (self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType == .editProfileImage) {

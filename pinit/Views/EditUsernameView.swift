@@ -84,8 +84,7 @@ struct EditUsernameView: View {
             VStack{
                 HStack{
                     Image(systemName: "xmark")
-                        .foregroundColor(Color.primaryColor)
-                        .applyDefaultIconTheme()
+                        .applyDefaultIconTheme(forIconDisplayType: .normal)
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
                     }

@@ -34,9 +34,8 @@ struct LoginView: View {
         
         VStack{
             HStack{
-                Image(systemName: "xmark")
-                    .foregroundColor(Color.primaryColor)
-                    .applyDefaultIconTheme()
+                Image(systemName: "xmark")                
+                    .applyDefaultIconTheme(forIconDisplayType: .normal)
                     .onTapGesture {
                         self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                 }

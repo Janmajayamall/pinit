@@ -208,7 +208,9 @@ class GroupSCNNode: SCNNode, Identifiable {
         if (scale > 1){
             self.fixedImageWidth += 0.05
         }else {
-            self.fixedImageWidth -= 0.05
+            if (self.fixedImageWidth > 0.05){
+                self.fixedImageWidth -= 0.05
+            }
         }
         
         self.addCurrentPostAsGeometry()
@@ -257,8 +259,21 @@ class GroupSCNNode: SCNNode, Identifiable {
                 scenePosition.y + self.defaultYCoordDis,
                 scenePosition.z + -self.defaultZCoordDis + 0.5)
         }
-        
+                               
         SCNTransaction.commit()
+    }
+    
+    func resetNodePos(scenePosition: SCNVector3?) {        
+        
+        self.placeNode(scenePosition: scenePosition)
+        
+        // set fixedImageWidth to 1 again
+        if (self.currentPostIndex != -1 && self.isPostValidForRender(self.postList[self.currentPostIndex % self.postList.count])){
+            // reset plane dimensions
+            self.fixedImageWidth = 1
+            self.addCurrentPostAsGeometry()
+            
+        }
     }
     
     func addPost(_ post: PostModel) {

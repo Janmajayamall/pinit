@@ -40,7 +40,7 @@ struct MoreSettingsViewModel: View {
                     self.isSafariOpen = true
                 }, label: {
                     HStack{
-                        Text("Your suggestions for Pastime")
+                        Text("Your suggestions for FinchIt")
                          .padding(.leading, 5)
                         Spacer()
                     }
@@ -53,7 +53,7 @@ struct MoreSettingsViewModel: View {
                     self.isSafariOpen = true
                 }, label: {
                     HStack{
-                        Text("More about Pastime")
+                        Text("More about FinchIt")
                             .padding(.leading, 5)
                         Spacer()
                     }
@@ -89,8 +89,7 @@ struct MoreSettingsViewModel: View {
             VStack{
                 HStack{
                     Image(systemName: "xmark")
-                        .foregroundColor(Color.primaryColor)
-                        .applyDefaultIconTheme()
+                        .applyDefaultIconTheme(forIconDisplayType: .normal)
                         .onTapGesture {
                             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .normal)
                     }
