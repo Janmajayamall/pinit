@@ -113,16 +113,3 @@ struct ProfileView_Previews: PreviewProvider {
         ProfileView(parentSize: CGSize(width: 300, height: 800))
     }
 }
-//
-//
-//Image(uiImage: self.settingsViewModel.userProfileImage ?? UIImage(imageLiteralResourceName: "ProfileImage"))
-//         .resizable().scaledToFit()
-//         .frame(width: self.profileImageDim, height: self.profileImageDim, alignment: .center)
-//         .overlay(Circle().stroke(Color.secondaryColor, lineWidth: 8).frame(width: self.profileImageDim, height: self.profileImageDim))
-//         .cornerRadius(self.profileImageDim/2)
-//         .clipped()
-//         .onTapGesture {
-//             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.switchTo(screenType: .editProfileImage)
-//         }
-//         .padding(.bottom, 10)
-//
