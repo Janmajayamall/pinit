@@ -20,18 +20,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1IjoiamFubWFqYXlhbWFsbCIsImEiOiJja2N4MTBycWMwNDJiMnpwNzZnYWVyc2d3In0.yGMdA6KR-9WEe_BmN8h7cw</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Use it for fun</string>
+	<string>Camera is used for setting up Augmented Reality Scene around you and taking photos/videos.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Shows your location on the map and helps improve the map.</string>
+	<string>Location is used for tagging your posts with location and setting up relevant Augmented Reality Scene at your location.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Use it for fun</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Use it for fun</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Use it for fun</string>
+	<string>Microphone is used for recording voice in your videos.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Avenir.ttc</string>

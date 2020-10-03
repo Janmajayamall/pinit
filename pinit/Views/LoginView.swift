@@ -74,30 +74,35 @@ struct LoginView: View {
             }
             
             Spacer()
+        
+            HStack{
+                Spacer()
+                Text("By signing in you agree with our")
+                    .foregroundColor(Color.textfieldColor)
+                .font(Font.custom("Avenir", size: 15))
+                Text("Privacy Policy")
+                .underline()
+                .foregroundColor(Color.blue)
+                .font(Font.custom("Avenir", size: 15))
+                Spacer()
+            }
             
+            Spacer()
+    
+//            Divider().background(Color.blue).frame(height: 10)
             HStack{
                 Text("Already have an account?").foregroundColor(Color.black)
-                Text("Log In with email").foregroundColor(Color.primaryColor)
+                Text("Log In").foregroundColor(Color.primaryColor)
             }
-            .font(Font.custom("Avenir", size: 15).bold())
+            .font(Font.custom("Avenir", size: 18).bold())
             .foregroundColor(Color.black)
             .onTapGesture {
                 self.emailAuthViewType = .login
                 self.isEmailAuthViewOpen = true
             }
-            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+            .padding(EdgeInsets(top: 10, leading: 10, bottom: 15, trailing: 10))
             
-            Spacer()
-            
-            HStack{
-                Spacer()
-                Text("By signing in you agree with you Terms and Conditions.")
-                .font(Font.custom("Avenir", size: 15))
-                .foregroundColor(Color.black)
-                Spacer()
-            }.padding(.bottom, 20)
-            
-            Spacer()
+                        
         }
         .frame(width: self.parentSize.width, height: self.viewHeight)
         .background(Color.white)

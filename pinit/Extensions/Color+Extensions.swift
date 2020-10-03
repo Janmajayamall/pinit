@@ -14,4 +14,5 @@ extension Color {
     static var secondaryColor = Color("secondaryColor")
     
     static var textfieldColor = Color("textfieldColor")
+    static var smokeColor = Color("smokeColor")
 }
