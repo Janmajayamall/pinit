@@ -42,9 +42,10 @@ struct ProfileView: View {
                 
                 HStack{
                     Spacer()
-                    Text(" \(self.settingsViewModel.userPostCount) PINS")
+                    Text(" \(self.settingsViewModel.userPostCount)")
                         .font(Font.custom("Avenir", size: 18))
                         .foregroundColor(Color.black)
+                    Image("IconTransparent").resizable().frame(width: 40, height: 40).clipped()
                     Spacer()
                 }.padding(EdgeInsets(top: 0, leading: 0, bottom: 15, trailing: 0))
                                 

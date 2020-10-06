@@ -123,7 +123,7 @@ class SettingsViewModel: ObservableObject {
     }
     
     func handleSceneWillResignActive() {
-
+        print("qwerty HISHHSsssH")
         // stop location service
         self.locationService.stopService()
                 

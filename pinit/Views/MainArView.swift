@@ -34,7 +34,17 @@ struct MainArView: View {
                     
                     VStack{
                         HStack{
-                            Text(self.postDisplayType == .allPosts ? "📍": "📍🔒")
+                            HStack{
+                                if (self.postDisplayType == .allPosts) {
+                                    Image("IconTransparent").resizable().frame(width: 50, height: 50).clipped()
+                                }else{
+                                    HStack{
+                                        Image("IconTransparent").resizable().frame(width: 50, height: 50).clipped()
+                                        Text("🔒")
+                                    }
+                                }
+                                
+                            }
                                 .font(Font.system(size: 30, weight: .heavy))
                                 .foregroundColor(Color.white)
                                 .background(Color.black.opacity(0.1))

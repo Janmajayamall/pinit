@@ -11,6 +11,7 @@ import SceneKit
 import ARKit
 import Combine
 import FirebaseAuth
+import CoreLocation
 
 class AppArScnView: ARSCNView {
     
@@ -49,9 +50,11 @@ class AppArScnView: ARSCNView {
     
     private var cancellables: Set<AnyCancellable> = []
     
+    var currentLocation: CLLocation?
+    
     init(){
         super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width), options: nil)
-    
+        
         //setting up debug options
         if (self.debug){
             self.debugOptions = ARSCNDebugOptions(arrayLiteral: [.showWorldOrigin, .showFeaturePoints])
@@ -67,6 +70,7 @@ class AppArScnView: ARSCNView {
         self.subscribeToArViewPublishers()
         self.subscribeToGroupSCNNodePublishers()
         self.subscribeToAuthenticationService()
+        self.subscribeToEstimatedUserLocationServicePublishers()
         
         // setup ui gesture recognizers
         self.setupUIGestureRecognizers()
@@ -275,11 +279,23 @@ class AppArScnView: ARSCNView {
     }
     
     func checkPostsExistForCurrentLocation() {
-        guard self.exisitingPosts.count == 0 else {return}
+        guard let currentLocation = self.currentLocation else {return}
         
-        // notify that the posts at location do not exist
-        NotificationCenter.default.post(name: .generalFunctionPostsDoNotExistForCurrentLocation, object: true)
+        var postExists = false
+        self.exisitingPosts.values.forEach { (postModel) in
+            let postLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: postModel.geolocation.latitude, longitude: postModel.geolocation.longitude), altitude: postModel.altitude, horizontalAccuracy: 0, verticalAccuracy: 0, timestamp: .init())
+            
+            // check whether post is in range
+            if (currentLocation.checkIsInValidDistanceRange(forLocation: postLocation)){
+                postExists = true
+            }
+        }
         
+        if (!postExists){
+            // notify that the posts at location do not exist
+            NotificationCenter.default.post(name: .generalFunctionPostsDoNotExistForCurrentLocation, object: true)
+            
+        }
     }
     
 }
@@ -319,7 +335,7 @@ extension AppArScnView {
             self.handleBackIconTouch()
         }.store(in: &cancellables)
     }
-
+    
     // subscribe to Group SCN node Publisher
     func subscribeToGroupSCNNodePublishers() {
         Publishers.groupSCNNodeDidLoadPostDisplayData.sink { (value) in
@@ -336,6 +352,13 @@ extension AppArScnView {
     func subscribeToAuthenticationService() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
             self.user = user
+        }.store(in: &cancellables)
+    }
+    
+    // subscrbe to estimated user location service
+    func subscribeToEstimatedUserLocationServicePublishers() {
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+            self.currentLocation = location
         }.store(in: &cancellables)
     }
 }
