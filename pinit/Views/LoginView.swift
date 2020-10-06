@@ -29,6 +29,7 @@ struct LoginView: View {
     
     @State var isEmailAuthViewOpen = false
     @State var emailAuthViewType: emailAuthenticationViewType = .signUp
+    @State var isPrivacyViewOpen = false
     var body: some View {
         
         VStack{
@@ -84,6 +85,9 @@ struct LoginView: View {
                 .underline()
                 .foregroundColor(Color.blue)
                 .font(Font.custom("Avenir", size: 15))
+                    .onTapGesture {
+                        self.isPrivacyViewOpen = true
+                }
                 Spacer()
             }
             
@@ -111,6 +115,9 @@ struct LoginView: View {
         .animation(.spring())
         .sheet(isPresented: self.$isEmailAuthViewOpen, content: {
             EmailAuthenticationView(isOpen: self.$isEmailAuthViewOpen, viewType: self.emailAuthViewType)
+        })
+        .sheet(isPresented: self.$isPrivacyViewOpen, content: {
+            UIKitSafariWebView(url: URL(string: "https://janmajayamall.wixsite.com/jadajda/privacy")!)
         })
     }
     
