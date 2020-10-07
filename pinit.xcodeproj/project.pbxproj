@@ -11,6 +11,13 @@
 		5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */; };
 		5D1CF0A82500095B00DD4E90 /* PostDisplayInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */; };
 		5D249CEF24FFFA3C00956241 /* PostDisplayInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */; };
+		5D2754FA252E572300F5F2AA /* FeedbackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2754F9252E572300F5F2AA /* FeedbackModel.swift */; };
+		5D2754FC252E585700F5F2AA /* AdditionalDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2754FB252E585700F5F2AA /* AdditionalDataService.swift */; };
+		5D2754FE252E5A3200F5F2AA /* RequestFeedbackModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2754FD252E5A3200F5F2AA /* RequestFeedbackModel.swift */; };
+		5D275500252E633800F5F2AA /* RequestReportUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2754FF252E633800F5F2AA /* RequestReportUserModel.swift */; };
+		5D275502252E635600F5F2AA /* ReportUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D275501252E635600F5F2AA /* ReportUserModel.swift */; };
+		5D275504252E64CD00F5F2AA /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D275503252E64CD00F5F2AA /* FeedbackView.swift */; };
+		5D275506252E753F00F5F2AA /* ReportUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D275505252E753F00F5F2AA /* ReportUserView.swift */; };
 		5D297D4125236574008E9FF5 /* UIKitSafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */; };
 		5D297D4525238316008E9FF5 /* UserActiveDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */; };
 		5D2ED1F824FD0D3C00C542B0 /* TextViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */; };
@@ -117,6 +124,13 @@
 		5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedUserLocationService.swift; sourceTree = "<group>"; };
 		5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoViewModel.swift; sourceTree = "<group>"; };
 		5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoModel.swift; sourceTree = "<group>"; };
+		5D2754F9252E572300F5F2AA /* FeedbackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackModel.swift; sourceTree = "<group>"; };
+		5D2754FB252E585700F5F2AA /* AdditionalDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionalDataService.swift; sourceTree = "<group>"; };
+		5D2754FD252E5A3200F5F2AA /* RequestFeedbackModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestFeedbackModel.swift; sourceTree = "<group>"; };
+		5D2754FF252E633800F5F2AA /* RequestReportUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestReportUserModel.swift; sourceTree = "<group>"; };
+		5D275501252E635600F5F2AA /* ReportUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportUserModel.swift; sourceTree = "<group>"; };
+		5D275503252E64CD00F5F2AA /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
+		5D275505252E753F00F5F2AA /* ReportUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportUserView.swift; sourceTree = "<group>"; };
 		5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitSafariWebView.swift; sourceTree = "<group>"; };
 		5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActiveDataModel.swift; sourceTree = "<group>"; };
 		5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewModifiers.swift; sourceTree = "<group>"; };
@@ -289,6 +303,7 @@
 				5D52F7D924E9932600D9F27E /* LocationService.swift */,
 				5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */,
 				5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */,
+				5D2754FB252E585700F5F2AA /* AdditionalDataService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -307,6 +322,10 @@
 				5DAE4137250C18820017A598 /* PostDisplayNodeModel.swift */,
 				5DC5304F250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift */,
 				5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */,
+				5D2754F9252E572300F5F2AA /* FeedbackModel.swift */,
+				5D2754FD252E5A3200F5F2AA /* RequestFeedbackModel.swift */,
+				5D2754FF252E633800F5F2AA /* RequestReportUserModel.swift */,
+				5D275501252E635600F5F2AA /* ReportUserModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -329,6 +348,8 @@
 				5DD2962E250E5FD600982587 /* EditCaptureVideoView.swift */,
 				5D86652B25138EC800049980 /* CameraFeedView.swift */,
 				5DD88BC3251F4DD100EA99A1 /* PopUpWarningView.swift */,
+				5D275503252E64CD00F5F2AA /* FeedbackView.swift */,
+				5D275505252E753F00F5F2AA /* ReportUserView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -818,13 +839,17 @@
 				5D52F7BD24E951AD00D9F27E /* Color+Extensions.swift in Sources */,
 				5DEA78DE25168BB50041D7AF /* AnalyticsService.swift in Sources */,
 				5D5245FD24F4555E0000317D /* SetupProfileViewModel.swift in Sources */,
+				5D275502252E635600F5F2AA /* ReportUserModel.swift in Sources */,
+				5D2754FA252E572300F5F2AA /* FeedbackModel.swift in Sources */,
 				5DC8527B24EFF83E00E36DCE /* FadeKeyboard.swift in Sources */,
 				5D6B1F8124FEF85D00DCC418 /* CameraFeedViewController.swift in Sources */,
 				5D576A3824F1A465004A004C /* EmailAuthenticationView.swift in Sources */,
 				5D52F7D624E98F2F00D9F27E /* UploadPostService.swift in Sources */,
+				5D275504252E64CD00F5F2AA /* FeedbackView.swift in Sources */,
 				5D52F7DF24E9952800D9F27E /* CLLocation+Extensions.swift in Sources */,
 				5D1CF0A82500095B00DD4E90 /* PostDisplayInfoViewModel.swift in Sources */,
 				5D86652C25138EC800049980 /* CameraFeedView.swift in Sources */,
+				5D2754FC252E585700F5F2AA /* AdditionalDataService.swift in Sources */,
 				5D67E7F124E84E6C00F5D240 /* SceneDelegate.swift in Sources */,
 				5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */,
 				5DC8527724EFE96500E36DCE /* UIKitUITextView.swift in Sources */,
@@ -845,6 +870,8 @@
 				5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */,
 				5D4DD0AA24ED425700E1FDF3 /* EditCaptureImageView.swift in Sources */,
 				5D567CF724F428E400283E5B /* SetupProfileView.swift in Sources */,
+				5D275506252E753F00F5F2AA /* ReportUserView.swift in Sources */,
+				5D275500252E633800F5F2AA /* RequestReportUserModel.swift in Sources */,
 				5D297D4525238316008E9FF5 /* UserActiveDataModel.swift in Sources */,
 				5D52F7DA24E9932600D9F27E /* LocationService.swift in Sources */,
 				5D52F7CB24E96E8F00D9F27E /* LoginView.swift in Sources */,
@@ -852,6 +879,7 @@
 				5D52F7BF24E952FE00D9F27E /* ProfileView.swift in Sources */,
 				5D52F7B924E93AAA00D9F27E /* PostModel.swift in Sources */,
 				5D297D4125236574008E9FF5 /* UIKitSafariWebView.swift in Sources */,
+				5D2754FE252E5A3200F5F2AA /* RequestFeedbackModel.swift in Sources */,
 				5D4DD0A824ED3E4D00E1FDF3 /* StrokeWidthSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

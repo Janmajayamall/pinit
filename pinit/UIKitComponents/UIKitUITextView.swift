@@ -33,14 +33,16 @@ struct UIKitUITextView : UIViewRepresentable {
     }
     
     @Binding var text: String
-    @Binding var textViewHeight: CGFloat    
+    @Binding var textViewHeight: CGFloat
+    var textColor: UIColor
+    var textSize: CGFloat = 20
     var isFirstResponder: Bool
     
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
         textView.backgroundColor = UIColor.clear
-        textView.textColor = UIColor.white
-        textView.font = UIFont(name: "Avenir", size: 20)
+        textView.textColor = self.textColor
+        textView.font = UIFont(name: "Avenir", size: self.textSize)
         textView.isScrollEnabled = true
         textView.delegate = context.coordinator
         return textView

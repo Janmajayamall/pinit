@@ -36,6 +36,7 @@ class SettingsViewModel: ObservableObject {
     private var uploadPostService = UploadPostService()
     private var geohasingService = GeohashingService()
     private var analyticsService = AnalyticsService()
+    private var additionalDataService = AdditionalDataService()
     
     // view models
     @Published var editingViewModel: EditingViewModel?

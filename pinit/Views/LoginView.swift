@@ -116,9 +116,9 @@ struct LoginView: View {
         .sheet(isPresented: self.$isEmailAuthViewOpen, content: {
             EmailAuthenticationView(isOpen: self.$isEmailAuthViewOpen, viewType: self.emailAuthViewType)
         })
-        .sheet(isPresented: self.$isPrivacyViewOpen, content: {
-            UIKitSafariWebView(url: URL(string: "https://janmajayamall.wixsite.com/jadajda/privacy")!)
-        })
+//        .sheet(isPresented: self.$isPrivacyViewOpen, content: {
+//            UIKitSafariWebView(url: URL(string: "http://www.finchit.tech/privacy")!)
+//        })
     }
     
     private let viewHeightRatio: CGFloat = 0.6

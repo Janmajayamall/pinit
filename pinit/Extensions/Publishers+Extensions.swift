@@ -379,4 +379,18 @@ extension Publishers {
                 return value
         }.eraseToAnyPublisher()
     }
+    
+    // publishers for additional data service
+    static var additionalDataServiceDidRequestFeedbackPublisher: AnyPublisher<RequestFeedbackModel, Never> {
+        NotificationCenter.default.publisher(for: .additionalDataServiceDidRequestFeedbackModel).compactMap { (notification) -> RequestFeedbackModel? in
+            guard let requestModel = notification.object as? RequestFeedbackModel else {return nil}
+            return requestModel
+        }.eraseToAnyPublisher()
+    }
+    static var additionalDataServiceDidRequestReportUserModelPublisher: AnyPublisher<RequestReportUserModel, Never> {
+        NotificationCenter.default.publisher(for: .additionalDataServiceDidRequestReportUserModel).compactMap { (notification) -> RequestReportUserModel? in
+            guard let requestModel = notification.object as? RequestReportUserModel else {return nil}
+            return requestModel
+        }.eraseToAnyPublisher()
+    }
 }

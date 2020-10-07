@@ -35,7 +35,7 @@ struct MoreSettingsViewModel: View {
                 Spacer()
                
                 Button(action:{
-                    guard let url = URL(string: "https://janmajayamall.wixsite.com/jadajda/suggestions") else {return}
+                    guard let url = URL(string: "http://www.finchit.tech/suggestions") else {return}
                     self.safariUrl = url
                     self.isSafariOpen = true
                 }, label: {
@@ -48,7 +48,7 @@ struct MoreSettingsViewModel: View {
                     .buttonStyle(LeanOutlineColoredButtonStyle())
                 
                 Button(action:{
-                    guard let url = URL(string: "https://janmajayamall.wixsite.com/jadajda") else {return}
+                    guard let url = URL(string: "http://www.finchit.tech/home") else {return}
                     self.safariUrl = url
                     self.isSafariOpen = true
                 }, label: {
@@ -61,7 +61,7 @@ struct MoreSettingsViewModel: View {
                     .buttonStyle(LeanOutlineColoredButtonStyle())
                 
                 Button(action:{
-                    guard let url = URL(string: "https://janmajayamall.wixsite.com/jadajda/privacy") else {return}
+                    guard let url = URL(string: "http://www.finchit.tech/privacy") else {return}
                     self.safariUrl = url
                     self.isSafariOpen = true
                 }, label: {

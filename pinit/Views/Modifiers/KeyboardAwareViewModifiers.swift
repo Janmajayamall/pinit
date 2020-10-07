@@ -35,10 +35,27 @@ struct KeyboardAwareMaximumHeightFrameModifier: ViewModifier {
     var viewBottomMargin: CGFloat = 80
 }
 
+struct KeyboardAwarePaddingModifier: ViewModifier {
+    
+    @State var keyboardHeight: CGFloat = 0
+    
+    func body(content: Content) -> some View {
+        content
+            .padding(EdgeInsets(top: 0, leading: 0, bottom: self.keyboardHeight, trailing: 0))
+            .onReceive(Publishers.keyboardHeightPublisher , perform: {self.keyboardHeight = $0})
+    }
+    
+}
+
 extension View {
     
     // func for implmenting keyboardAwareMaximumHeightFrameModifier modifier
     func applyKeyboardAwareMaximumHeightFrame(viewHeight: Binding<CGFloat>, parentSize: CGSize) -> some View {
         return ModifiedContent(content: self, modifier: KeyboardAwareMaximumHeightFrameModifier(viewHeight: viewHeight, parentSize: parentSize))
+    }
+    
+    // func for implementing keyboardAwarePaddingModifier
+    func applyKeyboardAwarePadding() -> some View {
+        return ModifiedContent(content: self, modifier: KeyboardAwarePaddingModifier())
     }
 }

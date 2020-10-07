@@ -72,4 +72,8 @@ extension Notification.Name {
     static let generalFunctionManipulateTaskForUploadIndicator = Notification.Name("generalFunctionManipulateTaskForUploadIndicator")
     static let generalFunctionManipulateTaskForLoadIndicator = Notification.Name("generalFunctionManipulateTaskForLoadIndicator")    
     static let generalFunctionPostsDoNotExistForCurrentLocation = Notification.Name("generalFunctionPostsDoNotExistForCurrentLocation")
+    
+    // notifications for additional data service
+    static let additionalDataServiceDidRequestFeedbackModel = Notification.Name("additionalDataServiceDidRequestFeedbackModel")
+    static let additionalDataServiceDidRequestReportUserModel = Notification.Name("additionalDataServiceDidRequestReportUserModel")
 }
