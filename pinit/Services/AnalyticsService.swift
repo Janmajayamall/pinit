@@ -49,9 +49,11 @@ extension AnalyticsService {
             Analytics.setUserID(user?.uid)
             
             if (user == nil){
-                Analytics.setUserProperty("false", forName: AnalyticsConstants.AnalyticsUserPropertyAuthenticated)
+                Analytics.setUserProperty("false", forName: AnalyticsConstants.AnalyticsAuthProperty
+)
             }else {
-                Analytics.setUserProperty("true", forName: AnalyticsConstants.AnalyticsUserPropertyAuthenticated)
+                Analytics.setUserProperty("true", forName: AnalyticsConstants.AnalyticsAuthProperty
+)
             }
         }.store(in: &cancellables)
     }
@@ -73,7 +75,7 @@ extension AnalyticsService {
         static let AnalyticsParameterPostContentType = "AnalyticsParameterPostContentType"
         
         // user property
-        static let AnalyticsUserPropertyAuthenticated = "AnalyticsUserPropertyAuthenticated"
+        static let AnalyticsAuthProperty = "AnalyticsAuthProperty"
         
     }
 }

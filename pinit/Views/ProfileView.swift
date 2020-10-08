@@ -97,7 +97,7 @@ struct ProfileView: View {
     
     func openShareControl() {
         guard let url = URL(string: "https://apps.apple.com/app/id1534144145") else {return}
-        let shareText = "Check out FinchIt - AR Social Network"
+        let shareText = "Check out FinchIt - a AR Social Network"
         let shareControl = UIActivityViewController(activityItems: [shareText, url], applicationActivities: nil)
         shareControl.excludedActivityTypes = [.airDrop, .assignToContact, .openInIBooks, .print, .saveToCameraRoll, .markupAsPDF]
         

@@ -45,34 +45,34 @@ struct MainArView: View {
                                 }
                                 
                             }
-                                .font(Font.system(size: 30, weight: .heavy))
-                                .foregroundColor(Color.white)
-                                .background(Color.black.opacity(0.1))
-                                .cornerRadius(10)
-                                .applyEdgePadding(for: .topLeft)
-                                .onTapGesture {
-                                    guard self.areButtonsActive() else {return}
-                                    
-                                    if self.settingsViewModel.isUserAuthenticated() {
-                                        switch self.postDisplayType {
-                                        case .allPosts:
-                                            self.postDisplayType = .privatePosts
-                                        case .privatePosts:
-                                            self.postDisplayType = .allPosts
-                                        }
-                                        
-                                        // post notification for group scn node
-                                        NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
-                                        
-                                        // display post diplay notification text
-                                        self.postDisplayNotification = true
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                            self.postDisplayNotification = false
-                                        })
-                                        
-                                    }else {
-                                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                            .font(Font.system(size: 30, weight: .heavy))
+                            .foregroundColor(Color.white)
+                            .background(Color.black.opacity(0.1))
+                            .cornerRadius(10)
+                            .applyEdgePadding(for: .topLeft)
+                            .onTapGesture {
+                                guard self.areButtonsActive() else {return}
+                                
+                                if self.settingsViewModel.isUserAuthenticated() {
+                                    switch self.postDisplayType {
+                                    case .allPosts:
+                                        self.postDisplayType = .privatePosts
+                                    case .privatePosts:
+                                        self.postDisplayType = .allPosts
                                     }
+                                    
+                                    // post notification for group scn node
+                                    NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
+                                    
+                                    // display post diplay notification text
+                                    self.postDisplayNotification = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                        self.postDisplayNotification = false
+                                    })
+                                    
+                                }else {
+                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                }
                             }
                             
                             
@@ -266,6 +266,8 @@ struct MainArView: View {
             
             
         }
+        
+        
         
     }
     

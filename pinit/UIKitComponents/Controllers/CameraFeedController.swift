@@ -317,7 +317,7 @@ extension CameraFeedController: AVCapturePhotoCaptureDelegate, AVCaptureFileOutp
     
     func fileOutput(_ output: AVCaptureFileOutput, didFinishRecordingTo outputFileURL: URL, from connections: [AVCaptureConnection], error: Error?) {
         if let error = error {
-            print("File outout failed with errror: \(error.localizedDescription)")
+            print("File output failed with errror: \(error.localizedDescription)")
             return
         }
         

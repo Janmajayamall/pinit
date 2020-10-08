@@ -165,7 +165,7 @@ class GroupSCNNode: SCNNode, Identifiable {
             if (self.currentPostIndex == refIndex){
                 break
             }
-        }while self.postList[self.currentPostIndex].isReadyToDisplay == false
+        }while self.isPostValidForRender(self.postList[self.currentPostIndex]) == false
         
         if (refIndex != self.currentPostIndex){
             self.preparePostNodeOffloadFromGeometry(forIndex: refIndex)
