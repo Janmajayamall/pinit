@@ -13,7 +13,7 @@ struct FeedbackView: View {
     @State var description: String = ""
     @State var fakeHeightBinding: CGFloat = 0
     
-//    @Binding var isOpen = false
+    @Binding var isOpen: Bool
     
     var body: some View {
         GeometryReader {geometryProxy in
@@ -21,7 +21,7 @@ struct FeedbackView: View {
                 HStack{
                     Text("Tell us how can we improve?")
                         .font(Font.custom("Avenir", size: 20)
-                        .bold())
+                            .bold())
                         .foregroundColor(Color.black)
                 }.padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                 
@@ -62,24 +62,24 @@ struct FeedbackView: View {
                 Spacer()
                 
                 Button(action: {
-                    // generate user feedback request
                     self.sendUserFeedback()
-                    
                     self.hideKeyboard()
-//                    self.
+                    self.isOpen = false
+                    //                    self.
                 }, label: {
                     Text("Submit")
                 })
                     .padding(.bottom, 5)
-                .buttonStyle(SecondaryColorButtonStyle())
+                    .buttonStyle(SecondaryColorButtonStyle())
                     .applyKeyboardAwarePadding()
                 
-            }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
-                .background(Color.white)
-                .onTapGesture {
-                    self.hideKeyboard()
             }
-            
+        }
+        .onTapGesture {
+            self.hideKeyboard()
+        }.background(Color.white)
+            .onDisappear {
+                self.isOpen = false
         }
         
     }
@@ -95,8 +95,8 @@ struct FeedbackView: View {
     }
 }
 
-struct FeedbackView_Previews: PreviewProvider {
-    static var previews: some View {
-        FeedbackView()
-    }
-}
+//struct FeedbackView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        FeedbackView(, isOpen: )
+//    }
+//}

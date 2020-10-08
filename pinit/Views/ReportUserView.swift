@@ -14,6 +14,8 @@ struct ReportUserView: View {
     @State var reason: String = ""
     @State var fakeHeightBinding: CGFloat = 0
     
+    @Binding var isOpen: Bool
+    
     var body: some View {
         GeometryReader {geometryProxy in
             VStack{
@@ -59,9 +61,9 @@ struct ReportUserView: View {
                 
                 ZStack{
                     VStack{
-                        Text("To contact our team regarding any concern.")
+                        Text("To contact our team regarding any concern")
                         HStack{
-                            Text("Feel free to")
+                            Text("feel free to")
                             Text("email us.")
                                 .foregroundColor(Color.primaryColor)
                                 .onTapGesture {
@@ -75,7 +77,9 @@ struct ReportUserView: View {
                     VStack{
                         Spacer()
                         Button(action: {
+                            self.sendUserReport()
                             self.hideKeyboard()
+                            self.isOpen = false
                         }, label: {
                             Text("Report")
                         })
@@ -85,17 +89,22 @@ struct ReportUserView: View {
                     }
                 }
                 
-            }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
-                .background(Color.white)
+            }
+            }.background(Color.white)
                 .onTapGesture {
                     self.hideKeyboard()
             }
-        }
+    }
+    
+    func sendUserReport() {
+        guard self.reportedUsername.count > 0 else {return}
+        let requestModel = RequestReportUserModel(reportedUsername: self.reportedUsername, reason: self.reason)
+        NotificationCenter.default.post(name: .additionalDataServiceDidRequestReportUserModel, object: requestModel)
     }
 }
 
-struct ReportUserView_Previews: PreviewProvider {
-    static var previews: some View {
-        ReportUserView()
-    }
-}
+//struct ReportUserView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ReportUserView(, isOpen: )
+//    }
+//}

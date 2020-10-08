@@ -26,22 +26,36 @@ struct MoreSettingsViewModel: View {
         }
     }
     
-    @State var isSafariOpen: Bool = false
     @State var safariUrl: URL?
+    
+    @State var moreSettingsViewSheetType: MoreSettingsViewSheetType = .none
+    @State var isSheetOpen: Bool = false
+    
     
     var body: some View {
         ZStack{
             VStack{
                 Spacer()
-               
+                
                 Button(action:{
-                    guard let url = URL(string: "http://www.finchit.tech/suggestions") else {return}
-                    self.safariUrl = url
-                    self.isSafariOpen = true
+                    self.moreSettingsViewSheetType = .feedback
+                    self.isSheetOpen = true
                 }, label: {
                     HStack{
                         Text("Your suggestions for FinchIt")
-                         .padding(.leading, 5)
+                            .padding(.leading, 5)
+                        Spacer()
+                    }
+                })
+                    .buttonStyle(LeanOutlineColoredButtonStyle())
+                
+                Button(action:{
+                    self.moreSettingsViewSheetType = .report
+                    self.isSheetOpen = true
+                }, label: {
+                    HStack{
+                        Text("Report a user")
+                            .padding(.leading, 5)
                         Spacer()
                     }
                 })
@@ -50,10 +64,10 @@ struct MoreSettingsViewModel: View {
                 Button(action:{
                     guard let url = URL(string: "http://www.finchit.tech/home") else {return}
                     self.safariUrl = url
-                    self.isSafariOpen = true
+                    self.moreSettingsViewSheetType = .safari
                 }, label: {
                     HStack{
-                        Text("More about FinchIt")
+                        Text("More about us")
                             .padding(.leading, 5)
                         Spacer()
                     }
@@ -63,11 +77,12 @@ struct MoreSettingsViewModel: View {
                 Button(action:{
                     guard let url = URL(string: "http://www.finchit.tech/privacy") else {return}
                     self.safariUrl = url
-                    self.isSafariOpen = true
+                    self.moreSettingsViewSheetType = .safari
+                    self.isSheetOpen = true
                 }, label: {
                     HStack{
-                        Text("Privacy Matters")
-                         .padding(.leading, 5)
+                        Text("Privacy Policy")
+                            .padding(.leading, 5)
                         Spacer()
                     }
                 })
@@ -78,7 +93,7 @@ struct MoreSettingsViewModel: View {
                 }, label: {
                     HStack{
                         Text("Logout")
-                         .padding(.leading, 5)
+                            .padding(.leading, 5)
                         Spacer()
                     }
                 })
@@ -104,12 +119,20 @@ struct MoreSettingsViewModel: View {
         .cornerRadius(15)
         .offset(self.offset)
         .animation(.spring())
-        .sheet(isPresented: self.$isSafariOpen, content: {
-            UIKitSafariWebView(url: self.safariUrl!)
+        .sheet(isPresented: self.$isSheetOpen, content: {
+            if (self.moreSettingsViewSheetType == .feedback){
+                FeedbackView(isOpen: self.$isSheetOpen)
+            }else if(self.moreSettingsViewSheetType == .report){
+                ReportUserView(isOpen: self.$isSheetOpen)
+            }else if (self.moreSettingsViewSheetType == .safari){
+                UIKitSafariWebView(url: self.safariUrl!)
+            }
+            VStack{Text("").foregroundColor(Color.white)}.background(Color.white)
+            
         })
     }
     
-    let viewHeightRatio: CGFloat = 0.45
+    let viewHeightRatio: CGFloat = 0.55
     let viewWidthRatio: CGFloat = 0.8
 }
 
@@ -117,4 +140,11 @@ struct MoreSettingsViewModel_Previews: PreviewProvider {
     static var previews: some View {
         MoreSettingsViewModel( parentSize: .zero)
     }
+}
+
+enum MoreSettingsViewSheetType {
+    case feedback
+    case report
+    case safari
+    case none
 }

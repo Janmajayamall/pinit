@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Create the SwiftUI view that provides the window contents.
             let contentView = MainArView().environmentObject(self.settingViewModel).environment(\.window, window)
             
-            window.rootViewController = UIHostingController(rootView: ReportUserView())
+            window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
         }
