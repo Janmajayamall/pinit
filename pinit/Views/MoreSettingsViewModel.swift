@@ -42,7 +42,7 @@ struct MoreSettingsViewModel: View {
                     self.isSheetOpen = true
                 }, label: {
                     HStack{
-                        Text("Your suggestions for FinchIt")
+                        Text("Your feedback")
                             .padding(.leading, 5)
                         Spacer()
                     }
@@ -65,6 +65,7 @@ struct MoreSettingsViewModel: View {
                     guard let url = URL(string: "http://www.finchit.tech/home") else {return}
                     self.safariUrl = url
                     self.moreSettingsViewSheetType = .safari
+                    self.isSheetOpen = true
                 }, label: {
                     HStack{
                         Text("More about us")

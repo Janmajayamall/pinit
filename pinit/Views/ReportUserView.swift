@@ -22,7 +22,7 @@ struct ReportUserView: View {
                 HStack{
                     Text("Report a offensive user/activity")
                         .font(Font.custom("Avenir", size: 20)
-                        .bold())
+                            .bold())
                         .foregroundColor(Color.black)
                 }.padding(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                 
@@ -61,6 +61,8 @@ struct ReportUserView: View {
                 
                 ZStack{
                     VStack{
+                        Text("Note: Our team @ FinchIt will response to your report within 24 hours. We might also contact you for further information, if needed.").multilineTextAlignment(.center)
+                            .padding(.bottom, 5)
                         Text("To contact our team regarding any concern")
                         HStack{
                             Text("feel free to")
@@ -73,7 +75,8 @@ struct ReportUserView: View {
                         Spacer()
                     }.font(Font.custom("Avenir", size: 15).bold())
                         .foregroundColor(Color.black)
-                                        
+                        .padding(EdgeInsets(top: 5, leading: 15, bottom: 10, trailing: 15))
+                    
                     VStack{
                         Spacer()
                         Button(action: {
@@ -90,10 +93,10 @@ struct ReportUserView: View {
                 }
                 
             }
-            }.background(Color.white)
-                .onTapGesture {
-                    self.hideKeyboard()
-            }
+        }.background(Color.white)
+            .onTapGesture {
+                self.hideKeyboard()
+        }
     }
     
     func sendUserReport() {

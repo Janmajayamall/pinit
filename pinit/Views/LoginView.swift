@@ -27,9 +27,10 @@ struct LoginView: View {
     
     @State var signInWithAppleCoordinator: SignInWithAppleCoordinator?
     
-    @State var isEmailAuthViewOpen = false
     @State var emailAuthViewType: emailAuthenticationViewType = .signUp
-    @State var isPrivacyViewOpen = false
+    
+    @State var isSheetOpen: Bool = false
+    @State var loginViewSheetType: LoginViewSheetType = .none
     var body: some View {
         
         VStack{
@@ -51,7 +52,8 @@ struct LoginView: View {
             HStack{
                 Button(action: {
                     self.emailAuthViewType = .signUp
-                    self.isEmailAuthViewOpen = true
+                    self.loginViewSheetType = .emailAuth
+                    self.isSheetOpen = true
                 }, label: {
                     Spacer()
                     Text("Sign up with Email")
@@ -86,7 +88,8 @@ struct LoginView: View {
                 .foregroundColor(Color.blue)
                 .font(Font.custom("Avenir", size: 15))
                     .onTapGesture {
-                        self.isPrivacyViewOpen = true
+                        self.loginViewSheetType = .privacyPolicy
+                        self.isSheetOpen = true
                 }
                 Spacer()
             }
@@ -102,7 +105,8 @@ struct LoginView: View {
             .foregroundColor(Color.black)
             .onTapGesture {
                 self.emailAuthViewType = .login
-                self.isEmailAuthViewOpen = true
+                self.loginViewSheetType = .emailAuth
+                self.isSheetOpen = true
             }
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 15, trailing: 10))
             
@@ -113,12 +117,16 @@ struct LoginView: View {
         .cornerRadius(12)
         .offset(self.offset)
         .animation(.spring())
-        .sheet(isPresented: self.$isEmailAuthViewOpen, content: {
-            EmailAuthenticationView(isOpen: self.$isEmailAuthViewOpen, viewType: self.emailAuthViewType)
+        .sheet(isPresented: self.$isSheetOpen, content: {
+            if (self.loginViewSheetType == .emailAuth){
+                EmailAuthenticationView(isOpen: self.$isSheetOpen, viewType: self.emailAuthViewType)
+            }else if (self.loginViewSheetType == .privacyPolicy){
+                UIKitSafariWebView(url: URL(string: "http://www.finchit.tech/privacy")!)
+            }
+            
+             VStack{Text("").foregroundColor(Color.white)}.background(Color.white)
+            
         })
-//        .sheet(isPresented: self.$isPrivacyViewOpen, content: {
-//            UIKitSafariWebView(url: URL(string: "http://www.finchit.tech/privacy")!)
-//        })
     }
     
     private let viewHeightRatio: CGFloat = 0.6
@@ -130,4 +138,9 @@ struct LoginView_Previews: PreviewProvider {
     }
 }
 
+enum LoginViewSheetType {
+    case emailAuth
+    case privacyPolicy
+    case none
+}
 

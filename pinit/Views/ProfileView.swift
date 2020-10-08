@@ -59,7 +59,7 @@ struct ProfileView: View {
                         Spacer()
                         Text("Share").foregroundColor(Color.black)
                         Text("FinchIt").foregroundColor(Color.primaryColor)
-                        Text("with your friends 😜").foregroundColor(Color.black)
+                        Text("with your friends 😉").foregroundColor(Color.black)
                         Spacer()
                     }
                     .font(Font.custom("Avenir", size: 15).bold())
@@ -96,8 +96,8 @@ struct ProfileView: View {
     }
     
     func openShareControl() {
-        guard let url = URL(string: "https://docs.google.com/forms/d/e/1FAIpQLSeqgRqgUiJt0khh0UpABb_szeKCnLK0v7I0aPN9uV1bpt6IyQ/viewform?usp=sf_link") else {return}
-        let shareText = "Check out FinchIt on iOS"
+        guard let url = URL(string: "https://apps.apple.com/app/id1534144145") else {return}
+        let shareText = "Check out FinchIt - AR Social Network"
         let shareControl = UIActivityViewController(activityItems: [shareText, url], applicationActivities: nil)
         shareControl.excludedActivityTypes = [.airDrop, .assignToContact, .openInIBooks, .print, .saveToCameraRoll, .markupAsPDF]
         

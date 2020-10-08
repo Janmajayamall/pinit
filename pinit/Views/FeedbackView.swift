@@ -75,11 +75,10 @@ struct FeedbackView: View {
                 
             }
         }
+            
+        .background(Color.white)
         .onTapGesture {
             self.hideKeyboard()
-        }.background(Color.white)
-            .onDisappear {
-                self.isOpen = false
         }
         
     }

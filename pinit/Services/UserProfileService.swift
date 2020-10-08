@@ -36,6 +36,9 @@ class UserProfileService: ObservableObject {
         // setting up the new user
         self.user = user
         self.listenToUserProfile()
+        
+        // update last active for the user
+       self.updateUserActiveData()
     }
     
     func stopServiceForCurrentUser() {
@@ -70,9 +73,6 @@ class UserProfileService: ObservableObject {
             // notify that user profile changed
             self.postNotification(for: .userProfileServiceDidUpdateUserProfile, withObject: profile)
         }
-        
-        // update last active for the user
-        self.updateUserActiveData()
     }
 
     func stopListeningToUserProfile() {
