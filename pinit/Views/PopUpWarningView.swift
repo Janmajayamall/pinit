@@ -85,8 +85,8 @@ struct PopUpWarningView_Previews: PreviewProvider {
 }
 
 enum PopUpWarningType: String {
-    case locationPermissionUnavailable = "PinIt does not has access to your location and needs it for working 🤓. Please open app settings and provide location access to PinIt 😛."
-    case cameraPermissionUnavailable = "PinIt does not has access to your camera and needs it for working 🤓. Please open app settings and provide camera access to PinIt 😛."
-    case locationAndCameraPermissionUnavailable = "PinIt is a location & camera based app and needs access to them for working 🤓. Please open app settings and provide required permissions to PinIt 😛."
+    case locationPermissionUnavailable = "FinchIt does not has access to your location and needs it for working 🤓. Please open app settings and provide location access to FinchIt 😛."
+    case cameraPermissionUnavailable = "FinchIt does not has access to your camera and needs it for working 🤓. Please open app settings and provide camera access to FinchIt 😛."
+    case locationAndCameraPermissionUnavailable = "FinchIt is a location & camera based app and needs access to them for working 🤓. Please open app settings and provide required permissions to FinchIt 😛."
     case none = ""
 }

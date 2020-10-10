@@ -17,6 +17,7 @@ struct MainArView: View {
     
     @State var postDisplayType: PostDisplayType = .allPosts
     @State var postDisplayNotification: Bool = false
+    @State var sceneDidResetNotification: Bool = false
     @ObservedObject var postDisplayInfoViewModel: PostDisplayInfoViewModel = PostDisplayInfoViewModel()
     
     var cancellables: Set<AnyCancellable> = []
@@ -43,7 +44,6 @@ struct MainArView: View {
                                         Text("🔒")
                                     }
                                 }
-                                
                             }
                             .font(Font.system(size: 30, weight: .heavy))
                             .foregroundColor(Color.white)
@@ -140,6 +140,11 @@ struct MainArView: View {
                                             
                                             // notifiy app ar scene to reset group scn nodes positions
                                             NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
+                                            
+                                            self.sceneDidResetNotification = true
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                                self.sceneDidResetNotification = false
+                                            })
                                     }
                                     
                                     if (self.settingsViewModel.uploadIndicator > 0){
@@ -169,36 +174,49 @@ struct MainArView: View {
                                 .animation(.spring())
                         }
                         
-                        if (self.settingsViewModel.postsDoNotExist == true){
+                        if (self.settingsViewModel.postsDoNotExist == true || self.postDisplayNotification == true || self.sceneDidResetNotification == true){
                             VStack {
                                 Spacer()
-                                HStack{
-                                    Spacer()
-                                    Text("No Pins near you. Be the first one?")
+                                if (self.settingsViewModel.postsDoNotExist == true){
+                                    HStack{
+                                        Spacer()
+                                        VStack{
+                                            Text("No captured moments around you.")
+                                            Text("Be the first one?")
+                                        }
                                         .foregroundColor(Color.white)
                                         .font(Font.custom("Avenir", size: 17).bold())
+                                        .multilineTextAlignment(.center)
                                         .padding(10)
                                         .background(Color.black.opacity(0.3))
                                         .cornerRadius(10)
-                                    Spacer()
+                                        
+                                        Spacer()
+                                    }.padding(5)
                                 }
-                                Spacer()
-                            }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)
-                                .animation(.spring())
-                        }
-                        
-                        if (self.postDisplayNotification == true){
-                            VStack {
-                                Spacer()
-                                HStack{
-                                    Spacer()
-                                    Text(self.postDisplayType == .allPosts ? "Normal View" : "Personal View")
-                                        .foregroundColor(Color.white)
-                                        .font(Font.custom("Avenir", size: 20).bold())
-                                        .padding(10)
-                                        .background(Color.black.opacity(0.3))
-                                        .cornerRadius(10)
-                                    Spacer()
+                                if (self.postDisplayNotification == true){
+                                    HStack{
+                                        Spacer()
+                                        Text(self.postDisplayType == .allPosts ? "Normal View" : "Personal View")
+                                            .foregroundColor(Color.white)
+                                            .font(Font.custom("Avenir", size: 20).bold())
+                                            .padding(10)
+                                            .background(Color.black.opacity(0.3))
+                                            .cornerRadius(10)
+                                        Spacer()
+                                    }.padding(5)
+                                }
+                                if (self.sceneDidResetNotification == true){
+                                    HStack{
+                                        Spacer()
+                                        Text("Did reset scene")
+                                            .foregroundColor(Color.white)
+                                            .font(Font.custom("Avenir", size: 20).bold())
+                                            .padding(10)
+                                            .background(Color.black.opacity(0.3))
+                                            .cornerRadius(10)
+                                        Spacer()
+                                    }.padding(5)
                                 }
                                 Spacer()
                             }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height, alignment: .top)

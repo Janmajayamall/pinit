@@ -288,7 +288,7 @@ extension CameraFeedController {
             
             // generating output file url for movie
             let directory = NSTemporaryDirectory() as NSString
-            let path = directory.appendingPathComponent("\(UUID().uuidString)-\("PinIt").mp4")
+            let path = directory.appendingPathComponent("\(UUID().uuidString)-\("FinchIt").mp4")
             let outputFileUrl =  URL(fileURLWithPath: path)
             
             movieOutput.startRecording(to: outputFileUrl, recordingDelegate: self)
