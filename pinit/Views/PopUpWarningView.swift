@@ -34,6 +34,7 @@ struct PopUpWarningView: View {
                     Spacer()
                     Text(self.popUpWarningType.rawValue)
                         .font(Font.custom("Avenir", size: 17).bold())
+                        .multilineTextAlignment(.center)
                         .foregroundColor(Color.black)
                         
                     Spacer()
@@ -85,8 +86,8 @@ struct PopUpWarningView_Previews: PreviewProvider {
 }
 
 enum PopUpWarningType: String {
-    case locationPermissionUnavailable = "FinchIt does not has access to your location and needs it for working 🤓. Please open app settings and provide location access to FinchIt 😛."
-    case cameraPermissionUnavailable = "FinchIt does not has access to your camera and needs it for working 🤓. Please open app settings and provide camera access to FinchIt 😛."
-    case locationAndCameraPermissionUnavailable = "FinchIt is a location & camera based app and needs access to them for working 🤓. Please open app settings and provide required permissions to FinchIt 😛."
+    case locationPermissionUnavailable = "FinchIt needs access to your location for working 🤓. To continue, open settings and give location access to FinchIt 😛."
+    case cameraPermissionUnavailable = "FinchIt needs access to your camera for working 🤓. To continue, open settings and give camera access to FinchIt 😛."
+    case locationAndCameraPermissionUnavailable = "FinchIt needs access to your location and camera for working 🤓. To continue, open settings and give location and camera access to FinchIt 😛."
     case none = ""
 }
