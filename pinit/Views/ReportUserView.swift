@@ -61,7 +61,7 @@ struct ReportUserView: View {
                 
                 ZStack{
                     VStack{
-                        Text("Note: Our team @ FinchIt will response to your report within 24 hours. We might also contact you for further information, if needed.").multilineTextAlignment(.center)
+                        Text("Note: Our team @ FinchIt will respond to your report within 24 hours. We might also contact you for further information, if needed.").multilineTextAlignment(.center)
                             .padding(.bottom, 5)
                         Text("To contact our team regarding any concern")
                         HStack{
