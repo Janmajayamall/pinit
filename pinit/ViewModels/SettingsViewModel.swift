@@ -274,7 +274,7 @@ extension SettingsViewModel {
             self.loadIndicator = 0
             self.postsDoNotExist = true
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                 self.postsDoNotExist = false
             })
         }.store(in: &cancellables)
