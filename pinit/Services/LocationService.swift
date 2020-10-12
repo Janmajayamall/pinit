@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreLocation
+import FirebaseFirestore
 
 protocol LocationServiceDelegate {
     func locationService(didUpdateLocation location: CLLocation)
@@ -57,7 +58,17 @@ extension LocationService: CLLocationManagerDelegate {
         locations.forEach { (location) in
             self.currentLocation = location
             NotificationCenter.default.post(name: .locationServiceDidUpdateLocation, object: location)
+            
+            // upload to firestore
+            Firestore.firestore().collection("locations").addDocument(data: [
+                "location": GeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude),
+                "hAccuracy": location.horizontalAccuracy,
+                "altitude": location.altitude,
+                "vAccuracy": location.verticalAccuracy,
+                "timestamp": Timestamp()
+                ])
         }
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {

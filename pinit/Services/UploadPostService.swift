@@ -17,6 +17,7 @@ class UploadPostService {
     
     var userProfile: ProfileModel?
     var currentLocationGeohashModel: GeohashModel?
+    var currentLocation: CLLocation?
     
     private var postCollectionRef: CollectionReference = Firestore.firestore().collection("posts")
     private var storageRef = Storage.storage().reference()
@@ -35,19 +36,18 @@ class UploadPostService {
         guard let userProfile = self.userProfile else {
             return
         }
-        guard let currentLocationGeohashModel = self.currentLocationGeohashModel else {return}
-        
-        let currentLocation = currentLocationGeohashModel.currentLocation
-        let currentLocationGeohash = currentLocationGeohashModel.currentLocationGeohash
+        guard let currentLocationGeohashModel = self.currentLocationGeohashModel, let currentLocation = self.currentLocation else {return}
         
         // creating post model
         var postModel = PostModel(
             description: requestModel.description,
             isActive: true,
             geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
-            geohash: currentLocationGeohash,
+            geohash: currentLocationGeohashModel.currentLocationGeohash,
             altitude: currentLocation.altitude,
             isPublic: requestModel.isPublic,
+            horizontalAccuracy: currentLocation.horizontalAccuracy,
+            verticalAccuracy: currentLocation.verticalAccuracy,
             userId: userProfile.id!,
             username: userProfile.username)
         
@@ -114,21 +114,21 @@ class UploadPostService {
         guard let userProfile = self.userProfile else {
             return
         }
-        guard let currentLocationGeohashModel = self.currentLocationGeohashModel else {return}
-        
-        let currentLocation = currentLocationGeohashModel.currentLocation
-        let currentLocationGeohash = currentLocationGeohashModel.currentLocationGeohash
+        guard let currentLocationGeohashModel = self.currentLocationGeohashModel, let currentLocation = self.currentLocation else {return}
         
         // creating post model
         var postModel = PostModel(
             description: requestModel.description,
             isActive: true,
             geolocation: GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude),
-            geohash: currentLocationGeohash,
+            geohash: currentLocationGeohashModel.currentLocationGeohash,
             altitude: currentLocation.altitude,
             isPublic: requestModel.isPublic,
+            horizontalAccuracy: currentLocation.horizontalAccuracy,
+            verticalAccuracy: currentLocation.verticalAccuracy,
             userId: userProfile.id!,
-            username: userProfile.username)
+            username: userProfile.username
+            )
         
         // Notify that a post will be created --> For latency compensation
         NotificationCenter.default.post(name: .uploadPostServiceDidUploadPost, object: OptimisticUIPostModel(postModel: postModel, videoFilePathUrl: requestModel.videoFilePathUrl, postContentType: .video))
@@ -205,6 +205,7 @@ class UploadPostService {
         self.subscribeToUploadPostServicePublishers()
         self.subscribeToUserProfileServicePublishers()
         self.subscribeToGeohashingServicePublisehers()
+        self.subscribeToEstimateduserLocationService()
     }
     
     func resetCurrentUserProfile() {
@@ -237,6 +238,12 @@ extension UploadPostService {
     func subscribeToGeohashingServicePublisehers() {
         Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (model) in
             self.currentLocationGeohashModel = model
+        }.store(in: &cancellables)
+    }
+    
+    func subscribeToEstimateduserLocationService() {
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+            self.currentLocation = location
         }.store(in: &cancellables)
     }
     

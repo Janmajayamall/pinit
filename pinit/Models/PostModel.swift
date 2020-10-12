@@ -23,6 +23,8 @@ struct PostModel: Codable {
     var geohash: String
     var altitude: Double
     var isPublic: Bool
+    var horizontalAccuracy: Double
+    var verticalAccuracy: Double
     
     var userId: String
     var username: String

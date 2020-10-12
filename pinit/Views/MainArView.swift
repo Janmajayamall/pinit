@@ -223,8 +223,6 @@ struct MainArView: View {
                                 .animation(.easeIn)
                         }
                         
-                        
-                        
                         if (self.settingsViewModel.loadIndicator > 0 || self.settingsViewModel.refreshIndicator == true){
                             PulseLoader(parentSize: geometryProxy.size)
                         }

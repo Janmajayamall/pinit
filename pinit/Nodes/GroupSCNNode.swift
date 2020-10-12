@@ -366,11 +366,3 @@ enum PostDisplayType {
     case privatePosts
     case allPosts
 }
-
-
-//
-//func subscribeToGeohashingServicePublishers() {
-//    Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (model) in
-//        self.currentGeohashModel = model
-//    }.store(in: &cancellables)
-//}

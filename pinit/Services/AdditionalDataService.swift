@@ -13,7 +13,7 @@ import CoreLocation
 
 class AdditionalDataService {
     var userProfile: ProfileModel?
-    var currentLocationGeohashModel: GeohashModel?
+    var currentLocation: CLLocation?
     
     var feedbacksCollectionRef: CollectionReference = Firestore.firestore().collection("feedbacks")
     var reportedUsersCollectionRef: CollectionReference = Firestore.firestore().collection("reportedUsers")
@@ -90,7 +90,7 @@ class AdditionalDataService {
     }
     
     func addReportedUser(withRequestModel requestModel: RequestReportUserModel){
-        guard let userProfile = self.userProfile, let currentLocation = self.currentLocationGeohashModel?.currentLocation else {return}
+        guard let userProfile = self.userProfile, let currentLocation = self.currentLocation else {return}
         
         let geopoint = GeoPoint(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
         
@@ -167,7 +167,7 @@ class AdditionalDataService {
     init() {
         // subscribe to publishers
         self.subscribeToUserProfileService()
-        self.subscribeToGeohashingServicePublishers()
+        self.subscribeToEstimatedUserLocationService()
         self.subscribeToAdditionalDataServicePublishers()
     }
 }
@@ -180,9 +180,9 @@ extension AdditionalDataService {
         }.store(in: &cancellables)
     }
     
-    func subscribeToGeohashingServicePublishers() {
-        Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (geohashModel) in
-            self.currentLocationGeohashModel = geohashModel
+    func subscribeToEstimatedUserLocationService() {
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+            self.currentLocation = location
         }.store(in: &cancellables)
     }
     

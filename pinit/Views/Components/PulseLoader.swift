@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-
+               
 struct PulseLoader: View {
     
     var parentSize: CGSize
@@ -15,7 +15,7 @@ struct PulseLoader: View {
     @State private var wave0: Bool = false
     @State private var wave1: Bool = false
     
-    var circleDia: CGFloat = 98
+    var circleDia: CGFloat = 100
     var maxScale: CGFloat = 3
     
     var body: some View {
@@ -42,12 +42,12 @@ struct PulseLoader: View {
             }
             Circle()
                 .frame(width: self.circleDia, height: self.circleDia)
-                .foregroundColor(Color.primaryColor)
+                .foregroundColor(Color.black.opacity(0.2))
                 .shadow(radius: 12.5)
             
-            Image("IconRound")
+            Image("IconTransparent")
             .resizable()
-                .frame(width: self.circleDia + 2, height: self.circleDia + 2).clipped()
+                .frame(width: self.circleDia, height: self.circleDia).clipped()
         }.frame(width: parentSize.width, height: parentSize.height)
             .background(Color.black.opacity(0.5))
     }

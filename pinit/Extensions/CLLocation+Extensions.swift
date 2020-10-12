@@ -51,27 +51,31 @@ extension CLLocation {
     /// - parameters:
     ///     - forLocation: Other location
     func checkIsInValidDistanceRange(forLocation location: CLLocation) -> Bool {
-        let maxDistanceFromOrigin: Double = 70 // in meters
-        let altitudeRange: Double = 10.0
-        
-        // distance of location from origin
-        let distance = self.distance(from: location)
-        
-        // if max distance from origin is violated then return false
-        if (distance > maxDistanceFromOrigin){
+        // max horizontal distance allowed
+        var maxHorizontalDistance: Double {
+            let hAccuracyCurrentLocation = self.horizontalAccuracy >= 0 ? self.horizontalAccuracy : 50
+            let hAccuracyLocation = location.horizontalAccuracy >= 0 ? location.horizontalAccuracy : 50
+            
+            return hAccuracyCurrentLocation + hAccuracyLocation
+        }
+        // check whether in valid horizontal distance
+        if (self.distance(from: location) > maxHorizontalDistance){
             return false
         }
         
-        // Location is within expected distance from origin.
-        // Now check whether the altitude of the given location
-        // is in valid range from origin.
-        if (location.altitude >= (self.altitude - altitudeRange) && location.altitude <= (self.altitude + altitudeRange)){
-            // altitude & distance is in valid range from origin
-            return true
+        // max vertical distance allowed
+        var maxVerticalDistance: Double {
+            let vAccuracyCurrentLocation = self.verticalAccuracy >= 0 ? self.verticalAccuracy : 50
+            let vAccuracyLocation = location.verticalAccuracy >= 0 ? location.verticalAccuracy : 50
+            
+            return vAccuracyCurrentLocation + vAccuracyLocation
         }
-        
-        // altitude is not in range
-        return false
+        // check whether if valid vertical distance
+        if (abs(self.altitude - location.altitude) > maxVerticalDistance){
+            return false
+        }
+                         
+        return true
     }
     
 }

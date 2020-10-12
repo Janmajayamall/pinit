@@ -15,13 +15,20 @@ class EstimatedUserLocationService: ObservableObject {
     init() {}
     
     var currentLocation: CLLocation? {
-        return self.locationData.sorted(by: {
+        if let horizontalLocation = self.locationData.sorted(by: {
             if $0.horizontalAccuracy == $1.horizontalAccuracy {
                 return $0.timestamp > $1.timestamp
             }
-            
             return $0.horizontalAccuracy < $1.horizontalAccuracy
-        }).first
+        }).first, let verticalLocation = self.locationData.sorted(by: {
+            if $0.verticalAccuracy == $1.verticalAccuracy {
+                return $0.timestamp > $1.timestamp
+            }
+            return $0.verticalAccuracy < $1.verticalAccuracy
+        }).first {
+            return CLLocation(coordinate: horizontalLocation.coordinate, altitude: verticalLocation.altitude, horizontalAccuracy: horizontalLocation.horizontalAccuracy, verticalAccuracy: verticalLocation.verticalAccuracy, timestamp: Date.init())
+        }
+        return nil
     }
     var locationData: Array<CLLocation> = []
     
@@ -49,7 +56,6 @@ class EstimatedUserLocationService: ObservableObject {
     private func removeOldLocationEstimates() {        
         self.locationData = self.locationData.filter({ (location) -> Bool in
             let locationAge = -1 * location.timestamp.timeIntervalSinceNow
-            
             if (locationAge < 10) {
                 return true
             }else {
