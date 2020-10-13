@@ -106,7 +106,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         }
         
         let post = postDisplay.post
-        let postLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: post.geolocation.latitude, longitude: post.geolocation.longitude), altitude: post.altitude, horizontalAccuracy: 0, verticalAccuracy: 0, timestamp: .init())
+        let postLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: post.geolocation.latitude, longitude: post.geolocation.longitude), altitude: post.altitude, horizontalAccuracy: post.horizontalAccuracy, verticalAccuracy: post.verticalAccuracy, timestamp: .init())
         
         guard self.postDisplayType == .privatePosts else {
             // check whether post is in valid distance and altitude range current

@@ -55,7 +55,6 @@ extension CLLocation {
         var maxHorizontalDistance: Double {
             let hAccuracyCurrentLocation = self.horizontalAccuracy >= 0 ? self.horizontalAccuracy : 50
             let hAccuracyLocation = location.horizontalAccuracy >= 0 ? location.horizontalAccuracy : 50
-            
             return hAccuracyCurrentLocation + hAccuracyLocation
         }
         // check whether in valid horizontal distance
@@ -67,9 +66,8 @@ extension CLLocation {
         var maxVerticalDistance: Double {
             let vAccuracyCurrentLocation = self.verticalAccuracy >= 0 ? self.verticalAccuracy : 50
             let vAccuracyLocation = location.verticalAccuracy >= 0 ? location.verticalAccuracy : 50
-            
             return vAccuracyCurrentLocation + vAccuracyLocation
-        }
+        }        
         // check whether if valid vertical distance
         if (abs(self.altitude - location.altitude) > maxVerticalDistance){
             return false

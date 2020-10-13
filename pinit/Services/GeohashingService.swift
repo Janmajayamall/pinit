@@ -45,18 +45,6 @@ class GeohashingService {
         NotificationCenter.default.post(name: .geohasingServiceDidUpdateGeohash, object: geohashModel)
     }
     
-    func updateOnWeb() {
-        guard let model = self.geohashModel else {return}
-        
-        Firestore.firestore().collection("locations").document(UUID().uuidString).setData([
-            "geolocation":GeoPoint(latitude: model.currentLocation.coordinate.latitude, longitude: model.currentLocation.coordinate.longitude),
-            "altitude": model.currentLocation.altitude,
-            "geohash":model.currentLocationGeohash,
-            "timestamp": Timestamp(),
-            "geohashArray": model.currentAreaGeohashes
-        ])
-    }
-    
     func setupService(){
         // setting up subscribers
         self.subscribeToEstimatedUserLocationServicePublishers()
