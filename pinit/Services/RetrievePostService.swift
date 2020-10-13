@@ -76,12 +76,6 @@ class RetrievePostService: ObservableObject {
         NotificationCenter.default.post(name: notificationName, object: object)
     }
     
-    func stopListeningToAllPosts(){
-        if let allDocumentsListener = self.allDocumentsListener {
-            allDocumentsListener.remove()
-        }
-    }
-    
     func stopListeningToPostForGeohashes(){
         if let documentsForGeohashesListener = self.documentsForGeohashesListener {
             documentsForGeohashesListener.remove()

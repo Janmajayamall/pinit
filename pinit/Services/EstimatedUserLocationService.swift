@@ -53,6 +53,13 @@ class EstimatedUserLocationService: ObservableObject {
         }
     }
     
+    func notifyCurrentLocation() {
+        self.removeOldLocationEstimates()
+        // notify current location        
+        NotificationCenter.default.post(name: .estimatedUserLocationServiceDidUpdateLocation, object: self.currentLocation)
+        
+    }
+    
     private func removeOldLocationEstimates() {        
         self.locationData = self.locationData.filter({ (location) -> Bool in
             let locationAge = -1 * location.timestamp.timeIntervalSinceNow

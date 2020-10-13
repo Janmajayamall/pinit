@@ -151,10 +151,7 @@ class SettingsViewModel: ObservableObject {
         // start pulse loader
         self.loadIndicator = 1
         
-        // RMEOVE STUFF
-        // stop location update service
-        self.locationService.stopService()
-        // stop gehashing service
+        // REMOVE STUFF
         self.geohasingService.stopService()
         // remove GroupSCNNodes in AppArSCNNodes
         self.appArScnView.removeGroupNodes()
@@ -164,8 +161,8 @@ class SettingsViewModel: ObservableObject {
         self.appArScnView.setupGroupNodes()
         // start geohashing service
         self.geohasingService.startService()
-        // start location update service
-        self.locationService.startService()
+        // notify current location from estimated user location
+        self.estimatedUserLocationService.notifyCurrentLocation()
      
         // handle refresh
         self.refreshIndicator = true
