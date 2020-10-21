@@ -16,14 +16,14 @@ class BlockUsersService: ObservableObject {
     var blockedUsersListener: ListenerRegistration?
     
     var displayedUsers: Array<OtherUserModel> = []
-    @Published var blockedUsers: Array<BlockedUserModel> = [BlockedUserModel(blockedByUID: "dawaxa", blockedUID: "dawdadadw", blockedUsername: "dawdawda"), BlockedUserModel(blockedByUID: "dawaxa", blockedUID: "dawdadadw", blockedUsername: "dawdawda"), BlockedUserModel(blockedByUID: "dawaxa", blockedUID: "dawdadadw", blockedUsername: "dawdawda"), BlockedUserModel(blockedByUID: "dawaxa", blockedUID: "dawdadadw", blockedUsername: "dawdawda")
-    ]
+    @Published var blockedUsers: Array<BlockedUserModel> = []
     
-    private var blockedUsersRef: CollectionReference = Firestore.firestore().collection("BlockedUsers")
+    private var blockedUsersRef: CollectionReference = Firestore.firestore().collection("blockedUsers")
     private var cancellables: Set<AnyCancellable> = []
     
     init() {
         self.subscribeToAuthenticationServicePublishers()
+        self.subscribeToBlockUsersServicePublishers()
     }
     
     func listenToBlockedUsers() {
@@ -45,8 +45,13 @@ class BlockUsersService: ObservableObject {
             }
             
             // send out notification
-//            self.blockedUsers = blockedUsers
+            self.blockedUsers = blockedUsers
+            self.notifyUpdateBlockedUsers()
         }
+    }
+    
+    func notifyUpdateBlockedUsers() {
+        NotificationCenter.default.post(name: .blockUsersServiceDidUpdateBlockedUsers, object: self.blockedUsers)
     }
     
     func stopListeningToBlockedUsers(){
@@ -83,11 +88,11 @@ class BlockUsersService: ObservableObject {
         
         // check block status
         self.checkBlockStatusOverNetwork(forUID: requestBlockUserModel.uid) { (blockStatus) in
-            guard blockStatus == .inactive, let user = self.user else {return}
+            guard blockStatus == .inactive, let user = self.user, user.uid != requestBlockUserModel.uid else {return}
             
             // block the user
             let blockUserModel = BlockedUserModel(blockedByUID: user.uid, blockedUID: requestBlockUserModel.uid, blockedUsername: requestBlockUserModel.username)
-            _ = try? self.blockedUsersRef.document(blockUserModel.id!).setData(from: blockUserModel)
+            _ = try? self.blockedUsersRef.document(blockUserModel.id!).setData(from: blockUserModel)            
         }
     }
     
@@ -105,7 +110,6 @@ class BlockUsersService: ObservableObject {
     
     func checkBlockStatus(forUID uid: String) -> BlockStatus {    
         guard let user = self.user, user.uid != uid else {
-            print("SDFFF ", uid, " invalid")
             return .invalid
         }
         
@@ -114,7 +118,6 @@ class BlockUsersService: ObservableObject {
         })){
             return .active
         }
-        print("inactive")
         return .inactive
     }
     
@@ -129,6 +132,7 @@ class BlockUsersService: ObservableObject {
 extension BlockUsersService {
     func subscribeToAuthenticationServicePublishers() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (newUser) in
+            self.blockedUsers = []
             guard let newUser = newUser else {
                 // log out the current user
                 self.user = nil

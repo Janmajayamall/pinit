@@ -65,7 +65,7 @@ struct MoreSettingsViewModel: View {
                     self.isSheetOpen = true
                 }, label: {
                     HStack{
-                        Text("Block a user")
+                        Text("Blocked users")
                             .padding(.leading, 5)
                         Spacer()
                     }
@@ -148,7 +148,7 @@ struct MoreSettingsViewModel: View {
         })
     }
     
-    let viewHeightRatio: CGFloat = 0.55
+    let viewHeightRatio: CGFloat = 0.58
     let viewWidthRatio: CGFloat = 0.8
 }
 

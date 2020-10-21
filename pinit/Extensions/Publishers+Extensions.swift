@@ -407,4 +407,10 @@ extension Publishers {
             return uid
         }.eraseToAnyPublisher()
     }
+    static var blockUsersServiceDidUpdateBlockedUsersPublisher: AnyPublisher<Array<BlockedUserModel>, Never> {
+        NotificationCenter.default.publisher(for: .blockUsersServiceDidUpdateBlockedUsers).compactMap { (notification) -> Array<BlockedUserModel>? in
+            guard let models = notification.object as? Array<BlockedUserModel> else {return nil}
+            return models
+        }.eraseToAnyPublisher()
+    }
 }

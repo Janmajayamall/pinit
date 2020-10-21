@@ -34,7 +34,7 @@ struct CustomTextFieldView: View {
                 }
              
             }
-            Divider().background(Color.secondaryColor)
+            Divider().background(Color.black)
             HStack{
 //                if (!self.noteText.isEmpty){
                     Text(self.noteText)

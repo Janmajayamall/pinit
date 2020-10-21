@@ -15,7 +15,8 @@ class BlockUserViewModel: ObservableObject {
     @Published var searchedUser: OtherUserModel?
     @Published var searchString: String = "" {
         didSet{
-            guard self.searchString.count > 0 else {return}
+            print("FUCKKKK")
+            self.searchedUser = nil
             self.getUsers(withSearchString: self.searchString)
         }
     }

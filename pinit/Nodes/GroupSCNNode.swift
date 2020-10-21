@@ -19,7 +19,7 @@ class GroupSCNNode: SCNNode, Identifiable {
     var nodeDirection: NodeDirection
     
     var postList: Array<PostDisplayNodeModel> = []
-    var postDisplayType: PostDisplayType = .allPosts
+    var postDisplayType: PostDisplayType
     
     var user: User?
     
@@ -27,11 +27,14 @@ class GroupSCNNode: SCNNode, Identifiable {
     
     var currentLocation: CLLocation?
     
+    var blockedUsers: Array<BlockedUserModel> = []
+    
     private var cancellables: Set<AnyCancellable> = []
     
-    init(scenePosition: SCNVector3?, direction: NodeDirection, user: User?){
+    init(scenePosition: SCNVector3?, direction: NodeDirection, user: User?, postDisplayType: PostDisplayType){
         self.nodeDirection = direction
         self.user = user
+        self.postDisplayType = postDisplayType
         
         super.init()
         
@@ -39,6 +42,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.subscribeToGroupSCNNodePublishers()
         self.subcribeToAuthenticationServicePublishers()
         self.subscribeToEstimatedUserLocationServicePublishers()
+        self.subscribeToBlockUsersServicePublishers()
         
         // add constraints to the nodeO
         let billboardConstraint = SCNBillboardConstraint()
@@ -101,6 +105,13 @@ class GroupSCNNode: SCNNode, Identifiable {
     }
     
     func isPostValidForRender(_ postDisplay: PostDisplayNodeModel) -> Bool {
+        // check for blocked user
+        guard !self.blockedUsers.contains(where: { (blockedUserModel) -> Bool in
+            return blockedUserModel.blockedUID == postDisplay.post.userId
+        }) else {
+            return false
+        }
+        
         guard let currentLocation = self.currentLocation else {
             return false
         }
@@ -352,6 +363,12 @@ extension GroupSCNNode {
         Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
             self.currentLocation = location
             self.loadInitialPostDisplay()
+        }.store(in: &cancellables)
+    }
+    
+    func subscribeToBlockUsersServicePublishers() {
+        Publishers.blockUsersServiceDidUpdateBlockedUsersPublisher.sink { (models) in
+            self.blockedUsers = models
         }.store(in: &cancellables)
     }
 }

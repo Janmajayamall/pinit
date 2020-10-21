@@ -80,4 +80,5 @@ extension Notification.Name {
     // notifications for BlockUsersService
     static let blockUsersServiceDidRequestBlockUserModel = Notification.Name("blockUsersServiceDidRequestBlockUserModel")
     static let blockUsersServiceDidRequestUnblockUser = Notification.Name("blockUsersServiceDidRequestUnblockUser")
+    static let blockUsersServiceDidUpdateBlockedUsers = Notification.Name("blockUsersServiceDidUpdateBlockedUsers")
 }

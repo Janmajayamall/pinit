@@ -215,15 +215,15 @@ class AppArScnView: ARSCNView {
         self.session.pause()
     }
     
-    func setupGroupNodes() {
+    func setupGroupNodes(withInitialPostDisplayType initialPostDisplayType: PostDisplayType) {
         
         removeGroupNodes()
         
-        self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front, user: self.user)
+        self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front, user: self.user, postDisplayType: initialPostDisplayType)
         
-        self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight, user: self.user)
+        self.groupNodes[.frontRight] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontRight, user: self.user, postDisplayType: initialPostDisplayType)
         
-        self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft, user: self.user)
+        self.groupNodes[.frontLeft] = GroupSCNNode(scenePosition: self.currentPosition, direction: .frontLeft, user: self.user, postDisplayType: initialPostDisplayType)
         
         // adding the nodes
         self.groupNodes.values.forEach { (node) in

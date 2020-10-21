@@ -25,25 +25,38 @@ struct BlockUserView: View {
                         .foregroundColor(Color.primaryColor)
                     Spacer()
                 }
-                ScrollView{
-                    ForEach(self.settingsViewModel.blockUsersService.blockedUsers) { blockedUser in
-                        VStack{
-                            BlockedUserRow(username: "blockedUser.blockedUsername", uid: "blockedUser.blockedUID", blockStatus: self.settingsViewModel.blockUsersService.checkBlockStatus(forUID: blockedUser.blockedUID))
-                            
-                            Divider()
+                if (self.settingsViewModel.blockUsersService.blockedUsers.count == 0){
+                    HStack{
+                        Spacer()
+                        Text("Hurray! You haven't blocked anyone.")
+                            .font(Font.custom("Avenir", size: 18).bold())
+                            .foregroundColor(Color.textfieldColor)
+                            .multilineTextAlignment(.center)
+                        Spacer()
+                    }.padding(.top, 15)
+                }else{
+                    ScrollView{
+                        ForEach(self.settingsViewModel.blockUsersService.blockedUsers) { blockedUser in
+                            VStack{
+                                BlockedUserRow(username: blockedUser.blockedUsername, uid: blockedUser.blockedUID, blockStatus: self.settingsViewModel.blockUsersService.checkBlockStatus(forUID: blockedUser.blockedUID))
+                                Divider()
+                            }
+                            .padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
+                            .background(Color.white)
                         }
-                        .padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
-                        .background(Color.white)
                     }
                 }
-                
+                Spacer()
             }
             .padding(10)
+            .onTapGesture {
+                self.hideKeyboard()
+            }
             .background(Color.white)
             VStack{
                 Spacer()
                 VStack{
-                    CustomTextFieldView(text: self.$blockUserViewModel.searchString, placeholder: "Type username to block a user", noteText: self.$fakeNoteBinding)
+                    CustomTextFieldView(text: self.$blockUserViewModel.searchString, placeholder: "Type username of a user to block", noteText: self.$fakeNoteBinding)
                         .font(Font.custom("Avenir", size: 15).bold())
                         .foregroundColor(Color.black)
                     
@@ -67,8 +80,10 @@ struct BlockedUserRow: View {
     @State var uid: String
     @State var blockStatus: BlockUsersService.BlockStatus
     
+    @EnvironmentObject var settingsViewModel: SettingsViewModel
+    
     var body: some View {
-        print(self.username, self.uid, self.blockStatus)
+        
         return HStack(alignment: .center){
             Text(self.username)
                 .font(Font.custom("Avenir", size: 15).bold())
@@ -78,24 +93,27 @@ struct BlockedUserRow: View {
             
             HStack{
                 if (self.blockStatus == .inactive){
-                    Text("Block")
+                    Text("BLOCK")
                         .foregroundColor(Color.darkScarlet)
                 }else if (self.blockStatus == .active){
-                    Text("Unblock")
+                    Text("UNBLOCK")
                         .foregroundColor(Color.blue)
                 }else {
                     Text("")
                         .foregroundColor(Color.white)
                 }
             }
+            .font(Font.custom("Avenir", size: 15).bold())
             .onTapGesture {
-                print("CHANGED \(self.blockStatus)")
                 if (self.blockStatus == .active){
                     self.blockStatus = .inactive
                 }else if (self.blockStatus == .inactive){
                     self.blockStatus = .active
                 }
-//                self.requestBlockStatusChange(to: self.blockStatus)
+                self.requestBlockStatusChange(to: self.blockStatus)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+                    self.settingsViewModel.refreshScene()
+                })
             }
         }
     }

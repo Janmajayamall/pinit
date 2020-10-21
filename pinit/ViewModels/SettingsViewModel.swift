@@ -23,6 +23,7 @@ class SettingsViewModel: ObservableObject {
     @Published var loadIndicator: Int = 0
     @Published var uploadIndicator: Int = 0
     @Published var refreshIndicator: Bool = false
+    @Published var postDisplayType: PostDisplayType = .allPosts
     
     @Published var popUpWarningType: PopUpWarningType = .none
     
@@ -42,7 +43,7 @@ class SettingsViewModel: ObservableObject {
     // view models
     @Published var editingViewModel: EditingViewModel?
     @Published var editingVideoViewModel: EditingVideoViewModel?
-               
+    
     var appArScnView: AppArScnView = AppArScnView()
     
     private var cancellables: Set<AnyCancellable> = []
@@ -58,7 +59,7 @@ class SettingsViewModel: ObservableObject {
         self.geohasingService.setupService()
         self.estimatedUserLocationService.setupService()
         self.locationService.setupService()
-//        self.authenticationService.setupService()
+        //        self.authenticationService.setupService()
     }
     
     func checkDevicePermissions() -> Bool {
@@ -91,14 +92,14 @@ class SettingsViewModel: ObservableObject {
         } else {
             self.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
         }
-               
+        
         return cameraAuthorised && locationAuthorised
     }
     
     func handleSceneDidBecomeActive() {
-        guard self.checkDevicePermissions() else {
-            return
-        }
+//        guard self.checkDevicePermissions() else {
+//            return
+//        }
         
         // start authentication service
         self.authenticationService.startService()
@@ -108,7 +109,10 @@ class SettingsViewModel: ObservableObject {
         
         // start the session setup GroupSCNNodes in AppARSCNNodes
         self.appArScnView.startSession()
-        self.appArScnView.setupGroupNodes()
+        self.appArScnView.setupGroupNodes(withInitialPostDisplayType: self.postDisplayType)
+        
+        // update blocked list
+        self.blockUsersService.notifyUpdateBlockedUsers()
         
         // start geohashing service
         self.geohasingService.startService()
@@ -128,16 +132,16 @@ class SettingsViewModel: ObservableObject {
         
         // stop location service
         self.locationService.stopService()
-                
+        
         // stop estimated location service
         self.estimatedUserLocationService.stopService()
-                        
+        
         // stop geohashing service
         self.geohasingService.stopService()
         
         // mute all av player
         NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: nil)
-                
+        
         // stop session & remove GroupSCNNodes in AppARSCNNodes
         self.appArScnView.pauseSession()
         self.appArScnView.removeGroupNodes()
@@ -159,18 +163,20 @@ class SettingsViewModel: ObservableObject {
         
         // START STUF
         // add group scn nodes to the session
-        self.appArScnView.setupGroupNodes()
+        self.appArScnView.setupGroupNodes(withInitialPostDisplayType: self.postDisplayType)
+        // update blocked list
+        self.blockUsersService.notifyUpdateBlockedUsers()
         // start geohashing service
         self.geohasingService.startService()
         // notify current location from estimated user location
         self.estimatedUserLocationService.notifyCurrentLocation()
-     
+        
         // handle refresh
         self.refreshIndicator = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
             self.refreshIndicator = false
         })
-    
+        
     }
     
     func isUserAuthenticated() -> Bool {
@@ -204,6 +210,18 @@ class SettingsViewModel: ObservableObject {
     
     func resetEditingVideoViewModel() {
         self.editingVideoViewModel = nil
+    }
+    
+    func togglePostDisplayType() {
+        switch self.postDisplayType {
+        case .allPosts:
+            self.postDisplayType = .privatePosts
+        case .privatePosts:
+            self.postDisplayType = .allPosts
+        }
+        
+        // post notification for group scn node
+        NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
     }
 }
 
@@ -278,11 +296,19 @@ extension SettingsViewModel {
         }.store(in: &cancellables)
     }
     
+    func subscribeToBlockUsersServicePublishers() {
+        self.blockUsersService.objectWillChange.sink { _ in
+            print("FUCKKKK   -- 22")
+            self.objectWillChange.send()
+        }.store(in: &cancellables)
+    }
+    
     func setupSubscribers() {
         self.subscribeToUserProfileServicePublishers()
         self.subscribeToScreenManagementServicePublishers()
         self.subscribeToCameraFeedPublishers()
         self.subscribeToRetrievePostPublishers()
         self.subscribeToGeneralFunctionPublishers()
+        self.subscribeToBlockUsersServicePublishers()
     }
 }

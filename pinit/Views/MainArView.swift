@@ -14,8 +14,7 @@ import Combine
 struct MainArView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
-    
-    @State var postDisplayType: PostDisplayType = .allPosts
+        
     @State var postDisplayNotification: Bool = false
     @State var sceneDidResetNotification: Bool = false
     @ObservedObject var postDisplayInfoViewModel: PostDisplayInfoViewModel = PostDisplayInfoViewModel()
@@ -36,7 +35,7 @@ struct MainArView: View {
                     VStack{
                         HStack{
                             HStack{
-                                if (self.postDisplayType == .allPosts) {
+                                if (self.settingsViewModel.postDisplayType == .allPosts) {
                                     Image("IconTransparent").resizable().frame(width: 50, height: 50).clipped()
                                 }else{
                                     HStack{
@@ -54,15 +53,9 @@ struct MainArView: View {
                                 guard self.areButtonsActive() else {return}
                                 
                                 if self.settingsViewModel.isUserAuthenticated() {
-                                    switch self.postDisplayType {
-                                    case .allPosts:
-                                        self.postDisplayType = .privatePosts
-                                    case .privatePosts:
-                                        self.postDisplayType = .allPosts
-                                    }
                                     
-                                    // post notification for group scn node
-                                    NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
+                                    // change post display type
+                                    self.settingsViewModel.togglePostDisplayType()
                                     
                                     // display post diplay notification text
                                     self.postDisplayNotification = true
@@ -197,7 +190,7 @@ struct MainArView: View {
                                 if (self.postDisplayNotification == true){
                                     HStack{
                                         Spacer()
-                                        Text(self.postDisplayType == .allPosts ? "Normal View" : "Personal View")
+                                        Text(self.settingsViewModel.postDisplayType == .allPosts ? "Normal View" : "Personal View")
                                             .foregroundColor(Color.white)
                                             .font(Font.custom("Avenir", size: 20).bold())
                                             .padding(10)
