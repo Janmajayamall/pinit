@@ -37,6 +37,7 @@ class SettingsViewModel: ObservableObject {
     private var geohasingService = GeohashingService()
     private var analyticsService = AnalyticsService()
     private var additionalDataService = AdditionalDataService()
+    @Published var blockUsersService = BlockUsersService()
     
     // view models
     @Published var editingViewModel: EditingViewModel?

@@ -76,4 +76,8 @@ extension Notification.Name {
     // notifications for additional data service
     static let additionalDataServiceDidRequestFeedbackModel = Notification.Name("additionalDataServiceDidRequestFeedbackModel")
     static let additionalDataServiceDidRequestReportUserModel = Notification.Name("additionalDataServiceDidRequestReportUserModel")
+    
+    // notifications for BlockUsersService
+    static let blockUsersServiceDidRequestBlockUserModel = Notification.Name("blockUsersServiceDidRequestBlockUserModel")
+    static let blockUsersServiceDidRequestUnblockUser = Notification.Name("blockUsersServiceDidRequestUnblockUser")
 }

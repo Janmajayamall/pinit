@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		46A295004F91CFF8DDABD91B /* Pods_pinitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 219D9227D06B7B43F2DA3DEE /* Pods_pinitTests.framework */; };
+		5D032FB725400672009D9D67 /* BlockUsersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032FB625400672009D9D67 /* BlockUsersService.swift */; };
+		5D032FB925400B27009D9D67 /* BlockedUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032FB825400B27009D9D67 /* BlockedUserModel.swift */; };
+		5D032FBB25401505009D9D67 /* OtherUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032FBA25401505009D9D67 /* OtherUserModel.swift */; };
+		5D032FBD25401582009D9D67 /* BlockUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032FBC25401582009D9D67 /* BlockUserView.swift */; };
+		5D032FBF254016AB009D9D67 /* BlockUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032FBE254016AB009D9D67 /* BlockUserViewModel.swift */; };
+		5D032FC125403E69009D9D67 /* RequestBlockUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D032FC025403E69009D9D67 /* RequestBlockUserModel.swift */; };
 		5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */; };
 		5D1CF0A82500095B00DD4E90 /* PostDisplayInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */; };
 		5D249CEF24FFFA3C00956241 /* PostDisplayInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */; };
@@ -93,6 +99,7 @@
 		5DE94F9624F5B185005F0A04 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9524F5B185005F0A04 /* View+Extensions.swift */; };
 		5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */; };
 		5DEA78DE25168BB50041D7AF /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */; };
+		5DF22C25253EC78D00DB0634 /* TermsAndConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF22C24253EC78D00DB0634 /* TermsAndConditionsView.swift */; };
 		8B2813A09E29DD2A7F2CBF99 /* Pods_pinit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318E6C59873C63300C098297 /* Pods_pinit.framework */; };
 		8EBDEFB41746196A0D37916B /* Pods_pinit_pinitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC157B5C6AE3C2CD00E35AB /* Pods_pinit_pinitUITests.framework */; };
 /* End PBXBuildFile section */
@@ -121,6 +128,12 @@
 		3E8D19A439A1ECBDE7FAF4FD /* Pods-pinitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinitTests.release.xcconfig"; path = "Target Support Files/Pods-pinitTests/Pods-pinitTests.release.xcconfig"; sourceTree = "<group>"; };
 		567FEBC64D5CDDC0984DBDF3 /* Pods-pinit-pinitUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit-pinitUITests.release.xcconfig"; path = "Target Support Files/Pods-pinit-pinitUITests/Pods-pinit-pinitUITests.release.xcconfig"; sourceTree = "<group>"; };
 		59CAA5EB3D5CF0D8F1E4E3E7 /* Pods-pinit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit.debug.xcconfig"; path = "Target Support Files/Pods-pinit/Pods-pinit.debug.xcconfig"; sourceTree = "<group>"; };
+		5D032FB625400672009D9D67 /* BlockUsersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUsersService.swift; sourceTree = "<group>"; };
+		5D032FB825400B27009D9D67 /* BlockedUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUserModel.swift; sourceTree = "<group>"; };
+		5D032FBA25401505009D9D67 /* OtherUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserModel.swift; sourceTree = "<group>"; };
+		5D032FBC25401582009D9D67 /* BlockUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserView.swift; sourceTree = "<group>"; };
+		5D032FBE254016AB009D9D67 /* BlockUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockUserViewModel.swift; sourceTree = "<group>"; };
+		5D032FC025403E69009D9D67 /* RequestBlockUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBlockUserModel.swift; sourceTree = "<group>"; };
 		5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedUserLocationService.swift; sourceTree = "<group>"; };
 		5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoViewModel.swift; sourceTree = "<group>"; };
 		5D249CEE24FFFA3C00956241 /* PostDisplayInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayInfoModel.swift; sourceTree = "<group>"; };
@@ -215,6 +228,7 @@
 		5DE94F9524F5B185005F0A04 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
 		5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
+		5DF22C24253EC78D00DB0634 /* TermsAndConditionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsView.swift; sourceTree = "<group>"; };
 		9BC157B5C6AE3C2CD00E35AB /* Pods_pinit_pinitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinit_pinitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B61EBD27B9D749860513D9D2 /* Pods-pinitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinitTests.debug.xcconfig"; path = "Target Support Files/Pods-pinitTests/Pods-pinitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D95108D2E4FCA5D767CFA1BA /* Pods-pinit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit.release.xcconfig"; path = "Target Support Files/Pods-pinit/Pods-pinit.release.xcconfig"; sourceTree = "<group>"; };
@@ -287,6 +301,7 @@
 				5D5245FC24F4555E0000317D /* SetupProfileViewModel.swift */,
 				5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */,
 				5DD2962C250E5EC000982587 /* EditingVideoViewModel.swift */,
+				5D032FBE254016AB009D9D67 /* BlockUserViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -304,6 +319,7 @@
 				5D18494C250987DA0035021F /* EstimatedUserLocationService.swift */,
 				5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */,
 				5D2754FB252E585700F5F2AA /* AdditionalDataService.swift */,
+				5D032FB625400672009D9D67 /* BlockUsersService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -326,6 +342,9 @@
 				5D2754FD252E5A3200F5F2AA /* RequestFeedbackModel.swift */,
 				5D2754FF252E633800F5F2AA /* RequestReportUserModel.swift */,
 				5D275501252E635600F5F2AA /* ReportUserModel.swift */,
+				5D032FB825400B27009D9D67 /* BlockedUserModel.swift */,
+				5D032FBA25401505009D9D67 /* OtherUserModel.swift */,
+				5D032FC025403E69009D9D67 /* RequestBlockUserModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -350,6 +369,8 @@
 				5DD88BC3251F4DD100EA99A1 /* PopUpWarningView.swift */,
 				5D275503252E64CD00F5F2AA /* FeedbackView.swift */,
 				5D275505252E753F00F5F2AA /* ReportUserView.swift */,
+				5DF22C24253EC78D00DB0634 /* TermsAndConditionsView.swift */,
+				5D032FBC25401582009D9D67 /* BlockUserView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -819,8 +840,11 @@
 				5D52F7AF24E9251800D9F27E /* ScreenManagementService.swift in Sources */,
 				5D52F7AB24E91DEA00D9F27E /* Notification+Extensions.swift in Sources */,
 				5D249CEF24FFFA3C00956241 /* PostDisplayInfoModel.swift in Sources */,
+				5D032FB725400672009D9D67 /* BlockUsersService.swift in Sources */,
+				5D032FBD25401582009D9D67 /* BlockUserView.swift in Sources */,
 				5DD88BC4251F4DD100EA99A1 /* PopUpWarningView.swift in Sources */,
 				5D31948624F00ECF001182E4 /* SafeTopEdgeViewModifier.swift in Sources */,
+				5D032FC125403E69009D9D67 /* RequestBlockUserModel.swift in Sources */,
 				5D67E7EF24E84E6C00F5D240 /* AppDelegate.swift in Sources */,
 				5D52F7B324E9257E00D9F27E /* UserProfileService.swift in Sources */,
 				5D52F7B724E93A5200D9F27E /* ProfileModel.swift in Sources */,
@@ -829,6 +853,7 @@
 				5DC53050250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift in Sources */,
 				5D52F7C124E9548D00D9F27E /* EditUsernameView.swift in Sources */,
 				5DC8527324EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift in Sources */,
+				5D032FB925400B27009D9D67 /* BlockedUserModel.swift in Sources */,
 				5D52F7CF24E974D600D9F27E /* UIKItSignInWithApple.swift in Sources */,
 				5D4DD09F24ED2A1200E1FDF3 /* CaptureImageView.swift in Sources */,
 				5D4DD0A224ED34B300E1FDF3 /* PathDrawing.swift in Sources */,
@@ -841,7 +866,9 @@
 				5D5245FD24F4555E0000317D /* SetupProfileViewModel.swift in Sources */,
 				5D275502252E635600F5F2AA /* ReportUserModel.swift in Sources */,
 				5D2754FA252E572300F5F2AA /* FeedbackModel.swift in Sources */,
+				5D032FBF254016AB009D9D67 /* BlockUserViewModel.swift in Sources */,
 				5DC8527B24EFF83E00E36DCE /* FadeKeyboard.swift in Sources */,
+				5D032FBB25401505009D9D67 /* OtherUserModel.swift in Sources */,
 				5D6B1F8124FEF85D00DCC418 /* CameraFeedViewController.swift in Sources */,
 				5D576A3824F1A465004A004C /* EmailAuthenticationView.swift in Sources */,
 				5D52F7D624E98F2F00D9F27E /* UploadPostService.swift in Sources */,
@@ -871,6 +898,7 @@
 				5D4DD0AA24ED425700E1FDF3 /* EditCaptureImageView.swift in Sources */,
 				5D567CF724F428E400283E5B /* SetupProfileView.swift in Sources */,
 				5D275506252E753F00F5F2AA /* ReportUserView.swift in Sources */,
+				5DF22C25253EC78D00DB0634 /* TermsAndConditionsView.swift in Sources */,
 				5D275500252E633800F5F2AA /* RequestReportUserModel.swift in Sources */,
 				5D297D4525238316008E9FF5 /* UserActiveDataModel.swift in Sources */,
 				5D52F7DA24E9932600D9F27E /* LocationService.swift in Sources */,
@@ -1049,7 +1077,7 @@
 				CODE_SIGN_ENTITLEMENTS = pinit/pinit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.2.1;
+				CURRENT_PROJECT_VERSION = 1.2.3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"pinit/Preview Content\"";
 				DEVELOPMENT_TEAM = B8GFL3DC67;
@@ -1060,7 +1088,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.finch.here;
 				PRODUCT_NAME = FinchIt;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1077,7 +1105,7 @@
 				CODE_SIGN_ENTITLEMENTS = pinit/pinit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.2.1;
+				CURRENT_PROJECT_VERSION = 1.2.3;
 				DEVELOPMENT_ASSET_PATHS = "\"pinit/Preview Content\"";
 				DEVELOPMENT_TEAM = B8GFL3DC67;
 				ENABLE_PREVIEWS = YES;
@@ -1087,7 +1115,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.finch.here;
 				PRODUCT_NAME = FinchIt;
 				PROVISIONING_PROFILE_SPECIFIER = "";

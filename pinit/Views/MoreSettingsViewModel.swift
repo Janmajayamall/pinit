@@ -35,7 +35,6 @@ struct MoreSettingsViewModel: View {
     var body: some View {
         ZStack{
             VStack{
-                Spacer()
                 
                 Button(action:{
                     self.moreSettingsViewSheetType = .feedback
@@ -55,6 +54,18 @@ struct MoreSettingsViewModel: View {
                 }, label: {
                     HStack{
                         Text("Report a user")
+                            .padding(.leading, 5)
+                        Spacer()
+                    }
+                })
+                    .buttonStyle(LeanOutlineColoredButtonStyle())
+                
+                Button(action:{
+                    self.moreSettingsViewSheetType = .blockUser
+                    self.isSheetOpen = true
+                }, label: {
+                    HStack{
+                        Text("Block a user")
                             .padding(.leading, 5)
                         Spacer()
                     }
@@ -101,7 +112,9 @@ struct MoreSettingsViewModel: View {
                     .buttonStyle(LeanOutlineColoredButtonStyle())
                 
                 Spacer()
-            }.zIndex(1)
+            }
+            .padding(EdgeInsets(top: 50, leading: 0, bottom: 10, trailing: 0))
+            .zIndex(1)
             VStack{
                 HStack{
                     Image(systemName: "xmark")
@@ -127,6 +140,8 @@ struct MoreSettingsViewModel: View {
                 ReportUserView(isOpen: self.$isSheetOpen)
             }else if (self.moreSettingsViewSheetType == .safari){
                 UIKitSafariWebView(url: self.safariUrl!)
+            }else if (self.moreSettingsViewSheetType == .blockUser){
+                BlockUserView(isOpen: self.$isSheetOpen).environmentObject(self.settingsViewModel)
             }
             VStack{Text("").foregroundColor(Color.white)}.background(Color.white)
             
@@ -147,5 +162,6 @@ enum MoreSettingsViewSheetType {
     case feedback
     case report
     case safari
+    case blockUser
     case none
 }

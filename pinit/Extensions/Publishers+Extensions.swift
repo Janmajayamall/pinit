@@ -393,4 +393,18 @@ extension Publishers {
             return requestModel
         }.eraseToAnyPublisher()
     }
+    
+    // publishers for BlockUsersService
+    static var blockUsersServiceDidRequestBlockUserModelPublihser: AnyPublisher<RequestBlockUserModel, Never> {
+        NotificationCenter.default.publisher(for: .blockUsersServiceDidRequestBlockUserModel).compactMap { (notification) -> RequestBlockUserModel? in
+            guard let model = notification.object as? RequestBlockUserModel else {return nil}
+            return model
+        }.eraseToAnyPublisher()
+    }
+    static var blockUsersServiceDidRequestUnblockUserPublisher: AnyPublisher<String, Never> {
+        NotificationCenter.default.publisher(for: .blockUsersServiceDidRequestUnblockUser).compactMap { (notification) -> String? in
+            guard let uid = notification.object as? String else {return nil}
+            return uid
+        }.eraseToAnyPublisher()
+    }
 }

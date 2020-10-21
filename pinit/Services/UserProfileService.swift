@@ -55,7 +55,7 @@ class UserProfileService: ObservableObject {
         
         guard let user = self.user else {return}
         
-        self.userCollectionRef.document(user.uid).addSnapshotListener { (documentSnapshot, error) in
+        self.userProfileDocumentListener = self.userCollectionRef.document(user.uid).addSnapshotListener { (documentSnapshot, error) in
             
             guard let document = documentSnapshot else {
                 print("User doc listen failed with error: \(error!)")

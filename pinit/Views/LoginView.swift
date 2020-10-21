@@ -45,10 +45,10 @@ struct LoginView: View {
             }
             Spacer()
             HStack{
-                Text("Create an account to continue")
+                Text("Create an account \nto continue")
                     .applyDefaultThemeToTextHeader(ofType: .h1)
-            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 30, trailing: 10))
-            
+                .lineLimit(nil)
+            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 20, trailing: 10))
             HStack{
                 Button(action: {
                     self.emailAuthViewType = .signUp
@@ -71,32 +71,51 @@ struct LoginView: View {
                 self.signInWithAppleCoordinator = SignInWithAppleCoordinator(window: self.window)
                 self.signInWithAppleCoordinator?.signIn(onSignedInHandler: {user in                   
                     
-//                    // close the login view
-//                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
+                    //                    // close the login view
+                    //                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                 })
             }
-            
-            Spacer()
-        
-            HStack{
-                Spacer()
-                Text("By signing in you agree with our")
-                    .foregroundColor(Color.textfieldColor)
-                .font(Font.custom("Avenir", size: 15))
-                Text("Privacy Policy")
-                .underline()
-                .foregroundColor(Color.blue)
-                .font(Font.custom("Avenir", size: 15))
-                    .onTapGesture {
-                        self.loginViewSheetType = .privacyPolicy
-                        self.isSheetOpen = true
+                                    
+            VStack{
+                HStack{
+                    Spacer()
+                    Text("By signing up, you confirm that you agree")
+                    Spacer()
                 }
-                Spacer()
+                HStack{
+                    Spacer()
+                    Text("with our")
+                    Text("End User License Agreement")
+                        .underline()
+                        .foregroundColor(Color.blue)
+                        .onTapGesture {
+                            self.loginViewSheetType = .endUserLicenseAgreement
+                            self.isSheetOpen = true
+                    }
+                    Text("and have")
+                    .foregroundColor(Color.textfieldColor)
+                    Spacer()
+                }
+                HStack{
+                    Spacer()
+                    Text("read and understood our")
+                    Text("Privacy Policy")
+                        .underline()
+                        .foregroundColor(Color.blue)
+                        .onTapGesture {
+                            self.loginViewSheetType = .privacyPolicy
+                            self.isSheetOpen = true
+                    }
+                    Spacer()
+                }
             }
+            .font(Font.custom("Avenir", size: 13))
+            .foregroundColor(Color.textfieldColor)
+            .padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
             
             Spacer()
-    
-//            Divider().background(Color.blue).frame(height: 10)
+            
+            //            Divider().background(Color.blue).frame(height: 10)
             HStack{
                 Text("Already have an account?").foregroundColor(Color.black)
                 Text("Log In").foregroundColor(Color.primaryColor)
@@ -108,9 +127,9 @@ struct LoginView: View {
                 self.loginViewSheetType = .emailAuth
                 self.isSheetOpen = true
             }
-            .padding(EdgeInsets(top: 10, leading: 10, bottom: 15, trailing: 10))
+            .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
             
-                        
+            
         }
         .frame(width: self.parentSize.width, height: self.viewHeight)
         .background(Color.white)
@@ -122,14 +141,16 @@ struct LoginView: View {
                 EmailAuthenticationView(isOpen: self.$isSheetOpen, viewType: self.emailAuthViewType)
             }else if (self.loginViewSheetType == .privacyPolicy){
                 UIKitSafariWebView(url: URL(string: "http://www.finchit.tech/privacy")!)
+            }else if (self.loginViewSheetType == .endUserLicenseAgreement){
+                TermsAndConditionsView(isOpen: self.$isSheetOpen)
             }
             
-             VStack{Text("").foregroundColor(Color.white)}.background(Color.white)
+            VStack{Text("").foregroundColor(Color.white)}.background(Color.white)
             
         })
     }
     
-    private let viewHeightRatio: CGFloat = 0.6
+    private let viewHeightRatio: CGFloat = 0.65
 }
 
 struct LoginView_Previews: PreviewProvider {
@@ -141,6 +162,7 @@ struct LoginView_Previews: PreviewProvider {
 enum LoginViewSheetType {
     case emailAuth
     case privacyPolicy
+    case endUserLicenseAgreement
     case none
 }
 
