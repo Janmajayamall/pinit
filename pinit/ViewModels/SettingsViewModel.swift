@@ -43,6 +43,7 @@ class SettingsViewModel: ObservableObject {
     // view models
     @Published var editingViewModel: EditingViewModel?
     @Published var editingVideoViewModel: EditingVideoViewModel?
+    @Published var blockUserViewModel: BlockUserViewModel = BlockUserViewModel()
     
     var appArScnView: AppArScnView = AppArScnView()
     
@@ -97,9 +98,9 @@ class SettingsViewModel: ObservableObject {
     }
     
     func handleSceneDidBecomeActive() {
-        guard self.checkDevicePermissions() else {
-            return
-        }
+//        guard self.checkDevicePermissions() else {
+//            return
+//        }
         
         // start authentication service
         self.authenticationService.startService()
@@ -298,6 +299,9 @@ extension SettingsViewModel {
     
     func subscribeToBlockUsersServicePublishers() {
         self.blockUsersService.objectWillChange.sink { _ in            
+            self.objectWillChange.send()
+        }.store(in: &cancellables)
+        self.blockUserViewModel.objectWillChange.sink { _ in            
             self.objectWillChange.send()
         }.store(in: &cancellables)
     }

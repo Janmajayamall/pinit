@@ -10,14 +10,13 @@ import SwiftUI
 
 struct BlockUserView: View {
     
-    @ObservedObject var blockUserViewModel: BlockUserViewModel = BlockUserViewModel()
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     @Binding var isOpen: Bool
     
     @State var fakeNoteBinding: String = ""
     
-    var body: some View {
-        ZStack{
+    var body: some View {        
+        return ZStack{
             VStack{
                 HStack{
                     Text("Blocked Users")
@@ -56,12 +55,12 @@ struct BlockUserView: View {
             VStack{
                 Spacer()
                 VStack{
-                    CustomTextFieldView(text: self.$blockUserViewModel.searchString, placeholder: "Type username of a user to block", noteText: self.$fakeNoteBinding)
+                    CustomTextFieldView(text: self.$settingsViewModel.blockUserViewModel.searchString, placeholder: "Type username of a user to block", noteText: self.$fakeNoteBinding)
                         .font(Font.custom("Avenir", size: 15).bold())
                         .foregroundColor(Color.black)
                     
-                    if ((self.blockUserViewModel.searchedUser) != nil){
-                        BlockedUserRow(username: self.blockUserViewModel.searchedUser!.username, uid: self.blockUserViewModel.searchedUser!.uid, blockStatus: self.settingsViewModel.blockUsersService.checkBlockStatus(forUID: self.blockUserViewModel.searchedUser!.uid))
+                    if ((self.settingsViewModel.blockUserViewModel.searchedUser) != nil){
+                        BlockedUserRow(username: self.settingsViewModel.blockUserViewModel.searchedUser!.username, uid: settingsViewModel.blockUserViewModel.searchedUser!.uid, blockStatus: self.settingsViewModel.blockUsersService.checkBlockStatus(forUID: settingsViewModel.blockUserViewModel.searchedUser!.uid))
                     }
                 }
                 .padding(10)
@@ -84,7 +83,7 @@ struct BlockedUserRow: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     
     var body: some View {
-        
+        print("BLOCKED view view \(self.blockStatus)")
         return HStack(alignment: .center){
             Text(self.username)
                 .font(Font.custom("Avenir", size: 15).bold())
