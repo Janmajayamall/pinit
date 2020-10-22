@@ -272,15 +272,9 @@ struct MainArView: View {
                 .onDisappear {
                     self.settingsViewModel.appArScnView.pauseSession()
             }
-            
-            
         }
-        
-        
-        
     }
-    
-    
+        
     func areButtonsActive() -> Bool {
         // checking for no pop up warning
         return self.settingsViewModel.popUpWarningType == .none

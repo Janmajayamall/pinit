@@ -28,7 +28,7 @@ struct BlockUserView: View {
                 if (self.settingsViewModel.blockUsersService.blockedUsers.count == 0){
                     HStack{
                         Spacer()
-                        Text("Hurray! You haven't blocked anyone.")
+                        Text("You haven't blocked anyone!")
                             .font(Font.custom("Avenir", size: 18).bold())
                             .foregroundColor(Color.textfieldColor)
                             .multilineTextAlignment(.center)
@@ -69,6 +69,7 @@ struct BlockUserView: View {
                 .overlay(Rectangle().frame(width: nil, height: 1, alignment: .top).foregroundColor(Color.black), alignment: .top)
                 .background(Color.white)
             }
+            .background(Color.clear)
         }
         .background(Color.white)
     }
@@ -89,6 +90,7 @@ struct BlockedUserRow: View {
                 .font(Font.custom("Avenir", size: 15).bold())
                 .foregroundColor(Color.black)
                 .lineLimit(1)
+            
             Spacer()
             
             HStack{
@@ -100,7 +102,7 @@ struct BlockedUserRow: View {
                         .foregroundColor(Color.blue)
                 }else {
                     Text("")
-                        .foregroundColor(Color.white)
+                        .foregroundColor(Color.clear)
                 }
             }
             .font(Font.custom("Avenir", size: 15).bold())
@@ -111,7 +113,7 @@ struct BlockedUserRow: View {
                     self.blockStatus = .active
                 }
                 self.requestBlockStatusChange(to: self.blockStatus)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                     self.settingsViewModel.refreshScene()
                 })
             }

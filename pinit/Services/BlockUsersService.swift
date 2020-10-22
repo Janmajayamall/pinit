@@ -14,8 +14,7 @@ import Combine
 class BlockUsersService: ObservableObject {
     var user: User?
     var blockedUsersListener: ListenerRegistration?
-    
-    var displayedUsers: Array<OtherUserModel> = []
+        
     @Published var blockedUsers: Array<BlockedUserModel> = []
     
     private var blockedUsersRef: CollectionReference = Firestore.firestore().collection("blockedUsers")
@@ -60,32 +59,24 @@ class BlockUsersService: ObservableObject {
         }
     }
     
-    func checkBlockStatusOverNetwork(forUID otherUserUID: String, withCallback callback: (BlockStatus) -> Void) {
-        guard let user = self.user else {
-            callback(.inactive)
+    func checkBlockStatusOverNetwork(forUID otherUserUID: String, withCallback callback: @escaping (BlockStatus) -> Void) {
+        guard let user = self.user, user.uid != otherUserUID else {
+            callback(.invalid)
             return
         }
-        
-        var blockStatus: BlockStatus?
+                
         self.blockedUsersRef.whereField("blockedByUID", isEqualTo: user.uid).whereField("blockedUID", isEqualTo: otherUserUID).getDocuments { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {return}
             
             if (documents.count == 0){
-                blockStatus = .inactive
+                callback(.inactive)
             }else {
-                blockStatus = .active
+                callback(.active)
             }
-        }
-        
-        if (blockStatus == nil){
-            callback(.inactive)
-        }else {
-            callback(blockStatus!)
         }
     }
     
     func blockUser(withRequestModel requestBlockUserModel: RequestBlockUserModel){
-        
         // check block status
         self.checkBlockStatusOverNetwork(forUID: requestBlockUserModel.uid) { (blockStatus) in
             guard blockStatus == .inactive, let user = self.user, user.uid != requestBlockUserModel.uid else {return}
@@ -96,10 +87,10 @@ class BlockUsersService: ObservableObject {
         }
     }
     
-    func unblockUser(withUID uid: String){
+    func unblockUser(withUID otherUserUID: String){
         guard let user = self.user else {return}
         
-        self.blockedUsersRef.whereField("blockedByUID", isEqualTo: user.uid).whereField("blockedUID", isEqualTo: uid).getDocuments { (querySnapshot, error) in
+        self.blockedUsersRef.whereField("blockedByUID", isEqualTo: user.uid).whereField("blockedUID", isEqualTo: otherUserUID).getDocuments { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {return}
             
             documents.forEach { (queryDocumentSnapshot) in
@@ -108,17 +99,18 @@ class BlockUsersService: ObservableObject {
         }
     }
     
-    func checkBlockStatus(forUID uid: String) -> BlockStatus {    
-        guard let user = self.user, user.uid != uid else {
+    func checkBlockStatus(forUID otherUserUID: String) -> BlockStatus {
+        guard let user = self.user, user.uid != otherUserUID else {
             return .invalid
         }
         
         if (self.blockedUsers.contains(where: { (blockedUser) -> Bool in
-            return blockedUser.blockedUID == uid
+            return blockedUser.blockedUID == otherUserUID
         })){
             return .active
+        }else{
+            return .inactive
         }
-        return .inactive
     }
     
     enum BlockStatus {
@@ -133,12 +125,14 @@ extension BlockUsersService {
     func subscribeToAuthenticationServicePublishers() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (newUser) in
             self.blockedUsers = []
+            self.stopListeningToBlockedUsers()
+            
             guard let newUser = newUser else {
                 // log out the current user
                 self.user = nil
-                self.stopListeningToBlockedUsers()
                 return
             }
+            
             self.user = newUser
             self.listenToBlockedUsers()
             return

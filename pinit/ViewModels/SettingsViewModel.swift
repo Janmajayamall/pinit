@@ -97,9 +97,9 @@ class SettingsViewModel: ObservableObject {
     }
     
     func handleSceneDidBecomeActive() {
-//        guard self.checkDevicePermissions() else {
-//            return
-//        }
+        guard self.checkDevicePermissions() else {
+            return
+        }
         
         // start authentication service
         self.authenticationService.startService()
@@ -297,8 +297,7 @@ extension SettingsViewModel {
     }
     
     func subscribeToBlockUsersServicePublishers() {
-        self.blockUsersService.objectWillChange.sink { _ in
-            print("FUCKKKK   -- 22")
+        self.blockUsersService.objectWillChange.sink { _ in            
             self.objectWillChange.send()
         }.store(in: &cancellables)
     }
