@@ -26,6 +26,10 @@
 		5D275506252E753F00F5F2AA /* ReportUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D275505252E753F00F5F2AA /* ReportUserView.swift */; };
 		5D297D4125236574008E9FF5 /* UIKitSafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */; };
 		5D297D4525238316008E9FF5 /* UserActiveDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */; };
+		5D2C93C925455CDD00C97FDA /* MainOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2C93C825455CDD00C97FDA /* MainOnboardingView.swift */; };
+		5D2C93CD2545687300C97FDA /* MainArViewIconsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2C93CC2545687300C97FDA /* MainArViewIconsView.swift */; };
+		5D2C93CF2545696D00C97FDA /* MainArViewIndicatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2C93CE2545696D00C97FDA /* MainArViewIndicatorsView.swift */; };
+		5D2C93D12545846B00C97FDA /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2C93D02545846B00C97FDA /* OnboardingViewModel.swift */; };
 		5D2ED1F824FD0D3C00C542B0 /* TextViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */; };
 		5D2ED1FA24FD1B5F00C542B0 /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */; };
 		5D31948624F00ECF001182E4 /* SafeTopEdgeViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */; };
@@ -146,6 +150,10 @@
 		5D275505252E753F00F5F2AA /* ReportUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportUserView.swift; sourceTree = "<group>"; };
 		5D297D4025236574008E9FF5 /* UIKitSafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitSafariWebView.swift; sourceTree = "<group>"; };
 		5D297D4425238316008E9FF5 /* UserActiveDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserActiveDataModel.swift; sourceTree = "<group>"; };
+		5D2C93C825455CDD00C97FDA /* MainOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainOnboardingView.swift; sourceTree = "<group>"; };
+		5D2C93CC2545687300C97FDA /* MainArViewIconsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainArViewIconsView.swift; sourceTree = "<group>"; };
+		5D2C93CE2545696D00C97FDA /* MainArViewIndicatorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainArViewIndicatorsView.swift; sourceTree = "<group>"; };
+		5D2C93D02545846B00C97FDA /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewModifiers.swift; sourceTree = "<group>"; };
 		5D2ED1F924FD1B5F00C542B0 /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
 		5D31948524F00ECF001182E4 /* SafeTopEdgeViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeTopEdgeViewModifier.swift; sourceTree = "<group>"; };
@@ -302,6 +310,7 @@
 				5D1CF0A72500095B00DD4E90 /* PostDisplayInfoViewModel.swift */,
 				5DD2962C250E5EC000982587 /* EditingVideoViewModel.swift */,
 				5D032FBE254016AB009D9D67 /* BlockUserViewModel.swift */,
+				5D2C93D02545846B00C97FDA /* OnboardingViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -371,6 +380,9 @@
 				5D275505252E753F00F5F2AA /* ReportUserView.swift */,
 				5DF22C24253EC78D00DB0634 /* TermsAndConditionsView.swift */,
 				5D032FBC25401582009D9D67 /* BlockUserView.swift */,
+				5D2C93C825455CDD00C97FDA /* MainOnboardingView.swift */,
+				5D2C93CC2545687300C97FDA /* MainArViewIconsView.swift */,
+				5D2C93CE2545696D00C97FDA /* MainArViewIndicatorsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -830,6 +842,8 @@
 				5D4DD0A624ED3B7100E1FDF3 /* ColorPickerSlider.swift in Sources */,
 				5DADAC9D251E01EA002C2571 /* PulseLoader.swift in Sources */,
 				5D52F7A724E917D400D9F27E /* MainArView.swift in Sources */,
+				5D2C93CD2545687300C97FDA /* MainArViewIconsView.swift in Sources */,
+				5D2C93CF2545696D00C97FDA /* MainArViewIndicatorsView.swift in Sources */,
 				5DAE4136250A7EB50017A598 /* GroupSCNNode.swift in Sources */,
 				5DC2859924ED029F00830887 /* AppArScnView.swift in Sources */,
 				5D2ED1F824FD0D3C00C542B0 /* TextViewModifiers.swift in Sources */,
@@ -846,8 +860,10 @@
 				5D31948624F00ECF001182E4 /* SafeTopEdgeViewModifier.swift in Sources */,
 				5D032FC125403E69009D9D67 /* RequestBlockUserModel.swift in Sources */,
 				5D67E7EF24E84E6C00F5D240 /* AppDelegate.swift in Sources */,
+				5D2C93C925455CDD00C97FDA /* MainOnboardingView.swift in Sources */,
 				5D52F7B324E9257E00D9F27E /* UserProfileService.swift in Sources */,
 				5D52F7B724E93A5200D9F27E /* ProfileModel.swift in Sources */,
+				5D2C93D12545846B00C97FDA /* OnboardingViewModel.swift in Sources */,
 				5D6B1F7F24FEE7B800DCC418 /* CameraFeedController.swift in Sources */,
 				5D31948824F0195F001182E4 /* RequestCreatePostWithImageModel.swift in Sources */,
 				5DC53050250E845C002FCD76 /* RequestCreatePostWithVideoModel.swift in Sources */,

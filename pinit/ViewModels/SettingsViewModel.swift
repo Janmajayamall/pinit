@@ -18,13 +18,16 @@ class SettingsViewModel: ObservableObject {
     @Published var userProfile: ProfileModel?
     @Published var userPostCount: Int = 0
     
+    // all indicators
     @Published var internetErrorConnection: Bool = false
     @Published var postsDoNotExist: Bool = false
     @Published var loadIndicator: Int = 0
     @Published var uploadIndicator: Int = 0
     @Published var refreshIndicator: Bool = false
-    @Published var postDisplayType: PostDisplayType = .allPosts
+    @Published var postDisplayNotification: Bool = false
+    @Published var sceneDidResetNotification: Bool = false
     
+    @Published var postDisplayType: PostDisplayType = .allPosts
     @Published var popUpWarningType: PopUpWarningType = .none
     
     // services
@@ -44,6 +47,8 @@ class SettingsViewModel: ObservableObject {
     @Published var editingViewModel: EditingViewModel?
     @Published var editingVideoViewModel: EditingVideoViewModel?
     @Published var blockUserViewModel: BlockUserViewModel = BlockUserViewModel()
+    @Published var onboardingViewModel: OnboardingViewModel = OnboardingViewModel()
+    
     
     var appArScnView: AppArScnView = AppArScnView()
     
@@ -97,14 +102,24 @@ class SettingsViewModel: ObservableObject {
         return cameraAuthorised && locationAuthorised
     }
     
+    func checkMainArViewOnboardingStatus() {
+        if UserDefaults().bool(forKey: "unauthenticatedMainArViewOnboarding") {
+            return
+        }
+    }
+    
     func handleSceneDidBecomeActive() {
         guard self.checkDevicePermissions() else {
             return
         }
-        
         // start authentication service
         self.authenticationService.startService()
+        AnalyticsService.logAppOpenEvent()
         
+        self.startScene()
+    }
+    
+    func startScene() {
         // start pulse loader
         self.loadIndicator = 1
         
@@ -126,11 +141,13 @@ class SettingsViewModel: ObservableObject {
         
         // update user last active & log app open event
         self.userProfileService.updateUserActiveData()
-        AnalyticsService.logAppOpenEvent()
     }
     
     func handleSceneWillResignActive() {
-        
+        self.stopScene()
+    }
+    
+    func stopScene() {
         // stop location service
         self.locationService.stopService()
         

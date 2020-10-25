@@ -54,6 +54,9 @@ struct LoginView: View {
                     self.emailAuthViewType = .signUp
                     self.loginViewSheetType = .emailAuth
                     self.isSheetOpen = true
+                    
+                    // set user default
+                    self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: true)
                 }, label: {
                     Spacer()
                     Text("Sign up with Email")
@@ -69,11 +72,13 @@ struct LoginView: View {
             
             UIKitSignInWithApple().frame(width: 280, height: 45).onTapGesture {
                 self.signInWithAppleCoordinator = SignInWithAppleCoordinator(window: self.window)
-                self.signInWithAppleCoordinator?.signIn(onSignedInHandler: {user in                   
-                    
+                self.signInWithAppleCoordinator?.signIn(onSignedInHandler: {user in                                    
                     //                    // close the login view
                     //                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                 })
+                
+                // set user default
+                self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: true)
             }
                                     
             VStack{
@@ -126,6 +131,9 @@ struct LoginView: View {
                 self.emailAuthViewType = .login
                 self.loginViewSheetType = .emailAuth
                 self.isSheetOpen = true
+                
+                // set user default
+                self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: true)
             }
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
             
