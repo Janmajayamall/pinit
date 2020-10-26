@@ -117,7 +117,7 @@ class SettingsViewModel: ObservableObject {
         AnalyticsService.logAppOpenEvent()
         
         self.appArScnView.startSession()
-        self.appArScnView.setupOnboardingNodes()
+//        self.appArScnView.setupOnboardingNodes()
     }
     
     func startScene() {

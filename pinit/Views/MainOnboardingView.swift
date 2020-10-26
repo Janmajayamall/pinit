@@ -94,35 +94,42 @@ struct MainOnboardingUnAuthenticatedView: View {
 struct MainOnboardingAuthenticatedView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
-    @State var screenNumber: ScreenNumber = .three
+    @State var screenNumber: ScreenNumber = .one
     
     var parentSize: CGSize
     var backgroudColorOpacity: CGFloat = 0.5
     
-    func getChangeStepButtons(prev: ScreenNumber? = nil, next: ScreenNumber? = nil) -> some View {
+    func getChangeStepButtons(for screenNumber: ScreenNumber, nextCallback: (() -> Void)? = nil, previousCallback: (() -> Void)? = nil) -> some View {
         return AnyView (
             HStack{
                 
-                if (prev != nil){
+                if (self.screenNumber.rawValue != 1){
                     Image(systemName:"arrow.left")
-                        .font(Font.system(size: 25, weight: .heavy))
                         .foregroundColor(Color.primaryColor)
+                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                         .padding()
                         .onTapGesture {
-                            self.screenNumber = prev!
+                            self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue-1)!
+                            
+                            if let previousCallback = previousCallback {
+                                previousCallback()
+                            }
                     }
                 }
                 
                 Spacer()
                 
-                if (next != nil){
+                if (self.screenNumber.rawValue != 16){
                     Image(systemName:"arrow.right")
-                        .font(Font.system(size: 25, weight: .heavy))
                         .foregroundColor(Color.primaryColor)
+                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                         .padding()
                         .onTapGesture {
-                            self.screenNumber = next!
+                            self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue+1)!
                             
+                            if let nextCallback = nextCallback {
+                                nextCallback()
+                            }
                     }
                 }
                 
@@ -154,12 +161,12 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Spacer()
                     
-                    self.getChangeStepButtons(next: .two)
+                    self.getChangeStepButtons(for: self.screenNumber)
                     
                 }
             }else if (self.screenNumber == .two){
                 VStack{
-                    Text("That means all captured moments, can be a photo or a video, by anyone within a few meters from your location will float in front of you in AR.")
+                    Text("That means all moments captured in a photo or a video, by you or anyone , within a few meters of your current location will float in front of you.")
                         .foregroundColor(Color.white)
                         .font(Font.custom("Avenir", size: 20).bold())
                         .multilineTextAlignment(.center)
@@ -167,9 +174,123 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Spacer()
                     
-                    self.getChangeStepButtons(prev: .one, next: .three)
+                    self.getChangeStepButtons(prev: .one, next: .three, nextCallback: {
+                        self.settingsViewModel.appArScnView.setupOnboardingNodes()
+                    })
                 }
             }else if (self.screenNumber == .three){
+                VStack{
+                    Text("Like this...LITERALLY FLOATING!!!")
+                        .foregroundColor(Color.white)
+                        .font(Font.custom("Avenir", size: 20).bold())
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    
+                    Spacer()
+                    
+                    self.getChangeStepButtons(for: self.screenNumber, previousCallback: {
+                        self.settingsViewModel.appArScnView.resetScene()
+                    })
+                }
+            }else if (self.screenNumber == .four){
+                VStack{
+                    Text("You're right! You can see yours and others every happy and fun moment captured right at your current location floating in front of you.")
+                        .foregroundColor(Color.white)
+                        .font(Font.custom("Avenir", size: 20).bold())
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    
+                    Spacer()
+                    
+                    self.getChangeStepButtons(for: self.screenNumber)
+                }
+            }else if (self.screenNumber == .five){
+                VStack{
+                    Text("We know right! It's damn interesting and fun to play with.")
+                        .foregroundColor(Color.white)
+                        .font(Font.custom("Avenir", size: 20).bold())
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    
+                    Spacer()
+                    
+                    self.getChangeStepButtons(for: self.screenNumber)
+                }
+            }else if (self.screenNumber == .six){
+                VStack{
+                    Text("You can tap on floating moments to see more of them available at your location.")
+                        .foregroundColor(Color.white)
+                        .font(Font.custom("Avenir", size: 20).bold())
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    
+                    Spacer()
+                    
+                    self.getChangeStepButtons(for: self.screenNumber)
+                }
+            }else if (self.screenNumber == .seven){
+                VStack{
+                    Text("You can drag them around you.")
+                        .foregroundColor(Color.white)
+                        .font(Font.custom("Avenir", size: 20).bold())
+                        .multilineTextAlignment(.center)
+                        .padding()
+                }
+                
+                Spacer()
+                
+                self.getChangeStepButtons(for: self.screenNumber)
+            }
+            else if (self.screenNumber == .eight){
+                VStack{
+                    Text("You can make them big by Pinch open and small by Pinch close")
+                        .foregroundColor(Color.white)
+                        .font(Font.custom("Avenir", size: 20).bold())
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    
+                    Spacer()
+                    
+                    self.getChangeStepButtons(for: self.screenNumber)
+                }
+            }else if (self.screenNumber == .nine){
+                VStack{
+                    Text("You can tap and hold them to see caption & who captured the moment")
+                        .foregroundColor(Color.white)
+                        .font(Font.custom("Avenir", size: 20).bold())
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    
+                    Spacer()
+                    
+                    self.getChangeStepButtons(for: self.screenNumber)
+                }
+            }else if (self.screenNumber == .ten){
+                VStack{
+                    VStack{
+                        HStack{
+                            Text("You can tap on")
+                            Image(systemName:"mappin.and.ellipse")
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                        }
+                        Text("on bottom right to bring them at initial position, floating in front of you as before.")
+                    }
+                    .foregroundColor(Color.white)
+                    .font(Font.custom("Avenir", size: 20).bold())
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    
+                    Spacer()
+                    
+                    self.getChangeStepButtons(for: self.screenNumber)
+//                    , nextCallback:{
+//                        self.settingsViewModel.appArScnView.resetScene()
+//                    }, previousCallback: {
+//                        self.settingsViewModel.appArScnView.resetScene()
+//                    }
+                }
+            }
+            else if (self.screenNumber == .eleven){
                 VStack{
                     VStack{
                         HStack{
@@ -180,13 +301,13 @@ struct MainOnboardingAuthenticatedView: View {
                                 .cornerRadius(10)
                             Text("on top right")
                         }
-                        Text("indicates you are in Normal view.")
+                        Text("indicates you are in Public View, which means you see captured moment by you and others")
                     }
                     .foregroundColor(Color.white)
                     .font(Font.custom("Avenir", size: 20).bold())
                     .padding()
                     
-                    Text("In Normal view, you can view all moments captured by anyone near your location.")
+                    Text("")
                         .foregroundColor(Color.white)
                         .font(Font.custom("Avenir", size: 20).bold())
                         .multilineTextAlignment(.center)
@@ -195,10 +316,10 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Spacer()
                     
-                    self.getChangeStepButtons(prev: .two, next: .four)
+                    self.getChangeStepButtons(for: self.screenNumber)
                 }
             }
-            else if (self.screenNumber == .four){
+            else if (self.screenNumber == .twelve){
                 VStack {
                     VStack{
                         HStack{
@@ -211,24 +332,22 @@ struct MainOnboardingAuthenticatedView: View {
                             .cornerRadius(10)
                             Text("On top right")
                         }
-                        Text("indicates you are in Personal view.")
+                        Text("indicates you are in Personal view, which means you only see your captured moments")
                     }
                     .foregroundColor(Color.white)
                     .font(Font.custom("Avenir", size: 20).bold())
                     .multilineTextAlignment(.center)
                     .padding()
                     
-                    Text("In Personal view, you only view moments that you have captured near your current location.")
-                    
                     Spacer()
                     
-                    self.getChangeStepButtons(prev: .three, next: .five)
+                    self.getChangeStepButtons(for: self.screenNumber)
                 }
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
                 .multilineTextAlignment(.center)
             }
-            else if (self.screenNumber == .five){
+            else if (self.screenNumber == .thirteen){
                 VStack{
                     Text("You can toggle toggle between").padding()
                     
@@ -251,58 +370,76 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Spacer()
                     
-                    self.getChangeStepButtons(prev: .four, next: .six)
+                    self.getChangeStepButtons(for: self.screenNumber)
                 }
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
                 .multilineTextAlignment(.center)
-            }else if (self.screenNumber == .six){
+            }else if (self.screenNumber == .fourteen){
                 VStack{
                     VStack{
+                        Text("To open settings")
                         HStack{
-                            Text("Tap on")
+                            Text("tap on")
                             Image(systemName:"gear")
                                 .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                             Text("on top right")
                         }
-                        Text("to open settings")
                     }.padding()
                     
                     VStack{
+                     Text("To refresh")
                         HStack{
-                            Text("Tap on")
+                            Text("tap on")
                             Image(systemName:"arrow.counterclockwise")
                                 .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                            Text("to left of settings")
+                             Text("to left of settings")
                         }
-                        Text("to reload all captured moments floating in fron of you")
                     }.padding()
                     
                     Spacer()
                     
-                    self.getChangeStepButtons(prev: .five, next: .seven)
+                    self.getChangeStepButtons(for: self.screenNumber)
                 }
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
                 .multilineTextAlignment(.center)
-            }else if (self.screenNumber == .seven){
+            }else if (self.screenNumber == .fifteen){
                 VStack{
                     VStack{
+                        Text("To capture your moment, so that you can others can see it floating at the capture location.")
                         HStack{
-                            Text("Tap on")
+                            Text("tap on")
                             Image(systemName:"camera.fill")
                                 .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                             Text("on bottom left")
                         }
-                        Text("to capture your moment at a location and share with others")
-                        
                         Spacer()
                         
-                        self.getChangeStepButtons(prev: .six)
+                        self.getChangeStepButtons(for: self.screenNumber)
                     }.padding()
                 }
-            }else if (self.screenNumber == .eight){
-                
+                .foregroundColor(Color.white)
+                .font(Font.custom("Avenir", size: 20).bold())
+                .multilineTextAlignment(.center)
+            }else if (self.screenNumber == .sixteen){
+                VStack{
+                    VStack{
+                        Text("Sometimes no moments in front of you, so why not capture.")
+                        HStack{
+                            Text("tap on")
+                            Image(systemName:"camera.fill")
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                            Text("on bottom left")
+                        }
+                        Spacer()
+                        
+                        self.getChangeStepButtons(for: self.screenNumber)
+                    }.padding()
+                }
+                .foregroundColor(Color.white)
+                .font(Font.custom("Avenir", size: 20).bold())
+                .multilineTextAlignment(.center)
             }
         }
         .padding(EdgeInsets(top: 100, leading: 5, bottom: 100, trailing: 5))
@@ -310,14 +447,23 @@ struct MainOnboardingAuthenticatedView: View {
         
     }
     
-    enum ScreenNumber {
-        case one
-        case two
-        case three
-        case four
-        case five
-        case six
-        case seven
-        case eight
+    enum ScreenNumber: Int {
+        case one = 1
+        case two = 2
+        case three = 3
+        case four = 4
+        case five = 5
+        case six = 6
+        case seven = 7
+        case eight =  8
+        case nine = 9
+        case ten = 10
+        case eleven = 11
+        case twelve = 12
+        case thirteen = 13
+        case fourteen = 14
+        case fifteen = 15
+        case sixteen = 16
+        case seventeen = 17
     }
 }

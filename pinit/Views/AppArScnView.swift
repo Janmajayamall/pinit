@@ -285,15 +285,20 @@ class AppArScnView: ARSCNView {
     }
     
     func resetScene() {
+        // change scn status to none
+        self.appArScnStatus = .none
+        
+        // remove exisitng child nodes
+        self.mainSceneNode?.childNodes.forEach({ (node) in
+            node.removeFromParentNode()
+        })
+        
         //configure AR session
         let configuration = ARWorldTrackingConfiguration()
         configuration.isLightEstimationEnabled = true
         
         configuration.worldAlignment = .gravity
-        self.session.run(configuration, options: [.resetTracking])
-        
-        // change scn status to none
-        self.appArScnStatus = .none
+        self.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
     
     func resetGroupNodesPositions() {
