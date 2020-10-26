@@ -63,6 +63,8 @@
 		5D52F7DF24E9952800D9F27E /* CLLocation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7DE24E9952800D9F27E /* CLLocation+Extensions.swift */; };
 		5D52F7E124E9A1B600D9F27E /* UIKitArSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7E024E9A1B600D9F27E /* UIKitArSceneView.swift */; };
 		5D52F7E324EA755C00D9F27E /* GeohashModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D52F7E224EA755C00D9F27E /* GeohashModel.swift */; };
+		5D55FA4A2546D213000A9DB3 /* OnboardingSCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D55FA492546D212000A9DB3 /* OnboardingSCNNode.swift */; };
+		5D55FA4C2546D490000A9DB3 /* OnboardingNodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D55FA4B2546D490000A9DB3 /* OnboardingNodeModel.swift */; };
 		5D564F4024F2829300962CEF /* IconViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D564F3F24F2829300962CEF /* IconViewModifiers.swift */; };
 		5D564F4224F2972400962CEF /* SliderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D564F4124F2972400962CEF /* SliderMenuView.swift */; };
 		5D567CF324F3E57300283E5B /* Avenir.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 5D567CF224F3E57300283E5B /* Avenir.ttc */; };
@@ -188,6 +190,8 @@
 		5D52F7DE24E9952800D9F27E /* CLLocation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Extensions.swift"; sourceTree = "<group>"; };
 		5D52F7E024E9A1B600D9F27E /* UIKitArSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitArSceneView.swift; sourceTree = "<group>"; };
 		5D52F7E224EA755C00D9F27E /* GeohashModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeohashModel.swift; sourceTree = "<group>"; };
+		5D55FA492546D212000A9DB3 /* OnboardingSCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSCNNode.swift; sourceTree = "<group>"; };
+		5D55FA4B2546D490000A9DB3 /* OnboardingNodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNodeModel.swift; sourceTree = "<group>"; };
 		5D564F3F24F2829300962CEF /* IconViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconViewModifiers.swift; sourceTree = "<group>"; };
 		5D564F4124F2972400962CEF /* SliderMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderMenuView.swift; sourceTree = "<group>"; };
 		5D567CF224F3E57300283E5B /* Avenir.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Avenir.ttc; sourceTree = "<group>"; };
@@ -354,6 +358,7 @@
 				5D032FB825400B27009D9D67 /* BlockedUserModel.swift */,
 				5D032FBA25401505009D9D67 /* OtherUserModel.swift */,
 				5D032FC025403E69009D9D67 /* RequestBlockUserModel.swift */,
+				5D55FA4B2546D490000A9DB3 /* OnboardingNodeModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -404,6 +409,7 @@
 			isa = PBXGroup;
 			children = (
 				5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */,
+				5D55FA492546D212000A9DB3 /* OnboardingSCNNode.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -870,6 +876,7 @@
 				5D52F7C124E9548D00D9F27E /* EditUsernameView.swift in Sources */,
 				5DC8527324EFD9DC00E36DCE /* EnvironmentValues+Extensions.swift in Sources */,
 				5D032FB925400B27009D9D67 /* BlockedUserModel.swift in Sources */,
+				5D55FA4C2546D490000A9DB3 /* OnboardingNodeModel.swift in Sources */,
 				5D52F7CF24E974D600D9F27E /* UIKItSignInWithApple.swift in Sources */,
 				5D4DD09F24ED2A1200E1FDF3 /* CaptureImageView.swift in Sources */,
 				5D4DD0A224ED34B300E1FDF3 /* PathDrawing.swift in Sources */,
@@ -915,6 +922,7 @@
 				5D567CF724F428E400283E5B /* SetupProfileView.swift in Sources */,
 				5D275506252E753F00F5F2AA /* ReportUserView.swift in Sources */,
 				5DF22C25253EC78D00DB0634 /* TermsAndConditionsView.swift in Sources */,
+				5D55FA4A2546D213000A9DB3 /* OnboardingSCNNode.swift in Sources */,
 				5D275500252E633800F5F2AA /* RequestReportUserModel.swift in Sources */,
 				5D297D4525238316008E9FF5 /* UserActiveDataModel.swift in Sources */,
 				5D52F7DA24E9932600D9F27E /* LocationService.swift in Sources */,

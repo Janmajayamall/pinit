@@ -14,7 +14,17 @@ import AVFoundation
 import FirebaseAuth
 import CoreLocation
 
-class GroupSCNNode: SCNNode, Identifiable {
+protocol AppSCNNode {
+    func nextPost() -> Void
+    func previousPost() -> Void
+    var position: SCNVector3 { get set }
+    func localTranslate(by translation: SCNVector3) -> Void
+    func scaleNodePlane(withValue scale: CGFloat) -> Void
+    func displayPostInfo() -> Void
+    func toggleVolumeIfVideoContentBeingOnDisplay() -> Void
+}
+
+class GroupSCNNode: SCNNode, Identifiable, AppSCNNode {
     
     var nodeDirection: NodeDirection
     
@@ -35,7 +45,7 @@ class GroupSCNNode: SCNNode, Identifiable {
         self.nodeDirection = direction
         self.user = user
         self.postDisplayType = postDisplayType
-        
+       
         super.init()
         
         // subscribe to publishers

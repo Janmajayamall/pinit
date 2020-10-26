@@ -21,11 +21,26 @@ class AppArScnView: ARSCNView {
     var mainSceneNode: SCNNode?{
         didSet{
             guard self.mainSceneNode != nil else {return}
-            self.groupNodes.values.forEach { (node) in
-                self.mainSceneNode!.addChildNode(node)
+            
+            switch self.appArScnStatus {
+            case .normal:
+                self.groupNodes.values.forEach { (node) in
+                    self.mainSceneNode!.addChildNode(node)
+                }
+            case .onboarding:
+                self.onboardingNodes.values.forEach { (node) in
+                    self.mainSceneNode?.addChildNode(node)
+                    node.placeNode(scenePostion: self.currentPosition)
+                }
+            default:
+                self.groupNodes.removeAll()
+                self.onboardingNodes.removeAll()
             }
+            
         }
     }
+    
+    var appArScnStatus: AppArScnStatusType = .none
     
     var currentPosition: SCNVector3? {
         guard let pointOfView = self.pointOfView else {return nil}
@@ -33,6 +48,7 @@ class AppArScnView: ARSCNView {
     }
     
     var groupNodes: Dictionary<NodeDirection, GroupSCNNode> = [:]
+    var onboardingNodes: Dictionary<NodeDirection, OnboardingSCNNode> = [:]
     var exisitingPosts: Dictionary<String, PostModel> = [:]
     var addPostToGroupOfDirection: NodeDirection = .front
     var postsWithLoadedDisplayData: Int = 0
@@ -41,7 +57,7 @@ class AppArScnView: ARSCNView {
     
     // for pangesture
     var lastPanLocation: SCNVector3?
-    var draggingNode: GroupSCNNode?
+    var draggingNode: AppSCNNode?
     var prePanZ: CGFloat?
     
     var user: User?
@@ -140,7 +156,7 @@ class AppArScnView: ARSCNView {
         switch sender.state {
         case .began:
             // getting the node touched
-            guard let touchedHitResult = view.hitTest(touchCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
+            guard let touchedHitResult = view.hitTest(touchCoordinates, options: nil).first, let node = touchedHitResult.node as? AppSCNNode else {return}
             
             // setting it up
             self.draggingNode = node
@@ -176,7 +192,7 @@ class AppArScnView: ARSCNView {
             let touchedCoordinates = sender.location(in: view)
             
             // getting the node
-            guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
+            guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? AppSCNNode else {return}
             
             // scaling current index image with sender scale
             node.scaleNodePlane(withValue: sender.scale)
@@ -191,7 +207,7 @@ class AppArScnView: ARSCNView {
             let touchedCoordinates = sender.location(in: view)
             
             // getting the touched node with hit test
-            guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
+            guard let touchedHitResult = view.hitTest(touchedCoordinates, options: nil).first, let node = touchedHitResult.node as? AppSCNNode else {return}
             
             // displaying info text
             node.displayPostInfo()
@@ -214,10 +230,34 @@ class AppArScnView: ARSCNView {
     func pauseSession(){        
         self.session.pause()
     }
+        
+    func setupOnboardingNodes() {
+        // reset the scene
+        self.resetScene()
+        
+        // change status type to onboarding
+        self.appArScnStatus = .onboarding
+        
+        // populate onboarding nodes dict
+        let onboardingNodeModel = OnboardingNodeModel(contentType: .image, descriptionText: "daiowjdaoidja", image: UIImage(imageLiteralResourceName: "Image1"))
+        self.onboardingNodes[.front] = OnboardingSCNNode(scenePosition: self.currentPosition, nodeDirection: .front, modelsList: [onboardingNodeModel, onboardingNodeModel])
+        self.onboardingNodes[.frontRight] = OnboardingSCNNode(scenePosition: self.currentPosition, nodeDirection: .frontRight, modelsList: [onboardingNodeModel, onboardingNodeModel])
+        self.onboardingNodes[.frontLeft] = OnboardingSCNNode(scenePosition: self.currentPosition, nodeDirection: .frontLeft, modelsList: [onboardingNodeModel, onboardingNodeModel])
+        
+        // place onboarding nodes
+        self.onboardingNodes.values.forEach { (node) in
+            self.mainSceneNode?.addChildNode(node)
+            node.placeNode(scenePostion: self.currentPosition)
+        }
+    }
     
     func setupGroupNodes(withInitialPostDisplayType initialPostDisplayType: PostDisplayType) {
         
-        removeGroupNodes()
+        // reset scene
+        self.resetScene()
+        
+        // change scn status to normal
+        self.appArScnStatus = .normal
         
         self.groupNodes[.front] = GroupSCNNode(scenePosition: self.currentPosition, direction: .front, user: self.user, postDisplayType: initialPostDisplayType)
         
@@ -242,6 +282,18 @@ class AppArScnView: ARSCNView {
         self.exisitingPosts.removeAll()
         self.addPostToGroupOfDirection = .front
         self.postsWithLoadedDisplayData = 0
+    }
+    
+    func resetScene() {
+        //configure AR session
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.isLightEstimationEnabled = true
+        
+        configuration.worldAlignment = .gravity
+        self.session.run(configuration, options: [.resetTracking])
+        
+        // change scn status to none
+        self.appArScnStatus = .none
     }
     
     func resetGroupNodesPositions() {
@@ -374,5 +426,11 @@ extension AppArScnView: ARSCNViewDelegate {
             scene.rootNode.addChildNode(mainSceneNode!)
         }
     }
+}
+
+enum AppArScnStatusType {
+    case onboarding
+    case normal
+    case none
 }
 

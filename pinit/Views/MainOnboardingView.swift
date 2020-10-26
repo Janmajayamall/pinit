@@ -99,6 +99,37 @@ struct MainOnboardingAuthenticatedView: View {
     var parentSize: CGSize
     var backgroudColorOpacity: CGFloat = 0.5
     
+    func getChangeStepButtons(prev: ScreenNumber? = nil, next: ScreenNumber? = nil) -> some View {
+        return AnyView (
+            HStack{
+                
+                if (prev != nil){
+                    Image(systemName:"arrow.left")
+                        .font(Font.system(size: 25, weight: .heavy))
+                        .foregroundColor(Color.primaryColor)
+                        .padding()
+                        .onTapGesture {
+                            self.screenNumber = prev!
+                    }
+                }
+                
+                Spacer()
+                
+                if (next != nil){
+                    Image(systemName:"arrow.right")
+                        .font(Font.system(size: 25, weight: .heavy))
+                        .foregroundColor(Color.primaryColor)
+                        .padding()
+                        .onTapGesture {
+                            self.screenNumber = next!
+                            
+                    }
+                }
+                
+            }
+        )
+    }
+    
     var body: some View {
         VStack{
             if (self.screenNumber == .one){
@@ -121,13 +152,10 @@ struct MainOnboardingAuthenticatedView: View {
                     .multilineTextAlignment(.center)
                     .padding()
                     
-                    Image(systemName:"arrow.right")
-                        .font(Font.system(size: 25, weight: .heavy))
-                        .foregroundColor(Color.white)
-                        .padding()
-                        .onTapGesture {
-                            self.screenNumber = .two
-                    }
+                    Spacer()
+                    
+                    self.getChangeStepButtons(next: .two)
+                    
                 }
             }else if (self.screenNumber == .two){
                 VStack{
@@ -137,13 +165,9 @@ struct MainOnboardingAuthenticatedView: View {
                         .multilineTextAlignment(.center)
                         .padding()
                     
-                    Image(systemName:"arrow.right")
-                        .font(Font.system(size: 25, weight: .heavy))
-                        .foregroundColor(Color.white)
-                        .padding()
-                        .onTapGesture {
-                            self.screenNumber = .three
-                    }
+                    Spacer()
+                    
+                    self.getChangeStepButtons(prev: .one, next: .three)
                 }
             }else if (self.screenNumber == .three){
                 VStack{
@@ -171,13 +195,7 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Spacer()
                     
-                    Image(systemName:"arrow.right")
-                        .font(Font.system(size: 25, weight: .heavy))
-                        .foregroundColor(Color.white)
-                        .padding()
-                        .onTapGesture {
-                            self.screenNumber = .four
-                    }
+                    self.getChangeStepButtons(prev: .two, next: .four)
                 }
             }
             else if (self.screenNumber == .four){
@@ -200,15 +218,11 @@ struct MainOnboardingAuthenticatedView: View {
                     .multilineTextAlignment(.center)
                     .padding()
                     
-                    Text("In Personal view, you only view moments that you have captured at your current location.")
+                    Text("In Personal view, you only view moments that you have captured near your current location.")
                     
-                    Image(systemName:"arrow.right")
-                        .font(Font.system(size: 25, weight: .heavy))
-                        .foregroundColor(Color.white)
-                        .padding()
-                        .onTapGesture {
-                            self.screenNumber = .five
-                    }
+                    Spacer()
+                    
+                    self.getChangeStepButtons(prev: .three, next: .five)
                 }
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
@@ -235,22 +249,65 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Text("By tapping on them").padding()
                     
-                    Image(systemName:"arrow.right")
-                        .font(Font.system(size: 25, weight: .heavy))
-                        .foregroundColor(Color.white)
-                        .padding()
-                        .onTapGesture {
-                            self.screenNumber = .one
-                    }
+                    Spacer()
                     
-                    
+                    self.getChangeStepButtons(prev: .four, next: .six)
                 }
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
                 .multilineTextAlignment(.center)
+            }else if (self.screenNumber == .six){
+                VStack{
+                    VStack{
+                        HStack{
+                            Text("Tap on")
+                            Image(systemName:"gear")
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                            Text("on top right")
+                        }
+                        Text("to open settings")
+                    }.padding()
+                    
+                    VStack{
+                        HStack{
+                            Text("Tap on")
+                            Image(systemName:"arrow.counterclockwise")
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                            Text("to left of settings")
+                        }
+                        Text("to reload all captured moments floating in fron of you")
+                    }.padding()
+                    
+                    Spacer()
+                    
+                    self.getChangeStepButtons(prev: .five, next: .seven)
+                }
+                .foregroundColor(Color.white)
+                .font(Font.custom("Avenir", size: 20).bold())
+                .multilineTextAlignment(.center)
+            }else if (self.screenNumber == .seven){
+                VStack{
+                    VStack{
+                        HStack{
+                            Text("Tap on")
+                            Image(systemName:"camera.fill")
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                            Text("on bottom left")
+                        }
+                        Text("to capture your moment at a location and share with others")
+                        
+                        Spacer()
+                        
+                        self.getChangeStepButtons(prev: .six)
+                    }.padding()
+                }
+            }else if (self.screenNumber == .eight){
+                
             }
-        }.frame(width: self.parentSize.width, height: self.parentSize.height)
-            .background(Color.black.opacity(0.5))
+        }
+        .padding(EdgeInsets(top: 100, leading: 5, bottom: 100, trailing: 5))
+        .frame(width: self.parentSize.width, height: self.parentSize.height)
+        
     }
     
     enum ScreenNumber {
@@ -259,5 +316,8 @@ struct MainOnboardingAuthenticatedView: View {
         case three
         case four
         case five
+        case six
+        case seven
+        case eight
     }
 }

@@ -12,10 +12,7 @@ struct UIKitArSceneView: UIViewRepresentable {
 
     var appArScnView: AppArScnView
     
-    func makeUIView(context: Context) -> AppArScnView {
-        
-        self.appArScnView.startSession()
-        
+    func makeUIView(context: Context) -> AppArScnView {        
         return self.appArScnView
     }
     
