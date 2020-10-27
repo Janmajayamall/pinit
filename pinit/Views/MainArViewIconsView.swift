@@ -14,40 +14,109 @@ struct MainArViewIconsView: View {
     
     var parentsSize: CGSize
     
+    func checkIconStatus(for iconType: MainArViewIconsType) -> IconStatusType {
+        guard (self.settingsViewModel.popUpWarningType == .none) else {
+            return .none
+        }
+        
+        guard (self.settingsViewModel.user != nil) else {
+            if (iconType == .gear || iconType == .mappinAndEllipse || iconType == .arrowLeft){
+                return .active
+            }
+            return .none
+        }
+        
+        let mainArViewOnboardingStatus = self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView)
+        
+        guard mainArViewOnboardingStatus < MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber() else {
+            return .active
+        }
+        
+        switch iconType {
+        case .arrowCounterclockwise:
+            if (mainArViewOnboardingStatus >= 13){
+                return .onlyVisible
+            }
+            return .none
+        case .gear:
+            if (mainArViewOnboardingStatus >= 13){
+                return .onlyVisible
+            }
+            return .none
+        case .cameraFill:
+            if (mainArViewOnboardingStatus >= 14){
+                return .onlyVisible
+            }
+            return .none
+        case .arrowLeft:
+            if (mainArViewOnboardingStatus >= 9){
+                return .active
+            }
+            return .none
+        case .mappinAndEllipse:
+            if (mainArViewOnboardingStatus >= 9){
+                return .active
+            }
+            return .none
+        case .privateOrPersonal:
+            if (mainArViewOnboardingStatus >= 10){
+                return .active
+            }
+            return .none
+        }
+    }
+    
+    enum MainArViewIconsType: String {
+        case arrowCounterclockwise = "arrow.counterclockwise"
+        case gear
+        case cameraFill = "camera.fill"
+        case arrowLeft = "arrow.left"
+        case mappinAndEllipse = "mappin.and.ellipse"
+        case privateOrPersonal
+    }
+    
+    enum IconStatusType {
+        case onlyVisible
+        case active
+        case none
+    }
+    
     var body: some View {
         VStack{
             HStack{
-                HStack{
-                    if (self.settingsViewModel.postDisplayType == .allPosts) {
-                        Image("IconTransparent").resizable().frame(width: 50, height: 50).clipped()
-                    }else{
-                        HStack{
+                if (self.checkIconStatus(for: .privateOrPersonal) != .none){
+                    HStack{
+                        if (self.settingsViewModel.postDisplayType == .allPosts) {
                             Image("IconTransparent").resizable().frame(width: 50, height: 50).clipped()
-                            Text("🔒")
+                        }else{
+                            HStack{
+                                Image("IconTransparent").resizable().frame(width: 50, height: 50).clipped()
+                                Text("🔒")
+                            }
                         }
                     }
-                }
-                .font(Font.system(size: 30, weight: .heavy))
-                .foregroundColor(Color.white)
-                .background(Color.black.opacity(0.1))
-                .cornerRadius(10)
-                .applyEdgePadding(for: .topLeft)
-                .onTapGesture {
-                    guard self.areButtonsActive() else {return}
-                    
-                    if self.settingsViewModel.isUserAuthenticated() {
+                    .font(Font.system(size: 30, weight: .heavy))
+                    .foregroundColor(Color.white)
+                    .background(Color.black.opacity(0.1))
+                    .cornerRadius(10)
+                    .applyEdgePadding(for: .topLeft)
+                    .onTapGesture {
+                        guard self.areButtonsActive() else {return}
                         
-                        // change post display type
-                        self.settingsViewModel.togglePostDisplayType()
-                        
-                        // display post diplay notification text
-                        self.settingsViewModel.postDisplayNotification = true
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                            self.settingsViewModel.postDisplayNotification = false
-                        })
-                        
-                    }else {
-                        self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                        if self.settingsViewModel.isUserAuthenticated() {
+                            
+                            // change post display type
+                            self.settingsViewModel.togglePostDisplayType()
+                            
+                            // display post diplay notification text
+                            self.settingsViewModel.postDisplayNotification = true
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                self.settingsViewModel.postDisplayNotification = false
+                            })
+                            
+                        }else {
+                            self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                        }
                     }
                 }
                 
@@ -55,44 +124,51 @@ struct MainArViewIconsView: View {
                 Spacer()
                 
                 HStack{
-                    Image(systemName: "arrow.counterclockwise")
-                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                        .onTapGesture {
-                            guard self.areButtonsActive() else {return}
-                            
-                            self.settingsViewModel.refreshScene()
+                    if (self.checkIconStatus(for: .arrowCounterclockwise) != .none){
+                        Image(systemName: "arrow.counterclockwise")
+                            .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                            .onTapGesture {
+                                guard self.checkIconStatus(for: .arrowCounterclockwise) == .active else {return}
+                                
+                                self.settingsViewModel.refreshScene()
+                        }
                     }
                     
-                    Image(systemName:"gear")
-                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                        .onTapGesture {
-                            guard self.areButtonsActive() else {return}
-                            
-                            if self.settingsViewModel.isUserAuthenticated() {
-                                self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
-                            }else {
-                                self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
-                            }
+                    if (self.checkIconStatus(for: .gear) != .none){
+                        Image(systemName:"gear")
+                            .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                            .onTapGesture {
+                                guard self.checkIconStatus(for: .gear) == .active else {return}
+                                
+                                if self.settingsViewModel.isUserAuthenticated() {
+                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
+                                }else {
+                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                }
+                        }
                     }
                 }
                 .applyEdgePadding(for: .topRight)
             }
+            
             Spacer()
             HStack{
                 HStack{
-                    Image(systemName: "camera.fill")
-                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                        .onTapGesture {
-                            guard self.areButtonsActive() else {return}
-                            
-                            if self.settingsViewModel.isUserAuthenticated() {
-                                //                                        // stop session
-                                //                                        self.settingsViewModel.appArScnView.pauseSession()
+                    if (self.checkIconStatus(for: .cameraFill) != .none){
+                        Image(systemName: "camera.fill")
+                            .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                            .onTapGesture {
+                                guard self.checkIconStatus(for: .cameraFill) == .active else {return}
                                 
-                                self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
-                            }else {
-                                self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
-                            }
+                                if self.settingsViewModel.isUserAuthenticated() {
+                                    //                                        // stop session
+                                    //                                        self.settingsViewModel.appArScnView.pauseSession()
+                                    
+                                    self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
+                                }else {
+                                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+                                }
+                        }
                     }
                 }
                 .applyEdgePadding(for: .bottomLeft)
@@ -100,31 +176,35 @@ struct MainArViewIconsView: View {
                 Spacer()
                 
                 HStack {
-                    Image(systemName: "arrow.left")
-                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                        .onTapGesture {
-                            guard self.areButtonsActive() else {return}
-                            
-                            NotificationCenter.default.post(name: .aRViewDidTapBackIcon, object: true)
-                    }
-                    
-                    ZStack{
-                        Image(systemName: "mappin.and.ellipse")
+                    if (self.checkIconStatus(for: .arrowLeft) != .none){
+                        Image(systemName: "arrow.left")
                             .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                             .onTapGesture {
-                                guard self.areButtonsActive() else {return}
+                                guard self.checkIconStatus(for: .arrowLeft) == .active else {return}
                                 
-                                // notifiy app ar scene to reset group scn nodes positions
-                                NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
-                                
-                                self.settingsViewModel.sceneDidResetNotification = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                    self.settingsViewModel.sceneDidResetNotification = false
-                                })
+                                NotificationCenter.default.post(name: .aRViewDidTapBackIcon, object: true)
                         }
-                        
-                        if (self.settingsViewModel.uploadIndicator > 0){
-                            Loader()
+                    }
+                    
+                    if (self.checkIconStatus(for: .mappinAndEllipse) != .none){
+                        ZStack{
+                            Image(systemName: "mappin.and.ellipse")
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                                .onTapGesture {
+                                    guard self.checkIconStatus(for: .mappinAndEllipse) == .active else {return}
+                                    
+                                    // notifiy app ar scene to reset group scn nodes positions
+                                    NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
+                                    
+                                    self.settingsViewModel.sceneDidResetNotification = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                        self.settingsViewModel.sceneDidResetNotification = false
+                                    })
+                            }
+                            
+                            if (self.settingsViewModel.uploadIndicator > 0){
+                                Loader()
+                            }
                         }
                     }
                 }

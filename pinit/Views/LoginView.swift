@@ -56,7 +56,7 @@ struct LoginView: View {
                     self.isSheetOpen = true
                     
                     // set user default
-                    self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: true)
+                    self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
                 }, label: {
                     Spacer()
                     Text("Sign up with Email")
@@ -78,7 +78,7 @@ struct LoginView: View {
                 })
                 
                 // set user default
-                self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: true)
+                self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
             }
                                     
             VStack{
@@ -133,7 +133,7 @@ struct LoginView: View {
                 self.isSheetOpen = true
                 
                 // set user default
-                self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: true)
+                self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
             }
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
             

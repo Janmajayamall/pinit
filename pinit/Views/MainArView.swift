@@ -30,7 +30,7 @@ struct MainArView: View {
                     
                     MainOnboardingView(parentSize: geometryProxy.size)
                     
-//                    MainArViewIconsView(parentsSize: geometryProxy.size)
+                    MainArViewIconsView(parentsSize: geometryProxy.size)
                                                         
                     MainArViewIndicatorsView(parentSize: geometryProxy.size)
                     

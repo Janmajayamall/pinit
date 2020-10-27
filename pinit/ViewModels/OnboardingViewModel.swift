@@ -10,15 +10,17 @@ import Foundation
 
 class OnboardingViewModel: ObservableObject {
     init() {
-        self.removeAllUserDefaults()
+//        self.removeAllUserDefaults()
     }
     
-    func checkOnboardingStatus(for type: OnboardingStatusType) -> Bool {
-        return UserDefaults().bool(forKey: type.rawValue)
+    func checkOnboardingStatus(for type: OnboardingStatusType) -> Int {
+        let val = UserDefaults().integer(forKey: type.rawValue)
+        return val
     }
-        
-    func markOnboardingStatus(for type: OnboardingStatusType, to value: Bool){
+    
+    func markOnboardingStatus(for type: OnboardingStatusType, to value: Int){
         UserDefaults().set(value, forKey: type.rawValue)
+        self.objectWillChange.send()
     }
     
     func removeAllUserDefaults() {
@@ -26,6 +28,11 @@ class OnboardingViewModel: ObservableObject {
         UserDefaults().removeObject(forKey: OnboardingStatusType.authenticatedMainARView.rawValue)
         UserDefaults().removeObject(forKey: OnboardingStatusType.cameraFeedView.rawValue)
         UserDefaults().removeObject(forKey: OnboardingStatusType.captureView.rawValue)
+        //
+        //        print(self.checkOnboardingStatus(for: .authenticatedMainARView))
+        //        print(self.checkOnboardingStatus(for: .unauthenticatedMainARView))
+        //        print(self.checkOnboardingStatus(for: .cameraFeedView))
+        //        print(self.checkOnboardingStatus(for: .captureView))
     }
     
     enum OnboardingStatusType: String {

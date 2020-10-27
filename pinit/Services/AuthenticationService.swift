@@ -22,6 +22,7 @@ class AuthenticationService {
     init(){}
     
     func registerStateListener(){
+        print("Did register listener User")
         self.stopStateListener()
         self.handle = Auth.auth().addStateDidChangeListener({(auth, user) in
             self.postNotification(for: .authenticationServiceDidAuthStatusChange, withObject: user)
@@ -50,7 +51,7 @@ class AuthenticationService {
         self.stopStateListener()
     }
     
-    func postNotification(for notificationType: Notification.Name, withObject object: Any){
+    func postNotification(for notificationType: Notification.Name, withObject object: User?){       
         NotificationCenter.default.post(name: notificationType, object: object)
     }
 }

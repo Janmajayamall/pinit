@@ -214,6 +214,7 @@ class UserProfileService: ObservableObject {
 extension UserProfileService {
     func subscribeToAuthenticationSeriverPublishers() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (newUser) in
+            print()
             guard let newUser = newUser else {
                 // log out the current user
                 self.stopServiceForCurrentUser()

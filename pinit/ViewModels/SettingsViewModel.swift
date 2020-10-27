@@ -100,24 +100,20 @@ class SettingsViewModel: ObservableObject {
         }
         
         return cameraAuthorised && locationAuthorised
-    }
+    }     
     
-    func checkMainArViewOnboardingStatus() {
-        if UserDefaults().bool(forKey: "unauthenticatedMainArViewOnboarding") {
-            return
-        }
-    }
-    
-    func handleSceneDidBecomeActive() {
+    func handleSceneDidBecomeActive() {        
         guard self.checkDevicePermissions() else {
             return
         }
+        
         // start authentication service
         self.authenticationService.startService()
         AnalyticsService.logAppOpenEvent()
         
         self.appArScnView.startSession()
-//        self.appArScnView.setupOnboardingNodes()
+        
+//        self.onboardingViewModel.removeAllUserDefaults()
     }
     
     func startScene() {
@@ -324,6 +320,13 @@ extension SettingsViewModel {
         }.store(in: &cancellables)
     }
     
+    func subscribeToOnboardigPublishers() {
+        self.onboardingViewModel.objectWillChange.sink { _ in
+            print("Onboarding did change")
+            self.objectWillChange.send()
+        }.store(in: &cancellables)
+    }
+    
     func setupSubscribers() {
         self.subscribeToUserProfileServicePublishers()
         self.subscribeToScreenManagementServicePublishers()
@@ -331,5 +334,6 @@ extension SettingsViewModel {
         self.subscribeToRetrievePostPublishers()
         self.subscribeToGeneralFunctionPublishers()
         self.subscribeToBlockUsersServicePublishers()
+        self.subscribeToOnboardigPublishers()
     }
 }

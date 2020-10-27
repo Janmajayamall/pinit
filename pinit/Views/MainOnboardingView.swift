@@ -17,10 +17,10 @@ struct MainOnboardingView: View {
     
     @ViewBuilder
     var body: some View {
-        if (!self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .unauthenticatedMainARView) && self.settingsViewModel.user == nil){
+        if (self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .unauthenticatedMainARView) == 0 && self.settingsViewModel.user == nil){
             MainOnboardingUnAuthenticatedView(parentSize: self.parentSize)
-        }else if (!self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) && self.settingsViewModel.user != nil && self.settingsViewModel.userProfile != nil){
-            MainOnboardingAuthenticatedView(parentSize: self.parentSize)
+        }else if (self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) <  MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber() && self.settingsViewModel.user != nil && self.settingsViewModel.userProfile != nil){
+            MainOnboardingAuthenticatedView(screenNumber: MainOnboardingAuthenticatedView.ScreenNumber.init(rawValue: self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView))!, parentSize: self.parentSize)
         }
     }
 }
@@ -50,7 +50,7 @@ struct MainOnboardingUnAuthenticatedView: View {
             .padding()
             
             VStack{
-                Text("An app to Capture, Relive, and Share your moments with others")
+                Text("An app to Capture, Share, and Explore amazing moments!")
                     .foregroundColor(Color.white)
                     .font(Font.custom("Avenir", size: 20).bold())
                     .multilineTextAlignment(.center)
@@ -94,7 +94,7 @@ struct MainOnboardingUnAuthenticatedView: View {
 struct MainOnboardingAuthenticatedView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
-    @State var screenNumber: ScreenNumber = .one
+    @State var screenNumber: ScreenNumber
     
     var parentSize: CGSize
     var backgroudColorOpacity: CGFloat = 0.5
@@ -103,13 +103,15 @@ struct MainOnboardingAuthenticatedView: View {
         return AnyView (
             HStack{
                 
-                if (self.screenNumber.rawValue != 1){
+                if (self.screenNumber.rawValue > 0){
                     Image(systemName:"arrow.left")
                         .foregroundColor(Color.primaryColor)
                         .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                         .padding()
                         .onTapGesture {
                             self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue-1)!
+                            
+                            self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: self.screenNumber.rawValue)
                             
                             if let previousCallback = previousCallback {
                                 previousCallback()
@@ -119,13 +121,15 @@ struct MainOnboardingAuthenticatedView: View {
                 
                 Spacer()
                 
-                if (self.screenNumber.rawValue != 16){
+                if (self.screenNumber.rawValue < ScreenNumber.getMaxScreenNumber() - 1){
                     Image(systemName:"arrow.right")
                         .foregroundColor(Color.primaryColor)
                         .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                         .padding()
                         .onTapGesture {
                             self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue+1)!
+                            
+                            self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: self.screenNumber.rawValue)
                             
                             if let nextCallback = nextCallback {
                                 nextCallback()
@@ -139,7 +143,7 @@ struct MainOnboardingAuthenticatedView: View {
     
     var body: some View {
         VStack{
-            if (self.screenNumber == .one){
+            if (self.screenNumber == .zero){
                 VStack{
                     HStack{
                         Text("Hi")
@@ -165,7 +169,7 @@ struct MainOnboardingAuthenticatedView: View {
                     self.getChangeStepButtons(for: self.screenNumber)
                     
                 }
-            }else if (self.screenNumber == .two){
+            }else if (self.screenNumber == .one){
                 VStack{
                     Text("That means all moments captured in a photo or a video, by you or anyone, within a few meters of your current location will float in front of you.")
                         .foregroundColor(Color.white)
@@ -179,7 +183,7 @@ struct MainOnboardingAuthenticatedView: View {
                         self.settingsViewModel.appArScnView.setupOnboardingNodes()
                     })
                 }
-            }else if (self.screenNumber == .three){
+            }else if (self.screenNumber == .two){
                 VStack{
                     Text("Like this...LITERALLY FLOATING!")
                         .foregroundColor(Color.white)
@@ -193,7 +197,7 @@ struct MainOnboardingAuthenticatedView: View {
                         self.settingsViewModel.appArScnView.resetScene()
                     })
                 }
-            }else if (self.screenNumber == .four){
+            }else if (self.screenNumber == .three){
                 VStack{
                     Text("That's right! You can see yours and others' amazing moments captured right at your current location, floating in front of you.")
                         .foregroundColor(Color.white)
@@ -205,7 +209,7 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     self.getChangeStepButtons(for: self.screenNumber)
                 }
-            }else if (self.screenNumber == .five){
+            }else if (self.screenNumber == .four){
                 VStack{
                     Text("This makes FinchIt damn interesting and fun to play with!")
                         .foregroundColor(Color.white)
@@ -217,7 +221,7 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     self.getChangeStepButtons(for: self.screenNumber)
                 }
-            }else if (self.screenNumber == .six){
+            }else if (self.screenNumber == .five){
                 VStack{
                     Text("You can tap on floating moments to see more of them available at your location.")
                         .foregroundColor(Color.white)
@@ -229,7 +233,7 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     self.getChangeStepButtons(for: self.screenNumber)
                 }
-            }else if (self.screenNumber == .seven){
+            }else if (self.screenNumber == .six){
                 VStack{
                     Text("You can drag them around.")
                         .foregroundColor(Color.white)
@@ -242,7 +246,7 @@ struct MainOnboardingAuthenticatedView: View {
                 
                 self.getChangeStepButtons(for: self.screenNumber)
             }
-            else if (self.screenNumber == .eight){
+            else if (self.screenNumber == .seven){
                 VStack{
                     Text("You can zoom in and zoom out on them")
                         .foregroundColor(Color.white)
@@ -254,7 +258,7 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     self.getChangeStepButtons(for: self.screenNumber)
                 }
-            }else if (self.screenNumber == .nine){
+            }else if (self.screenNumber == .eight){
                 VStack{
                     Text("You can tap and hold to see captions & who captured them.")
                         .foregroundColor(Color.white)
@@ -266,7 +270,7 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     self.getChangeStepButtons(for: self.screenNumber)
                 }
-            }else if (self.screenNumber == .ten){
+            }else if (self.screenNumber == .nine){
                 VStack{
                     VStack{
                         HStack{
@@ -286,7 +290,7 @@ struct MainOnboardingAuthenticatedView: View {
                     self.getChangeStepButtons(for: self.screenNumber)
                 }
             }
-            else if (self.screenNumber == .eleven){
+            else if (self.screenNumber == .ten){
                 VStack{
                     VStack{
                         HStack{
@@ -312,10 +316,12 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Spacer()
                     
-                    self.getChangeStepButtons(for: self.screenNumber)
+                    self.getChangeStepButtons(for: self.screenNumber, nextCallback: {
+                        self.settingsViewModel.postDisplayType = .privatePosts
+                    })
                 }
             }
-            else if (self.screenNumber == .twelve){
+            else if (self.screenNumber == .eleven){
                 VStack {
                     VStack{
                         HStack{
@@ -337,13 +343,17 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Spacer()
                     
-                    self.getChangeStepButtons(for: self.screenNumber)
+                    self.getChangeStepButtons(for: self.screenNumber, nextCallback: {
+                        self.settingsViewModel.postDisplayType = .allPosts
+                    }, previousCallback: {
+                        self.settingsViewModel.postDisplayType = .privatePosts
+                    })
                 }
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
                 .multilineTextAlignment(.center)
             }
-            else if (self.screenNumber == .thirteen){
+            else if (self.screenNumber == .twelve){
                 VStack{
                     Text("You can toggle toggle between").padding()
                     
@@ -371,7 +381,7 @@ struct MainOnboardingAuthenticatedView: View {
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
                 .multilineTextAlignment(.center)
-            }else if (self.screenNumber == .fourteen){
+            }else if (self.screenNumber == .thirteen){
                 VStack{
                     VStack{
                         Text("To open settings")
@@ -400,7 +410,7 @@ struct MainOnboardingAuthenticatedView: View {
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
                 .multilineTextAlignment(.center)
-            }else if (self.screenNumber == .fifteen){
+            }else if (self.screenNumber == .fourteen){
                 VStack{
                     VStack{
                         Text("To capture your moment, so others can see it floating at the your current location.")
@@ -419,17 +429,15 @@ struct MainOnboardingAuthenticatedView: View {
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
                 .multilineTextAlignment(.center)
-            }else if (self.screenNumber == .sixteen){
+            }else if (self.screenNumber == .fifteen){
                 VStack{
                     VStack{
-                        Text("Sometimes no moments in front of you, so why not capture.")
-                        HStack{
-                            Text("tap on")
-                            Image(systemName:"camera.fill")
-                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                            Text("on bottom left")
-                        }
+                        Text("That's it for now! Now its youe turn to Capture, Share, and Explore amazing moments with FinchIt")
                     }.padding()
+                    
+                    Text("Note: imporve the line + change add a `Get started buttton`").onTapGesture {
+                        self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: ScreenNumber.getMaxScreenNumber())
+                    }
                     
                     Spacer()
                                            
@@ -446,6 +454,7 @@ struct MainOnboardingAuthenticatedView: View {
     }
     
     enum ScreenNumber: Int {
+        case zero = 0
         case one = 1
         case two = 2
         case three = 3
@@ -461,7 +470,9 @@ struct MainOnboardingAuthenticatedView: View {
         case thirteen = 13
         case fourteen = 14
         case fifteen = 15
-        case sixteen = 16
-        case seventeen = 17
+        
+        static func getMaxScreenNumber() -> Int{
+            return 16
+        }
     }
 }
