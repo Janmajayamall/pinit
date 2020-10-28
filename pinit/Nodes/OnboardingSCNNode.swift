@@ -62,19 +62,38 @@ class OnboardingSCNNode: SCNNode, Identifiable, AppSCNNode {
     }
     
     func nextPost(){
-        
+        self.currentIndex = (self.currentIndex + 1) % self.onboardingNodeModels.count
+        self.addCurrentIndexAsGeometry()
     }
     
     func previousPost(){
+        self.currentIndex = (self.currentIndex - 1) % self.onboardingNodeModels.count
+        if (self.currentIndex < 0){
+            self.currentIndex = self.currentIndex + self.onboardingNodeModels.count
+            
+        }
         
+        self.addCurrentIndexAsGeometry()
     }
     
     func scaleNodePlane(withValue scale: CGFloat){
+        guard scale > 0 else {return}
         
+        if (scale > 1){
+            self.fixedImageWidth += 0.05
+        }else {
+            if (self.fixedImageWidth > 0.1){
+                self.fixedImageWidth -= 0.05
+            }
+        }
+        
+        self.addCurrentIndexAsGeometry()
     }
     
     func displayPostInfo() {
+        let postDisplayInfo = PostDisplayInfoModel(username: "FinchIt", description: self.onboardingNodeModels[self.currentIndex].descriptionText)
         
+        NotificationCenter.default.post(name: .groupSCNNodeDidRequestCurrentPostDisplayInfo, object: postDisplayInfo)
     }
     
     func toggleVolumeIfVideoContentBeingOnDisplay(){

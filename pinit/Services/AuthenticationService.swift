@@ -22,9 +22,9 @@ class AuthenticationService {
     init(){}
     
     func registerStateListener(){
-        print("Did register listener User")
         self.stopStateListener()
         self.handle = Auth.auth().addStateDidChangeListener({(auth, user) in
+            print("Auth state changed to user \(user)")
             self.postNotification(for: .authenticationServiceDidAuthStatusChange, withObject: user)
         })
     }

@@ -102,7 +102,6 @@ struct MainOnboardingAuthenticatedView: View {
     func getChangeStepButtons(for screenNumber: ScreenNumber, nextCallback: (() -> Void)? = nil, previousCallback: (() -> Void)? = nil) -> some View {
         return AnyView (
             HStack{
-                
                 if (self.screenNumber.rawValue > 0){
                     Image(systemName:"arrow.left")
                         .foregroundColor(Color.primaryColor)
@@ -346,7 +345,7 @@ struct MainOnboardingAuthenticatedView: View {
                     self.getChangeStepButtons(for: self.screenNumber, nextCallback: {
                         self.settingsViewModel.postDisplayType = .allPosts
                     }, previousCallback: {
-                        self.settingsViewModel.postDisplayType = .privatePosts
+                        self.settingsViewModel.postDisplayType = .allPosts
                     })
                 }
                 .foregroundColor(Color.white)
@@ -376,7 +375,9 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Spacer()
                     
-                    self.getChangeStepButtons(for: self.screenNumber)
+                    self.getChangeStepButtons(for: self.screenNumber, previousCallback: {
+                        self.settingsViewModel.postDisplayType = .privatePosts
+                    })
                 }
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
@@ -424,7 +425,9 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     Spacer()
                     
-                    self.getChangeStepButtons(for: self.screenNumber)
+                    self.getChangeStepButtons(for: self.screenNumber, nextCallback: {
+                        self.settingsViewModel.appArScnView.resetScene()
+                    })
                 }
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
@@ -436,7 +439,11 @@ struct MainOnboardingAuthenticatedView: View {
                     }.padding()
                     
                     Text("Note: imporve the line + change add a `Get started buttton`").onTapGesture {
+                        // mark authenticatedOnboarding & unauthenticatedOnboarding as done
                         self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: ScreenNumber.getMaxScreenNumber())
+                        self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
+                        
+                        self.settingsViewModel.startScene()
                     }
                     
                     Spacer()
@@ -450,7 +457,11 @@ struct MainOnboardingAuthenticatedView: View {
         }
         .padding(EdgeInsets(top: 100, leading: 5, bottom: 100, trailing: 5))
         .frame(width: self.parentSize.width, height: self.parentSize.height)
-        
+        .onAppear {
+            if (self.screenNumber.rawValue >= 2 && self.screenNumber.rawValue <= 14){
+                self.settingsViewModel.appArScnView.setupOnboardingNodes()
+            }
+        }
     }
     
     enum ScreenNumber: Int {

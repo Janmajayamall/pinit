@@ -20,17 +20,17 @@ struct MainArView: View {
     @ViewBuilder
     var body: some View {
         
-        if (self.settingsViewModel.screenManagementService.mainScreenService.activeType == .captureImageView) {           
+        if (self.settingsViewModel.screenManagementService.mainScreenService.activeType == .captureImageView) {
             CaptureImageView()
         }else {
             GeometryReader { geometryProxy in
                 ZStack{
                     
                     UIKitArSceneView(appArScnView: self.settingsViewModel.appArScnView)
+                                                        
+                    MainArViewIconsView(parentsSize: geometryProxy.size)
                     
                     MainOnboardingView(parentSize: geometryProxy.size)
-                    
-                    MainArViewIconsView(parentsSize: geometryProxy.size)
                                                         
                     MainArViewIndicatorsView(parentSize: geometryProxy.size)
                     

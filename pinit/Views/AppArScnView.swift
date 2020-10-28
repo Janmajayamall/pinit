@@ -216,6 +216,7 @@ class AppArScnView: ARSCNView {
     }
     
     func startSession(){
+        
         //configure AR session
         let configuration = ARWorldTrackingConfiguration()
         configuration.isLightEstimationEnabled = true

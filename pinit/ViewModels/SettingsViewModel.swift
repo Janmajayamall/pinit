@@ -19,11 +19,11 @@ class SettingsViewModel: ObservableObject {
     @Published var userPostCount: Int = 0
     
     // all indicators
-    @Published var internetErrorConnection: Bool = false
-    @Published var postsDoNotExist: Bool = false
+    @Published var internetErrorConnectionIndicator: Bool = false
+    @Published var postsDoNotExistIndicator: Int = 0
     @Published var loadIndicator: Int = 0
     @Published var uploadIndicator: Int = 0
-    @Published var refreshIndicator: Bool = false
+    @Published var refreshIndicator: Int = 0
     @Published var postDisplayNotification: Bool = false
     @Published var sceneDidResetNotification: Bool = false
     
@@ -109,16 +109,20 @@ class SettingsViewModel: ObservableObject {
         
         // start authentication service
         self.authenticationService.startService()
+        
         AnalyticsService.logAppOpenEvent()
         
-        self.appArScnView.startSession()
+        if (self.user != nil && self.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) < MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber()){
+            return
+        }
         
-//        self.onboardingViewModel.removeAllUserDefaults()
+        self.startScene()
+                
     }
     
     func startScene() {
         // start pulse loader
-        self.loadIndicator = 1
+        self.handleLoadIndicator()
         
         // start the session setup GroupSCNNodes in AppARSCNNodes
         self.appArScnView.startSession()
@@ -142,6 +146,18 @@ class SettingsViewModel: ObservableObject {
     
     func handleSceneWillResignActive() {
         self.stopScene()
+        
+        // reset default values
+        internetErrorConnectionIndicator = false
+        postsDoNotExistIndicator = 0
+        loadIndicator = 0
+        uploadIndicator = 0
+        refreshIndicator = 0
+        postDisplayNotification = false
+        sceneDidResetNotification = false
+        
+        postDisplayType = .allPosts
+        popUpWarningType = .none
     }
     
     func stopScene() {
@@ -166,17 +182,16 @@ class SettingsViewModel: ObservableObject {
     }
     
     func refreshScene() {
-        guard self.loadIndicator >= 0 && self.refreshIndicator == false else {return}
+        self.handleLoadIndicator()
         
-        // start pulse loader
-        self.loadIndicator = 1
-        
+        guard self.refreshIndicator == 0 else {return}
+    
         // REMOVE STUFF
         self.geohasingService.stopService()
         // remove GroupSCNNodes in AppArSCNNodes
         self.appArScnView.removeGroupNodes()
         
-        // START STUF
+        // START STUFF
         // add group scn nodes to the session
         self.appArScnView.setupGroupNodes(withInitialPostDisplayType: self.postDisplayType)
         // update blocked list
@@ -185,12 +200,9 @@ class SettingsViewModel: ObservableObject {
         self.geohasingService.startService()
         // notify current location from estimated user location
         self.estimatedUserLocationService.notifyCurrentLocation()
-        
+              
         // handle refresh
-        self.refreshIndicator = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
-            self.refreshIndicator = false
-        })
+        self.handleRefreshIndicator()
         
     }
     
@@ -198,8 +210,39 @@ class SettingsViewModel: ObservableObject {
         return self.user != nil
     }
     
+    func handleLoadIndicator() {
+        if (self.loadIndicator == 0){
+            self.loadIndicator = 1
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                self.loadIndicator = 0
+                if self.appArScnView.exisitingPosts.count == 0 {
+                    self.handlePostsDoNotExistIndicator()
+                }
+            })
+        }
+    }
+    
+    func handleRefreshIndicator() {
+        if (self.refreshIndicator == 0){
+            self.refreshIndicator = 1
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
+                self.refreshIndicator = 0
+            }
+        }
+    }
+    
+    func handlePostsDoNotExistIndicator() {
+        if (self.postsDoNotExistIndicator == 0){
+            self.postsDoNotExistIndicator = 1
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                self.postsDoNotExistIndicator = 0
+            })
+        }
+    }
+    
     func signOut() {
         // logging out from firebase auth
+        print("Did request sign out")
         self.authenticationService.signOut()
     }
     
@@ -275,17 +318,17 @@ extension SettingsViewModel {
     func subscribeToGeneralFunctionPublishers() {
         Publishers.generalFunctionDidFailInternetConnectionPublisher.sink { (value) in
             guard value == true else {return}
-            self.internetErrorConnection = true
+            self.internetErrorConnectionIndicator = true
             
             // make error false after sometime
             DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: {
-                self.internetErrorConnection = false
+                self.internetErrorConnectionIndicator = false
             })
         }.store(in: &cancellables)
-        
-        Publishers.generalFunctionManipulateTaskForLoadIndicatorPublisher.sink { (value) in
-            self.loadIndicator = 0
-        }.store(in: &cancellables)
+//
+//        Publishers.generalFunctionManipulateTaskForLoadIndicatorPublisher.sink { (value) in
+//            self.loadIndicator -= 1
+//        }.store(in: &cancellables)
         
         Publishers.generalFunctionManipulateTaskForUploadIndicatorPublisher.sink { (value) in
             guard value != 0 else {return}
@@ -298,17 +341,16 @@ extension SettingsViewModel {
                 self.uploadIndicator = 0
             }
         }.store(in: &cancellables)
-        
-        Publishers.generalFunctionPostsDoNotExistForCurrentLocationPublisher.sink { (value) in
-            guard value == true else {return}
-            
-            self.loadIndicator = 0
-            self.postsDoNotExist = true
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                self.postsDoNotExist = false
-            })
-        }.store(in: &cancellables)
+//
+//        Publishers.generalFunctionPostsDoNotExistForCurrentLocationPublisher.sink { (value) in
+//            guard value == true else {return}
+//
+//            self.postsDoNotExistIndicator = true
+//
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+//                self.postsDoNotExistIndicator = false
+//            })
+//        }.store(in: &cancellables)
     }
     
     func subscribeToBlockUsersServicePublishers() {

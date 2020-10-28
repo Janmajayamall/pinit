@@ -106,6 +106,7 @@
 		5DE94F9824F5B392005F0A04 /* MoreSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */; };
 		5DEA78DE25168BB50041D7AF /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */; };
 		5DF22C25253EC78D00DB0634 /* TermsAndConditionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF22C24253EC78D00DB0634 /* TermsAndConditionsView.swift */; };
+		5DFB568B254991B7008DEBEC /* CameraFeedOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB568A254991B7008DEBEC /* CameraFeedOnboardingView.swift */; };
 		8B2813A09E29DD2A7F2CBF99 /* Pods_pinit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 318E6C59873C63300C098297 /* Pods_pinit.framework */; };
 		8EBDEFB41746196A0D37916B /* Pods_pinit_pinitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BC157B5C6AE3C2CD00E35AB /* Pods_pinit_pinitUITests.framework */; };
 /* End PBXBuildFile section */
@@ -241,6 +242,7 @@
 		5DE94F9724F5B392005F0A04 /* MoreSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreSettingsViewModel.swift; sourceTree = "<group>"; };
 		5DEA78DD25168BB50041D7AF /* AnalyticsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		5DF22C24253EC78D00DB0634 /* TermsAndConditionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsAndConditionsView.swift; sourceTree = "<group>"; };
+		5DFB568A254991B7008DEBEC /* CameraFeedOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedOnboardingView.swift; sourceTree = "<group>"; };
 		9BC157B5C6AE3C2CD00E35AB /* Pods_pinit_pinitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_pinit_pinitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B61EBD27B9D749860513D9D2 /* Pods-pinitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinitTests.debug.xcconfig"; path = "Target Support Files/Pods-pinitTests/Pods-pinitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D95108D2E4FCA5D767CFA1BA /* Pods-pinit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-pinit.release.xcconfig"; path = "Target Support Files/Pods-pinit/Pods-pinit.release.xcconfig"; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 				5D2C93C825455CDD00C97FDA /* MainOnboardingView.swift */,
 				5D2C93CC2545687300C97FDA /* MainArViewIconsView.swift */,
 				5D2C93CE2545696D00C97FDA /* MainArViewIndicatorsView.swift */,
+				5DFB568A254991B7008DEBEC /* CameraFeedOnboardingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -886,6 +889,7 @@
 				5D564F4024F2829300962CEF /* IconViewModifiers.swift in Sources */,
 				5D52F7BD24E951AD00D9F27E /* Color+Extensions.swift in Sources */,
 				5DEA78DE25168BB50041D7AF /* AnalyticsService.swift in Sources */,
+				5DFB568B254991B7008DEBEC /* CameraFeedOnboardingView.swift in Sources */,
 				5D5245FD24F4555E0000317D /* SetupProfileViewModel.swift in Sources */,
 				5D275502252E635600F5F2AA /* ReportUserModel.swift in Sources */,
 				5D2754FA252E572300F5F2AA /* FeedbackModel.swift in Sources */,

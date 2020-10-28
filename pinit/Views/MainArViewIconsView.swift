@@ -13,74 +13,7 @@ struct MainArViewIconsView: View {
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     
     var parentsSize: CGSize
-    
-    func checkIconStatus(for iconType: MainArViewIconsType) -> IconStatusType {
-        guard (self.settingsViewModel.popUpWarningType == .none) else {
-            return .none
-        }
-        
-        guard (self.settingsViewModel.user != nil) else {
-            if (iconType == .gear || iconType == .mappinAndEllipse || iconType == .arrowLeft){
-                return .active
-            }
-            return .none
-        }
-        
-        let mainArViewOnboardingStatus = self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView)
-        
-        guard mainArViewOnboardingStatus < MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber() else {
-            return .active
-        }
-        
-        switch iconType {
-        case .arrowCounterclockwise:
-            if (mainArViewOnboardingStatus >= 13){
-                return .onlyVisible
-            }
-            return .none
-        case .gear:
-            if (mainArViewOnboardingStatus >= 13){
-                return .onlyVisible
-            }
-            return .none
-        case .cameraFill:
-            if (mainArViewOnboardingStatus >= 14){
-                return .onlyVisible
-            }
-            return .none
-        case .arrowLeft:
-            if (mainArViewOnboardingStatus >= 9){
-                return .active
-            }
-            return .none
-        case .mappinAndEllipse:
-            if (mainArViewOnboardingStatus >= 9){
-                return .active
-            }
-            return .none
-        case .privateOrPersonal:
-            if (mainArViewOnboardingStatus >= 10){
-                return .active
-            }
-            return .none
-        }
-    }
-    
-    enum MainArViewIconsType: String {
-        case arrowCounterclockwise = "arrow.counterclockwise"
-        case gear
-        case cameraFill = "camera.fill"
-        case arrowLeft = "arrow.left"
-        case mappinAndEllipse = "mappin.and.ellipse"
-        case privateOrPersonal
-    }
-    
-    enum IconStatusType {
-        case onlyVisible
-        case active
-        case none
-    }
-    
+                  
     var body: some View {
         VStack{
             HStack{
@@ -101,7 +34,7 @@ struct MainArViewIconsView: View {
                     .cornerRadius(10)
                     .applyEdgePadding(for: .topLeft)
                     .onTapGesture {
-                        guard self.areButtonsActive() else {return}
+                        guard self.checkIconStatus(for: .privateOrPersonal) == .active else {return}
                         
                         if self.settingsViewModel.isUserAuthenticated() {
                             
@@ -139,7 +72,7 @@ struct MainArViewIconsView: View {
                             .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                             .onTapGesture {
                                 guard self.checkIconStatus(for: .gear) == .active else {return}
-                                
+                                print("did press gear icon")
                                 if self.settingsViewModel.isUserAuthenticated() {
                                     self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .profile)
                                 }else {
@@ -161,9 +94,6 @@ struct MainArViewIconsView: View {
                                 guard self.checkIconStatus(for: .cameraFill) == .active else {return}
                                 
                                 if self.settingsViewModel.isUserAuthenticated() {
-                                    //                                        // stop session
-                                    //                                        self.settingsViewModel.appArScnView.pauseSession()
-                                    
                                     self.settingsViewModel.screenManagementService.mainScreenService.switchTo(screenType: .captureImageView)
                                 }else {
                                     self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
@@ -214,9 +144,71 @@ struct MainArViewIconsView: View {
         }.frame(width: self.parentsSize.width, height: self.parentsSize.height, alignment: .top)
     }
     
-    func areButtonsActive() -> Bool {
-        // checking for no pop up warning
-        return self.settingsViewModel.popUpWarningType == .none
+    func checkIconStatus(for iconType: MainArViewIconsType) -> IconStatusType {
+           guard (self.settingsViewModel.popUpWarningType == .none) else {
+               return .none
+           }
+           
+           guard (self.settingsViewModel.user != nil) else {
+               if (iconType == .gear || iconType == .mappinAndEllipse || iconType == .arrowLeft){
+                   return .active
+               }
+               return .none
+           }
+           
+           let mainArViewOnboardingStatus = self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView)
+           
+           guard mainArViewOnboardingStatus < MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber() else {
+               return .active
+           }
+           
+           switch iconType {
+           case .arrowCounterclockwise:
+               if (mainArViewOnboardingStatus >= 13){
+                   return .onlyVisible
+               }
+               return .none
+           case .gear:
+               if (mainArViewOnboardingStatus >= 13){
+                   return .onlyVisible
+               }
+               return .none
+           case .cameraFill:
+               if (mainArViewOnboardingStatus >= 14){
+                   return .onlyVisible
+               }
+               return .none
+           case .arrowLeft:
+               if (mainArViewOnboardingStatus >= 9){
+                   return .active
+               }
+               return .none
+           case .mappinAndEllipse:
+               if (mainArViewOnboardingStatus >= 9){
+                   return .active
+               }
+               return .none
+           case .privateOrPersonal:
+               if (mainArViewOnboardingStatus >= 10){
+                   return .active
+               }
+               return .none
+           }
+       }
+    
+    enum MainArViewIconsType: String {
+        case arrowCounterclockwise = "arrow.counterclockwise"
+        case gear
+        case cameraFill = "camera.fill"
+        case arrowLeft = "arrow.left"
+        case mappinAndEllipse = "mappin.and.ellipse"
+        case privateOrPersonal
+    }
+    
+    enum IconStatusType {
+        case onlyVisible
+        case active
+        case none
     }
 }
 

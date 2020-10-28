@@ -226,7 +226,7 @@ class GroupSCNNode: SCNNode, Identifiable, AppSCNNode {
         if (scale > 1){
             self.fixedImageWidth += 0.05
         }else {
-            if (self.fixedImageWidth > 0.05){
+            if (self.fixedImageWidth > 0.1){
                 self.fixedImageWidth -= 0.05
             }
         }

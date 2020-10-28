@@ -17,7 +17,7 @@ struct MainArViewIndicatorsView: View {
     
     var body: some View {
         ZStack{
-            if (self.settingsViewModel.internetErrorConnection == true){
+            if (self.settingsViewModel.internetErrorConnectionIndicator == true){
                 VStack {
                     Spacer()
                     HStack{
@@ -33,56 +33,55 @@ struct MainArViewIndicatorsView: View {
                     .animation(.spring())
             }
             
-            if (self.settingsViewModel.postsDoNotExist == true || self.settingsViewModel.postDisplayNotification == true || self.settingsViewModel.sceneDidResetNotification == true){
-                VStack {
-                    Spacer()
-                    if (self.settingsViewModel.postsDoNotExist == true){
-                        HStack{
-                            Spacer()
-                            VStack{
-                                Text("No captured moments around you.")
-                                Text("Be the first one?")
-                            }
+            VStack {
+                Spacer()
+                if (self.settingsViewModel.postsDoNotExistIndicator > 0){
+                    HStack{
+                        Spacer()
+                        VStack{
+                            Text("No captured moments around you.")
+                            Text("Be the first one?")
+                        }
+                        .foregroundColor(Color.white)
+                        .font(Font.custom("Avenir", size: 17).bold())
+                        .multilineTextAlignment(.center)
+                        .padding(10)
+                        .background(Color.black.opacity(0.3))
+                        .cornerRadius(10)
+                        
+                        Spacer()
+                    }.padding(5)
+                }
+                if (self.settingsViewModel.postDisplayNotification == true){
+                    HStack{
+                        Spacer()
+                        Text(self.settingsViewModel.postDisplayType == .allPosts ? "Normal View" : "Personal View")
                             .foregroundColor(Color.white)
-                            .font(Font.custom("Avenir", size: 17).bold())
-                            .multilineTextAlignment(.center)
+                            .font(Font.custom("Avenir", size: 20).bold())
                             .padding(10)
                             .background(Color.black.opacity(0.3))
                             .cornerRadius(10)
-                            
-                            Spacer()
-                        }.padding(5)
-                    }
-                    if (self.settingsViewModel.postDisplayNotification == true){
-                        HStack{
-                            Spacer()
-                            Text(self.settingsViewModel.postDisplayType == .allPosts ? "Normal View" : "Personal View")
-                                .foregroundColor(Color.white)
-                                .font(Font.custom("Avenir", size: 20).bold())
-                                .padding(10)
-                                .background(Color.black.opacity(0.3))
-                                .cornerRadius(10)
-                            Spacer()
-                        }.padding(5)
-                    }
-                    if (self.settingsViewModel.sceneDidResetNotification == true){
-                        HStack{
-                            Spacer()
-                            Text("Did reset scene")
-                                .foregroundColor(Color.white)
-                                .font(Font.custom("Avenir", size: 20).bold())
-                                .padding(10)
-                                .background(Color.black.opacity(0.3))
-                                .cornerRadius(10)
-                            Spacer()
-                        }.padding(5)
-                    }
-                    Spacer()
-                }.frame(width: self.parentSize.width, height: self.parentSize.height, alignment: .top)
-                    .animation(.easeIn)
-            }
+                        Spacer()
+                    }.padding(5)
+                }
+                if (self.settingsViewModel.sceneDidResetNotification == true){
+                    HStack{
+                        Spacer()
+                        Text("Did reset scene")
+                            .foregroundColor(Color.white)
+                            .font(Font.custom("Avenir", size: 20).bold())
+                            .padding(10)
+                            .background(Color.black.opacity(0.3))
+                            .cornerRadius(10)
+                        Spacer()
+                    }.padding(5)
+                }
+                Spacer()
+            }.frame(width: self.parentSize.width, height: self.parentSize.height, alignment: .top)
+                .animation(.easeIn)
             
-            if (self.settingsViewModel.loadIndicator > 0 || self.settingsViewModel.refreshIndicator == true){
+            
+            if (self.settingsViewModel.loadIndicator > 0){
                 PulseLoader(parentSize: self.parentSize)
             }
             
@@ -117,8 +116,6 @@ struct MainArViewIndicatorsView: View {
                     .background(Color.black.opacity(0.4))
                 }.frame(width: self.parentSize.width, height: self.parentSize.height, alignment: .top)
             }
-            
-            
         }.frame(width: parentSize.width, height: parentSize.height)
     }
 }
