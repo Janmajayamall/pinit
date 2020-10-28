@@ -46,8 +46,6 @@ struct MainOnboardingUnAuthenticatedView: View {
                     .applyDefaultThemeToTextHeader(ofType: .h1)
             }
             .padding()
-            .cornerRadius(10)
-            .padding()
             
             VStack{
                 Text("An app to Capture, Share, and Explore amazing moments!")
@@ -56,38 +54,48 @@ struct MainOnboardingUnAuthenticatedView: View {
                     .multilineTextAlignment(.center)
             }
             .padding()
-            .cornerRadius(10)
-            .padding()
             
-            VStack{
-                VStack{
-                    HStack{
-                        Text("Tap on")
-                        Image(systemName:"gear")
-                            .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                        Text("on top right")
-                    }
-                    HStack{
-                        Text("to Continue")
-                    }
-                }
-                .foregroundColor(Color.white)
-                .font(Font.custom("Avenir", size: 20).bold())
-            }
-            .padding()
-            .cornerRadius(10)
-            .padding()
+            Button(action: {
+                 self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
+            }, label: {
+                Text("Sign Up")
+            })
+                .buttonStyle(LiveViewButtonStyle(backgroundColor: .black))
+                .padding()
+            //
+            //            VStack{
+            //                VStack{
+            //                    HStack{
+            //                        Text("Tap on")
+            //                        Image(systemName:"gear")
+            //                            .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+            //                        Text("on top right")
+            //                    }
+            //                    HStack{
+            //                        Text("to Continue")
+            //                    }
+            //                }
+            //                .foregroundColor(Color.white)
+            //                .font(Font.custom("Avenir", size: 20).bold())
+            //            }
+            //            .padding()
+            //            .cornerRadius(10)
+            //            .padding()
+            //
+            Spacer()
             
-            Image(systemName:"checkmark")
-                .font(Font.system(size: 25, weight: .heavy))
-                .foregroundColor(Color.white)
+            Image(systemName:"xmark")
+                .foregroundColor(Color.primaryColor)
+                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                 .padding()
                 .onTapGesture {
-                    
+                    self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
             }
             
-        }.frame(width: self.parentSize.width, height: self.parentSize.height)
-            .background(Color.black.opacity(0.5))
+        }
+        .padding(EdgeInsets(top: 100, leading: 5, bottom: 100, trailing: 5))
+        .frame(width: self.parentSize.width, height: self.parentSize.height)
+        .background(Color.black.opacity(0.5))
     }
 }
 
@@ -149,19 +157,14 @@ struct MainOnboardingAuthenticatedView: View {
                             .foregroundColor(Color.white)
                         Text("\(self.settingsViewModel.userProfile!.username)")
                             .foregroundColor(Color.primaryColor)
-                        
-                        
                     }.applyDefaultThemeToTextHeader(ofType: .h1)
-                        .padding()
+                        .applyLiveFeedTextModifier()
                     
                     VStack{
                         Text("Thanks for Signing up!")
                         Text("Right now you are viewing your surroundings through FinchIt.")
                     }
-                    .foregroundColor(Color.white)
-                    .font(Font.custom("Avenir", size: 20).bold())
-                    .multilineTextAlignment(.center)
-                    .padding()
+                    .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -171,10 +174,7 @@ struct MainOnboardingAuthenticatedView: View {
             }else if (self.screenNumber == .one){
                 VStack{
                     Text("That means all moments captured in a photo or a video, by you or anyone, within a few meters of your current location will float in front of you.")
-                        .foregroundColor(Color.white)
-                        .font(Font.custom("Avenir", size: 20).bold())
-                        .multilineTextAlignment(.center)
-                        .padding()
+                        .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -184,13 +184,13 @@ struct MainOnboardingAuthenticatedView: View {
                 }
             }else if (self.screenNumber == .two){
                 VStack{
-                    Text("Like this...LITERALLY FLOATING!")
-                        .foregroundColor(Color.white)
-                        .font(Font.custom("Avenir", size: 20).bold())
-                        .multilineTextAlignment(.center)
-                        .padding()
+                    Text("Like this...")
+                        .applyLiveFeedTextModifier()
                     
                     Spacer()
+                    
+                    Text("LITERALLY FLOATING!")
+                        .applyLiveFeedTextModifier()
                     
                     self.getChangeStepButtons(for: self.screenNumber, previousCallback: {
                         self.settingsViewModel.appArScnView.resetScene()
@@ -199,10 +199,7 @@ struct MainOnboardingAuthenticatedView: View {
             }else if (self.screenNumber == .three){
                 VStack{
                     Text("That's right! You can see yours and others' amazing moments captured right at your current location, floating in front of you.")
-                        .foregroundColor(Color.white)
-                        .font(Font.custom("Avenir", size: 20).bold())
-                        .multilineTextAlignment(.center)
-                        .padding()
+                        .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -211,10 +208,7 @@ struct MainOnboardingAuthenticatedView: View {
             }else if (self.screenNumber == .four){
                 VStack{
                     Text("This makes FinchIt damn interesting and fun to play with!")
-                        .foregroundColor(Color.white)
-                        .font(Font.custom("Avenir", size: 20).bold())
-                        .multilineTextAlignment(.center)
-                        .padding()
+                        .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -223,10 +217,7 @@ struct MainOnboardingAuthenticatedView: View {
             }else if (self.screenNumber == .five){
                 VStack{
                     Text("You can tap on floating moments to see more of them available at your location.")
-                        .foregroundColor(Color.white)
-                        .font(Font.custom("Avenir", size: 20).bold())
-                        .multilineTextAlignment(.center)
-                        .padding()
+                        .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -235,10 +226,7 @@ struct MainOnboardingAuthenticatedView: View {
             }else if (self.screenNumber == .six){
                 VStack{
                     Text("You can drag them around.")
-                        .foregroundColor(Color.white)
-                        .font(Font.custom("Avenir", size: 20).bold())
-                        .multilineTextAlignment(.center)
-                        .padding()
+                        .applyLiveFeedTextModifier()
                 }
                 
                 Spacer()
@@ -248,10 +236,7 @@ struct MainOnboardingAuthenticatedView: View {
             else if (self.screenNumber == .seven){
                 VStack{
                     Text("You can zoom in and zoom out on them")
-                        .foregroundColor(Color.white)
-                        .font(Font.custom("Avenir", size: 20).bold())
-                        .multilineTextAlignment(.center)
-                        .padding()
+                        .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -260,10 +245,7 @@ struct MainOnboardingAuthenticatedView: View {
             }else if (self.screenNumber == .eight){
                 VStack{
                     Text("You can tap and hold to see captions & who captured them.")
-                        .foregroundColor(Color.white)
-                        .font(Font.custom("Avenir", size: 20).bold())
-                        .multilineTextAlignment(.center)
-                        .padding()
+                        .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -279,10 +261,7 @@ struct MainOnboardingAuthenticatedView: View {
                         }
                         Text("on bottom right to bring them back in front of you as before.")
                     }
-                    .foregroundColor(Color.white)
-                    .font(Font.custom("Avenir", size: 20).bold())
-                    .multilineTextAlignment(.center)
-                    .padding()
+                    .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -302,16 +281,7 @@ struct MainOnboardingAuthenticatedView: View {
                         }
                         Text("indicates you are in Public View, which means you see captured moment by you and others")
                     }
-                    .foregroundColor(Color.white)
-                    .font(Font.custom("Avenir", size: 20).bold())
-                    .padding()
-                    
-                    Text("")
-                        .foregroundColor(Color.white)
-                        .font(Font.custom("Avenir", size: 20).bold())
-                        .multilineTextAlignment(.center)
-                        .padding()
-                    
+                    .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -335,10 +305,7 @@ struct MainOnboardingAuthenticatedView: View {
                         }
                         Text("indicates you are in Personal view, which means you only see your captured moments")
                     }
-                    .foregroundColor(Color.white)
-                    .font(Font.custom("Avenir", size: 20).bold())
-                    .multilineTextAlignment(.center)
-                    .padding()
+                    .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -354,24 +321,25 @@ struct MainOnboardingAuthenticatedView: View {
             }
             else if (self.screenNumber == .twelve){
                 VStack{
-                    Text("You can toggle toggle between").padding()
+                    Text("You can toggle toggle between") .applyLiveFeedTextModifier()
                     
                     VStack{
                         Image("IconTransparent").resizable().frame(width: 50, height: 50)
                             .clipped()
                             .background(Color.black.opacity(0.1))
                             .cornerRadius(10)
-                        Text("AND")
+                        Text("AND").applyLiveFeedTextModifier()
                         HStack{
                             Image("IconTransparent").resizable().frame(width: 50, height: 50).clipped()
                             Text("🔒")
                         }
                         .background(Color.black.opacity(0.1))
                         .cornerRadius(10)
-                    }.padding()
+                    }
                     
                     
-                    Text("by tapping on them").padding()
+                    Text("by tapping on them")
+                        .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -379,9 +347,6 @@ struct MainOnboardingAuthenticatedView: View {
                         self.settingsViewModel.postDisplayType = .privatePosts
                     })
                 }
-                .foregroundColor(Color.white)
-                .font(Font.custom("Avenir", size: 20).bold())
-                .multilineTextAlignment(.center)
             }else if (self.screenNumber == .thirteen){
                 VStack{
                     VStack{
@@ -390,19 +355,21 @@ struct MainOnboardingAuthenticatedView: View {
                             Text("tap on")
                             Image(systemName:"gear")
                                 .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                            Text("on top right")
                         }
-                    }.padding()
+                        Text("on top right")
+                    }
+                    .applyLiveFeedTextModifier()
                     
                     VStack{
-                     Text("To refresh")
+                        Text("To refresh")
                         HStack{
                             Text("tap on")
                             Image(systemName:"arrow.counterclockwise")
                                 .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                             Text("to the left of settings")
                         }
-                    }.padding()
+                        Text("to the left of settings")
+                    }
+                    .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -421,7 +388,8 @@ struct MainOnboardingAuthenticatedView: View {
                                 .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
                             Text("on bottom left")
                         }
-                    }.padding()
+                    }
+                    .applyLiveFeedTextModifier()
                     
                     Spacer()
                     
@@ -434,20 +402,28 @@ struct MainOnboardingAuthenticatedView: View {
                 .multilineTextAlignment(.center)
             }else if (self.screenNumber == .fifteen){
                 VStack{
-                    VStack{
-                        Text("That's it for now! Now its youe turn to Capture, Share, and Explore amazing moments with FinchIt")
-                    }.padding()
                     
-                    Text("Note: imporve the line + change add a `Get started buttton`").onTapGesture {
+                    Text("That's it for now! Now its youe turn to Capture, Share, and Explore amazing moments with FinchIt")
+                        .applyLiveFeedTextModifier()
+                    
+                    
+                    Button(action: {
                         // mark authenticatedOnboarding & unauthenticatedOnboarding as done
                         self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: ScreenNumber.getMaxScreenNumber())
                         self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
                         
+                        // reset the scene
                         self.settingsViewModel.startScene()
-                    }
+                        
+                        self.settingsViewModel.startScene()
+                    }, label: {
+                        Text("Get started with FinchIt!")
+                    })
+                        .buttonStyle(LiveViewButtonStyle(backgroundColor: .black))
+                        .padding()
                     
                     Spacer()
-                                           
+                    
                     self.getChangeStepButtons(for: self.screenNumber)
                 }
                 .foregroundColor(Color.white)

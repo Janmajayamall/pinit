@@ -72,6 +72,7 @@
 		5D567CF924F4340F00283E5B /* SoftEdgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D567CF824F4340F00283E5B /* SoftEdgeButton.swift */; };
 		5D567CFB24F43BB500283E5B /* CustomButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D567CFA24F43BB500283E5B /* CustomButtonStyles.swift */; };
 		5D576A3824F1A465004A004C /* EmailAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D576A3724F1A465004A004C /* EmailAuthenticationView.swift */; };
+		5D5F3241254A16A300901B9F /* LiveFeedModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5F3240254A16A300901B9F /* LiveFeedModifiers.swift */; };
 		5D67E7EF24E84E6C00F5D240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E7EE24E84E6C00F5D240 /* AppDelegate.swift */; };
 		5D67E7F124E84E6C00F5D240 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E7F024E84E6C00F5D240 /* SceneDelegate.swift */; };
 		5D67E7F524E84E7000F5D240 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D67E7F424E84E7000F5D240 /* Assets.xcassets */; };
@@ -200,6 +201,7 @@
 		5D567CF824F4340F00283E5B /* SoftEdgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftEdgeButton.swift; sourceTree = "<group>"; };
 		5D567CFA24F43BB500283E5B /* CustomButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonStyles.swift; sourceTree = "<group>"; };
 		5D576A3724F1A465004A004C /* EmailAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthenticationView.swift; sourceTree = "<group>"; };
+		5D5F3240254A16A300901B9F /* LiveFeedModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveFeedModifiers.swift; sourceTree = "<group>"; };
 		5D67E7EB24E84E6C00F5D240 /* FinchIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinchIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D67E7EE24E84E6C00F5D240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D67E7F024E84E6C00F5D240 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -515,6 +517,7 @@
 				5D564F3F24F2829300962CEF /* IconViewModifiers.swift */,
 				5D567CFA24F43BB500283E5B /* CustomButtonStyles.swift */,
 				5D2ED1F724FD0D3C00C542B0 /* TextViewModifiers.swift */,
+				5D5F3240254A16A300901B9F /* LiveFeedModifiers.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -884,6 +887,7 @@
 				5D4DD09F24ED2A1200E1FDF3 /* CaptureImageView.swift in Sources */,
 				5D4DD0A224ED34B300E1FDF3 /* PathDrawing.swift in Sources */,
 				5D567CF924F4340F00283E5B /* SoftEdgeButton.swift in Sources */,
+				5D5F3241254A16A300901B9F /* LiveFeedModifiers.swift in Sources */,
 				5D2ED1FA24FD1B5F00C542B0 /* CustomTextFieldView.swift in Sources */,
 				5DC8527924EFED2300E36DCE /* KeyboardAwareViewModifiers.swift in Sources */,
 				5D564F4024F2829300962CEF /* IconViewModifiers.swift in Sources */,

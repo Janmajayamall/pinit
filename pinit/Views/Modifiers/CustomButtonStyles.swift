@@ -6,6 +6,7 @@
 //  Copyright © 2020 Janmajaya Mall. All rights reserved.
 //
 
+
 import Foundation
 import SwiftUI
 
@@ -36,6 +37,20 @@ struct LeanOutlineColoredButtonStyle: ButtonStyle {
             .padding(EdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
             .opacity(configuration.isPressed ? 0.7 : 1)
             .animation(.easeInOut(duration: 0.2))
+    }
+}
+
+struct LiveViewButtonStyle: ButtonStyle {
+    
+    var backgroundColor: Color
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundColor(Color.white)
+        .font(Font.custom("Avenir", size: 20).bold())
+        .padding()
+            .background(Color.primaryColor.opacity(1))
+        .cornerRadius(10)
     }
 }
 

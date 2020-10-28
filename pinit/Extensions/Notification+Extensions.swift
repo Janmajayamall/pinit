@@ -39,7 +39,7 @@ extension Notification.Name {
     
     // notifications for AR View
     static let aRViewDidRequestResetMainView = Notification.Name("aRViewDidRequestResetMainView")
-    static let aRViewDidRequestResetGroupNodesPos = Notification.Name("aRViewDidRequestResetGroupNodesPos")
+    static let aRViewResetNodesPostion = Notification.Name("aRViewResetNodesPostion")
     static let aRViewUserDidTapView = Notification.Name("aRViewUserDidTapView")
     static let aRViewDidTapBackIcon = Notification.Name("aRViewDidTapBackIcon")
     

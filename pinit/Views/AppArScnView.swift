@@ -224,9 +224,20 @@ class AppArScnView: ARSCNView {
         configuration.worldAlignment = .gravity
         
         //run the session
-        self.session.run(configuration)
+        self.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
     }
+//
+//    /// Restart reset the initial postion of AR Scene to current position of device.
+//    /// That means this can be used for placing the nodes in front of the user again.
+//    func restartSession() {
+//        //configure AR session
+//        let configuration = ARWorldTrackingConfiguration()
+//        configuration.isLightEstimationEnabled = true
+//
+//        configuration.worldAlignment = .gravity
+//        self.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+//    }
     
     func pauseSession(){        
         self.session.pause()
@@ -235,6 +246,9 @@ class AppArScnView: ARSCNView {
     func setupOnboardingNodes() {
         // reset the scene
         self.resetScene()
+        
+        // start the scene
+        self.startSession()
         
         // change status type to onboarding
         self.appArScnStatus = .onboarding
@@ -253,9 +267,11 @@ class AppArScnView: ARSCNView {
     }
     
     func setupGroupNodes(withInitialPostDisplayType initialPostDisplayType: PostDisplayType) {
-        
         // reset scene
         self.resetScene()
+        
+        // the session
+        self.startSession()
         
         // change scn status to normal
         self.appArScnStatus = .normal
@@ -272,39 +288,34 @@ class AppArScnView: ARSCNView {
         }
     }
     
-    func removeGroupNodes() {        
-        // remove children of mainSceneNode
-        self.mainSceneNode?.childNodes.forEach({ (node) in
-            node.removeFromParentNode()
-        })
-        
-        // empty groupNodes dict, exisiting posts & rest
-        self.groupNodes.removeAll()
-        self.exisitingPosts.removeAll()
-        self.addPostToGroupOfDirection = .front
-        self.postsWithLoadedDisplayData = 0
-    }
-    
     func resetScene() {
         // change scn status to none
         self.appArScnStatus = .none
         
-        // remove exisitng child nodes
+        // removing nodes
+        self.groupNodes.removeAll()
+        self.onboardingNodes.removeAll()
+        self.exisitingPosts.removeAll()
+        self.addPostToGroupOfDirection = .front
+        
+        // remove all nodes from mainSceneNode=
         self.mainSceneNode?.childNodes.forEach({ (node) in
             node.removeFromParentNode()
         })
         
-        //configure AR session
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.isLightEstimationEnabled = true
-        
-        configuration.worldAlignment = .gravity
-        self.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        self.pauseSession()
     }
     
-    func resetGroupNodesPositions() {
+    func resetNodesPosition() {
+        // restart the session
+        self.startSession()
+        
+        // set nodes position to according to current position
+        self.onboardingNodes.values.forEach { (node) in
+            node.placeNode(scenePostion: self.currentPosition)
+        }
         self.groupNodes.values.forEach { (node) in
-            node.resetNodePos(scenePosition: self.currentPosition)
+            node.placeNode(scenePosition: self.currentPosition)
         }
     }
     
@@ -364,7 +375,7 @@ extension AppArScnView {
     // RetrievePostService
     func subscribeToRetrievePostServicePublishers(){
         Publishers.retrievePostServiceDidReceivePostsForGeohashes.sink { (posts) in
-            
+            print("did recv retrieved posts \(posts.count)")
             posts.forEach { (post) in
                 self.addPostToGroupNode(post: post)
             }
@@ -383,9 +394,9 @@ extension AppArScnView {
     
     // subscribe to arView publishers
     func subscribeToArViewPublishers() {
-        Publishers.aRViewDidRequestResetGroupNodesPosPublisher.sink { (value) in
+        Publishers.aRViewResetNodesPostionPublisher.sink { (value) in
             guard value == true else {return}
-            self.resetGroupNodesPositions()
+            self.resetNodesPosition()
         }.store(in: &cancellables)
         
         Publishers.aRViewDidTapBackIconPublisher.sink { (value) in

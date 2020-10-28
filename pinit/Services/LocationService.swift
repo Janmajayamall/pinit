@@ -42,7 +42,7 @@ class LocationService: NSObject {
     
     func setupService(){}
     
-    func startService(){
+    func startService(){       
         self.activateLocationUpdates()
     }
     

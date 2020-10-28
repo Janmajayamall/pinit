@@ -124,11 +124,11 @@ struct MainArViewIconsView: View {
                                     guard self.checkIconStatus(for: .mappinAndEllipse) == .active else {return}
                                     
                                     // notifiy app ar scene to reset group scn nodes positions
-                                    NotificationCenter.default.post(name: .aRViewDidRequestResetGroupNodesPos, object: true)
+                                    NotificationCenter.default.post(name: .aRViewResetNodesPostion, object: true)
                                     
-                                    self.settingsViewModel.sceneDidResetNotification = true
+                                    self.settingsViewModel.resetNodePositionNotification = true
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                        self.settingsViewModel.sceneDidResetNotification = false
+                                        self.settingsViewModel.resetNodePositionNotification = false
                                     })
                             }
                             

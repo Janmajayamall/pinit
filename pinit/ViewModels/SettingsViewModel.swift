@@ -25,7 +25,7 @@ class SettingsViewModel: ObservableObject {
     @Published var uploadIndicator: Int = 0
     @Published var refreshIndicator: Int = 0
     @Published var postDisplayNotification: Bool = false
-    @Published var sceneDidResetNotification: Bool = false
+    @Published var resetNodePositionNotification: Bool = false
     
     @Published var postDisplayType: PostDisplayType = .allPosts
     @Published var popUpWarningType: PopUpWarningType = .none
@@ -65,7 +65,9 @@ class SettingsViewModel: ObservableObject {
         self.geohasingService.setupService()
         self.estimatedUserLocationService.setupService()
         self.locationService.setupService()
-        //        self.authenticationService.setupService()
+        self.authenticationService.setupService()
+        
+        self.locationService.startService()
     }
     
     func checkDevicePermissions() -> Bool {
@@ -102,30 +104,29 @@ class SettingsViewModel: ObservableObject {
         return cameraAuthorised && locationAuthorised
     }     
     
-    func handleSceneDidBecomeActive() {        
+    func handleSceneDidBecomeActive() {
         guard self.checkDevicePermissions() else {
             return
         }
         
-        // start authentication service
-        self.authenticationService.startService()
-        
         AnalyticsService.logAppOpenEvent()
+        
+        self.onboardingViewModel.removeAllUserDefaults()
+        
+        self.startScene()
+    }
+    
+    func startScene() {
+        self.appArScnView.startSession()
         
         if (self.user != nil && self.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) < MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber()){
             return
         }
         
-        self.startScene()
-                
-    }
-    
-    func startScene() {
         // start pulse loader
         self.handleLoadIndicator()
         
         // start the session setup GroupSCNNodes in AppARSCNNodes
-        self.appArScnView.startSession()
         self.appArScnView.setupGroupNodes(withInitialPostDisplayType: self.postDisplayType)
         
         // update blocked list
@@ -134,11 +135,7 @@ class SettingsViewModel: ObservableObject {
         // start geohashing service
         self.geohasingService.startService()
         
-        // start estimated location service
-        self.estimatedUserLocationService.startService()
-        
-        // start location service
-        self.locationService.startService()
+        self.estimatedUserLocationService.notifyCurrentLocation()
         
         // update user last active & log app open event
         self.userProfileService.updateUserActiveData()
@@ -147,6 +144,33 @@ class SettingsViewModel: ObservableObject {
     func handleSceneWillResignActive() {
         self.stopScene()
         
+        self.resetDefaults()
+    }
+    
+    func stopScene() {
+        // mute all av player
+        NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: nil)
+        
+        // stop session & remove GroupSCNNodes in AppARSCNNodes
+        self.appArScnView.resetScene()
+    }
+    
+    func refreshScene() {
+        self.handleLoadIndicator()
+        
+        guard self.refreshIndicator == 0 else {return}
+             
+        // start geohashing service
+        self.geohasingService.startService()
+        // notify current location from estimated user location
+        self.estimatedUserLocationService.notifyCurrentLocation()
+        
+        // handle refresh
+        self.handleRefreshIndicator()
+        
+    }
+    
+    func resetDefaults() {
         // reset default values
         internetErrorConnectionIndicator = false
         postsDoNotExistIndicator = 0
@@ -154,55 +178,10 @@ class SettingsViewModel: ObservableObject {
         uploadIndicator = 0
         refreshIndicator = 0
         postDisplayNotification = false
-        sceneDidResetNotification = false
+        resetNodePositionNotification = false
         
         postDisplayType = .allPosts
         popUpWarningType = .none
-    }
-    
-    func stopScene() {
-        // stop location service
-        self.locationService.stopService()
-        
-        // stop estimated location service
-        self.estimatedUserLocationService.stopService()
-        
-        // stop geohashing service
-        self.geohasingService.stopService()
-        
-        // mute all av player
-        NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: nil)
-        
-        // stop session & remove GroupSCNNodes in AppARSCNNodes
-        self.appArScnView.pauseSession()
-        self.appArScnView.removeGroupNodes()
-        
-        // stop authentication service
-        self.authenticationService.stopService()
-    }
-    
-    func refreshScene() {
-        self.handleLoadIndicator()
-        
-        guard self.refreshIndicator == 0 else {return}
-    
-        // REMOVE STUFF
-        self.geohasingService.stopService()
-        // remove GroupSCNNodes in AppArSCNNodes
-        self.appArScnView.removeGroupNodes()
-        
-        // START STUFF
-        // add group scn nodes to the session
-        self.appArScnView.setupGroupNodes(withInitialPostDisplayType: self.postDisplayType)
-        // update blocked list
-        self.blockUsersService.notifyUpdateBlockedUsers()
-        // start geohashing service
-        self.geohasingService.startService()
-        // notify current location from estimated user location
-        self.estimatedUserLocationService.notifyCurrentLocation()
-              
-        // handle refresh
-        self.handleRefreshIndicator()
         
     }
     
@@ -240,12 +219,6 @@ class SettingsViewModel: ObservableObject {
         }
     }
     
-    func signOut() {
-        // logging out from firebase auth
-        print("Did request sign out")
-        self.authenticationService.signOut()
-    }
-    
     func setupEditingViewModel(withUIImage image: UIImage) {
         // setting up editing view model
         self.editingViewModel = EditingViewModel(selectedImage: image)
@@ -270,6 +243,13 @@ class SettingsViewModel: ObservableObject {
         self.editingVideoViewModel = nil
     }
     
+    
+    func signOut() {
+        // logging out from firebase auth
+        print("Did request sign out")
+        self.authenticationService.signOut()
+    }
+    
     func togglePostDisplayType() {
         switch self.postDisplayType {
         case .allPosts:
@@ -289,7 +269,6 @@ extension SettingsViewModel {
         self.userProfileService.objectWillChange.sink { (_) in
             self.objectWillChange.send()
         }.store(in: &cancellables)
-        self.userProfileService.$user.assign(to: \.user, on: self).store(in: &cancellables)
         self.userProfileService.$userProfile.assign(to: \.userProfile, on: self).store(in: &cancellables)
     }
     
@@ -325,10 +304,10 @@ extension SettingsViewModel {
                 self.internetErrorConnectionIndicator = false
             })
         }.store(in: &cancellables)
-//
-//        Publishers.generalFunctionManipulateTaskForLoadIndicatorPublisher.sink { (value) in
-//            self.loadIndicator -= 1
-//        }.store(in: &cancellables)
+        //
+        //        Publishers.generalFunctionManipulateTaskForLoadIndicatorPublisher.sink { (value) in
+        //            self.loadIndicator -= 1
+        //        }.store(in: &cancellables)
         
         Publishers.generalFunctionManipulateTaskForUploadIndicatorPublisher.sink { (value) in
             guard value != 0 else {return}
@@ -341,16 +320,16 @@ extension SettingsViewModel {
                 self.uploadIndicator = 0
             }
         }.store(in: &cancellables)
-//
-//        Publishers.generalFunctionPostsDoNotExistForCurrentLocationPublisher.sink { (value) in
-//            guard value == true else {return}
-//
-//            self.postsDoNotExistIndicator = true
-//
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-//                self.postsDoNotExistIndicator = false
-//            })
-//        }.store(in: &cancellables)
+        //
+        //        Publishers.generalFunctionPostsDoNotExistForCurrentLocationPublisher.sink { (value) in
+        //            guard value == true else {return}
+        //
+        //            self.postsDoNotExistIndicator = true
+        //
+        //            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+        //                self.postsDoNotExistIndicator = false
+        //            })
+        //        }.store(in: &cancellables)
     }
     
     func subscribeToBlockUsersServicePublishers() {
@@ -369,6 +348,14 @@ extension SettingsViewModel {
         }.store(in: &cancellables)
     }
     
+    func subscribeToAuthenticationService() {
+        Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
+            self.user = user
+            self.stopScene()
+            self.startScene()
+        }.store(in: &cancellables)
+    }
+    
     func setupSubscribers() {
         self.subscribeToUserProfileServicePublishers()
         self.subscribeToScreenManagementServicePublishers()
@@ -377,5 +364,6 @@ extension SettingsViewModel {
         self.subscribeToGeneralFunctionPublishers()
         self.subscribeToBlockUsersServicePublishers()
         self.subscribeToOnboardigPublishers()
+        self.subscribeToAuthenticationService()
     }
 }

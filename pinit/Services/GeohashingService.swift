@@ -54,7 +54,7 @@ class GeohashingService {
         self.geohashModel = nil
     }
     
-    func startService(){
+    func startService(){        
         self.stopService()
     }
     
@@ -168,6 +168,7 @@ class GeohashingService {
 extension GeohashingService {
     func subscribeToEstimatedUserLocationServicePublishers() {
         Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
+            print("Did recv estimated user location \(location)")
             self.updateGeohashToLocation(location)
         }.store(in: &cancellables)
     }

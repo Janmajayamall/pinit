@@ -55,7 +55,7 @@ struct MainArViewIndicatorsView: View {
                 if (self.settingsViewModel.postDisplayNotification == true){
                     HStack{
                         Spacer()
-                        Text(self.settingsViewModel.postDisplayType == .allPosts ? "Normal View" : "Personal View")
+                        Text(self.settingsViewModel.postDisplayType == .allPosts ? "Public View" : "Personal View")
                             .foregroundColor(Color.white)
                             .font(Font.custom("Avenir", size: 20).bold())
                             .padding(10)
@@ -64,15 +64,17 @@ struct MainArViewIndicatorsView: View {
                         Spacer()
                     }.padding(5)
                 }
-                if (self.settingsViewModel.sceneDidResetNotification == true){
+                if (self.settingsViewModel.resetNodePositionNotification == true){
                     HStack{
                         Spacer()
-                        Text("Did reset scene")
+                        Text("Did reset view")
                             .foregroundColor(Color.white)
                             .font(Font.custom("Avenir", size: 20).bold())
                             .padding(10)
                             .background(Color.black.opacity(0.3))
                             .cornerRadius(10)
+                            .animation(.easeInOut(duration: 0.01))
+                        
                         Spacer()
                     }.padding(5)
                 }

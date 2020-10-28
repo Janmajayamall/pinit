@@ -177,10 +177,10 @@ extension Publishers {
         }
         .eraseToAnyPublisher()
     }
-    static var aRViewDidRequestResetGroupNodesPosPublisher: AnyPublisher<Bool, Never>{
+    static var aRViewResetNodesPostionPublisher: AnyPublisher<Bool, Never>{
         NotificationCenter
             .default
-            .publisher(for: .aRViewDidRequestResetGroupNodesPos)
+            .publisher(for: .aRViewResetNodesPostion)
             .compactMap { (notification) -> Bool? in
                 guard let value = notification.object as? Bool else {return nil}
                 return value

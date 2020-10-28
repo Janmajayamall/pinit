@@ -18,13 +18,15 @@ import UIKit
 class AuthenticationService {
     
     private var handle: AuthStateDidChangeListenerHandle?
+    private var user: User?
     
     init(){}
     
     func registerStateListener(){
         self.stopStateListener()
         self.handle = Auth.auth().addStateDidChangeListener({(auth, user) in
-            print("Auth state changed to user \(user)")
+            self.user = user
+            print("User has been recorded as \(user)")
             self.postNotification(for: .authenticationServiceDidAuthStatusChange, withObject: user)
         })
     }
@@ -44,11 +46,15 @@ class AuthenticationService {
     }
     
     func startService(){
-        self.registerStateListener()
+//        self.registerStateListener()
     }
     
     func stopService(){
         self.stopStateListener()
+    }
+    
+    func setupService() {
+        self.registerStateListener()
     }
     
     func postNotification(for notificationType: Notification.Name, withObject object: User?){       
