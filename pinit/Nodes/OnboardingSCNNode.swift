@@ -23,7 +23,7 @@ class OnboardingSCNNode: SCNNode, Identifiable, AppSCNNode {
         super.init()
         
         self.setupDisplayModels(forNodes: onboardingNodeModels)
-        print(self.onboardingDisplayModels.count, "yeh rha")
+ 
         // add constraints to the node
         let billboardConstraint = SCNBillboardConstraint()
         billboardConstraint.freeAxes = .Y

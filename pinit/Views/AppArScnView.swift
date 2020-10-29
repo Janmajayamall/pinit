@@ -310,8 +310,6 @@ class AppArScnView: ARSCNView {
         self.mainSceneNode?.childNodes.forEach({ (node) in
             node.removeFromParentNode()
         })
-        
-        self.pauseSession()
     }
     
     func resetNodesPosition() {
@@ -382,8 +380,7 @@ extension AppArScnView {
     
     // RetrievePostService
     func subscribeToRetrievePostServicePublishers(){
-        Publishers.retrievePostServiceDidReceivePostsForGeohashes.sink { (posts) in
-            print("did recv retrieved posts \(posts.count)")
+        Publishers.retrievePostServiceDidReceivePostsForGeohashes.sink { (posts) in          
             posts.forEach { (post) in
                 self.addPostToGroupNode(post: post)
             }

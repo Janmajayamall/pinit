@@ -37,7 +37,7 @@ struct EditCaptureImageView: View {
                 
                 Image(uiImage: self.editingViewModel.selectedImage)
                     .resizable()
-                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    .frame(height: UIScreen.main.bounds.size.height)
                     .getViewRect(to: self.$editingViewModel.imageRect)
                 
                 // draw paths

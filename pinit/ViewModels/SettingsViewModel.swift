@@ -114,10 +114,10 @@ class SettingsViewModel: ObservableObject {
         
 //        self.onboardingViewModel.removeAllUserDefaults()
         
-        self.startScene()
+        self.startARScene()
     }
     
-    func startScene() {
+    func startARScene() {
         self.appArScnView.startSession()
         
         if (self.user != nil && self.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) < MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber()){
@@ -143,17 +143,25 @@ class SettingsViewModel: ObservableObject {
     }
     
     func handleSceneWillResignActive() {
-        self.stopScene()
+        self.stopARScene()
         
         self.resetDefaults()
     }
     
-    func stopScene() {
+    func stopARScene() {
         // mute all av player
         NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: nil)
         
         // stop session & remove GroupSCNNodes in AppARSCNNodes
         self.appArScnView.resetScene()
+        self.appArScnView.pauseSession()
+    }
+    
+    func resetARScene() {
+        // mute all av player
+       NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: nil)
+        self.appArScnView.resetScene()
+        
     }
     
     func refreshScene() {
@@ -352,8 +360,8 @@ extension SettingsViewModel {
     func subscribeToAuthenticationService() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
             self.user = user
-            self.stopScene()
-            self.startScene()
+            self.resetARScene()
+            self.startARScene()
         }.store(in: &cancellables)
     }
     

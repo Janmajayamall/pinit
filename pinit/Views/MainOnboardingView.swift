@@ -396,9 +396,9 @@ struct MainOnboardingAuthenticatedView: View {
                         self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
                         
                         // reset the scene
-                        self.settingsViewModel.startScene()
+                        self.settingsViewModel.resetARScene()
                         
-                        self.settingsViewModel.startScene()
+                        self.settingsViewModel.startARScene()
                     }, label: {
                         Text("Get started with FinchIt!")
                     })
