@@ -105,13 +105,14 @@ class SettingsViewModel: ObservableObject {
     }     
     
     func handleSceneDidBecomeActive() {
+
         guard self.checkDevicePermissions() else {
             return
         }
         
         AnalyticsService.logAppOpenEvent()
         
-        self.onboardingViewModel.removeAllUserDefaults()
+//        self.onboardingViewModel.removeAllUserDefaults()
         
         self.startScene()
     }
@@ -125,7 +126,7 @@ class SettingsViewModel: ObservableObject {
         
         // start pulse loader
         self.handleLoadIndicator()
-        
+
         // start the session setup GroupSCNNodes in AppARSCNNodes
         self.appArScnView.setupGroupNodes(withInitialPostDisplayType: self.postDisplayType)
         

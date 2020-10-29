@@ -136,7 +136,7 @@ class AppArScnView: ARSCNView {
         // getting the touch location as 2 coordinates on screen
         let coordinates = sender.location(in: view)
         // getting the nodes with which the ray sent along the path of touchpoint would have interacted
-        guard let touchedHitResult = view.hitTest(coordinates).first, let node = touchedHitResult.node as? GroupSCNNode else {return}
+        guard let touchedHitResult = view.hitTest(coordinates).first, let node = touchedHitResult.node as? AppSCNNode else {return}
         
         // change the image
         node.nextPost()
@@ -227,22 +227,22 @@ class AppArScnView: ARSCNView {
         self.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
     }
-//
-//    /// Restart reset the initial postion of AR Scene to current position of device.
-//    /// That means this can be used for placing the nodes in front of the user again.
-//    func restartSession() {
-//        //configure AR session
-//        let configuration = ARWorldTrackingConfiguration()
-//        configuration.isLightEstimationEnabled = true
-//
-//        configuration.worldAlignment = .gravity
-//        self.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-//    }
+    //
+    //    /// Restart reset the initial postion of AR Scene to current position of device.
+    //    /// That means this can be used for placing the nodes in front of the user again.
+    //    func restartSession() {
+    //        //configure AR session
+    //        let configuration = ARWorldTrackingConfiguration()
+    //        configuration.isLightEstimationEnabled = true
+    //
+    //        configuration.worldAlignment = .gravity
+    //        self.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+    //    }
     
     func pauseSession(){        
         self.session.pause()
     }
-        
+    
     func setupOnboardingNodes() {
         // reset the scene
         self.resetScene()
@@ -254,11 +254,19 @@ class AppArScnView: ARSCNView {
         self.appArScnStatus = .onboarding
         
         // populate onboarding nodes dict
-        let onboardingNodeModel = OnboardingNodeModel(contentType: .image, descriptionText: "daiowjdaoidja", image: UIImage(imageLiteralResourceName: "Image1"))
-        self.onboardingNodes[.front] = OnboardingSCNNode(scenePosition: self.currentPosition, nodeDirection: .front, modelsList: [onboardingNodeModel, onboardingNodeModel])
-        self.onboardingNodes[.frontRight] = OnboardingSCNNode(scenePosition: self.currentPosition, nodeDirection: .frontRight, modelsList: [onboardingNodeModel, onboardingNodeModel])
-        self.onboardingNodes[.frontLeft] = OnboardingSCNNode(scenePosition: self.currentPosition, nodeDirection: .frontLeft, modelsList: [onboardingNodeModel, onboardingNodeModel])
+        // front nodes
+        let frontNodeModels = [
+            OnboardingNodeModel(contentType: .image, descriptionText: "Capture your yummy moments 😋!", image: UIImage(imageLiteralResourceName: "YummyMoment")),
+            OnboardingNodeModel(contentType: .video, descriptionText: "Capture your thrilling moments 😎!", videoPathUrl: Bundle.main.url(forResource: "ThrillingMoment", withExtension: "mp4"))]
+        self.onboardingNodes[.front] = OnboardingSCNNode(scenePosition: self.currentPosition, nodeDirection: .front, onboardingNodeModels: frontNodeModels)
         
+        // frontLeft Nodes
+        let frontLeftNodeModels = [
+            OnboardingNodeModel(contentType: .video, descriptionText: "Capture your fun moments!", videoPathUrl: Bundle.main.url(forResource: "FunMoment", withExtension: "mp4")),
+            OnboardingNodeModel(contentType: .image, descriptionText: "Capture your stunning moments!", image: UIImage(imageLiteralResourceName: "StunningMoment")),
+        ]
+        self.onboardingNodes[.frontLeft] = OnboardingSCNNode(scenePosition: self.currentPosition, nodeDirection: .frontLeft, onboardingNodeModels: frontLeftNodeModels)
+    
         // place onboarding nodes
         self.onboardingNodes.values.forEach { (node) in
             self.mainSceneNode?.addChildNode(node)

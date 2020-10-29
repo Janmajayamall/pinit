@@ -18,6 +18,7 @@ protocol AppSCNNode {
     func nextPost() -> Void
     func previousPost() -> Void
     var position: SCNVector3 { get set }
+    var nodeDirection: NodeDirection {get set}
     func localTranslate(by translation: SCNVector3) -> Void
     func scaleNodePlane(withValue scale: CGFloat) -> Void
     func displayPostInfo() -> Void

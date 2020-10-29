@@ -33,9 +33,9 @@ struct CameraFeedOnboardingView: View {
                 
                 if (self.screenNumber.rawValue < ScreenNumber.maxScreenNumber - 1){
                     Image(systemName:"arrow.right")
-                    .foregroundColor(Color.primaryColor)
-                    .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                    .padding()
+                        .foregroundColor(Color.primaryColor)
+                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                        .padding()
                         .onTapGesture {
                             self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue+1)!
                     }
@@ -50,7 +50,7 @@ struct CameraFeedOnboardingView: View {
                 VStack{
                     
                     Text("Ready to capture your first moment?").padding()
-                                        
+                    
                     Spacer()
                     
                     self.getChangeStepButtons(for: self.screenNumber)
@@ -108,16 +108,18 @@ struct CameraFeedOnboardingView: View {
                 .foregroundColor(Color.white)
                 .font(Font.custom("Avenir", size: 20).bold())
                 .multilineTextAlignment(.center)
-            
+                
             }else if (self.screenNumber == .four){
                 VStack{
                     Text("After posting, you and others can see your moment floating at your current location!")
                         .padding()
                     
-                    Text("Ready to capture")
-                        .onTapGesture {
-                            self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .cameraFeedView, to: CameraFeedOnboardingView.ScreenNumber.maxScreenNumber)
-                    }
+                    Button(action: {
+                        self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .cameraFeedView, to: CameraFeedOnboardingView.ScreenNumber.maxScreenNumber)
+                    }, label: {
+                        Text("Ready to Capture!")
+                    })
+                        .buttonStyle(LiveViewButtonStyle(backgroundColor: .black))
                         .padding()
                     
                     Spacer()
@@ -138,7 +140,7 @@ struct CameraFeedOnboardingView: View {
             
         }
     }
-            
+    
     enum ScreenNumber: Int {
         case zero = 0
         case one = 1

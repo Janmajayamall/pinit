@@ -62,26 +62,7 @@ struct MainOnboardingUnAuthenticatedView: View {
             })
                 .buttonStyle(LiveViewButtonStyle(backgroundColor: .black))
                 .padding()
-            //
-            //            VStack{
-            //                VStack{
-            //                    HStack{
-            //                        Text("Tap on")
-            //                        Image(systemName:"gear")
-            //                            .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-            //                        Text("on top right")
-            //                    }
-            //                    HStack{
-            //                        Text("to Continue")
-            //                    }
-            //                }
-            //                .foregroundColor(Color.white)
-            //                .font(Font.custom("Avenir", size: 20).bold())
-            //            }
-            //            .padding()
-            //            .cornerRadius(10)
-            //            .padding()
-            //
+  
             Spacer()
             
             Image(systemName:"xmark")
@@ -194,6 +175,7 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     self.getChangeStepButtons(for: self.screenNumber, previousCallback: {
                         self.settingsViewModel.appArScnView.resetScene()
+                        self.settingsViewModel.appArScnView.startSession()
                     })
                 }
             }else if (self.screenNumber == .three){
@@ -395,6 +377,7 @@ struct MainOnboardingAuthenticatedView: View {
                     
                     self.getChangeStepButtons(for: self.screenNumber, nextCallback: {
                         self.settingsViewModel.appArScnView.resetScene()
+                        self.settingsViewModel.appArScnView.startSession()
                     })
                 }
                 .foregroundColor(Color.white)
@@ -403,7 +386,7 @@ struct MainOnboardingAuthenticatedView: View {
             }else if (self.screenNumber == .fifteen){
                 VStack{
                     
-                    Text("That's it for now! Now its youe turn to Capture, Share, and Explore amazing moments with FinchIt")
+                    Text("Hurray! Now its your turn to Capture your amazing moments around the world!")
                         .applyLiveFeedTextModifier()
                     
                     

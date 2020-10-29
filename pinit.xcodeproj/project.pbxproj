@@ -83,6 +83,8 @@
 		5D6B1F7F24FEE7B800DCC418 /* CameraFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B1F7E24FEE7B800DCC418 /* CameraFeedController.swift */; };
 		5D6B1F8124FEF85D00DCC418 /* CameraFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */; };
 		5D7E39C525059CA800C6E0AB /* OptimisticUIPostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */; };
+		5D7ECA55254B25C100195079 /* ThrillingMoment.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5D7ECA54254B25C100195079 /* ThrillingMoment.mp4 */; };
+		5D7ECA57254B5B3900195079 /* FunMoment.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5D7ECA56254B5B3900195079 /* FunMoment.mp4 */; };
 		5D86652C25138EC800049980 /* CameraFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D86652B25138EC800049980 /* CameraFeedView.swift */; };
 		5D9F13AB24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */; };
 		5DADAC9D251E01EA002C2571 /* PulseLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DADAC9C251E01EA002C2571 /* PulseLoader.swift */; };
@@ -218,6 +220,8 @@
 		5D6B1F7E24FEE7B800DCC418 /* CameraFeedController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedController.swift; sourceTree = "<group>"; };
 		5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedViewController.swift; sourceTree = "<group>"; };
 		5D7E39C425059CA800C6E0AB /* OptimisticUIPostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimisticUIPostModel.swift; sourceTree = "<group>"; };
+		5D7ECA54254B25C100195079 /* ThrillingMoment.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThrillingMoment.mp4; sourceTree = "<group>"; };
+		5D7ECA56254B5B3900195079 /* FunMoment.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FunMoment.mp4; sourceTree = "<group>"; };
 		5D86652B25138EC800049980 /* CameraFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedView.swift; sourceTree = "<group>"; };
 		5D86EEE225266ACA00180155 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D86EEE325266AE100180155 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -452,6 +456,7 @@
 		5D67E7ED24E84E6C00F5D240 /* pinit */ = {
 			isa = PBXGroup;
 			children = (
+				5D7ECA53254B25AE00195079 /* Videos */,
 				5DFF62F52522780F0038820A /* Firebase */,
 				5D567CF124F3E55B00283E5B /* Fonts */,
 				5D52F7DB24E994A400D9F27E /* Nodes */,
@@ -506,6 +511,15 @@
 				5D6B1F8024FEF85D00DCC418 /* CameraFeedViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		5D7ECA53254B25AE00195079 /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				5D7ECA54254B25C100195079 /* ThrillingMoment.mp4 */,
+				5D7ECA56254B5B3900195079 /* FunMoment.mp4 */,
+			);
+			path = Videos;
 			sourceTree = "<group>";
 		};
 		5DC8526F24EFC82B00E36DCE /* Modifiers */ = {
@@ -684,6 +698,8 @@
 				5D67E7FB24E84E7000F5D240 /* LaunchScreen.storyboard in Resources */,
 				5DE4A3CA24FC082A00262A95 /* ReadMe.md in Resources */,
 				5D67E7F824E84E7000F5D240 /* Preview Assets.xcassets in Resources */,
+				5D7ECA55254B25C100195079 /* ThrillingMoment.mp4 in Resources */,
+				5D7ECA57254B5B3900195079 /* FunMoment.mp4 in Resources */,
 				5D67E7F524E84E7000F5D240 /* Assets.xcassets in Resources */,
 				5D567CF324F3E57300283E5B /* Avenir.ttc in Resources */,
 			);
