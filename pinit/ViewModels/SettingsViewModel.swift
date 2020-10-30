@@ -59,11 +59,6 @@ class SettingsViewModel: ObservableObject {
         self.setupSubscribers()
         
         // setup services
-        self.uploadPostService.setupService()
-        self.userProfileService.setupService()
-        self.retrievePostService.setupService()
-        self.geohasingService.setupService()
-        self.estimatedUserLocationService.setupService()
         self.locationService.setupService()
         self.authenticationService.setupService()
         
@@ -133,10 +128,11 @@ class SettingsViewModel: ObservableObject {
         // update blocked list
         self.blockUsersService.notifyUpdateBlockedUsers()
         
-        // start geohashing service
+        // start geohashing, estimated location, and location service
         self.geohasingService.startService()
-        
+        self.estimatedUserLocationService.startService()
         self.estimatedUserLocationService.notifyCurrentLocation()
+        self.locationService.startService()
         
         // update user last active & log app open event
         self.userProfileService.updateUserActiveData()
@@ -144,13 +140,23 @@ class SettingsViewModel: ObservableObject {
     
     func handleSceneWillResignActive() {
         self.stopARScene()
-        
+                       
         self.resetDefaults()
     }
     
     func stopARScene() {
         // mute all av player
         NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: nil)
+        
+        // stop location updates
+        // reset estimated location filter
+        // reset geohashing data &
+        self.locationService.stopService()
+        self.estimatedUserLocationService.stopService()
+        self.geohasingService.stopService()
+        
+        // reset listening posts for most recent observer geohash area
+        self.retrievePostService.stopListeningToPostForGeohashes()
         
         // stop session & remove GroupSCNNodes in AppARSCNNodes
         self.appArScnView.resetScene()
@@ -159,9 +165,9 @@ class SettingsViewModel: ObservableObject {
     
     func resetARScene() {
         // mute all av player
-       NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: nil)
-        self.appArScnView.resetScene()
+        NotificationCenter.default.post(name: .postDisplayNodeModelDidRequestMuteAVPlayer, object: nil)
         
+        self.appArScnView.resetScene()
     }
     
     func refreshScene() {
@@ -191,7 +197,6 @@ class SettingsViewModel: ObservableObject {
         
         postDisplayType = .allPosts
         popUpWarningType = .none
-        
     }
     
     func isUserAuthenticated() -> Bool {
@@ -203,8 +208,8 @@ class SettingsViewModel: ObservableObject {
             self.loadIndicator = 1
             DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
                 self.loadIndicator = 0
-                if self.appArScnView.exisitingPosts.count == 0 {
-                    self.handlePostsDoNotExistIndicator()
+                if (!self.checkPostsExistWithinValidDistance()){
+                     self.handlePostsDoNotExistIndicator()
                 }
             })
         }
@@ -255,7 +260,6 @@ class SettingsViewModel: ObservableObject {
     
     func signOut() {
         // logging out from firebase auth
-        print("Did request sign out")
         self.authenticationService.signOut()
     }
     
@@ -269,6 +273,20 @@ class SettingsViewModel: ObservableObject {
         
         // post notification for group scn node
         NotificationCenter.default.post(name: .groupSCNNodeDidRequestChangePostDisplayType, object: self.postDisplayType)
+    }
+    
+    func checkPostsExistWithinValidDistance() -> Bool {
+        guard let currentLocation = self.estimatedUserLocationService.currentLocation else {return false}
+        
+        var postsExists = false
+        let posts = self.appArScnView.exisitingPosts
+        posts.values.forEach { (post) in
+            let postLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: post.geolocation.latitude, longitude: post.geolocation.longitude), altitude: post.altitude, horizontalAccuracy: post.horizontalAccuracy, verticalAccuracy: post.verticalAccuracy, timestamp: Date.init())
+            if currentLocation.checkIsInValidDistanceRange(forLocation: postLocation) {
+                postsExists = true
+            }
+        }
+        return postsExists
     }
 }
 

@@ -189,7 +189,7 @@ struct MainOnboardingAuthenticatedView: View {
                 }
             }else if (self.screenNumber == .four){
                 VStack{
-                    Text("This makes FinchIt damn interesting and fun to play with!")
+                    Text("This makes FinchIt super interesting and fun to play with!")
                         .applyLiveFeedTextModifier()
                     
                     Spacer()

@@ -21,12 +21,13 @@ class RetrievePostService: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init() {}
+    init() {
+        self.setupService()
+    }
     
     func listenToPostsForGeohashes(_ geohashes: Array<String>){
         self.stopListeningToPostForGeohashes()
-        
-        
+
         self.documentsForGeohashesListener = self.postCollectionRef.whereField("geohash", in: geohashes).addSnapshotListener({ (querySnapshot, error) in
             self.handleReceivedPostDocuments(withQuerySnapshot: querySnapshot, withError: error, forNotificationName: .retrievePostServiceDidReceivePostsForGeohashes)
         })
@@ -95,7 +96,7 @@ class RetrievePostService: ObservableObject {
 extension RetrievePostService {
     func subscribeToGeohasingServicePublishers(){
         Publishers.geohasingServiceDidUpdateGeohashPublisher.sink { (geohashModel) in
-            print("did recv geohash \(geohashModel)")
+            print("Geohashing \(geohashModel)")
             self.listenToPostsForGeohashes(geohashModel.currentAreaGeohashes)
         }.store(in: &cancellables)
     }

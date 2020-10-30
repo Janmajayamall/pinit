@@ -25,7 +25,8 @@ class GeohashingService {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init() {       
+    init() {
+        self.setupService()
     }
     
     /**
@@ -168,7 +169,7 @@ class GeohashingService {
 extension GeohashingService {
     func subscribeToEstimatedUserLocationServicePublishers() {
         Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
-            print("Did recv estimated user location \(location)")
+            print("Estimated location \(location) along last geohashing \(self.geohashModel)")
             self.updateGeohashToLocation(location)
         }.store(in: &cancellables)
     }

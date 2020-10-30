@@ -29,6 +29,8 @@ class UploadPostService {
         // setting up max retry time for storage ref
         self.storageRef.storage.maxUploadRetryTime = 15
         self.storageRef.storage.maxDownloadRetryTime = 15
+        
+        self.setupService()
     }
     
     func uploadPostWithImage(withRequestModel requestModel: RequestCreatePostWithImageModel) {

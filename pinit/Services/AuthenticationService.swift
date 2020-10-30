@@ -26,7 +26,6 @@ class AuthenticationService {
         self.stopStateListener()
         self.handle = Auth.auth().addStateDidChangeListener({(auth, user) in
             self.user = user
-            print("User has been recorded as \(user)")
             self.postNotification(for: .authenticationServiceDidAuthStatusChange, withObject: user)
         })
     }

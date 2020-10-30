@@ -227,17 +227,6 @@ class AppArScnView: ARSCNView {
         self.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
     }
-    //
-    //    /// Restart reset the initial postion of AR Scene to current position of device.
-    //    /// That means this can be used for placing the nodes in front of the user again.
-    //    func restartSession() {
-    //        //configure AR session
-    //        let configuration = ARWorldTrackingConfiguration()
-    //        configuration.isLightEstimationEnabled = true
-    //
-    //        configuration.worldAlignment = .gravity
-    //        self.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-    //    }
     
     func pauseSession(){        
         self.session.pause()
@@ -327,7 +316,7 @@ class AppArScnView: ARSCNView {
     
     func addPostToGroupNode(post: PostModel) {
         // checking whether post already exits in one of the group nodes or not
-        guard let id = post.id, self.exisitingPosts[id] == nil else {
+        guard self.appArScnStatus == .normal, let id = post.id, self.exisitingPosts[id] == nil else {
             return
         }
         
@@ -347,7 +336,7 @@ class AppArScnView: ARSCNView {
     }
     
     func optimisticUIAddPostToGroupNode(optimisticPostModel: OptimisticUIPostModel) {
-        guard let id = optimisticPostModel.postModel.id, self.exisitingPosts[id] == nil else {return}
+        guard self.appArScnStatus == .normal, let id = optimisticPostModel.postModel.id, self.exisitingPosts[id] == nil else {return}
         // adding it to the front group node
         self.groupNodes[.front]?.optimisticAddPost(optimisticPostModel)
         self.exisitingPosts[id] = optimisticPostModel.postModel

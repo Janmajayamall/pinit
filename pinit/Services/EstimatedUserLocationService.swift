@@ -12,7 +12,9 @@ import CoreLocation
 
 class EstimatedUserLocationService: ObservableObject {
     
-    init() {}
+    init() {
+        self.setupService()
+    }
     
     var currentLocation: CLLocation? {
         if let horizontalLocation = self.locationData.sorted(by: {
@@ -57,7 +59,6 @@ class EstimatedUserLocationService: ObservableObject {
         self.removeOldLocationEstimates()
         // notify current location        
         NotificationCenter.default.post(name: .estimatedUserLocationServiceDidUpdateLocation, object: self.currentLocation)
-        
     }
     
     private func removeOldLocationEstimates() {        
@@ -89,6 +90,7 @@ extension EstimatedUserLocationService {
     // subcribing to location services
     func subscribeToLocationService(){
         Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
+            print("location \(location) along last estimated \(self.locationData)")
             self.filterAndUpdateLocation(withLocation: location)
         }.store(in: &cancellables)
     }

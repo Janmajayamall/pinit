@@ -40,7 +40,9 @@ class LocationService: NSObject {
         self.manager.startUpdatingLocation()
     }
     
-    func setupService(){}
+    func setupService(){
+        self.activateLocationUpdates()
+    }
     
     func startService(){       
         self.activateLocationUpdates()

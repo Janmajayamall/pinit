@@ -72,6 +72,9 @@ extension CLLocation {
         if (abs(self.altitude - location.altitude) > maxVerticalDistance){
             return false
         }
+        // change this to -
+        // if (higher altitude - vacc) <= (lower altitude + vacc){then true} else {return false}
+        //
                          
         return true
     }
