@@ -63,19 +63,17 @@ extension CLLocation {
         }
         
         // max vertical distance allowed
-        var maxVerticalDistance: Double {
-            let vAccuracyCurrentLocation = self.verticalAccuracy >= 0 ? self.verticalAccuracy : 50
-            let vAccuracyLocation = location.verticalAccuracy >= 0 ? location.verticalAccuracy : 50
-            return vAccuracyCurrentLocation + vAccuracyLocation
-        }        
+        let vAccuracyCurrentLocation = self.verticalAccuracy >= 0 ? self.verticalAccuracy : 50
+        let vAccuracyLocation = location.verticalAccuracy >= 0 ? location.verticalAccuracy : 50
+              
         // check whether if valid vertical distance
-        if (abs(self.altitude - location.altitude) > maxVerticalDistance){
+        let lowRefPoint = self.altitude > location.altitude ? self.altitude - vAccuracyCurrentLocation : location.altitude - vAccuracyLocation
+        let highRefPoint = self.altitude > location.altitude ? location.altitude + vAccuracyLocation : self.altitude + vAccuracyCurrentLocation
+        
+        if (lowRefPoint > highRefPoint){
             return false
         }
-        // change this to -
-        // if (higher altitude - vacc) <= (lower altitude + vacc){then true} else {return false}
-        //
-                         
+        print("vertical map \(self.altitude) \(vAccuracyCurrentLocation) -- \(location.altitude) \(vAccuracyLocation)")
         return true
     }
     

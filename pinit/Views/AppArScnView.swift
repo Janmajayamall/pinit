@@ -310,7 +310,7 @@ class AppArScnView: ARSCNView {
             node.placeNode(scenePostion: self.currentPosition)
         }
         self.groupNodes.values.forEach { (node) in
-            node.placeNode(scenePosition: self.currentPosition)
+            node.resetNodePos(scenePosition: self.currentPosition)
         }
     }
     

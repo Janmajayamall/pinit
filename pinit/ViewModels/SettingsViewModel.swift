@@ -176,6 +176,7 @@ class SettingsViewModel: ObservableObject {
         guard self.refreshIndicator == 0 else {return}
              
         // start geohashing service
+        self.geohasingService.stopService()
         self.geohasingService.startService()
         // notify current location from estimated user location
         self.estimatedUserLocationService.notifyCurrentLocation()

@@ -92,7 +92,7 @@ class GroupSCNNode: SCNNode, Identifiable, AppSCNNode {
         self.geometry = plane
     }
     
-    func addVideoAsGeometry(withAVPlayer avPlayer: AVPlayer) {
+    func addVideoAsGeometry(withAVPlayer avPlayer: AVPlayer){
         // getting scaled dims for uiScreen
         let scaledDims = self.getScaledDim(forSize: UIScreen.main.bounds.size)
         
@@ -280,16 +280,12 @@ class GroupSCNNode: SCNNode, Identifiable, AppSCNNode {
         SCNTransaction.commit()
     }
     
-    func resetNodePos(scenePosition: SCNVector3?) {        
-        
+    func resetNodePos(scenePosition: SCNVector3?){
         self.placeNode(scenePosition: scenePosition)
         
-        // set fixedImageWidth to 1 again
-        if (self.currentPostIndex != -1 && self.isPostValidForRender(self.postList[self.currentPostIndex % self.postList.count])){
-            // reset plane dimensions
+        if (self.currentPostIndex >= 0 && (self.currentPostIndex == self.currentPostIndex % self.postList.count)){
             self.fixedImageWidth = 1
             self.addCurrentPostAsGeometry()
-            
         }
     }
     
@@ -315,7 +311,9 @@ class GroupSCNNode: SCNNode, Identifiable, AppSCNNode {
         self.addCurrentPostAsGeometry()
     }
     
-    func resetNode() {
+    func switchPostDisplayType(to postDisplayType: PostDisplayType) {
+        self.postDisplayType = postDisplayType
+                           
         // remove current post content (i.e. geometry)
         self.geometry = nil
         
@@ -351,16 +349,13 @@ extension GroupSCNNode {
         }.store(in: &cancellables)
         
         Publishers.groupSCNNodeDidRequestChangePostDisplayTypePublisher.sink { (postDisplayType) in
-            self.postDisplayType = postDisplayType
-            
-            // reset the node
-            self.resetNode()
+            self.switchPostDisplayType(to: postDisplayType)
         }.store(in: &cancellables)
         
         Publishers.groupSCNNodeDidRequestResetPublisher.sink { (value) in
             guard value == true else {return}
             
-            self.resetNode()
+//            self.switchPostDisplayType(to: <#PostDisplayType#>)
         }.store(in: &cancellables)
     }
     

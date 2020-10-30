@@ -48,7 +48,7 @@ struct MainArViewIndicatorsView: View {
                         .padding(10)
                         .background(Color.black.opacity(0.3))
                         .cornerRadius(10)
-                        
+                        .animation(.easeInOut(duration: self.indicatorsEaseInOutDuration))
                         Spacer()
                     }.padding(5)
                 }
@@ -61,6 +61,7 @@ struct MainArViewIndicatorsView: View {
                             .padding(10)
                             .background(Color.black.opacity(0.3))
                             .cornerRadius(10)
+                            .animation(.easeInOut(duration: self.indicatorsEaseInOutDuration))
                         Spacer()
                     }.padding(5)
                 }
@@ -73,14 +74,14 @@ struct MainArViewIndicatorsView: View {
                             .padding(10)
                             .background(Color.black.opacity(0.3))
                             .cornerRadius(10)
-                            .animation(.easeInOut(duration: 0.01))
+                            .animation(.easeInOut(duration: self.indicatorsEaseInOutDuration))
                         
                         Spacer()
                     }.padding(5)
                 }
                 Spacer()
             }.frame(width: self.parentSize.width, height: self.parentSize.height, alignment: .top)
-                .animation(.easeIn)
+                .animation(.easeInOut(duration: self.indicatorsEaseInOutDuration))
             
             
             if (self.settingsViewModel.loadIndicator > 0){
@@ -120,6 +121,8 @@ struct MainArViewIndicatorsView: View {
             }
         }.frame(width: parentSize.width, height: parentSize.height)
     }
+    
+    private let indicatorsEaseInOutDuration: Double = 0.005
 }
 
 struct MainArViewIndicatorsView_Previews: PreviewProvider {
