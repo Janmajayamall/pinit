@@ -70,6 +70,13 @@ class OnboardingSCNNode: SCNNode, Identifiable, AppSCNNode {
         }
     }
     
+    func resetNodePos(scenePosition: SCNVector3?){
+        self.placeNode(scenePostion: scenePosition)
+        
+        self.fixedImageWidth = 1
+        self.addCurrentIndexAsGeometry()
+    }
+    
     func nextPost(){
         self.currentIndex = (self.currentIndex + 1) % self.onboardingDisplayModels.count
         self.addCurrentIndexAsGeometry()
@@ -140,7 +147,6 @@ class OnboardingSCNNode: SCNNode, Identifiable, AppSCNNode {
     }
     
     func addVideoAsGeoemetry(withAVPlayer avPlayer: AVPlayer){
-        
         let scaledDims = self.getScaledDim(forSize: UIScreen.main.bounds.size)
         
         // create plane for adding as geometry to the node

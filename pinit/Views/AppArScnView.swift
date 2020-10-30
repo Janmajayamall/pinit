@@ -307,7 +307,7 @@ class AppArScnView: ARSCNView {
         
         // set nodes position to according to current position
         self.onboardingNodes.values.forEach { (node) in
-            node.placeNode(scenePostion: self.currentPosition)
+            node.resetNodePos(scenePosition: self.currentPosition)
         }
         self.groupNodes.values.forEach { (node) in
             node.resetNodePos(scenePosition: self.currentPosition)

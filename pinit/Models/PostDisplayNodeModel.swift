@@ -90,7 +90,7 @@ class PostDisplayNodeModel: NSObject {
             
         }else if let videoUrlString = self.post.videoUrl, let videoUrl = URL(string: videoUrlString)  {
             self.avPlayer = AVPlayer(url: videoUrl)
-
+            
             // by default volume will be muted
             self.avPlayer?.isMuted = true
             

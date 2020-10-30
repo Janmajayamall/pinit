@@ -66,7 +66,7 @@ struct CameraFeedOnboardingView: View {
                             .foregroundColor(Color.white.opacity(0.00001))
                             .frame(width: 80, height: 80)
                             .overlay(Circle().stroke(Color.white, lineWidth: 8))
-                        Text("to capture a photo")
+                        Text("on bottom to capture a photo")
                         Text("and tap & hold to capture a video")
                     }.padding()
                     

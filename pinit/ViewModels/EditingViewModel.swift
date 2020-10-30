@@ -35,7 +35,8 @@ class EditingViewModel: NSObject, ObservableObject {
     /// - Parameters:
     ///     - window: UIApplicaton window
     func setFinalImage(withWindow window: UIWindow!){
-        self.finalImage = window.rootViewController?.view.toImage(rect: self.imageRect)
+        print(self.imageRect, " image rect", CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
+        self.finalImage = window.rootViewController?.view.toImage(rect: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
         self.uploadPost()
     }
     
