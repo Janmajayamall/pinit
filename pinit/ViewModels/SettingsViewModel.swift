@@ -113,7 +113,7 @@ class SettingsViewModel: ObservableObject {
     }
     
     func startARScene() {
-        if (self.user != nil && self.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) < MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber()){
+        if (self.user == nil || self.user != nil && self.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) < MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber()){
             self.appArScnView.startSession()
             return
         }

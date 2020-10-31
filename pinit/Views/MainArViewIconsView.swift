@@ -149,10 +149,7 @@ struct MainArViewIconsView: View {
                return .none
            }
            
-           guard (self.settingsViewModel.user != nil) else {
-               if (iconType == .gear || iconType == .mappinAndEllipse || iconType == .arrowLeft){
-                   return .active
-               }
+           guard (self.settingsViewModel.user != nil) else {              
                return .none
            }
            

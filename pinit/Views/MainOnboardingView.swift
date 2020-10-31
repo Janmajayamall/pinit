@@ -17,7 +17,7 @@ struct MainOnboardingView: View {
     
     @ViewBuilder
     var body: some View {
-        if (self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .unauthenticatedMainARView) == 0 && self.settingsViewModel.user == nil){
+        if (self.settingsViewModel.user == nil) {
             MainOnboardingUnAuthenticatedView(parentSize: self.parentSize)
         }else if (self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) <  MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber() && self.settingsViewModel.user != nil && self.settingsViewModel.userProfile != nil){
             MainOnboardingAuthenticatedView(screenNumber: MainOnboardingAuthenticatedView.ScreenNumber.init(rawValue: self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView))!, parentSize: self.parentSize)
@@ -58,20 +58,20 @@ struct MainOnboardingUnAuthenticatedView: View {
             Button(action: {
                  self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .login)
             }, label: {
-                Text("Sign Up")
+                Text("Sign Up / Log In")
             })
                 .buttonStyle(LiveViewButtonStyle(backgroundColor: .black))
                 .padding()
   
             Spacer()
             
-            Image(systemName:"xmark")
-                .foregroundColor(Color.primaryColor)
-                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                .padding()
-                .onTapGesture {
-                    self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
-            }
+//            Image(systemName:"xmark")
+//                .foregroundColor(Color.primaryColor)
+//                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+//                .padding()
+//                .onTapGesture {
+//                    self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
+//            }
             
         }
         .padding(EdgeInsets(top: 100, leading: 5, bottom: 100, trailing: 5))

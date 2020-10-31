@@ -16,7 +16,7 @@ class EditingViewModel: NSObject, ObservableObject {
     
     @Published var selectedImage: UIImage
     @Published var imageRect: CGRect = .zero
-    @Published var imagePainting: ImagePaintingModel = ImagePaintingModel()
+//    @Published var imagePainting: ImagePaintingModel = ImagePaintingModel()
     
     // FIXME: remove `true` declaration
     var isPostPublic: Bool? = true
@@ -36,7 +36,7 @@ class EditingViewModel: NSObject, ObservableObject {
     ///     - window: UIApplicaton window
     func setFinalImage(withWindow window: UIWindow!){
         print(self.imageRect, " image rect", CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
-        self.finalImage = window.rootViewController?.view.toImage(rect: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
+        self.finalImage = window.rootViewController?.view.toImage(rect: self.imageRect)
         self.uploadPost()
     }
     
@@ -54,25 +54,25 @@ class EditingViewModel: NSObject, ObservableObject {
 }
 
 // functions of image painting
-extension EditingViewModel {
-    func changeSelectedColor(to color: Color, withYCoord yCoord: CGFloat){
-        self.imagePainting.changeSelectedColor(to: color, withYCoord: yCoord)
-    }
-    
-    func changeSelectedStrokeWidth(to strokeWidth: CGFloat, withYCoord yCoord: CGFloat){
-        self.imagePainting.changeSelectedStrokeWidth(to: strokeWidth, withYCoord: yCoord)
-    }
-    
-    func draw(atPoint point: CGPoint){
-        self.imagePainting.draw(atPoint: point)
-    }
-    
-    func startNewDrawing(){
-        self.imagePainting.newDrawing()
-    }
-    
-    func undoLastDrawing(){
-        self.imagePainting.undoPathDrawing()
-    }
-    
-}
+//extension EditingViewModel {
+//    func changeSelectedColor(to color: Color, withYCoord yCoord: CGFloat){
+//        self.imagePainting.changeSelectedColor(to: color, withYCoord: yCoord)
+//    }
+//    
+//    func changeSelectedStrokeWidth(to strokeWidth: CGFloat, withYCoord yCoord: CGFloat){
+//        self.imagePainting.changeSelectedStrokeWidth(to: strokeWidth, withYCoord: yCoord)
+//    }
+//    
+//    func draw(atPoint point: CGPoint){
+//        self.imagePainting.draw(atPoint: point)
+//    }
+//    
+//    func startNewDrawing(){
+//        self.imagePainting.newDrawing()
+//    }
+//    
+//    func undoLastDrawing(){
+//        self.imagePainting.undoPathDrawing()
+//    }
+//    
+//}

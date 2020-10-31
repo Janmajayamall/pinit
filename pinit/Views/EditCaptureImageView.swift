@@ -18,9 +18,15 @@ struct EditCaptureImageView: View {
     @State var screenState: EditCaptureImageScreenState = .normal
     @State var isUserDrawing: Bool = false
     
+    func getScaledSize(for size: CGSize) -> CGSize{
+        let width = UIScreen.main.bounds.size.width
+        
+        let height = (size.height / size.width) * width
+        
+        return CGSize(width: width, height: height)
+    }
+    
     var body: some View {
-        
-        
         // binding for descriptionText
         let descriptionText = Binding<String>(
             get: {
@@ -28,22 +34,21 @@ struct EditCaptureImageView: View {
         }, set: {
             let descriptionText = $0.trimmingCharacters(in: .newlines)
             self.editingViewModel.descriptionText = String(descriptionText.prefix(425))
-            
         }
         )
         
         return GeometryReader { geometryProxy in
             ZStack{
-                
-                Image(uiImage: self.editingViewModel.selectedImage)
-                    .resizable()
-                    .frame(height: UIScreen.main.bounds.size.height)
+                VStack{
+                    Spacer()
+                    VStack{
+                        Image(uiImage: self.editingViewModel.selectedImage)
+                            .resizable()
+                            .frame(width: self.getScaledSize(for: self.editingViewModel.selectedImage.size).width, height: self.getScaledSize(for: self.editingViewModel.selectedImage.size).height)
+                    }
                     .getViewRect(to: self.$editingViewModel.imageRect)
-                
-                // draw paths
-                ForEach(self.editingViewModel.imagePainting.pathDrawings, content: {return $0})
-                // draw current path
-                self.editingViewModel.imagePainting.currentDrawing
+                    Spacer()
+                }
                 
                 if (self.screenState == .description){
                     FadeKeyboard(descriptionText: descriptionText, parentSize: geometryProxy.size )
@@ -61,111 +66,26 @@ struct EditCaptureImageView: View {
                             Spacer()
                             
                             
-                            HStack{
-                                Image(systemName: "scribble")
-                                    .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                                    .onTapGesture {
-                                        self.screenState = .painting
-                                }
-                                
-                                
-                                Image(systemName: "checkmark")
-                                   .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                                    .onTapGesture {
-                                        self.finalisePostImage()
-                                }
-                               
+                            Image(systemName: "checkmark")
+                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                                .onTapGesture {
+                                    self.finalisePostImage()
                             }.applyTopRightPaddingToIcon()
                             
                         }
                         Spacer()
                     }
-                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    .frame(width: self.getScaledSize(for: self.editingViewModel.selectedImage.size).width, height: self.getScaledSize(for: self.editingViewModel.selectedImage.size).height)
                     .safeTopEdgePadding()
                 }
                 
-                if (self.screenState == .painting && self.isUserDrawing == false){
-                    VStack{
-                        HStack{
-                            Image(systemName: "chevron.left")
-                               .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                                .onTapGesture {
-                                    guard self.screenState == .painting else {return}
-                                    self.screenState = .normal
-                            }
-                            .applyTopLeftPaddingToIcon()
-                            
-                            
-                            Spacer()
-                            
-                            Image(systemName: "arrow.counterclockwise")                                
-                                .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                                .onTapGesture {
-                                    guard self.screenState == .painting else {return}
-                                    
-                                    self.editingViewModel.imagePainting.undoPathDrawing()
-                            }
-                            .applyTopRightPaddingToIcon()
-                            
-                        }
-                        
-                        Spacer()
-                    }
-                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
-                    .safeTopEdgePadding()
-                }
-                
-                if (self.screenState == .painting && self.isUserDrawing == false){
-                    VStack{
-                        HStack{
-                            Spacer()
-                            ColorPickerSlider(selectedYCoord: self.editingViewModel.imagePainting.selectedColorYCoord)
-                                .frame(width: ColorPickerSlider.colorPickerExpandedCircleDia * 1.5)
-                                .padding(EdgeInsets(top: 100, leading: 0, bottom: 0, trailing: 15))
-                        }
-                        Spacer()
-                    }
-                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
-                    .safeTopEdgePadding()
-                }
-                
-                if (self.screenState == .painting && self.isUserDrawing == false){
-                    VStack{
-                        HStack{
-                            StrokeWidthSlider(selectedYCoord: self.editingViewModel.imagePainting.selectedStrokeWidthYCoord)
-                                .frame(width: StrokeWidthSlider.minimumStrokeWidth + StrokeWidthSlider.strokeAmplification * 1.5)
-                                .padding(EdgeInsets(top: 100, leading: 15, bottom: 0, trailing: 0))
-                            
-                            Spacer()
-                        }
-                        Spacer()
-                    }
-                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
-                    .safeTopEdgePadding()
-                }
             }
-            .gesture(
-                DragGesture()
-                    .onChanged({ (value) in
-                        if (self.screenState == .painting){
-                            self.isUserDrawing = true
-                            self.editingViewModel.draw(atPoint: value.location)
-                        }
-                    })
-                    .onEnded({ (value) in
-                        if (self.screenState == .painting){
-                            self.editingViewModel.draw(atPoint: value.location)
-                            self.editingViewModel.startNewDrawing()
-                            self.isUserDrawing = false
-                        }
-                    })
-            )
-                .onTapGesture {
-                    if self.screenState == .description {
-                        self.screenState = .normal
-                    }else if self.screenState == .normal {
-                        self.screenState = .description
-                    }
+            .onTapGesture {
+                if self.screenState == .description {
+                    self.screenState = .normal
+                }else if self.screenState == .normal {
+                    self.screenState = .description
+                }
             }
             
         }

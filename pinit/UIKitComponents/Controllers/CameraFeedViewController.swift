@@ -17,7 +17,7 @@ final class CameraFeedViewController: UIViewController {
     override func viewDidLoad() {
         
         self.previewView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-        self.previewView.contentMode = UIView.ContentMode.scaleAspectFit
+        self.previewView.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.addSubview(self.previewView)
         
         self.cameraFeedController.prepareController { (error) in

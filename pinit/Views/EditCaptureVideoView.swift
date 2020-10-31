@@ -15,6 +15,14 @@ struct EditCaptureVideoView: View {
     
     @State var screenState: EditCaptureVideoScreenState = .normal
     
+    func getScaledSize(for size: CGSize) -> CGSize{
+        let width = UIScreen.main.bounds.size.width
+        
+        let height = (size.height / size.width) * width
+        
+        return CGSize(width: width, height: height)
+    }
+    
     var body: some View {
         
         // binding for descriptionText
@@ -24,7 +32,6 @@ struct EditCaptureVideoView: View {
         }, set: {
             let descriptionText = $0.trimmingCharacters(in: .newlines)
             self.editingVideoViewModel.descriptionText = String(descriptionText.prefix(425))
-            
         }
         )
         
@@ -57,7 +64,7 @@ struct EditCaptureVideoView: View {
                         }
                         Spacer()
                     }
-                    .frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
+                    .frame(width: self.getScaledSize(for: CGSize(width: 375.0, height: 667.0)).width, height: self.getScaledSize(for: CGSize(width: 375.0, height: 667.0)).height)
                     .safeTopEdgePadding()
                 }
             }
