@@ -14,7 +14,6 @@ struct MainOnboardingView: View {
     @State var screenNumber: ScreenNumber = .zero
     
     var parentSize: CGSize
-    var backgroudColorOpacity: CGFloat = 0.5
     
     @ViewBuilder
     var body: some View {

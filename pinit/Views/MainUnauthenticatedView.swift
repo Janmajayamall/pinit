@@ -46,7 +46,7 @@ struct MainUnauthenticatedView: View {
             }
             .padding(EdgeInsets(top: 100, leading: 5, bottom: 100, trailing: 5))
             .frame(width: self.parentSize.width, height: self.parentSize.height)
-            .background(Color.black.opacity(0.5))
+            .background(Color.black.opacity(0.7))
         }
     }
 }

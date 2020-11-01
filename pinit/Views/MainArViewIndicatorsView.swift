@@ -40,7 +40,7 @@ struct MainArViewIndicatorsView: View {
                         Spacer()
                         VStack{
                             Text("No captured moments around you.")
-                            Text("Be the first one?")
+                            Text("Capture yours?")
                         }
                         .foregroundColor(Color.white)
                         .font(Font.custom("Avenir", size: 17).bold())

@@ -296,6 +296,7 @@ class SettingsViewModel: ObservableObject {
         
         var postsExists = false
         let posts = self.appArScnView.exisitingPosts
+        
         posts.values.forEach { (post) in
             let postLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: post.geolocation.latitude, longitude: post.geolocation.longitude), altitude: post.altitude, horizontalAccuracy: post.horizontalAccuracy, verticalAccuracy: post.verticalAccuracy, timestamp: Date.init())
             if currentLocation.checkIsInValidDistanceRange(forLocation: postLocation) {
