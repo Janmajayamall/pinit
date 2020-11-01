@@ -105,7 +105,12 @@ class SettingsViewModel: ObservableObject {
             return
         }
         
-        AnalyticsService.logAppOpenEvent()        
+        AnalyticsService.logAppOpenEvent()
+        
+        // check for user profile
+        if (self.userProfile == nil){
+            self.userProfileService.listenToUserProfile()
+        }
         
         self.startARScene()
     }
@@ -117,7 +122,15 @@ class SettingsViewModel: ObservableObject {
         }
         
         guard self.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) >= MainOnboardingView.ScreenNumber.getMaxScreenNumber() else {
-            self.appArScnView.startSession()
+            
+            // check whether to place main onboarding nodes or not
+            let mainOnboardingScreenNumber = self.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView)
+            if (mainOnboardingScreenNumber >= 2 && mainOnboardingScreenNumber <= 14){
+                self.appArScnView.setupOnboardingNodes()
+            }else {
+                self.appArScnView.startSession()
+            }
+            
             return
         }
         

@@ -1121,7 +1121,7 @@
 				CODE_SIGN_ENTITLEMENTS = pinit/pinit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.2.8;
+				CURRENT_PROJECT_VERSION = 1.2.9;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"pinit/Preview Content\"";
 				DEVELOPMENT_TEAM = B8GFL3DC67;
@@ -1132,7 +1132,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.8;
+				MARKETING_VERSION = 1.2.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.finch.here;
 				PRODUCT_NAME = FinchIt;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1149,7 +1149,7 @@
 				CODE_SIGN_ENTITLEMENTS = pinit/pinit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.2.8;
+				CURRENT_PROJECT_VERSION = 1.2.9;
 				DEVELOPMENT_ASSET_PATHS = "\"pinit/Preview Content\"";
 				DEVELOPMENT_TEAM = B8GFL3DC67;
 				ENABLE_PREVIEWS = YES;
@@ -1159,7 +1159,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.8;
+				MARKETING_VERSION = 1.2.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.finch.here;
 				PRODUCT_NAME = FinchIt;
 				PROVISIONING_PROFILE_SPECIFIER = "";

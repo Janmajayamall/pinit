@@ -24,6 +24,7 @@ class OnboardingViewModel: ObservableObject {
         UserDefaults().removeObject(forKey: OnboardingStatusType.authenticatedMainARView.rawValue)
         UserDefaults().removeObject(forKey: OnboardingStatusType.cameraFeedView.rawValue)
     }
+
     
     enum OnboardingStatusType: String {
         case authenticatedMainARView

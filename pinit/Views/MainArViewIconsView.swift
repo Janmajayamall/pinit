@@ -151,7 +151,11 @@ struct MainArViewIconsView: View {
         let mainArViewOnboardingStatus = self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView)
         
         guard mainArViewOnboardingStatus < MainOnboardingView.ScreenNumber.getMaxScreenNumber() else {
-            return .active
+            if (self.settingsViewModel.userProfile == nil){
+                return .onlyVisible
+            }else {
+                return .active
+            }
         }
         
         switch iconType {
@@ -186,6 +190,7 @@ struct MainArViewIconsView: View {
             }
             return .none
         }
+                
     }
     
     enum MainArViewIconsType: String {

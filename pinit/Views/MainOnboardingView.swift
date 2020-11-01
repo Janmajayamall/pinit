@@ -294,7 +294,9 @@ struct MainOnboardingView: View {
                         
                         Spacer()
                         
-                        self.getChangeStepButtons(for: self.screenNumber)
+                        self.getChangeStepButtons(for: self.screenNumber, previousCallback: {
+                            self.settingsViewModel.appArScnView.setupOnboardingNodes()
+                        })
                     }
                     .foregroundColor(Color.white)
                     .font(Font.custom("Avenir", size: 20).bold())
@@ -309,10 +311,13 @@ struct MainOnboardingView: View {
                     return
                 }
                 self.screenNumber = screenNumber
-                
+ 
                 if (self.screenNumber.rawValue >= 2 && self.screenNumber.rawValue <= 14){
                     self.settingsViewModel.appArScnView.setupOnboardingNodes()
                 }
+            }
+            .onDisappear {
+                print("I AM OUT")
             }
         }
     }
