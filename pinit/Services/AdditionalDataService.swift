@@ -57,12 +57,12 @@ class AdditionalDataService {
                         ],
                         [
                             "name":"Feedback Topic",
-                            "value":feedback.topic,
+                            "value":feedback.topic.count == 0 ? "*blank value*" : feedback.topic,
                             "inline":false
                         ],
                         [
                             "name":"Feedback Description",
-                            "value":feedback.description,
+                            "value":feedback.description.count == 0 ? "*blank value*" : feedback.description,
                             "inline":false
                         ]
                     ],
@@ -139,7 +139,7 @@ class AdditionalDataService {
                         ],
                         [
                             "name":"Reported Reason",
-                            "value":reportUser.reason,
+                            "value":reportUser.reason.count == 0 ? "*blank value*" : reportUser.reason,
                             "inline":false
                         ]
                     ],
