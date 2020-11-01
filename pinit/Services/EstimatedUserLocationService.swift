@@ -89,8 +89,7 @@ class EstimatedUserLocationService: ObservableObject {
 extension EstimatedUserLocationService {
     // subcribing to location services
     func subscribeToLocationService(){
-        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in
-            print("location \(location) along last estimated \(self.locationData)")
+        Publishers.locationServiceDidUpdateLocationPublisher.sink { (location) in            
             self.filterAndUpdateLocation(withLocation: location)
         }.store(in: &cancellables)
     }

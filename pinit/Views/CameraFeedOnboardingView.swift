@@ -15,8 +15,7 @@ struct CameraFeedOnboardingView: View {
     
     var parentSize: CGSize
     
-    func getChangeStepButtons(for screenNumber: ScreenNumber) -> some View {
-        print(screenNumber, "camera feed view onboarding")
+    func getChangeStepButtons(for screenNumber: ScreenNumber) -> some View { 
         return AnyView (
             HStack{
                 if (self.screenNumber.rawValue > 0){

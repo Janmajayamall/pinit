@@ -44,10 +44,6 @@ class OnboardingSCNNode: SCNNode, Identifiable, AppSCNNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        print("THIS HAPPENED")
-    }
-    
     func placeNode(scenePostion: SCNVector3?){
         guard let scenePosition = scenePostion else {return}
         
@@ -243,8 +239,6 @@ class OnboardingDisplayModel: NSObject {
     }
     
     deinit {
-        print("IG OT SSSSS")
         self.avPlayer?.removeObserver(self, forKeyPath:  #keyPath(AVQueuePlayer.status), context: &avPlayerContext)
-        print("IG JIODJAOIDOI")
     }
 }

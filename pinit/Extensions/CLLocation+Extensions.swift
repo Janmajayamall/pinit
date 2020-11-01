@@ -72,8 +72,7 @@ extension CLLocation {
         
         if (lowRefPoint > highRefPoint){
             return false
-        }
-        print("vertical map \(self.altitude) \(vAccuracyCurrentLocation) -- \(location.altitude) \(vAccuracyLocation)")
+        }     
         return true
     }
     

@@ -140,6 +140,8 @@ class PostDisplayNodeModel: NSObject {
         NotificationCenter.default.post(name: .groupSCNNodeDidLoadPostDisplayData, object: true)
     }
     
+    
+    
 }
 
 // for subscribing to publishers

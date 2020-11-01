@@ -168,8 +168,7 @@ class GeohashingService {
 // for subscriptions of publishers
 extension GeohashingService {
     func subscribeToEstimatedUserLocationServicePublishers() {
-        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in
-            print("Estimated location \(location) along last geohashing \(self.geohashModel)")
+        Publishers.estimatedUserLocationServiceDidUpdateLocation.sink { (location) in            
             self.updateGeohashToLocation(location)
         }.store(in: &cancellables)
     }

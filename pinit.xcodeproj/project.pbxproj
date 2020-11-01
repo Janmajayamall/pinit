@@ -70,6 +70,7 @@
 		5D567CF924F4340F00283E5B /* SoftEdgeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D567CF824F4340F00283E5B /* SoftEdgeButton.swift */; };
 		5D567CFB24F43BB500283E5B /* CustomButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D567CFA24F43BB500283E5B /* CustomButtonStyles.swift */; };
 		5D576A3824F1A465004A004C /* EmailAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D576A3724F1A465004A004C /* EmailAuthenticationView.swift */; };
+		5D5A3872254ED35B00F600C3 /* MainUnauthenticatedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5A3871254ED35B00F600C3 /* MainUnauthenticatedView.swift */; };
 		5D5F3241254A16A300901B9F /* LiveFeedModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5F3240254A16A300901B9F /* LiveFeedModifiers.swift */; };
 		5D67E7EF24E84E6C00F5D240 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E7EE24E84E6C00F5D240 /* AppDelegate.swift */; };
 		5D67E7F124E84E6C00F5D240 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D67E7F024E84E6C00F5D240 /* SceneDelegate.swift */; };
@@ -199,6 +200,7 @@
 		5D567CF824F4340F00283E5B /* SoftEdgeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoftEdgeButton.swift; sourceTree = "<group>"; };
 		5D567CFA24F43BB500283E5B /* CustomButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonStyles.swift; sourceTree = "<group>"; };
 		5D576A3724F1A465004A004C /* EmailAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailAuthenticationView.swift; sourceTree = "<group>"; };
+		5D5A3871254ED35B00F600C3 /* MainUnauthenticatedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUnauthenticatedView.swift; sourceTree = "<group>"; };
 		5D5F3240254A16A300901B9F /* LiveFeedModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveFeedModifiers.swift; sourceTree = "<group>"; };
 		5D67E7EB24E84E6C00F5D240 /* FinchIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinchIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D67E7EE24E84E6C00F5D240 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				5D2C93CC2545687300C97FDA /* MainArViewIconsView.swift */,
 				5D2C93CE2545696D00C97FDA /* MainArViewIndicatorsView.swift */,
 				5DFB568A254991B7008DEBEC /* CameraFeedOnboardingView.swift */,
+				5D5A3871254ED35B00F600C3 /* MainUnauthenticatedView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -916,6 +919,7 @@
 				5D52F7DF24E9952800D9F27E /* CLLocation+Extensions.swift in Sources */,
 				5D1CF0A82500095B00DD4E90 /* PostDisplayInfoViewModel.swift in Sources */,
 				5D86652C25138EC800049980 /* CameraFeedView.swift in Sources */,
+				5D5A3872254ED35B00F600C3 /* MainUnauthenticatedView.swift in Sources */,
 				5D2754FC252E585700F5F2AA /* AdditionalDataService.swift in Sources */,
 				5D67E7F124E84E6C00F5D240 /* SceneDelegate.swift in Sources */,
 				5D18494D250987DA0035021F /* EstimatedUserLocationService.swift in Sources */,
@@ -1117,7 +1121,7 @@
 				CODE_SIGN_ENTITLEMENTS = pinit/pinit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.2.7;
+				CURRENT_PROJECT_VERSION = 1.2.8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"pinit/Preview Content\"";
 				DEVELOPMENT_TEAM = B8GFL3DC67;
@@ -1128,7 +1132,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.finch.here;
 				PRODUCT_NAME = FinchIt;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1145,7 +1149,7 @@
 				CODE_SIGN_ENTITLEMENTS = pinit/pinit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.2.7;
+				CURRENT_PROJECT_VERSION = 1.2.8;
 				DEVELOPMENT_ASSET_PATHS = "\"pinit/Preview Content\"";
 				DEVELOPMENT_TEAM = B8GFL3DC67;
 				ENABLE_PREVIEWS = YES;
@@ -1155,7 +1159,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.7;
+				MARKETING_VERSION = 1.2.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.finch.here;
 				PRODUCT_NAME = FinchIt;
 				PROVISIONING_PROFILE_SPECIFIER = "";

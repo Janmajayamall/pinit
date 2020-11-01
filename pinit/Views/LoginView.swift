@@ -47,16 +47,13 @@ struct LoginView: View {
             HStack{
                 Text("Create an account \nto continue")
                     .applyDefaultThemeToTextHeader(ofType: .h1)
-                .lineLimit(nil)
+                    .lineLimit(nil)
             }.padding(EdgeInsets(top: 0, leading: 10, bottom: 20, trailing: 10))
             HStack{
                 Button(action: {
                     self.emailAuthViewType = .signUp
                     self.loginViewSheetType = .emailAuth
                     self.isSheetOpen = true
-                    
-                    // set user default
-                    self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
                 }, label: {
                     Spacer()
                     Text("Sign up with Email")
@@ -73,14 +70,11 @@ struct LoginView: View {
             UIKitSignInWithApple().frame(width: 280, height: 45).onTapGesture {
                 self.signInWithAppleCoordinator = SignInWithAppleCoordinator(window: self.window)
                 self.signInWithAppleCoordinator?.signIn(onSignedInHandler: {user in                                    
-                    //                    // close the login view
-                    //                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
+                    // close the login view
+                    self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
                 })
-                
-                // set user default
-                self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
             }
-                                    
+            
             VStack{
                 HStack{
                     Spacer()
@@ -98,7 +92,7 @@ struct LoginView: View {
                             self.isSheetOpen = true
                     }
                     Text("and have")
-                    .foregroundColor(Color.textfieldColor)
+                        .foregroundColor(Color.textfieldColor)
                     Spacer()
                 }
                 HStack{
@@ -130,10 +124,7 @@ struct LoginView: View {
             .onTapGesture {
                 self.emailAuthViewType = .login
                 self.loginViewSheetType = .emailAuth
-                self.isSheetOpen = true
-                
-                // set user default
-                self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .unauthenticatedMainARView, to: 1)
+                self.isSheetOpen = true                               
             }
             .padding(EdgeInsets(top: 10, leading: 10, bottom: 20, trailing: 10))
             

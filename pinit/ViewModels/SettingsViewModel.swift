@@ -105,15 +105,18 @@ class SettingsViewModel: ObservableObject {
             return
         }
         
-        AnalyticsService.logAppOpenEvent()
-        
-//        self.onboardingViewModel.removeAllUserDefaults()
+        AnalyticsService.logAppOpenEvent()        
         
         self.startARScene()
     }
     
     func startARScene() {
-        if (self.user == nil || self.user != nil && self.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) < MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber()){
+        guard self.user != nil else {
+            self.appArScnView.startSession()
+            return
+        }
+        
+        guard self.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) >= MainOnboardingView.ScreenNumber.getMaxScreenNumber() else {
             self.appArScnView.startSession()
             return
         }
@@ -206,7 +209,7 @@ class SettingsViewModel: ObservableObject {
     func handleLoadIndicator() {
         if (self.loadIndicator == 0){
             self.loadIndicator = 1
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
                 self.loadIndicator = 0
                 if (!self.checkPostsExistWithinValidDistance()){
                      self.handlePostsDoNotExistIndicator()
@@ -369,8 +372,7 @@ extension SettingsViewModel {
     }
     
     func subscribeToOnboardigPublishers() {
-        self.onboardingViewModel.objectWillChange.sink { _ in
-            print("Onboarding did change")
+        self.onboardingViewModel.objectWillChange.sink { _ in            
             self.objectWillChange.send()
         }.store(in: &cancellables)
     }
@@ -378,7 +380,7 @@ extension SettingsViewModel {
     func subscribeToAuthenticationService() {
         Publishers.authenticationServiceDidAuthStatusChangePublisher.sink { (user) in
             self.user = user
-            self.resetARScene()
+            self.appArScnView.resetScene()
             self.startARScene()
         }.store(in: &cancellables)
     }

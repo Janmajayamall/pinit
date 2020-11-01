@@ -24,6 +24,12 @@ class SetupProfileViewModel: ObservableObject {
     
     func initiateSetupProfile(withCallback callback: @escaping (Bool) -> Void) {
         
+        guard self.username.count > 0 else {            
+            self.usernameError = ""
+            callback(false)
+            return
+        }
+        
         // checking whether username is already taken or not
         UserProfileService.checkUsernameExists(for: self.username) { (exists) in
             if (exists == true) {

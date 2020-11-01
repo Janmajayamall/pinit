@@ -101,8 +101,13 @@ struct EditUsernameView: View {
     }
     
     func changeUsername(to username: String){
+        // check whether username count is greater than 0
+        guard self.username.count > 0 else {
+            return
+        }
+        
         // checking whether username has been changed or not
-        guard self.currentUsername != self.username else {
+        guard self.currentUsername != self.username  else {
             self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.profileViewScreenService.activeType = .normal
             return 
         }
