@@ -143,7 +143,7 @@ class OnboardingSCNNode: SCNNode, Identifiable, AppSCNNode {
     }
     
     func addVideoAsGeoemetry(withAVPlayer avPlayer: AVPlayer){
-        let scaledDims = self.getScaledDim(forSize: UIScreen.main.bounds.size)
+        let scaledDims = self.getScaledDim(forSize: CGSize(width: 375.0, height: 667.0))
         
         // create plane for adding as geometry to the node
         let plane = SCNPlane(width: scaledDims.width, height: scaledDims.height)

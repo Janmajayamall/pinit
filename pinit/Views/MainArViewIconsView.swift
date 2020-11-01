@@ -160,35 +160,35 @@ struct MainArViewIconsView: View {
         
         switch iconType {
         case .arrowCounterclockwise:
-            if (mainArViewOnboardingStatus >= 13){
-                return .onlyVisible
-            }
-            return .none
+//            if (mainArViewOnboardingStatus >= 13){
+//                return .onlyVisible
+//            }
+            return .onlyVisible
         case .gear:
-            if (mainArViewOnboardingStatus >= 13){
-                return .onlyVisible
-            }
-            return .none
+//            if (mainArViewOnboardingStatus >= 13){
+//                return .onlyVisible
+//            }
+            return .onlyVisible
         case .cameraFill:
-            if (mainArViewOnboardingStatus >= 14){
-                return .onlyVisible
-            }
-            return .none
+//            if (mainArViewOnboardingStatus >= 14){
+//                return .onlyVisible
+//            }
+            return .onlyVisible
         case .arrowLeft:
-            if (mainArViewOnboardingStatus >= 9){
-                return .active
-            }
-            return .none
+//            if (mainArViewOnboardingStatus >= 9){
+//                return .active
+//            }
+            return .onlyVisible
         case .mappinAndEllipse:
-            if (mainArViewOnboardingStatus >= 9){
-                return .active
-            }
-            return .none
+//            if (mainArViewOnboardingStatus >= 9){
+//                return .active
+//            }
+            return .active
         case .privateOrPersonal:
-            if (mainArViewOnboardingStatus >= 10){
-                return .active
-            }
-            return .none
+//            if (mainArViewOnboardingStatus >= 10){
+//                return .active
+//            }
+            return .active
         }
                 
     }

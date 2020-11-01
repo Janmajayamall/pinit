@@ -12,12 +12,13 @@ import SwiftUI
 struct IconDefaultThemeViewModifier: ViewModifier {
     
     let iconDisplayType: IconDisplayType
-    
+    let iconSize: CGFloat
     func body(content: Content) -> some View {
-        content
-            .font(Font.system(size: 25, weight: .heavy))
+        
+        return content
+            .font(Font.system(size: self.iconSize, weight: .heavy))
             .foregroundColor(self.iconDisplayType == .normal ? Color.primaryColor : Color.white)
-            .frame(width: 40, height: 40, alignment: .center)
+            .frame(width: self.iconSize * 1.6, height: self.iconSize * 1.6, alignment: .center)
             .background(self.iconDisplayType == .normal ? Color.white.opacity(0.0001) : Color.black.opacity(0.1))
         .cornerRadius(10)
     }
@@ -61,8 +62,8 @@ struct EdgePaddingIconViewModifier: ViewModifier {
 }
 
 extension View {
-    func applyDefaultIconTheme(forIconDisplayType iconDisplayType: IconDisplayType) -> some View {
-        return ModifiedContent(content: self, modifier: IconDefaultThemeViewModifier(iconDisplayType: iconDisplayType))
+    func applyDefaultIconTheme(forIconDisplayType iconDisplayType: IconDisplayType = .normal, forSize iconSize: CGFloat = 25) -> some View {
+        return ModifiedContent(content: self, modifier: IconDefaultThemeViewModifier(iconDisplayType: iconDisplayType, iconSize: iconSize))
     }
     
     func applyTopLeftPaddingToIcon() -> some View {

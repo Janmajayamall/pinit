@@ -21,7 +21,7 @@ struct CameraFeedOnboardingView: View {
                 if (self.screenNumber.rawValue > 0){
                     Image(systemName:"arrow.left")
                         .foregroundColor(Color.primaryColor)
-                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed, forSize: 35)
                         .padding()
                         .onTapGesture {
                             self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue-1)!
@@ -33,7 +33,7 @@ struct CameraFeedOnboardingView: View {
                 if (self.screenNumber.rawValue < ScreenNumber.maxScreenNumber - 1){
                     Image(systemName:"arrow.right")
                         .foregroundColor(Color.primaryColor)
-                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
+                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed, forSize: 35)
                         .padding()
                         .onTapGesture {
                             self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue+1)!
@@ -133,7 +133,7 @@ struct CameraFeedOnboardingView: View {
         }
         .padding(EdgeInsets(top: 100, leading: 5, bottom: 100, trailing: 5))
         .frame(width: self.parentSize.width, height: self.parentSize.height)
-        .background(Color.black.opacity(0.5))
+        .background(Color.black.opacity(0.7))
         .onTapGesture {
             
             

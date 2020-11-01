@@ -12,7 +12,7 @@ struct MainOnboardingView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     @State var screenNumber: ScreenNumber = .zero
-            
+    
     var parentSize: CGSize
     var backgroudColorOpacity: CGFloat = 0.5
     
@@ -27,7 +27,7 @@ struct MainOnboardingView: View {
                                 .foregroundColor(Color.white)
                             if (self.settingsViewModel.userProfile != nil){
                                 Text("\(self.settingsViewModel.userProfile!.username)")
-                                .foregroundColor(Color.primaryColor)
+                                    .foregroundColor(Color.primaryColor)
                             }
                         }.applyDefaultThemeToTextHeader(ofType: .h1)
                             .applyLiveFeedTextModifier()
@@ -284,7 +284,7 @@ struct MainOnboardingView: View {
                         Button(action: {
                             // mark authenticatedOnboarding & unauthenticatedOnboarding as done
                             self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: ScreenNumber.getMaxScreenNumber())
-                                                     
+                            
                             self.settingsViewModel.startARScene()
                         }, label: {
                             Text("Get started with FinchIt!")
@@ -305,19 +305,17 @@ struct MainOnboardingView: View {
             }
             .padding(EdgeInsets(top: 100, leading: 5, bottom: 100, trailing: 5))
             .frame(width: self.parentSize.width, height: self.parentSize.height)
+            .background(Color.black.opacity(self.getBackgroundOpacity()))
             .onAppear {
                 guard let screenNumber = ScreenNumber.init(rawValue: self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView)) else {
                     self.screenNumber = .zero
                     return
                 }
                 self.screenNumber = screenNumber
- 
+                
                 if (self.screenNumber.rawValue >= 2 && self.screenNumber.rawValue <= 14){
                     self.settingsViewModel.appArScnView.setupOnboardingNodes()
                 }
-            }
-            .onDisappear {
-                print("I AM OUT")
             }
         }
     }
@@ -345,61 +343,68 @@ struct MainOnboardingView: View {
         }
     }
     
-    func getChangeStepButtons(for screenNumber: ScreenNumber, nextCallback: (() -> Void)? = nil, previousCallback: (() -> Void)? = nil) -> some View {
-           return AnyView (
-               HStack{
-                   if (self.screenNumber.rawValue > 0){
-                       Image(systemName:"arrow.left")
-                           .foregroundColor(Color.primaryColor)
-                           .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                           .padding()
-                           .onTapGesture {
-                               self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue-1)!
-                               
-                               self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: self.screenNumber.rawValue)
-                               
-                               if let previousCallback = previousCallback {
-                                   previousCallback()
-                               }
-                       }
-                   }
-                   
-                   Spacer()
-                   
-                   if (self.screenNumber.rawValue < ScreenNumber.getMaxScreenNumber() - 1){
-                       Image(systemName:"arrow.right")
-                           .foregroundColor(Color.primaryColor)
-                           .applyDefaultIconTheme(forIconDisplayType: .liveFeed)
-                           .padding()
-                           .onTapGesture {
-                               self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue+1)!
-                               
-                               self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: self.screenNumber.rawValue)
-                               
-                               if let nextCallback = nextCallback {
-                                   nextCallback()
-                               }
-                       }
-                   }
-                   
-               }
-           )
-       }
-       
+    func getBackgroundOpacity() -> Double {
+        if (self.screenNumber == .zero || self.screenNumber == .one){
+            return 0.7
+        }else {
+            return 0.0
+        }
+    }
     
-//    @EnvironmentObject var settingsViewModel: SettingsViewModel
-//
-//    var parentSize: CGSize
-//    var backgroudColorOpacity: CGFloat = 0.5
-//
-//    @ViewBuilder
-//    var body: some View {
-//        if (self.settingsViewModel.user == nil) {
-//            MainOnboardingUnAuthenticatedView(parentSize: self.parentSize)
-//        }else if (self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) <  MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber() && self.settingsViewModel.user != nil && self.settingsViewModel.userProfile != nil){
-//            MainOnboardingAuthenticatedView(screenNumber: MainOnboardingAuthenticatedView.ScreenNumber.init(rawValue: self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView))!, parentSize: self.parentSize)
-//        }
-//    }
+    func getChangeStepButtons(for screenNumber: ScreenNumber, nextCallback: (() -> Void)? = nil, previousCallback: (() -> Void)? = nil) -> some View {
+        return AnyView (
+            HStack{
+                if (self.screenNumber.rawValue > 0){
+                    Image(systemName:"arrow.left")
+                        .foregroundColor(Color.primaryColor)
+                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed, forSize: 35)
+                        .padding()
+                        .onTapGesture {
+                            self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue-1)!
+                            
+                            self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: self.screenNumber.rawValue)
+                            
+                            if let previousCallback = previousCallback {
+                                previousCallback()
+                            }
+                    }
+                }
+                
+                Spacer()
+                
+                if (self.screenNumber.rawValue < ScreenNumber.getMaxScreenNumber() - 1){
+                    Image(systemName:"arrow.right")
+                        .foregroundColor(Color.primaryColor)
+                        .applyDefaultIconTheme(forIconDisplayType: .liveFeed, forSize: 35)
+                        .padding()
+                        .onTapGesture {
+                            self.screenNumber = ScreenNumber.init(rawValue: self.screenNumber.rawValue+1)!
+                            
+                            self.settingsViewModel.onboardingViewModel.markOnboardingStatus(for: .authenticatedMainARView, to: self.screenNumber.rawValue)
+                            
+                            if let nextCallback = nextCallback {
+                                nextCallback()
+                            }
+                    }
+                }
+            }
+        )
+    }
+    
+    
+    //    @EnvironmentObject var settingsViewModel: SettingsViewModel
+    //
+    //    var parentSize: CGSize
+    //    var backgroudColorOpacity: CGFloat = 0.5
+    //
+    //    @ViewBuilder
+    //    var body: some View {
+    //        if (self.settingsViewModel.user == nil) {
+    //            MainOnboardingUnAuthenticatedView(parentSize: self.parentSize)
+    //        }else if (self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView) <  MainOnboardingAuthenticatedView.ScreenNumber.getMaxScreenNumber() && self.settingsViewModel.user != nil && self.settingsViewModel.userProfile != nil){
+    //            MainOnboardingAuthenticatedView(screenNumber: MainOnboardingAuthenticatedView.ScreenNumber.init(rawValue: self.settingsViewModel.onboardingViewModel.checkOnboardingStatus(for: .authenticatedMainARView))!, parentSize: self.parentSize)
+    //        }
+    //    }
 }
 
 struct MainOnboardingView_Previews: PreviewProvider {
