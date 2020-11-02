@@ -89,18 +89,17 @@ class SettingsViewModel: ObservableObject {
             self.popUpWarningType = .none
         }
         
-        // set the mainArView to warning type
-        if (cameraAuthorised == false || locationAuthorised == false){
-            self.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .popUpWarning)
-        } else {
-            self.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
-        }
-        
+//        // set the mainArView to warning type
+//        if (cameraAuthorised == false || locationAuthorised == false){
+//            self.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .popUpWarning)
+//        } else {
+//            self.screenManagementService.mainScreenService.mainArViewScreenService.switchTo(screenType: .normal)
+//        }
         return cameraAuthorised && locationAuthorised
     }     
     
     func handleSceneDidBecomeActive() {
-
+        
         guard self.checkDevicePermissions() else {
             return
         }

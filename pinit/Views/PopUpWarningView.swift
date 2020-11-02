@@ -12,13 +12,12 @@ struct PopUpWarningView: View {
     
     @EnvironmentObject var settingsViewModel: SettingsViewModel
     var parentSize: CGSize
-    var popUpWarningType: PopUpWarningType
     
     var viewSize: CGSize {
         return CGSize(width: self.parentSize.width * self.viewWidthRatio, height: self.parentSize.height * self.viewHeightRatio)
     }
     var offset: CGSize {
-        if (self.settingsViewModel.screenManagementService.mainScreenService.mainArViewScreenService.activeType == .popUpWarning){
+        if (self.settingsViewModel.popUpWarningType != .none){
             return .zero
         }else {
             return CGSize(width: .zero, height: self.parentSize.height)
@@ -26,53 +25,39 @@ struct PopUpWarningView: View {
     }
     
     var body: some View {
-        ZStack {
-            VStack{
+        VStack{
+            Spacer()
+            
+            HStack{
                 Spacer()
+                Text(self.settingsViewModel.popUpWarningType.rawValue)
+                    .font(Font.custom("Avenir", size: 17).bold())
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color.black)
                 
-                HStack{
-                    Spacer()
-                    Text(self.popUpWarningType.rawValue)
-                        .font(Font.custom("Avenir", size: 17).bold())
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(Color.black)
-                        
-                    Spacer()
+                Spacer()
+            }
+            
+            Spacer()
+            
+            Button(action: {
+                guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {return}
+                
+                if (UIApplication.shared.canOpenURL(settingsURL)){
+                    UIApplication.shared.open(settingsURL)
                 }
-                
-                Spacer()
-                
-                Button(action: {
-                    guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {return}
-                    
-                    if (UIApplication.shared.canOpenURL(settingsURL)){
-                        UIApplication.shared.open(settingsURL)
-                    }
-                }, label: {
-                    Text("Open Settings")
-                })
-                    .buttonStyle(SecondaryColorButtonStyle())
-                
-                Spacer()
-            }.zIndex(1)
-//            VStack{
-//                HStack{
-//                    Image(systemName: "xmark")
-//                        .foregroundColor(Color.primaryColor)
-//                        .applyDefaultIconTheme()
-//                        .onTapGesture {
-//
-//                    }
-//                    .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-//                    Spacer()
-//                }
-//                Spacer()
-//            }.zIndex(1)
+            }, label: {
+                Text("Open Settings")
+            })
+                .buttonStyle(SecondaryColorButtonStyle())
+            
+            Spacer()
+            
         }.frame(width: self.viewSize.width, height: self.viewSize.height)
             .background(Color.white)
-                .cornerRadius(15)
+            .cornerRadius(15)
             .offset(self.offset)
-        .animation(.spring())
+            .animation(.spring())
     }
     
     private let viewHeightRatio: CGFloat = 0.40
@@ -81,7 +66,7 @@ struct PopUpWarningView: View {
 
 struct PopUpWarningView_Previews: PreviewProvider {
     static var previews: some View {
-        PopUpWarningView(parentSize: .zero, popUpWarningType: .none)
+        PopUpWarningView(parentSize: .zero)
     }
 }
 

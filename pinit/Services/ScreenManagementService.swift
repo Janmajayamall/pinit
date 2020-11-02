@@ -118,7 +118,6 @@ enum MainArViewScreenType {
     case login
     case profile
     case setupProfile
-    case popUpWarning
     case normal
 }
 
@@ -138,8 +137,6 @@ struct MainArViewScreenService: ScreenService {
             self.switchToProfile()
         case .normal:
             self.switchToNormal()
-        case .popUpWarning:
-            self.switchToPopUpWarning()
         case .setupProfile:
             self.switchToSetupProfile()
         }
@@ -156,11 +153,7 @@ struct MainArViewScreenService: ScreenService {
     private mutating func switchToNormal() {
         self.activeType = .normal
     }
-    
-    private mutating func switchToPopUpWarning() {
-        self.activeType = .popUpWarning
-    }
-    
+      
     private mutating func switchToSetupProfile() {
         self.activeType = .setupProfile
     }

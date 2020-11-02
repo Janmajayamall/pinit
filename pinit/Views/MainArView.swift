@@ -49,7 +49,7 @@ struct MainArView: View {
                             EditUsernameView(username: self.settingsViewModel.userProfile?.username ?? "", currentUsername: self.settingsViewModel.userProfile?.username ?? "", parentSize: geometryProxy.size)
                         }
                         
-                        PopUpWarningView(parentSize: geometryProxy.size, popUpWarningType: self.settingsViewModel.popUpWarningType)
+                        PopUpWarningView(parentSize: geometryProxy.size)
                     }.frame(width: geometryProxy.size.width, height: geometryProxy.size.height)
                                       
                     
