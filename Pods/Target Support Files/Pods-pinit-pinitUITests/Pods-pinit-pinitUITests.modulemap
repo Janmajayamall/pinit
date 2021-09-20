@@ -1,0 +1,6 @@
+framework module Pods_pinit_pinitUITests {
+  umbrella header "Pods-pinit-pinitUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
