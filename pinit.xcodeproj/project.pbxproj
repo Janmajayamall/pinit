@@ -221,8 +221,6 @@
 		5D7ECA54254B25C100195079 /* ThrillingMoment.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThrillingMoment.mp4; sourceTree = "<group>"; };
 		5D7ECA56254B5B3900195079 /* FunMoment.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FunMoment.mp4; sourceTree = "<group>"; };
 		5D86652B25138EC800049980 /* CameraFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeedView.swift; sourceTree = "<group>"; };
-		5D86EEE225266ACA00180155 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		5D86EEE325266AE100180155 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5D9F13AA24F540FE00A8BC67 /* RequestSetupUserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSetupUserProfileModel.swift; sourceTree = "<group>"; };
 		5DADAC9C251E01EA002C2571 /* PulseLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseLoader.swift; sourceTree = "<group>"; };
 		5DAE4135250A7EB50017A598 /* GroupSCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSCNNode.swift; sourceTree = "<group>"; };
@@ -545,7 +543,6 @@
 		5DFF62F6252278180038820A /* Debug */ = {
 			isa = PBXGroup;
 			children = (
-				5D86EEE225266ACA00180155 /* GoogleService-Info.plist */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -553,7 +550,6 @@
 		5DFF62F7252278200038820A /* Release */ = {
 			isa = PBXGroup;
 			children = (
-				5D86EEE325266AE100180155 /* GoogleService-Info.plist */,
 			);
 			path = Release;
 			sourceTree = "<group>";
